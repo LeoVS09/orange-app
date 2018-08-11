@@ -1,0 +1,7 @@
+// UI
+export const SET_PLATFORM = 'SET_PLATFORM'
+export const TOGGLE_SIDEBAR = 'TOGGLE_SIDEBAR'
+
+// USER
+export const SETUP_USER_PROFILE = 'SETUP_USER_PROFILE'
+
