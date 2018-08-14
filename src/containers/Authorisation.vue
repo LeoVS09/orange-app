@@ -1,23 +1,27 @@
-<template lang="pug">
-  .auth
-    h1 Auth
+<template>
+  <div class="auth">
+    <h1>Auth</h1>
+  </div>
 </template>
 
-<script>
+<script lang="ts">
+  import Vue from 'vue'
 
-  export default {
+  export default Vue.extend({
     name: 'authorisation',
+
     data () {
       return {
         isLogin: false
       }
     },
+
     methods: {
       login () {
         // Some login
       }
     }
-  }
+  })
 
 </script>
 

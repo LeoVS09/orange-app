@@ -1,17 +1,22 @@
-<template lang="pug">
-  .home
-    h1 Home
-    .content-wrapper
-      router-view
+<template>
+  <div class="home">
+    <h1>Home</h1>
+    <div class='content-wrapper'>
+      <router-view></router-view>
+    </div>
+  </div>
 </template>
 
-<script>
+<script lang="ts">
+  import Vue from 'vue'
 
-  export default {
+  let a: number;
+
+  export default Vue.extend({
     name: 'home',
     data () {
       return {
-        data: {}
+        data: {a}
       }
     },
     methods: {
@@ -19,7 +24,7 @@
         // it very important
       }
     }
-  }
+  })
 
 </script>
 

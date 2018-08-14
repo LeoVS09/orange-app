@@ -1,23 +1,27 @@
-<template lang="pug">
-  .competitions
-    h1 Competitions
+<template>
+  <div class="competitions">
+    <h1>Competitions</h1>
+  </div>
 </template>
 
-<script>
+<script lang="ts">
+  import Vue from 'vue'
 
-  export default {
+  export default Vue.extend({
     name: 'competitions',
+
     data () {
       return {
         data: {}
       }
     },
+
     methods: {
       someWork () {
         // it very important
       }
     }
-  }
+  })
 
 </script>
 
