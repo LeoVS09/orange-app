@@ -25,14 +25,14 @@
 
 </script>
 
-<style scoped lang="stylus">
-  @import "../styles/config.styl"
+<style scoped lang="scss">
+  @import "../styles/config.scss";
 
-  .auth
-    width 100%
-    height 100%
-    display flex
-    flex-direction row
-    justify-content center
-
+  .auth {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+  }
 </style>

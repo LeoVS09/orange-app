@@ -1,4 +1,4 @@
-import {RootState} from "./state";
+import {RootState} from "../state";
 
 export default {
   platform: (state: RootState) => state.ui.currentPlatform,

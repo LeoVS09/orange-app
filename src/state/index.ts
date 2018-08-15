@@ -1,8 +1,19 @@
-import { User }from "./user"
 import {ActionContext} from 'vuex'
 
+import { User, UserType }from "./user"
+import {Team} from "./team";
+import {Problem, ResultOfProblem, ResultOfTest} from "./problem";
+import {Contest, Requirements} from "./contest";
+
 export {
-  User
+  User,
+  UserType,
+  Team,
+  Problem,
+  ResultOfProblem,
+  ResultOfTest,
+  Contest,
+  Requirements
 }
 export interface RootState {
   ui: UIState,

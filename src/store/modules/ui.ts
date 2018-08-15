@@ -1,7 +1,7 @@
 // @ts-ignore
 import * as actionTypes from '@/store/actionTypes'
 import {Commit} from 'vuex'
-import {UIState, Platform, IActionContext} from "../state";
+import {UIState, Platform, IActionContext} from "../../state";
 
 const UI_SET_PLATFORM_REPRESENTATION = 'UI_SET_PLATFORM_REPRESENTATION'
 const UI_SET_SIDEBAR_VISIBLE_STATUS = 'UI_SET_SIDEBAR_VISIBLE_STATUS'
