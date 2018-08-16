@@ -27,6 +27,13 @@
     justify-content: space-between;
     .logo {
       margin-left: 1rem;
+      margin-top: 0.1rem;
+      margin-bottom: 0.2rem;
+      font-size: 3rem;
+      background: linear-gradient(160deg, #fda130, #fd7400, #ff6977);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      font-family: 'Montserrat', sans-serif;
     }
     .profile {
       margin-right: 1rem;

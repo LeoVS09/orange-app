@@ -15,6 +15,7 @@ export {
   Contest,
   Requirements
 }
+
 export interface RootState {
   ui: UIState,
   profile: ProfileState

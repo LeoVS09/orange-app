@@ -15,6 +15,7 @@
   @import url('https://fonts.googleapis.com/css?family=Ubuntu:400,500');
   @import url('https://fonts.googleapis.com/css?family=Roboto:400');
   @import url('https://fonts.googleapis.com/css?family=Exo+2:600|Source+Sans+Pro:400');
+  @import url('https://fonts.googleapis.com/css?family=Montserrat:700');
   @import "./styles/default.scss";
 
   #app {
