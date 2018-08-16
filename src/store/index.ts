@@ -5,6 +5,7 @@ import createDataGeneratorPlugin from './plugins/mock/generator'
 
 import ui from './modules/ui'
 import profile from './modules/profile'
+import problems from './modules/problems'
 import getters from './getters'
 
 // @ts-ignore
@@ -17,7 +18,8 @@ const generator = createDataGeneratorPlugin();
 export default new Vuex.Store({
   modules: {
     ui,
-    profile
+    profile,
+    problems
   },
   getters,
   plugins: [generator],

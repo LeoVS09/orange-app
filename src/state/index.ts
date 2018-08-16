@@ -16,19 +16,20 @@ export {
   Requirements
 }
 
-export interface RootState {
-  ui: UIState,
-  profile: ProfileState
-}
-
-export interface ProfileState {
-  data?: User
-}
-
 export enum Platform {
   DESKTOP,
   TABLET,
   MOBILE
+}
+
+export interface RootState {
+  ui: UIState,
+  profile: ProfileState,
+  problems: ProblemsState
+}
+
+export interface ProfileState {
+  data?: User
 }
 
 export interface UIState {
@@ -36,9 +37,14 @@ export interface UIState {
   sideBarVisible: boolean
 }
 
+export interface ProblemsState {
+  openProblems: Array<Problem>
+}
+
 export interface RootGetters {
   platform: Platform,
-  isSideBarVisible: boolean
+  isSideBarVisible: boolean,
+  openProblems: Array<Problem>
 }
 
 export interface IActionContext<S> extends ActionContext<S,RootState> {

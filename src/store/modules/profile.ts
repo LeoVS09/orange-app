@@ -1,9 +1,8 @@
-// @ts-ignore
-import * as actionTypes from '@/store/actionTypes'
+import * as actionTypes from '../actionTypes'
 import {Commit} from 'vuex'
 import {User, ProfileState, IActionContext} from '../../state'
 
-const SET_PROFILE_DATA = 'SET_PROFILE_DATA'
+const SET_PROFILE_DATA = 'SET_PROFILE_DATA';
 const initState: ProfileState = {};
 
 export default {

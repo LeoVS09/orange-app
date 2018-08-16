@@ -8,7 +8,8 @@ export interface Problem {
   uploadDate: number,
   publicationDate: number,
   author: string,
-  tester: string
+  tester: string,
+  tags: Array<string>
 }
 
 export interface ResultOfTest {

@@ -1,8 +1,13 @@
 import {RootState} from "../state";
+import {GetterTree} from "vuex";
 
-export default {
-  platform: (state: RootState) => state.ui.currentPlatform,
-  isSideBarVisible: (state: RootState) => state.ui.sideBarVisible,
+const getters: GetterTree<RootState, any> = {
+  platform: (state) => state.ui.currentPlatform,
+  isSideBarVisible: (state) => state.ui.sideBarVisible,
 
-  profile: (state: RootState) => state.profile.data
-}
+  profile: (state) => state.profile.data,
+
+  openProblems: (state) => state.problems.openProblems
+};
+
+export default getters;

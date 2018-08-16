@@ -40,5 +40,16 @@
     display: flex;
     flex-direction: column;
     margin-top: $topBarHeight;
+
+    h1 {
+      text-align: center;
+    }
+    .content-wrapper {
+      width: $contentWidth;
+      padding: $contentPaddingTop $contentPaddingSides;
+      margin-left: $contentMargin;
+      box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+      min-height: 100vh;
+    }
   }
 </style>

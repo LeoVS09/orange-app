@@ -1,0 +1,12 @@
+{
+  "id": "",
+  "name": "Some problem",
+  "text": "Lala trala la",
+  "examples": ["Some example"],
+  "isOpen": true,
+  "uploadDate": 1534425121343,
+  "publicationDate": 1534425121344,
+  "author": "Some author",
+  "tester": "Some tester",
+  "tags": ["math", "trees"]
+}

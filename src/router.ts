@@ -1,11 +1,12 @@
 import Vue from 'vue'
 // @ts-ignore
 import Router from 'vue-router'
-import {Component} from "../node_modules/vue-router/types/router";
+import {Component} from "../node_modules/vue-router/types/router"
 
 import Home from '@/containers/Home.vue'
 import Auth from '@/containers/Authorisation.vue'
 import Competitions from '@/components/Content/Competitions.vue'
+import ProblemsList from '@/components/Content/ProblemsList.vue'
 
 const authPath = '/authorisation';
 const USE_AUTH_COMPONENT = false;
@@ -20,6 +21,10 @@ const router = new Router({
       children: [
         {
           path: '',
+          component: ProblemsList as Component
+        },
+        {
+          path: '/competitions',
           component: Competitions as Component
         }
       ]

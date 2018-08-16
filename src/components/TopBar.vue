@@ -25,6 +25,8 @@
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    background-color: $backgroundColor;
+
     .logo {
       margin-left: 1rem;
       margin-top: 0.1rem;
@@ -35,6 +37,7 @@
       -webkit-text-fill-color: transparent;
       font-family: 'Montserrat', sans-serif;
     }
+
     .profile {
       margin-right: 1rem;
     }
