@@ -22,15 +22,16 @@ function createProblem(): Problem {
     publicationDate: Date.now() - random(0, 10000000000),
     author: AUTHORS[random(0, AUTHORS.length)],
     tester: AUTHORS[random(0, AUTHORS.length)],
-    tags: [TAGS[random(0, TAGS.length)], TAGS[random(0, TAGS.length)], TAGS[random(0, TAGS.length)]]
+    tags: [TAGS[random(0, TAGS.length)], TAGS[random(0, TAGS.length)], TAGS[random(0, TAGS.length)]],
+    isOpen: !!random(0,2)
   })
 }
 
 export default function createDataGeneratorPlugin <S>() {
-  const openProblems = new Array(random(5, 20)).fill(0).map(createProblem);
+  const openProblems = new Array(random(10, 30)).fill(0).map(createProblem);
 
   return (store: Vuex.Store<S>) => {
     store.dispatch(actionTypes.SETUP_USER_PROFILE, Object.assign({}, staticUserData));
-    store.dispatch(actionTypes.SETUP_OPEN_PROBLEMS, openProblems);
+    store.dispatch(actionTypes.SETUP_PROBLEMS, openProblems);
   }
 }

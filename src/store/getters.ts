@@ -7,7 +7,9 @@ const getters: GetterTree<RootState, any> = {
 
   profile: (state) => state.profile.data,
 
-  openProblems: (state) => state.problems.openProblems
+  openProblems: (state) => state.problems.data.filter(p => p.isOpen),
+  closedProblems: (state) => state.problems.data.filter(p => !p.isOpen),
+  problems: (state) => state.problems.data
 };
 
 export default getters;

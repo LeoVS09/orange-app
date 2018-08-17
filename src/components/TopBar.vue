@@ -1,16 +1,20 @@
 <template>
   <div class="top-bar">
-    <h1 class="logo">Orange</h1>
+    <h1 v-on:click="clickHome" class="logo">Orange</h1>
     <h3 class="profile">Profile</h3>
   </div>
 </template>
 
 <script lang="ts">
   import Vue from 'vue'
+  import {Component} from 'vue-property-decorator'
 
-  export default Vue.extend({
-    name: 'top-bar'
-  })
+  @Component
+  export default class TopBar extends Vue {
+    clickHome(){
+      this.$router.push({name: 'home'});
+    }
+  }
 </script>
 
 <style scoped lang="scss">
@@ -36,10 +40,12 @@
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       font-family: 'Montserrat', sans-serif;
+      cursor: pointer;
     }
 
     .profile {
       margin-right: 1rem;
+      cursor: pointer;
     }
   }
 </style>

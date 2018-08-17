@@ -7,6 +7,7 @@ import Home from '@/containers/Home.vue'
 import Auth from '@/containers/Authorisation.vue'
 import Competitions from '@/components/Content/Competitions.vue'
 import ProblemsList from '@/components/Content/ProblemsList.vue'
+import Problem from '@/components/Content/Problem.vue'
 
 const authPath = '/authorisation';
 const USE_AUTH_COMPONENT = false;
@@ -20,12 +21,18 @@ const router = new Router({
       component: Home as Component,
       children: [
         {
+          name: 'home',
           path: '',
           component: ProblemsList as Component
         },
         {
           path: '/competitions',
           component: Competitions as Component
+        },
+        {
+          path: '/problem/:id',
+          name: 'problem',
+          component: Problem as Component
         }
       ]
     },

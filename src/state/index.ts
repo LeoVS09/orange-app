@@ -4,6 +4,7 @@ import { User, UserType }from "./user"
 import {Team} from "./team";
 import {Problem, ResultOfProblem, ResultOfTest} from "./problem";
 import {Contest, Requirements} from "./contest";
+import problems from "../store/modules/problems";
 
 export {
   User,
@@ -38,13 +39,15 @@ export interface UIState {
 }
 
 export interface ProblemsState {
-  openProblems: Array<Problem>
+  data: Array<Problem>
 }
 
 export interface RootGetters {
   platform: Platform,
   isSideBarVisible: boolean,
-  openProblems: Array<Problem>
+  openProblems: Array<Problem>,
+  closedProblems: Array<Problem>,
+  problems: Array<Problem>
 }
 
 export interface IActionContext<S> extends ActionContext<S,RootState> {
