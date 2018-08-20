@@ -3,6 +3,10 @@ import * as Vuex from 'vuex'
 import staticUserData from './user.json'
 import staticProblemData from './problem.json'
 import {Problem} from "../../../state";
+import {IO} from "../../../state/problem";
+
+const USE_STATIC_ID = true;
+const STATIC_ID = 'do5n32edbzsjb0ynz3b7i';
 
 const random = (min: number = 0, max: number = 10): number => Math.floor(Math.random() * (max - min)) + min;
 const randomString = (): string => Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
@@ -23,12 +27,19 @@ function createProblem(): Problem {
     author: AUTHORS[random(0, AUTHORS.length)],
     tester: AUTHORS[random(0, AUTHORS.length)],
     tags: [TAGS[random(0, TAGS.length)], TAGS[random(0, TAGS.length)], TAGS[random(0, TAGS.length)]],
-    isOpen: !!random(0,2)
+    isOpen: !!random(0,2),
+    io: {
+      input: IO.STANDARD,
+      output: IO.STANDARD
+    }
   })
 }
 
 export default function createDataGeneratorPlugin <S>() {
-  const openProblems = new Array(random(10, 30)).fill(0).map(createProblem);
+  let openProblems = new Array(random(10, 30)).fill(0).map(createProblem);
+
+  if(USE_STATIC_ID)
+    openProblems[0].id = STATIC_ID;
 
   return (store: Vuex.Store<S>) => {
     store.dispatch(actionTypes.SETUP_USER_PROFILE, Object.assign({}, staticUserData));

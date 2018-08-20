@@ -3,13 +3,34 @@ export interface Problem {
   id: string,
   name: string,
   text: string,
-  examples: Array<string>,
+  input: string,
+  output: string,
+  note?: string,
+  examples: Array<Example>,
   isOpen: boolean,
   uploadDate: number,
   publicationDate: number,
   author: string,
   tester: string,
-  tags: Array<string>
+  tags: Array<string>,
+  limits: {
+    time: number, // ms
+    memory: number // byte
+  }
+  io: {
+    input: IO,
+    output: IO
+  }
+}
+
+export enum IO {
+  STANDARD,
+  FILE
+}
+
+export interface Example {
+  input: string,
+  output: string
 }
 
 export interface ResultOfTest {

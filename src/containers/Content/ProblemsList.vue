@@ -19,12 +19,17 @@
   import Vue from 'vue'
   import {Component} from 'vue-property-decorator'
   import {Getter} from 'vuex-class'
-  import {Problem} from "../../state"
+  import {Problem} from "../../state/index"
+  import * as actions from '../../store/actionTypes';
 
   @Component
   export default class ProblemsList extends Vue {
     // @ts-ignore
     @Getter('openProblems') items: Array<Problem>;
+
+    created() {
+      this.$store.dispatch(actions.SET_STANDARD_PAGE);
+    }
 
     uploadDateFormat(value: number) {
       const date = new Date(value);
@@ -47,6 +52,8 @@
 <style lang="scss" scoped>
   @import "../../styles/config";
 
+  $linePadding: 0.7rem;
+
   .problems {
     width: 100%;
 
@@ -58,9 +65,10 @@
       width: 100%;
       display: flex;
       flex-direction: row;
-      padding-bottom: 0.5rem;
-      padding-top: 0.5rem;
+      padding-bottom: $linePadding;
+      padding-top: $linePadding;
       transition: box-shadow 0.2s cubic-bezier(.25,.8,.25,1);
+      border-bottom: 1px solid $secondaryColor;
 
       &:hover {
         box-shadow: 0 0 5px rgba(0,0,0,0.3);
@@ -73,11 +81,10 @@
       }
 
       &.problems--header {
+        border-top: 1px solid $secondaryColor;
         border-bottom: 1px solid $secondaryColor;
-      }
-
-      &:nth-child(even) {
-        background-color: rgba(128, 128, 128, 0.1);
+        padding-top: 1.5*$linePadding;
+        padding-bottom: 1.5*$linePadding;
       }
 
       td, th {

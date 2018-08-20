@@ -4,6 +4,7 @@ import {GetterTree} from "vuex";
 const getters: GetterTree<RootState, any> = {
   platform: (state) => state.ui.currentPlatform,
   isSideBarVisible: (state) => state.ui.sideBarVisible,
+  isTextPage: (state) => state.ui.isTextPage,
 
   profile: (state) => state.profile.data,
 

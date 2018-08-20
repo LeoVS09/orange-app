@@ -5,9 +5,9 @@ import {Component} from "../node_modules/vue-router/types/router"
 
 import Home from '@/containers/Home.vue'
 import Auth from '@/containers/Authorisation.vue'
-import Competitions from '@/components/Content/Competitions.vue'
-import ProblemsList from '@/components/Content/ProblemsList.vue'
-import Problem from '@/components/Content/Problem.vue'
+import Competitions from '@/containers/Content/Competitions.vue'
+import ProblemsList from '@/containers/Content/ProblemsList.vue'
+import Problem from '@/containers/Content/Problem.vue'
 
 const authPath = '/authorisation';
 const USE_AUTH_COMPONENT = false;

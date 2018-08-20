@@ -35,7 +35,8 @@ export interface ProfileState {
 
 export interface UIState {
   currentPlatform: Platform,
-  sideBarVisible: boolean
+  sideBarVisible: boolean,
+  isTextPage: boolean
 }
 
 export interface ProblemsState {
@@ -45,6 +46,7 @@ export interface ProblemsState {
 export interface RootGetters {
   platform: Platform,
   isSideBarVisible: boolean,
+  isTextPage: boolean,
   openProblems: Array<Problem>,
   closedProblems: Array<Problem>,
   problems: Array<Problem>

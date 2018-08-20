@@ -12,3 +12,8 @@ body {
   background-color: $backgroundColor;
   color: $mainTextColor;
 }
+
+.material-icons {
+  position: relative;
+  top: 0.2em;
+}

@@ -1,10 +1,15 @@
 $primaryColor: #ffffff;
 $secondaryColor: #d7d7d7;
 $backgroundColor: $primaryColor;
-$mainTextColor: #5e616b;
+$mainTextColor: #282a2f;
+$headerTextColor: #5e616b;
+$secondaryTextColor: lighten($mainTextColor, 30%);
+$footerColor: #363636;
 
 $topBarHeight: 4rem;
 $contentMargin: 3rem;
 $contentPaddingTop: 3rem;
 $contentPaddingSides: 1.5rem;
-$contentWidth: calc(100% - #{2 * $contentMargin + 2 * $contentPaddingSides})
+$maxContentWidth: 1280px;
+$maxTextWidth: 720px;
+$footerHeight: 10rem;

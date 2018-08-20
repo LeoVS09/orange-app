@@ -26,7 +26,7 @@
 </script>
 
 <style scoped lang="scss">
-  @import "../../styles/config.scss";
+  @import "../../styles/config";
 
   .competitions {
     width: 100%;

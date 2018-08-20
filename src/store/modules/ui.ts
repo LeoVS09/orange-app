@@ -3,13 +3,14 @@ import * as actionTypes from '@/store/actionTypes'
 import {Commit} from 'vuex'
 import {UIState, Platform, IActionContext} from "../../state";
 
-const UI_SET_PLATFORM_REPRESENTATION = 'UI_SET_PLATFORM_REPRESENTATION'
-const UI_SET_SIDEBAR_VISIBLE_STATUS = 'UI_SET_SIDEBAR_VISIBLE_STATUS'
-
+const UI_SET_PLATFORM_REPRESENTATION = 'UI_SET_PLATFORM_REPRESENTATION';
+const UI_SET_SIDEBAR_VISIBLE_STATUS = 'UI_SET_SIDEBAR_VISIBLE_STATUS';
+const UI_SET_TEXT_PAGE_STATUS = 'UI_SET_TEXT_PAGE_STATUS';
 
 const initState: UIState = {
   currentPlatform: Platform.DESKTOP,
-  sideBarVisible: true
+  sideBarVisible: true,
+  isTextPage: false
 };
 
 export default {
@@ -25,6 +26,12 @@ export default {
     },
     [actionTypes.TOGGLE_SIDEBAR] (context: IActionContext<UIState>) {
       context.commit(UI_SET_SIDEBAR_VISIBLE_STATUS, !context.rootGetters.isSideBarVisible)
+    },
+    [actionTypes.SET_TEXT_PAGE] (context: IActionContext<UIState>) {
+      context.commit(UI_SET_TEXT_PAGE_STATUS, true);
+    },
+    [actionTypes.SET_STANDARD_PAGE] (context: IActionContext<UIState>) {
+      context.commit(UI_SET_TEXT_PAGE_STATUS, false);
     }
   },
 
@@ -34,6 +41,9 @@ export default {
     },
     [UI_SET_SIDEBAR_VISIBLE_STATUS] (state: UIState, visible: boolean) {
       state.sideBarVisible = visible
+    },
+    [UI_SET_TEXT_PAGE_STATUS] (state: UIState, value: boolean) {
+      state.isTextPage = value;
     }
   }
 }

@@ -30,6 +30,7 @@
     flex-direction: row;
     justify-content: space-between;
     background-color: $backgroundColor;
+    z-index: 20;
 
     .logo {
       margin-left: 1rem;

@@ -1,55 +1,73 @@
 <template>
-  <div class="home">
+  <main>
     <top-bar></top-bar>
-    <h1>Home</h1>
-    <div class='content-wrapper'>
-      <router-view></router-view>
+    <div class="home">
+      <div v-bind:class='{ "content-wrapper": true, "text-page": isTextPage }'>
+        <router-view></router-view>
+      </div>
     </div>
-  </div>
+    <footer-view></footer-view>
+  </main>
 </template>
 
 <script lang="ts">
   import Vue from 'vue'
+  import {Component} from 'vue-property-decorator'
+  import {Getter} from 'vuex-class'
   import TopBar from '@/components/TopBar.vue'
+  import Footer from '@/components/Footer.vue'
+  import {Problem} from "../state"
 
-  export default Vue.extend({
-    name: 'home',
-    data () {
-      return {
-        data: {}
-      }
-    },
-    methods: {
-      someWork () {
-        // it very important
-      }
-    },
+  @Component({
     components: {
-      TopBar
+      TopBar,
+      'footer-view': Footer
     }
   })
+  export default class Home extends Vue {
+    // @ts-ignore
+    @Getter('isTextPage') isTextPage: boolean;
+  }
 
 </script>
 
 <style scoped lang="scss">
   @import "../styles/config.scss";
 
+  main {
+    height: auto;
+    min-height: 100%;
+    width: 100%;
+  }
+
   .home {
     width: 100%;
     height: 100%;
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
     margin-top: $topBarHeight;
+    padding-top: 2rem;
+    padding-bottom: 3rem;
+    z-index: 10;
+    margin-bottom: $footerHeight;
+    background-color: $backgroundColor;
+    position: relative;
+    box-shadow: 0 0 28px rgba(0,0,0,0.5);
 
     h1 {
       text-align: center;
     }
     .content-wrapper {
-      width: $contentWidth;
+      min-height: 100%;
+      width: 100%;
+      max-width: $maxContentWidth;
       padding: $contentPaddingTop $contentPaddingSides;
-      margin-left: $contentMargin;
-      box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
-      min-height: 100vh;
+      margin: auto;
+      flex: 1;
+      &.text-page {
+        max-width: $maxTextWidth;
+      }
     }
   }
 </style>
