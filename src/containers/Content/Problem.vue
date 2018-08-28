@@ -27,6 +27,17 @@
       <source-view :text="example.output"></source-view>
     </div>
 
+    <div class="problem--code-upload">
+      <textarea placeholder="Paste you code her..." v-model="codeOfProgram"></textarea>
+
+      <div  class="problem--code-button-wrapper">
+        <transition name="fade">
+          <button v-if="!!codeOfProgram.length" v-on:click="handleUpload">Upload</button>
+        </transition>
+      </div>
+
+    </div>
+
     <div class="problem--data">
       <div class="authors">
         <div title="author">
@@ -73,6 +84,8 @@
     // @ts-ignore
     @Getter('problems') items: Array<Problem>;
 
+    codeOfProgram = "";
+
     created() {
       this.$store.dispatch(actions.SET_TEXT_PAGE);
     }
@@ -118,6 +131,10 @@
       const sizes = ['ms', 'seconds'];
       const i = Math.floor(Math.log(ms) / Math.log(k));
       return parseFloat((ms / Math.pow(k, i)).toFixed(decimals)) + ' ' + sizes[i];
+    }
+
+    handleUpload(){
+      this.$store.dispatch(actions.UPLOAD_CODE, this.codeOfProgram)
     }
 
   }
@@ -190,6 +207,54 @@
         margin-top: 0.3rem;
         margin-bottom: 0.1rem;
       }
+    }
+
+    &--code-upload {
+      textarea {
+        width: calc(100% - 4px);
+        height: 10rem;
+        resize: none;
+        border-color: rgb(43, 58, 66);
+        border-radius: 3px;
+        outline: none;
+        box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
+        z-index: 3;
+        position: relative;
+      }
+    }
+
+    &--code-button-wrapper {
+      height: 5rem;
+      z-index: 2;
+
+      button {
+        width: 100%;
+        font-family: "Roboto", sans-serif;
+        background-color: $backgroundColor;
+        height: 2rem;
+        border: 1px solid $secondaryTextColor;
+        margin-top: 1rem;
+        margin-bottom: 2rem;
+        cursor: pointer;
+        outline: none;
+        border-radius: 3px;
+        position: relative;
+
+        &:hover {
+          background-color: $secondaryTextColor;
+          color: white;
+        }
+      }
+    }
+
+    .fade-enter-active, .fade-leave-active {
+      transition: all 0.3s;
+      top: 0;
+    }
+
+    .fade-enter, .fade-leave-to /* .fade-leave-active до версии 2.1.8 */ {
+      opacity: 0;
+      top: -100px;
     }
 
     &--data {
