@@ -22,6 +22,6 @@ export default new Vuex.Store({
     problems
   },
   getters,
-  plugins: [generator],
+  plugins: debug ? [generator] : [],
   strict: debug
 });

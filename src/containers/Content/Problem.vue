@@ -1,7 +1,17 @@
 <template>
   <div v-if="!!problemData" class="problem">
-    <h1 class="problem--header">{{problemData.name}}</h1>
-
+    <div v-bind:class="{'problem--header': true, 'done': done}">
+      <h1 class="text">{{problemData.name}}</h1>
+      <div class="color-line">
+        <div class="left-triangle"></div>
+        <div class="right-triangle"></div>
+        <div class="left-triangle"></div>
+        <div class="right-triangle"></div>
+        <div class="left-triangle"></div>
+        <div class="right-triangle last"></div>
+      </div>
+      <i class="material-icons icon">done</i>
+    </div>
     <p class="problem--tags"><span
       v-for="tag in problemData.tags"
       class="problem--tag-item"
@@ -36,9 +46,9 @@
         </transition>
       </div>
 
-      <div v-if="!!problemData.resultRun">
-        <p>Is all tests successful {{problemData.resultRun.isAllTestsSuccessful}}</p>
-        <p>Number test failed {{problemData.resultRun.failedTest}}</p>
+      <div v-if="!!resultRun">
+        <p>Is all tests successful {{resultRun.isAllTestsSuccessful}}</p>
+        <p>Number test failed {{resultRun.failedTest}}</p>
       </div>
 
     </div>
@@ -46,21 +56,21 @@
     <div class="problem--data">
       <div class="authors">
         <div title="author">
-          <i class="material-icons">create</i>
+          <i class="material-icons data">create</i>
           <span>{{problemData.author}}</span>
         </div>
         <div title="tester">
-          <i class="material-icons">how_to_reg</i>
+          <i class="material-icons data">how_to_reg</i>
           <span>{{problemData.tester}}</span>
         </div>
       </div>
       <div class="dates">
         <div title="date of upload">
-          <i class="material-icons">publish</i>
+          <i class="material-icons data">publish</i>
           <span>{{formatData(problemData.uploadDate)}}</span>
         </div>
         <div title="date of publication">
-          <i class="material-icons">public</i>
+          <i class="material-icons data">public</i>
           <span>{{formatData(problemData.publicationDate)}}</span>
         </div>
       </div>
@@ -75,7 +85,7 @@
   import Vue from 'vue'
   import {Component} from 'vue-property-decorator'
   import {Getter} from 'vuex-class'
-  import {Problem} from "../../state/index"
+  import {Problem, ResultRunProgram} from "../../state/index"
   import * as actions from '../../store/actionTypes';
   import SourceView from '../../components/SourceView'
   import {IO} from "../../state/problem"
@@ -108,6 +118,20 @@
       }
       console.log("Problem params id", this.$route.params.id);
       return items.filter(p => p.id === this.$route.params.id)[0];
+    }
+
+    get resultRun(): ResultRunProgram | null | undefined {
+      if(this.problemData) {
+        return this.problemData.resultRun;
+      }
+      return null;
+    }
+
+    get done(): boolean {
+      if(this.resultRun){
+        return this.resultRun.isAllTestsSuccessful
+      }
+      return false
     }
 
     formatData(value: number) {
@@ -149,10 +173,75 @@
   @import "../../styles/config";
 
   .problem {
+
     &--header {
-      color: $headerTextColor;
-      margin-bottom: 0.1rem;
+      display: flex;
+      flex-direction: row;
+
+      .text {
+        color: $headerTextColor;
+        margin-bottom: 0;
+        margin-top: 0;
+        background-color: $backgroundColor;
+        padding-right: 1rem;
+      }
+
+      .icon {
+        display: none;
+        background-color: $backgroundColor;
+      }
+
+      &.done {
+        .text {
+          color: $doneColor;
+        }
+
+        .icon {
+          display: inline-block;
+          color: $doneColor;
+          top: 0;
+          padding-top: 0.1em;
+          font-size: 2.4rem;
+        }
+
+        $triangle-height: 1.4rem;
+        $triangle-weight: 1.5rem;
+
+        .color-line {
+          flex: 1;
+          background-color: $doneColor;
+          display: flex;
+          flex-direction: row;
+          height: $triangle-height;
+          margin-top: 0.6rem;
+        }
+
+        .left-triangle, .right-triangle {
+          font-size: 0;
+          line-height: 0;
+          width: 0;
+
+        }
+
+        .left-triangle {
+          background-color: $doneColor;
+          border-top: $triangle-height solid $backgroundColor;
+          border-right: $triangle-weight solid $doneColor;
+        }
+
+        .right-triangle {
+          background-color: $doneColor;
+          border-bottom: $triangle-height solid $backgroundColor;
+          border-left: $triangle-weight solid $doneColor;
+
+          &.last {
+            margin-left: auto;
+          }
+        }
+      }
     }
+
+
 
     &--tags {
       margin-top: 0;
