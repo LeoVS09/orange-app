@@ -36,6 +36,11 @@
         </transition>
       </div>
 
+      <div v-if="!!problemData.resultRun">
+        <p>Is all tests successful {{problemData.resultRun.isAllTestsSuccessful}}</p>
+        <p>Number test failed {{problemData.resultRun.failedTest}}</p>
+      </div>
+
     </div>
 
     <div class="problem--data">
@@ -134,7 +139,7 @@
     }
 
     handleUpload(){
-      this.$store.dispatch(actions.UPLOAD_CODE, this.codeOfProgram)
+      this.$store.dispatch(actions.UPLOAD_CODE, {id: this.$route.params.id, text: this.codeOfProgram} )
     }
 
   }

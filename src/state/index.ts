@@ -2,7 +2,7 @@ import {ActionContext} from 'vuex'
 
 import { User, UserType }from "./user"
 import {Team} from "./team";
-import {Problem, ResultOfProblem, ResultOfTest} from "./problem";
+import {Problem, ResultOfProblem, ResultOfTest, ResultRunProgram} from "./problem";
 import {Contest, Requirements} from "./contest";
 import problems from "../store/modules/problems";
 
@@ -14,7 +14,8 @@ export {
   ResultOfProblem,
   ResultOfTest,
   Contest,
-  Requirements
+  Requirements,
+  ResultRunProgram
 }
 
 export enum Platform {

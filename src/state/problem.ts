@@ -20,7 +20,14 @@ export interface Problem {
   io: {
     input: IO,
     output: IO
-  }
+  },
+  resultRun?: ResultRunProgram
+}
+
+export interface ResultRunProgram {
+  problemId: string,
+  isAllTestsSuccessful: boolean,
+  failedTest: number
 }
 
 export enum IO {
