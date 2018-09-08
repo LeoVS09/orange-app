@@ -1,0 +1,53 @@
+@import "./config";
+
+.skeleton-loading {
+  width: 100%;
+
+  &:empty::after {
+    content: "";
+    display: block;
+    width: 100%;
+    height: 100%;
+    background-repeat: no-repeat;
+  }
+}
+
+
+// list = ($left, $top, $width, $height),...
+@mixin skeleton($maxWidth, $maxHeight, $list) {
+  height: $maxHeight;
+
+  $bi: "";
+  $bs: "";
+  $bp: "";
+  @each $left, $top, $width, $height in $list {
+    $bi: $bi + ", linear-gradient(" + $skeletonColor + " " + $height + ", transparent 0)";
+    $bs: $bs + ", " + $width + " " + $height;
+    $bp: $bp + ", " + $left + " " + $top;
+  }
+
+  &:empty::after {
+    background-image: linear-gradient(
+        90deg,
+        rgba(lighten($skeletonColor, $skeletonAnimationLightenColorValue), 0) 0,
+        rgba(lighten($skeletonColor, $skeletonAnimationLightenColorValue), .8) 50%,
+        rgba(lighten($skeletonColor, $skeletonAnimationLightenColorValue), 0) 100%
+    )#{$bi};
+
+    background-size: $maxWidth $maxHeight#{$bs};
+
+    $animationLeft: 1000%;
+    background-position: $animationLeft 0#{$bp};
+
+    $lettersList: ("A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z");
+    $animationName: skeleton-loading-animation-#{nth($lettersList, random(51)) + nth($lettersList, random(51)) + nth($lettersList, random(51)) + nth($lettersList, random(51)) + nth($lettersList, random(51)) + nth($lettersList, random(51))};
+
+    animation: $animationName $skeletonAnimationTime infinite;
+
+    @keyframes #{$animationName} {
+      to {
+        background-position: -$animationLeft 0#{$bp};
+      }
+    }
+  }
+}

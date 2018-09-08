@@ -18,6 +18,7 @@ export default {
   actions: {
     [actionTypes.SET_CURRRENT_PROBLEM](context: IActionContext<ProblemsState>, problemId: string): Promise<any> {
       console.log("Problem params id", problemId);
+
       let problem = context.getters.problems.filter((p: Problem) => p.id === problemId)[0];
       if(!!problem) {
         console.log("find current problem id", problemId);

@@ -1,5 +1,5 @@
 <template>
-  <div v-if="isLoading" class="skeleton-loading"></div>
+  <div v-if="isLoading" class="skeleton-loading problem-loading"></div>
   <div v-else-if="!!problemData" class="problem">
     <div v-bind:class="{'problem--header': true, 'done': done}">
       <h1 class="text">{{problemData.name}}</h1>
@@ -31,6 +31,7 @@
         <div class="output">Output: {{formatIO(problemData.io.output)}}</div>
       </div>
     </div>
+
     <div v-for="example in problemData.examples" class="problem--example">
       <h4>Input</h4>
       <source-view :text="example.input"></source-view>
@@ -39,7 +40,7 @@
     </div>
 
     <div class="problem--code-upload">
-      <textarea placeholder="Paste you code her..." v-model="codeOfProgram"></textarea>
+      <textarea placeholder="Paste you code here..." v-model="codeOfProgram"></textarea>
 
       <div  class="problem--code-button-wrapper">
         <transition name="fade">
@@ -185,124 +186,27 @@
 
 <style lang="scss" scoped>
   @import "../../styles/config";
+  @import "../../styles/skeleton";
 
-  $skeletonColor: #D3D3D3;
-  $skeletonAnimationTime: 1.5s;
-  $skeletonAnimationLightenColorValue: 20%;
-  .skeleton-loading {
-    width: 100%;
-    height: 80rem;
-
-    &:empty::after {
-      content:"";
-      display:block;
-      width: 100%;
-      height: 100%;
-      background-repeat: no-repeat;
-
-
-      background-image:
-        linear-gradient(
-            90deg,
-            rgba(lighten($skeletonColor, $skeletonAnimationLightenColorValue), 0) 0,
-            rgba(lighten($skeletonColor, $skeletonAnimationLightenColorValue), .8) 50%,
-            rgba(lighten($skeletonColor, $skeletonAnimationLightenColorValue), 0) 100%
-        ),
-        linear-gradient($skeletonColor 2rem, transparent 0),
-        linear-gradient($skeletonColor 0.6rem, transparent 0),
-        linear-gradient($skeletonColor 1rem, transparent 0),
-        linear-gradient($skeletonColor 1rem, transparent 0),
-        linear-gradient($skeletonColor 1rem, transparent 0),
-        linear-gradient($skeletonColor 0.6rem, transparent 0),
-        linear-gradient($skeletonColor 0.6rem, transparent 0),
-        linear-gradient($skeletonColor 0.6rem, transparent 0),
-        linear-gradient($skeletonColor 0.8rem, transparent 0),
-        linear-gradient($skeletonColor 1.5rem, transparent 0),
-        linear-gradient($skeletonColor 0.8rem, transparent 0),
-        linear-gradient($skeletonColor 1.5rem, transparent 0),
-        linear-gradient($skeletonColor 0.8rem, transparent 0),
-        linear-gradient($skeletonColor 1.5rem, transparent 0),
-        linear-gradient($skeletonColor 0.8rem, transparent 0),
-        linear-gradient($skeletonColor 1.5rem, transparent 0);
-      background-size:
-        50rem 80rem,
-        10rem 2rem,
-        15rem 1rem,
-        20rem 1rem,
-        25rem 1rem,
-        30rem 1rem,
-        6rem 1rem,
-        6rem 1rem,
-        4rem 1rem,
-        5rem 1rem,
-        45rem 1.5rem,
-        5rem 0.8rem,
-        45rem 1.5rem,
-        5rem 0.8rem,
-        45rem 1.5rem,
-        5rem 0.8rem,
-        45rem 1.5rem;
-
-      $headerPosition: 1rem 1rem;
-      $tagsPosition: 30rem 3rem;
-      $descriptionFirstPosition: 1rem 6rem;
-      $descriptionSecondPosition: 1rem 8rem;
-      $descriptionThirdPosition: 1rem 10rem;
-      $configurationFirstPosition: 39rem 14rem;
-      $configurationSecondPosition: 39rem 16rem;
-      $configurationThirdPosition: 39rem 18rem;
-      $exampleInputTextFirstPosition: 1rem 24rem;
-      $exampleInputFirstPosition: 1rem 25rem;
-      $exampleOutputTextFirstPosition: 1rem 28rem;
-      $exampleOutputFirstPosition: 1rem 29rem;
-      $exampleInputTextSecondPosition: 1rem 36rem;
-      $exampleInputSecondPosition: 1rem 37rem;
-      $exampleOutputTextSecondPosition: 1rem 40rem;
-      $exampleOutputSecondPosition: 1rem 41rem;
-
-      background-position:
-        600% 0,
-        $headerPosition,
-        $tagsPosition,
-        $descriptionFirstPosition,
-        $descriptionSecondPosition,
-        $descriptionThirdPosition,
-        $configurationFirstPosition,
-        $configurationSecondPosition,
-        $configurationThirdPosition,
-        $exampleInputTextFirstPosition,
-        $exampleInputFirstPosition,
-        $exampleOutputTextFirstPosition,
-        $exampleOutputFirstPosition,
-        $exampleInputTextSecondPosition,
-        $exampleInputSecondPosition,
-        $exampleOutputTextSecondPosition,
-        $exampleOutputSecondPosition;
-
-      animation: loading $skeletonAnimationTime infinite;
-
-      @keyframes loading {
-        to {
-          background-position: -600% 0,
-          $headerPosition,
-          $tagsPosition,
-          $descriptionFirstPosition,
-          $descriptionSecondPosition,
-          $descriptionThirdPosition,
-          $configurationFirstPosition,
-          $configurationSecondPosition,
-          $configurationThirdPosition,
-          $exampleInputTextFirstPosition,
-          $exampleInputFirstPosition,
-          $exampleOutputTextFirstPosition,
-          $exampleOutputFirstPosition,
-          $exampleInputTextSecondPosition,
-          $exampleInputSecondPosition,
-          $exampleOutputTextSecondPosition,
-          $exampleOutputSecondPosition;
-        }
-      }
-    }
+  .problem-loading {
+    @include skeleton(60rem, 80rem, (
+        (1rem, 1rem, 10rem, 2rem),
+        (40rem, 3rem, 15rem, 1rem),
+        (1rem, 6rem, 20rem, 1rem),
+        (1rem, 8rem, 25rem, 1rem),
+        (1rem, 10rem, 30rem, 1rem),
+        (49rem, 14rem, 6rem, 1rem),
+        (49rem, 16rem, 6rem, 1rem),
+        (49rem, 18rem, 4rem, 1rem),
+        (1rem, 24rem, 5rem, 0.8rem),
+        (1rem, 25rem, 55rem, 1.5rem),
+        (1rem, 28rem, 5rem, 0.8rem),
+        (1rem, 29rem, 55rem, 1.5rem),
+        (1rem, 36rem, 5rem, 0.8rem),
+        (1rem, 37rem, 55rem, 1.5rem),
+        (1rem, 40rem, 5rem, 0.8rem),
+        (1rem, 41rem, 55rem, 1.5rem)
+    ));
   }
 
   .problem {
@@ -396,6 +300,8 @@
       padding-top: 2rem;
       margin-top: 0;
       margin-bottom: 0;
+      font-size: 1.1rem;
+      line-height: 1.7;
     }
 
     &--configuration {
