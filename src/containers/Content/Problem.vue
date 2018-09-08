@@ -1,5 +1,6 @@
 <template>
-  <div v-if="!!problemData" class="problem">
+  <div v-if="isLoading" class="skeleton-loading"></div>
+  <div v-else-if="!!problemData" class="problem">
     <div v-bind:class="{'problem--header': true, 'done': done}">
       <h1 class="text">{{problemData.name}}</h1>
       <div class="color-line">
@@ -90,6 +91,10 @@
   import SourceView from '../../components/SourceView'
   import {IO} from "../../state/problem"
 
+  Component.registerHooks([
+    'beforeRouteUpdate'
+  ]);
+
   @Component({
     components: {
       SourceView
@@ -97,34 +102,43 @@
   })
   export default class ProblemView extends Vue {
     // @ts-ignore
-    @Getter('problems') items: Array<Problem>;
+    @Getter('currentProblem') problemData?: Problem;
 
     codeOfProgram = "";
+    isLoading = false;
 
     created() {
       this.$store.dispatch(actions.SET_TEXT_PAGE);
+
+      this.isLoading = true;
+      this.$store.dispatch(actions.SET_CURRRENT_PROBLEM, this.$route.params.id)
+        .then(() => {
+          this.isLoading = false;
+        })
+        .catch(() => {
+          this.isLoading = false;
+        });
     }
 
     beforeRouteUpdate(to: any, from: any, next: any){
-      // TODO: handle when problem changed
-      next();
+      console.log("before route update id: ", to.params.id);
+      this.isLoading = true;
+      this.$store.dispatch(actions.SET_CURRRENT_PROBLEM, to.params.id)
+        .then(() => {
+          this.isLoading = false;
+          next();
+        })
+        .catch(e => {
+          this.isLoading = false;
+          next(e);
+        });
     }
 
-    get problemData(): Problem | null {
-      const items = this.items;
-      console.log("Problem items:", items);
-      if(!items || !items.length){
-        return null;
-      }
-      console.log("Problem params id", this.$route.params.id);
-      return items.filter(p => p.id === this.$route.params.id)[0];
-    }
-
-    get resultRun(): ResultRunProgram | null | undefined {
+    get resultRun(): ResultRunProgram | undefined {
       if(this.problemData) {
         return this.problemData.resultRun;
       }
-      return null;
+      return undefined;
     }
 
     get done(): boolean {
@@ -171,6 +185,125 @@
 
 <style lang="scss" scoped>
   @import "../../styles/config";
+
+  $skeletonColor: #D3D3D3;
+  $skeletonAnimationTime: 1.5s;
+  $skeletonAnimationLightenColorValue: 20%;
+  .skeleton-loading {
+    width: 100%;
+    height: 80rem;
+
+    &:empty::after {
+      content:"";
+      display:block;
+      width: 100%;
+      height: 100%;
+      background-repeat: no-repeat;
+
+
+      background-image:
+        linear-gradient(
+            90deg,
+            rgba(lighten($skeletonColor, $skeletonAnimationLightenColorValue), 0) 0,
+            rgba(lighten($skeletonColor, $skeletonAnimationLightenColorValue), .8) 50%,
+            rgba(lighten($skeletonColor, $skeletonAnimationLightenColorValue), 0) 100%
+        ),
+        linear-gradient($skeletonColor 2rem, transparent 0),
+        linear-gradient($skeletonColor 0.6rem, transparent 0),
+        linear-gradient($skeletonColor 1rem, transparent 0),
+        linear-gradient($skeletonColor 1rem, transparent 0),
+        linear-gradient($skeletonColor 1rem, transparent 0),
+        linear-gradient($skeletonColor 0.6rem, transparent 0),
+        linear-gradient($skeletonColor 0.6rem, transparent 0),
+        linear-gradient($skeletonColor 0.6rem, transparent 0),
+        linear-gradient($skeletonColor 0.8rem, transparent 0),
+        linear-gradient($skeletonColor 1.5rem, transparent 0),
+        linear-gradient($skeletonColor 0.8rem, transparent 0),
+        linear-gradient($skeletonColor 1.5rem, transparent 0),
+        linear-gradient($skeletonColor 0.8rem, transparent 0),
+        linear-gradient($skeletonColor 1.5rem, transparent 0),
+        linear-gradient($skeletonColor 0.8rem, transparent 0),
+        linear-gradient($skeletonColor 1.5rem, transparent 0);
+      background-size:
+        50rem 80rem,
+        10rem 2rem,
+        15rem 1rem,
+        20rem 1rem,
+        25rem 1rem,
+        30rem 1rem,
+        6rem 1rem,
+        6rem 1rem,
+        4rem 1rem,
+        5rem 1rem,
+        45rem 1.5rem,
+        5rem 0.8rem,
+        45rem 1.5rem,
+        5rem 0.8rem,
+        45rem 1.5rem,
+        5rem 0.8rem,
+        45rem 1.5rem;
+
+      $headerPosition: 1rem 1rem;
+      $tagsPosition: 30rem 3rem;
+      $descriptionFirstPosition: 1rem 6rem;
+      $descriptionSecondPosition: 1rem 8rem;
+      $descriptionThirdPosition: 1rem 10rem;
+      $configurationFirstPosition: 39rem 14rem;
+      $configurationSecondPosition: 39rem 16rem;
+      $configurationThirdPosition: 39rem 18rem;
+      $exampleInputTextFirstPosition: 1rem 24rem;
+      $exampleInputFirstPosition: 1rem 25rem;
+      $exampleOutputTextFirstPosition: 1rem 28rem;
+      $exampleOutputFirstPosition: 1rem 29rem;
+      $exampleInputTextSecondPosition: 1rem 36rem;
+      $exampleInputSecondPosition: 1rem 37rem;
+      $exampleOutputTextSecondPosition: 1rem 40rem;
+      $exampleOutputSecondPosition: 1rem 41rem;
+
+      background-position:
+        600% 0,
+        $headerPosition,
+        $tagsPosition,
+        $descriptionFirstPosition,
+        $descriptionSecondPosition,
+        $descriptionThirdPosition,
+        $configurationFirstPosition,
+        $configurationSecondPosition,
+        $configurationThirdPosition,
+        $exampleInputTextFirstPosition,
+        $exampleInputFirstPosition,
+        $exampleOutputTextFirstPosition,
+        $exampleOutputFirstPosition,
+        $exampleInputTextSecondPosition,
+        $exampleInputSecondPosition,
+        $exampleOutputTextSecondPosition,
+        $exampleOutputSecondPosition;
+
+      animation: loading $skeletonAnimationTime infinite;
+
+      @keyframes loading {
+        to {
+          background-position: -600% 0,
+          $headerPosition,
+          $tagsPosition,
+          $descriptionFirstPosition,
+          $descriptionSecondPosition,
+          $descriptionThirdPosition,
+          $configurationFirstPosition,
+          $configurationSecondPosition,
+          $configurationThirdPosition,
+          $exampleInputTextFirstPosition,
+          $exampleInputFirstPosition,
+          $exampleOutputTextFirstPosition,
+          $exampleOutputFirstPosition,
+          $exampleInputTextSecondPosition,
+          $exampleInputSecondPosition,
+          $exampleOutputTextSecondPosition,
+          $exampleOutputSecondPosition;
+        }
+      }
+    }
+  }
 
   .problem {
 

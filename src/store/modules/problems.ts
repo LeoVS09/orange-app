@@ -1,19 +1,39 @@
 import * as actionTypes from '../actionTypes';
-import {API} from '../../api';
+import * as API from '../../api';
 import {IActionContext, ProblemsState, Problem, ResultRunProgram} from "../../state";
 
 const SET_PROBLEMS = 'SET_PROBLEMS';
 const ADD_PROBLEM = 'ADD_PROBLEM';
 const SET_RESULT_OF_PROGRAM = 'SET_RESULT_OF_PROGRAM';
+const SET_CURRENT_PROBLEM = 'SET_CURRENT_PROBLEM';
 
 const initState: ProblemsState = {
-  data: []
+  data: [],
+  currentProblemId: undefined
 };
 
 export default {
   state: initState,
 
   actions: {
+    [actionTypes.SET_CURRRENT_PROBLEM](context: IActionContext<ProblemsState>, problemId: string): Promise<any> {
+      console.log("Problem params id", problemId);
+      let problem = context.getters.problems.filter((p: Problem) => p.id === problemId)[0];
+      if(!!problem) {
+        console.log("find current problem id", problemId);
+        context.commit(SET_CURRENT_PROBLEM, problemId);
+        return Promise.resolve(true)
+      }
+
+      return API.getProblem(problemId)
+        .then(problem => {
+          console.log("load current problem id", problemId);
+          context.commit(ADD_PROBLEM, problem);
+          context.commit(SET_CURRENT_PROBLEM, problemId);
+          return Promise.resolve(true)
+        })
+    },
+
     [actionTypes.SETUP_PROBLEMS](context: IActionContext<ProblemsState>, problems: Array<Problem>) {
       context.commit(SET_PROBLEMS, problems);
     },
@@ -30,6 +50,10 @@ export default {
   },
 
   mutations: {
+    [SET_CURRENT_PROBLEM](state: ProblemsState, problemId: string) {
+      state.currentProblemId = problemId;
+    },
+
     [SET_PROBLEMS](state: ProblemsState, problems: Array<Problem>) {
       state.data = problems
     },

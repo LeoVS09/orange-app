@@ -41,7 +41,8 @@ export interface UIState {
 }
 
 export interface ProblemsState {
-  data: Array<Problem>
+  data: Array<Problem>,
+  currentProblemId?: string
 }
 
 export interface RootGetters {
@@ -50,7 +51,8 @@ export interface RootGetters {
   isTextPage: boolean,
   openProblems: Array<Problem>,
   closedProblems: Array<Problem>,
-  problems: Array<Problem>
+  problems: Array<Problem>,
+  currentProblem?: Problem
 }
 
 export interface IActionContext<S> extends ActionContext<S,RootState> {

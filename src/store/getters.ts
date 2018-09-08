@@ -10,7 +10,8 @@ const getters: GetterTree<RootState, any> = {
 
   openProblems: (state) => state.problems.data.filter(p => p.isOpen),
   closedProblems: (state) => state.problems.data.filter(p => !p.isOpen),
-  problems: (state) => state.problems.data
+  problems: (state) => state.problems.data,
+  currentProblem: (state) => state.problems.data.filter( p => p.id == state.problems.currentProblemId)[0]
 };
 
 export default getters;
