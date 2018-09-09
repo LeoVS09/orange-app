@@ -58,21 +58,21 @@
     <div class="problem--data">
       <div class="authors">
         <div title="author">
-          <i class="material-icons data">create</i>
+          <Icon class="data" type="create" />
           <span>{{problemData.author}}</span>
         </div>
         <div title="tester">
-          <i class="material-icons data">how_to_reg</i>
+          <Icon class="data" type="how_to_reg" />
           <span>{{problemData.tester}}</span>
         </div>
       </div>
       <div class="dates">
         <div title="date of upload">
-          <i class="material-icons data">publish</i>
+          <Icon class="data" type="publish" />
           <span>{{formatData(problemData.uploadDate)}}</span>
         </div>
         <div title="date of publication">
-          <i class="material-icons data">public</i>
+          <Icon class="data" type="public" />
           <span>{{formatData(problemData.publicationDate)}}</span>
         </div>
       </div>
@@ -89,7 +89,7 @@
   import {Getter} from 'vuex-class'
   import {Problem, ResultRunProgram} from "../../state/index"
   import * as actions from '../../store/actionTypes';
-  import SourceView from '../../components/SourceView'
+  import {SourceView, Icon} from '../../components';
   import {IO} from "../../state/problem"
 
   Component.registerHooks([
@@ -98,7 +98,8 @@
 
   @Component({
     components: {
-      SourceView
+      SourceView,
+      Icon
     }
   })
   export default class ProblemView extends Vue {

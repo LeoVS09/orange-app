@@ -4,13 +4,13 @@ import Router from 'vue-router'
 import {Component} from "../node_modules/vue-router/types/router"
 
 import Home from '@/containers/Home.vue'
-import Auth from '@/containers/Authorisation.vue'
+import Authorisation from '@/containers/Authorisation.vue'
 import Competitions from '@/containers/Content/Competitions.vue'
 import ProblemsList from '@/containers/Content/ProblemsList.vue'
 import Problem from '@/containers/Content/Problem.vue'
 
 const authPath = '/authorisation';
-const USE_AUTH_COMPONENT = false;
+const USE_AUTH_COMPONENT = true;
 
 Vue.use(Router);
 
@@ -39,7 +39,7 @@ const router = new Router({
     {
       path: authPath,
       name: 'authorisation',
-      component: Auth as Component
+      component: Authorisation as Component
     }
   ]
 });
@@ -49,11 +49,12 @@ const isAuth = () => !USE_AUTH_COMPONENT || !!window.localStorage.token || !!win
 
 // @ts-ignore
 router.beforeEach((to, from, next) => {
-  if (isAuth()) {
-    to.path !== authPath ? next() : next({ path: '/' });
-    return
-  }
-  to.path !== authPath ? next({ path: authPath }) : next()
+  //if (isAuth()) {
+  //  to.path !== authPath ? next() : next({ path: '/' });
+  //  return
+  //}
+  //to.path !== authPath ? next({ path: authPath }) : next()
+  next();
 });
 
 export default router

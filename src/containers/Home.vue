@@ -14,8 +14,8 @@
   import Vue from 'vue'
   import {Component} from 'vue-property-decorator'
   import {Getter} from 'vuex-class'
-  import TopBar from '@/components/TopBar.vue'
-  import Footer from '@/components/Footer.vue'
+  import TopBar from './TopBar.vue'
+  import { Footer } from '@/components'
   import {Problem} from "../state"
 
   @Component({
@@ -33,12 +33,6 @@
 
 <style scoped lang="scss">
   @import "../styles/config.scss";
-
-  main {
-    height: auto;
-    min-height: 100%;
-    width: 100%;
-  }
 
   .home {
     width: 100%;

@@ -13,7 +13,8 @@ body {
   color: $mainTextColor;
 }
 
-.material-icons {
-  position: relative;
-  top: 0.2em;
+main {
+  height: auto;
+  min-height: 100%;
+  width: 100%;
 }
