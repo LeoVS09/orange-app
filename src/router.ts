@@ -8,6 +8,7 @@ import Authorisation from '@/containers/Authorisation.vue'
 import Competitions from '@/containers/Content/Competitions.vue'
 import ProblemsList from '@/containers/Content/ProblemsList.vue'
 import Problem from '@/containers/Content/Problem.vue'
+import SignIn from '@/containers/Content/SignIn.vue'
 
 const authPath = '/authorisation';
 const USE_AUTH_COMPONENT = true;
@@ -39,7 +40,14 @@ const router = new Router({
     {
       path: authPath,
       name: 'authorisation',
-      component: Authorisation as Component
+      component: Authorisation as Component,
+      children: [
+        {
+          name: 'signin',
+          path: '',
+          component: SignIn as Component
+        }
+      ]
     }
   ]
 });
