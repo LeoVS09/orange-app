@@ -60,6 +60,7 @@
     &--container {
       box-shadow: 0 1px 10px 0 rgba(0,0,0,0.4);
       width: 100%;
+      max-width: $inputWidth + 6rem;
       margin: auto;
       display: flex;
       flex-direction: column;
@@ -73,13 +74,13 @@
       margin-bottom: 0;
       position: relative;
       left: -2.1rem;
-      color: rgba(0,0,0,0.7)
+      color: $secondaryTextColor
     }
 
     &--logo {
       margin-top: 0;
       font-size: 2.5rem;
-      margin-bottom: 3rem;
+      margin-bottom: 0;
     }
 
   }

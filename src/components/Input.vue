@@ -50,7 +50,7 @@
   @import "../styles/config.scss";
 
   .input-container {
-    width: 30rem;
+    width: $inputWidth;
     display: flex;
     flex-direction: column;
     justify-content: left;
