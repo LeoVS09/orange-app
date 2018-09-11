@@ -10,6 +10,7 @@ import ProblemsList from '@/containers/Content/ProblemsList.vue'
 import Profile from '@/containers/Content/Profile.vue'
 import Problem from '@/containers/Content/Problem.vue'
 import SignIn from '@/containers/Content/SignIn.vue'
+import SignUp from '@/containers/Content/SignUp.vue'
 
 const authPath = '/signin';
 const USE_AUTH_COMPONENT = true;
@@ -52,6 +53,11 @@ const router = new Router({
           name: 'signin',
           path: authPath,
           component: SignIn as Component
+        },
+        {
+          name: 'signup',
+          path: '/signup',
+          component: SignUp as Component
         }
       ]
     }

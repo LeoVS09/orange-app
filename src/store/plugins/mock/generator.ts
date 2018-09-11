@@ -36,14 +36,14 @@ export function createProblem(): Problem {
   })
 }
 
-export function createUser(login: string, password: string): User {
+export function createUser(login: string, password: string, type: UserType): User {
   return {
     id: randomString(),
     firstName: AUTHORS[random(0, AUTHORS.length)],
     familyName: AUTHORS[random(0, AUTHORS.length)],
     lastName: AUTHORS[random(0, AUTHORS.length)],
     login,
-    type: UserType.CONTESTANT,
+    type,
     email: `${login}@lol.com`,
   }
 }

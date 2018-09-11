@@ -5,7 +5,7 @@ import Logo from './Logo.vue'
 import Input from './Input.vue'
 import Button from './Button.vue'
 import CheckBox from './CheckBox.vue'
-
+import Spinner from './Spinner.vue'
 export {
   Footer,
   Icon,
@@ -13,5 +13,6 @@ export {
   SourceView,
   Input,
   Button,
-  CheckBox
+  CheckBox,
+  Spinner
 }

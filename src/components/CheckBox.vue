@@ -32,7 +32,8 @@
 
   .checkbox-container {
     margin-top: 1rem;
-    width: $inputWidth;
+    width: 100%;
+    max-width: $inputWidth;
     font-size: 0.8rem;
     $rememberColor: lighten($mainTextColor, 30%);
     color: $rememberColor;

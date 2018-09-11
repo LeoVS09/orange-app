@@ -1,5 +1,6 @@
-import {User} from '../state';
+import {User, UserType} from '../state';
 import {createUser} from '../store/plugins/mock/generator'
+
 const TOKEN_NAME = 'token';
 
 export function signin (login: string, password: string, isRemember: boolean): Promise<User | null> {
@@ -15,7 +16,11 @@ export function signin (login: string, password: string, isRemember: boolean): P
         window.sessionStorage.setItem(TOKEN_NAME, "LOL");
       }
 
-      resolve(createUser(login, password))
+      if(login === 'teacher') {
+        resolve(createUser(login, password, UserType.TEACHER));
+      } else {
+        resolve(createUser(login, password, UserType.CONTESTANT));
+      }
     }, 1000)
   })
 }

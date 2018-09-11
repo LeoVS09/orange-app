@@ -1,4 +1,5 @@
 import * as actionTypes from '../actionTypes'
+import Vue from 'vue'
 import {Commit} from 'vuex'
 import {User, ProfileState, IActionContext} from '../../state'
 import {signin, signout} from '../../identity';
@@ -27,12 +28,23 @@ export default {
     },
     [actionTypes.LOGOUT_FROM_PROFILE] (context: IActionContext<ProfileState>){
       signout()
+    },
+    [actionTypes.REGISTER_PROFILE] (context: IActionContext<ProfileState>, user: {firstName: string, lastName: string, email: string, password: string}): Promise<boolean> {
+      return signin(user.email, user.password, false)
+        .then(result => {
+          console.log("Signin result", result);
+          if(!result){
+            return Promise.reject(false)
+          }
+          context.commit(SET_PROFILE_DATA, user);
+          return Promise.resolve(true)
+        })
     }
   },
 
   mutations: {
     [SET_PROFILE_DATA] (state: ProfileState, user: User) {
-      state.data = user
+      Vue.set(state,'data', user);
     }
   }
 }

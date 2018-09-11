@@ -6,11 +6,13 @@ import {UIState, Platform, IActionContext} from "../../state";
 const UI_SET_PLATFORM_REPRESENTATION = 'UI_SET_PLATFORM_REPRESENTATION';
 const UI_SET_SIDEBAR_VISIBLE_STATUS = 'UI_SET_SIDEBAR_VISIBLE_STATUS';
 const UI_SET_TEXT_PAGE_STATUS = 'UI_SET_TEXT_PAGE_STATUS';
+const UI_SET_SIGN_IN_PAGE_STATUS = 'UI_SET_SIGN_IN_PAGE_STATUS';
 
 const initState: UIState = {
   currentPlatform: Platform.DESKTOP,
   sideBarVisible: true,
-  isTextPage: false
+  isTextPage: false,
+  isSignInPage: true
 };
 
 export default {
@@ -32,6 +34,12 @@ export default {
     },
     [actionTypes.SET_STANDARD_PAGE] (context: IActionContext<UIState>) {
       context.commit(UI_SET_TEXT_PAGE_STATUS, false);
+    },
+    [actionTypes.SET_SIGN_IN_PAGE] (context: IActionContext<UIState>) {
+      context.commit(UI_SET_SIGN_IN_PAGE_STATUS, true);
+    },
+    [actionTypes.SET_SIGN_UP_PAGE] (context: IActionContext<UIState>) {
+      context.commit(UI_SET_SIGN_IN_PAGE_STATUS, false);
     }
   },
 
@@ -44,6 +52,9 @@ export default {
     },
     [UI_SET_TEXT_PAGE_STATUS] (state: UIState, value: boolean) {
       state.isTextPage = value;
+    },
+    [UI_SET_SIGN_IN_PAGE_STATUS] (state: UIState, value: boolean) {
+      state.isSignInPage = value;
     }
   }
 }

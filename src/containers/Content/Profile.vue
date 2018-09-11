@@ -1,6 +1,6 @@
 <template>
     <div class="profile">
-      <h1>Hello, {{userData.firstName}} {{userData.familyName}} {{userData.lastName}}</h1>
+      <h1>Hello, {{name}}</h1>
     </div>
 </template>
 
@@ -12,6 +12,10 @@
   import * as actions from '../../store/actionTypes';
   import {checkIsLogin} from '../../identity'
   import {SourceView, Icon} from '../../components';
+
+  function capitalise(s: string): string {
+    return s[0].toUpperCase() + s.slice(1);
+  }
 
   Component.registerHooks([
     'beforeRouteUpdate'
@@ -25,7 +29,7 @@
   })
   export default class ProblemView extends Vue {
     // @ts-ignore
-    @Getter('profile') userData?: User;
+    @Getter('profile') userData: User;
 
     created() {
       this.$store.dispatch(actions.SET_STANDARD_PAGE);
@@ -39,6 +43,18 @@
         this.$router.push({name: 'home'});
         return
       }
+    }
+
+    get name(): string {
+      let result = capitalise(this.userData.firstName);
+
+      if(this.userData.familyName){
+        result += " " + capitalise(this.userData.familyName);
+      }
+
+      result += " " + capitalise(this.userData.lastName);
+
+      return result;
     }
   }
 </script>

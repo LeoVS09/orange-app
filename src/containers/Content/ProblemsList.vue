@@ -1,12 +1,13 @@
 <template>
   <div class="problems">
+    <h1 class="problems--header">Problems</h1>
     <table class="problems--list">
-      <tr class="problems--header">
+      <tr class="problems--list-header">
         <th>Name</th>
         <th>Author</th>
         <th>Upload date</th>
       </tr>
-      <tr v-for="item in items" v-on:click="chooseProblem(item)">
+      <tr v-for="item in items" v-on:click="chooseProblem(item)" class="problems--problem">
         <td>{{item.name}}</td>
         <td class="problems--author">{{item.author}}</td>
         <td class="problems--date">{{uploadDateFormat(item.uploadDate)}}</td>
@@ -61,7 +62,7 @@
       width: 100%;
     }
 
-    tr {
+    &--problem, &--list-header {
       width: 100%;
       display: flex;
       flex-direction: row;
@@ -80,13 +81,6 @@
         cursor: default;
       }
 
-      &.problems--header {
-        border-top: 1px solid $secondaryColor;
-        border-bottom: 1px solid $secondaryColor;
-        padding-top: 1.5*$linePadding;
-        padding-bottom: 1.5*$linePadding;
-      }
-
       td, th {
         flex: 1;
 
@@ -96,6 +90,13 @@
           text-underline: $mainTextColor;
         }
       }
+    }
+
+    &--list-header {
+      border-top: 1px solid $secondaryColor;
+      border-bottom: 1px solid $secondaryColor;
+      padding-top: 1.5*$linePadding;
+      padding-bottom: 1.5*$linePadding;
     }
 
     &--author {

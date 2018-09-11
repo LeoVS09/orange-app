@@ -1,7 +1,7 @@
 <template>
   <main>
     <div class="auth">
-      <div class="auth--container">
+      <div :class="{'auth--container': true, 'signin': isSignInPage}">
         <p class="auth--description">Welcome to</p>
         <Logo @click.native="clickHome" class="auth--logo" />
         <router-view></router-view>
@@ -13,7 +13,10 @@
 <script lang="ts">
   import Vue from 'vue'
   import {Component} from 'vue-property-decorator'
+  import {Getter} from 'vuex-class'
   import { Logo, Input, Button } from '../components'
+
+  // TODO: add transition between pages change
 
   @Component({
     components: {
@@ -24,6 +27,8 @@
   })
   export default class Authorisation extends Vue {
 
+    // @ts-ignore
+    @Getter('isSignInPage') isSignInPage: boolean;
     isRemember = true;
     login = "";
     password = "";
@@ -45,6 +50,8 @@
 
   main {
     background: linear-gradient(135deg, #fdc020, #fd8320, #ff6977);
+    height: 100%;
+    width: 100%;
   }
 
   .auth {
@@ -55,12 +62,11 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding-top: 18vh;
+
 
     &--container {
       box-shadow: 0 1px 10px 0 rgba(0,0,0,0.4);
       width: 100%;
-      max-width: $inputWidth + 6rem;
       margin: auto;
       display: flex;
       flex-direction: column;
@@ -68,6 +74,12 @@
       padding-top: 3rem;
       padding-bottom: 5rem;
       background-color: white;
+      max-width: $inputWidth + 6rem;
+
+
+      &.signin {
+        margin-bottom: auto;
+      }
     }
 
     &--description {

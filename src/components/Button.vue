@@ -1,20 +1,27 @@
 <template>
     <div class="button-container">
-      <button class="button-container--submit"><slot>Submit</slot></button>
+      <button v-if="!disabled" class="button-container--submit"><slot>Submit</slot></button>
+      <div v-else><Spinner /></div>
     </div>
 </template>
 
 <script lang="ts">
   import Vue from 'vue'
   import {Component} from 'vue-property-decorator'
+  import Spinner from './Spinner.vue'
 
   interface Options {
-    tabindex?: number
+    tabindex?: number,
+    disabled?: boolean
   }
 
   @Component({
     props: {
-      tabindex: Number
+      tabindex: Number,
+      disabled: Boolean
+    },
+    components: {
+      Spinner
     }
   })
   export default class Button extends Vue {
@@ -35,7 +42,6 @@
 
   .button-container {
     &--submit {
-      margin-top: 6rem;
       padding: 0.5rem 5rem;
       border-radius: 1rem;
       background-color: $buttonColor;
@@ -54,6 +60,10 @@
 
       &:active {
         background-color: $activeColor;
+      }
+
+      &.disabled {
+        background-color: #969696;
       }
     }
   }

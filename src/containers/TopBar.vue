@@ -28,6 +28,7 @@
   import {checkIsLogin} from '../identity'
 
   function isHover(x: number, y: number, maxX: number, maxY: number) {
+
     const limit = 0.25;
     let isSideXHovered = x / (maxX + 0.0) > (1 - limit);
     let isSideYHovered = y / (maxY + 0.0) < (limit);
@@ -52,18 +53,18 @@
     created(){
       // @ts-ignore
       mousemoveListener = (event: MouseEvent) => {
-        let body: HTMLElement | null = document.querySelector('body');
-        if(!body) {
+        let el: HTMLElement | null = document.querySelector('html');
+        if(!el) {
           console.error("Unexpected error");
           return
         }
 
         if(this.isViewProfileActions){
-          if(!isHover(event.pageX, event.pageY, body.offsetWidth, body.offsetHeight)){
+          if(!isHover(event.pageX, event.pageY - el.scrollTop, el.offsetWidth, el.offsetHeight)){
             this.endHoverProfile();
           }
         }else {
-          if(isHover(event.pageX, event.pageY, body.offsetWidth, body.offsetHeight)){
+          if(isHover(event.pageX, event.pageY - el.scrollTop, el.offsetWidth, el.offsetHeight)){
             this.startHoverProfile();
           }
         }

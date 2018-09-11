@@ -11,7 +11,8 @@
 
   interface Options {
     tabindex?: number,
-    autofocus?: boolean
+    autofocus?: boolean,
+    disabled?: boolean
   }
 
   @Component({
@@ -21,7 +22,8 @@
       value: String,
       tabindex: Number,
       autofocus: Boolean,
-      error: Boolean
+      error: Boolean,
+      disabled: Boolean
     }
   })
   export default class Input extends Vue {
@@ -46,6 +48,10 @@
       if(this.autofocus){
         result['autofocus'] = true;
       }
+      // @ts-ignore
+      if(this.disabled){
+        result['disabled'] = true;
+      }
       return result;
     }
   }
@@ -55,7 +61,8 @@
   @import "../styles/config.scss";
 
   .input-container {
-    width: $inputWidth;
+    width: 100%;
+    max-width: $inputWidth;
     display: flex;
     flex-direction: column;
     justify-content: left;
