@@ -2,8 +2,9 @@ import * as actionTypes from '../../actionTypes'
 import * as Vuex from 'vuex'
 import staticUserData from './user.json'
 import staticProblemData from './problem.json'
-import {Problem} from "../../../state";
+import {Problem, User} from "../../../state";
 import {IO} from "../../../state/problem";
+import {UserType} from "../../../state/user";
 
 const USE_STATIC_ID = true;
 const STATIC_ID = 'do5n32edbzsjb0ynz3b7i';
@@ -33,6 +34,18 @@ export function createProblem(): Problem {
       output: IO.STANDARD
     }
   })
+}
+
+export function createUser(login: string, password: string): User {
+  return {
+    id: randomString(),
+    firstName: AUTHORS[random(0, AUTHORS.length)],
+    familyName: AUTHORS[random(0, AUTHORS.length)],
+    lastName: AUTHORS[random(0, AUTHORS.length)],
+    login,
+    type: UserType.CONTESTANT,
+    email: `${login}@lol.com`,
+  }
 }
 
 export default function createDataGeneratorPlugin <S>() {

@@ -5,8 +5,8 @@
           <span class="signin--registration-text">Not a member yet? <span class="signin--registration-go">Sign Up</span> now!</span>
         </div>
       </div>
-      <Input type="text" placeholder="Login or Email" :value.sync="login" :tabindex="1" :autofocus="true"/>
-      <Input type="password" placeholder="Password" :value.sync="password" :tabindex="2"/>
+      <Input type="text" placeholder="Login or Email" :value.sync="login" :error.sync="isLoginError" :tabindex="1" :autofocus="true"/>
+      <Input type="password" placeholder="Password" :value.sync="password" :error.sync="isPasswordError" :tabindex="2"/>
       <CheckBox :value.sync="isRemember">Remember me</CheckBox>
       <Button :tabindex="3" @click.native="clickSignIn">Sign in</Button>
       <div class="signin--forgot">
@@ -19,6 +19,7 @@
   import Vue from 'vue'
   import {Component} from 'vue-property-decorator'
   import { Logo, Input, Button, CheckBox, Icon } from '../../components'
+  import * as actions from '../../store/actionTypes';
 
   @Component({
     components: {
@@ -33,10 +34,37 @@
 
     isRemember = true;
     login = "";
+    isLoginError = false;
     password = "";
+    isPasswordError = false;
 
     clickSignIn() {
-      console.log("Sign in")
+      if(!this.login.length){
+        this.isLoginError = true;
+      }
+      if(!this.password.length) {
+        this.isPasswordError = true;
+      }
+
+      if(this.isLoginError || this.isPasswordError){
+        console.log("Have some input errors");
+        // TODO: add icons for multiple types of errors input
+        return
+      }
+      const login = this.login;
+      const password = this.password;
+      const isRemember = this.isRemember;
+
+      this.$store.dispatch(actions.LOGIN_TO_PROFILE, {login, password, isRemember})
+        .then(result => {
+          if(result){
+            this.$router.push({ name: 'home' });
+          }
+        })
+        .catch(error => {
+          // TODO: add checking for input errors from server
+          console.error(error)
+        })
     }
 
     clickRegister() {

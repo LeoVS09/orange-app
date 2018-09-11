@@ -80,14 +80,14 @@
 
 
   </div>
-  <h1 v-else>Not have this problem :(</h1>
+  <h1 v-else>Not have this problem or you can permissions for see it :(</h1>
 </template>
 
 <script lang="ts">
   import Vue from 'vue'
   import {Component} from 'vue-property-decorator'
   import {Getter} from 'vuex-class'
-  import {Problem, ResultRunProgram} from "../../state/index"
+  import {Problem, ResultRunProgram} from "../../state"
   import * as actions from '../../store/actionTypes';
   import {SourceView, Icon} from '../../components';
   import {IO} from "../../state/problem"

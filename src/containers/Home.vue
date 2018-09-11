@@ -54,7 +54,7 @@
     }
     .content-wrapper {
       min-height: 100%;
-      width: 100%;
+      width: calc(100% - #{2*$contentPaddingSides});
       max-width: $maxContentWidth;
       padding: $contentPaddingTop $contentPaddingSides;
       margin: auto;

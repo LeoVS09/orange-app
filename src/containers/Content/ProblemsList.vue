@@ -8,7 +8,7 @@
       </tr>
       <tr v-for="item in items" v-on:click="chooseProblem(item)">
         <td>{{item.name}}</td>
-        <td>{{item.author}}</td>
+        <td class="problems--author">{{item.author}}</td>
         <td class="problems--date">{{uploadDateFormat(item.uploadDate)}}</td>
       </tr>
     </table>
@@ -96,6 +96,10 @@
           text-underline: $mainTextColor;
         }
       }
+    }
+
+    &--author {
+      text-align: center;
     }
 
     &--date {

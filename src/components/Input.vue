@@ -1,5 +1,5 @@
 <template>
-    <div class="input-container">
+    <div :class="{'input-container': true, error}">
       <span :class="{'visible': !!value.length, 'input-container--text':true}">{{placeholder}}</span>
       <input :type="type" :placeholder="placeholder" :value="value" @input="updateValue" class="input-container--input" v-bind="options"/>
     </div>
@@ -20,13 +20,18 @@
       placeholder: String,
       value: String,
       tabindex: Number,
-      autofocus: Boolean
+      autofocus: Boolean,
+      error: Boolean
     }
   })
   export default class Input extends Vue {
+    error = false;
 
     updateValue(event: any){
-
+      if(event.target.value.length) {
+        this.error = false;
+      }
+      this.$emit('update:error', this.error);
       this.$emit('update:value', event.target.value)
     }
 
@@ -83,6 +88,12 @@
       &.visible {
         opacity: 1;
         bottom: 0;
+      }
+    }
+
+    &.error {
+      .input-container--input {
+        border-bottom-color: $inputErrorColor;
       }
     }
   }
