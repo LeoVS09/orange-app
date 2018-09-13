@@ -74,7 +74,7 @@
       margin-top: 0;
       padding: 0.5rem 0.2rem;
       border: none;
-      border-bottom: 1px solid gray;
+      border-bottom: 1px solid $borderLineColor;
       width: 100%;
 
       &:active, &:focus {

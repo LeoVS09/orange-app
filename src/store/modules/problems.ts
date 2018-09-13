@@ -1,6 +1,7 @@
 import * as actionTypes from '../actionTypes';
 import * as API from '../../api';
 import {IActionContext, ProblemsState, Problem, ResultRunProgram} from "../../state";
+import {createProblem} from "../plugins/mock/generator";
 
 const SET_PROBLEMS = 'SET_PROBLEMS';
 const ADD_PROBLEM = 'ADD_PROBLEM';
@@ -16,6 +17,18 @@ export default {
   state: initState,
 
   actions: {
+    [actionTypes.SYNC_PROBLEMS](context: IActionContext<ProblemsState>){
+      let count = 10;
+      let add = () => {
+        setTimeout(() => {
+          context.commit(ADD_PROBLEM, {...createProblem(), isOpen: true});
+          if(count-- > 0) {
+            add();
+          }
+        }, 100)
+      };
+      add();
+    },
     [actionTypes.SET_CURRRENT_PROBLEM](context: IActionContext<ProblemsState>, problemId: string): Promise<any> {
       console.log("Problem params id", problemId);
 

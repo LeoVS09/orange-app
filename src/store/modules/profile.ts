@@ -18,7 +18,7 @@ export default {
       console.log("Sign in with login:", login, "and password:", password, ",remember:", isRemember);
       return signin(login, password, isRemember)
         .then(result => {
-          console.log("Signin result", result);
+
           if(!result){
             return Promise.reject(false)
           }
@@ -32,11 +32,11 @@ export default {
     [actionTypes.REGISTER_PROFILE] (context: IActionContext<ProfileState>, user: {firstName: string, lastName: string, email: string, password: string}): Promise<boolean> {
       return signin(user.email, user.password, false)
         .then(result => {
-          console.log("Signin result", result);
+
           if(!result){
             return Promise.reject(false)
           }
-          context.commit(SET_PROFILE_DATA, user);
+          context.commit(SET_PROFILE_DATA, {...result, ...user});
           return Promise.resolve(true)
         })
     }

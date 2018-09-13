@@ -1,14 +1,20 @@
 <template>
   <div class="top-bar--container">
-    <div class="top-bar">
-      <Logo @click.native="clickHome" class="top-bar--logo" />
-      <div class="top-bar--profile" >
-        <span class="top-bar--profile-text" @click="clickProfile">{{profileText}}</span>
-        <Icon type="account_circle" @click="clickProfile" class="top-bar--profile-icon"/>
+    <transition name="scroll-down" >
+      <div v-if="!scrollTop || isScroll" :class="{'top-bar': true, 'scrolled': scrollTop ? isScroll : false }" >
+        <Logo @click.native="clickHome" class="top-bar--logo" />
+        <div class="top-bar--menu">
+          <span @click="clickProblems">Problems</span>
+          <span @click="clickContests">Contests</span>
+        </div>
+        <div class="top-bar--profile" @click="clickProfile">
+          <span class="top-bar--profile-text" >{{profileText}}</span>
+          <Icon type="account_circle" class="top-bar--profile-icon"/>
+        </div>
       </div>
-    </div>
+    </transition>
     <transition name="fade-down">
-      <div v-if="isViewProfileActions" class="top-bar--profile-actions">
+      <div v-if="isViewProfileActions && (isScroll || !scrollTop)" class="top-bar--profile-actions">
         <ul>
           <li @click="clickProfile">Profile</li>
           <li @click="clickSignOut">Sign Out</li>
@@ -49,6 +55,8 @@
     @Getter('profile') userData?: User;
 
     isViewProfileActions = false;
+    isScroll = false;
+    scrollTop = 0;
 
     created(){
       // @ts-ignore
@@ -71,15 +79,39 @@
       };
 
       document.addEventListener("mousemove", mousemoveListener)
+
+      let oldScroll = 0;
+      window.onscroll = () => {
+        let el: HTMLElement | null = document.querySelector('html');
+        if(!el) {
+          console.error("Unexpected error");
+          return
+        }
+
+        if(oldScroll - el.scrollTop > 0){
+          this.startScroll(el.scrollTop)
+        } else {
+          this.endScroll(el.scrollTop)
+        }
+
+        oldScroll = el.scrollTop;
+      }
     }
 
     beforeDestroy(){
-
       document.removeEventListener("mousemove", mousemoveListener)
     }
 
     clickHome(){
       this.$router.push({ name: 'home' });
+    }
+
+    clickProblems(){
+      this.$router.push({ name: 'home' });
+    }
+
+    clickContests(){
+      console.log("clickContests")
     }
 
     get profileText(){
@@ -104,6 +136,16 @@
       this.isViewProfileActions = false;
     }
 
+    startScroll(top: number){
+      this.isScroll = true;
+      this.scrollTop = top;
+    }
+
+    endScroll(top: number){
+      this.isScroll = false;
+      this.scrollTop = top;
+    }
+
     clickProfile() {
       if(checkIsLogin()){
         this.$router.push({ name: 'profile' })
@@ -124,7 +166,6 @@
 
   .top-bar {
     position: fixed;
-    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
     top: 0;
     width: 100%;
     height: $topBarHeight;
@@ -133,6 +174,11 @@
     justify-content: space-between;
     background-color: $backgroundColor;
     z-index: 20;
+    transition: all 0.15s;
+
+    &.scrolled {
+      box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+    }
 
     &--logo {
       margin-left: 1rem;
@@ -140,10 +186,29 @@
       margin-bottom: 0.2rem;
     }
 
+    &--menu {
+      flex: 1;
+      width: 100%;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-around;
+      align-items: center;
+      color: $menuTextColor;
+      padding: 0 1rem;
+
+      span {
+        cursor: pointer;
+
+        &:hover {
+          color: $activeColor;
+        }
+      }
+    }
+
     &--profile {
       margin-right: 1rem;
       margin-top: 0.3rem;
-
+      cursor: pointer;
       font-size: 1.7rem;
 
       &-text {
@@ -151,15 +216,10 @@
         font-size: 0.8rem;
         position: relative;
         top: -0.3em;
-        cursor: pointer;
 
         &:hover {
           color: $activeColor
         }
-      }
-
-      &-icon {
-        cursor: pointer;
       }
 
       &-actions {
@@ -200,5 +260,9 @@
   .fade-down-enter, .fade-down-leave-to {
     opacity: 0;
     top: -5rem;
+  }
+
+  .scroll-down-enter, .scroll-down-leave-to {
+    top: -3rem;
   }
 </style>

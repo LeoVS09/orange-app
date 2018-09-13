@@ -124,9 +124,7 @@
       width: 100%;
       height: 1px;
       margin-top: 2.5rem;
-
       padding: 0;
-
     }
 
     &--in {

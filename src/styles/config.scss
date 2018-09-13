@@ -3,7 +3,10 @@ $secondaryColor: #d7d7d7;
 $backgroundColor: $primaryColor;
 $mainTextColor: #282a2f;
 $headerTextColor: #5e616b;
+$primaryTextColor: lighten($mainTextColor, 20%);
 $secondaryTextColor: lighten($mainTextColor, 30%);
+$hoverTextColor: lighten($mainTextColor, 70%);
+$borderLineColor: lighten($mainTextColor, 70%);
 $footerColor: #363636;
 $doneColor: green;
 $inputColor: #F57C00;
@@ -11,16 +14,20 @@ $inputErrorColor: #D50000;
 $buttonColor: #1976D2;
 $spinnerColor: $buttonColor;
 $activeColor: #F57C00;
+$menuTextColor: lighten($mainTextColor, 20%);
+$activeGradient: linear-gradient(160deg, #fda130, #fd7400, #ff6977);
 
 $topBarHeight: 3rem;
 $contentMargin: 3rem;
 $contentPaddingTop: 1rem;
-$contentPaddingSides: 1.5rem;
+$contentPaddingSides: 2rem;
 $maxContentWidth: 1280px;
 $maxTextWidth: 900px;
 $footerHeight: 10rem;
 $inputWidth: 30rem;
+$headerPadding: 0.7rem $contentPaddingSides;
 
 $skeletonColor: #ECECEC;
 $skeletonAnimationTime: 1.5s;
 $skeletonAnimationLightenColorValue: 20%;
+

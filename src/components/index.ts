@@ -6,6 +6,8 @@ import Input from './Input.vue'
 import Button from './Button.vue'
 import CheckBox from './CheckBox.vue'
 import Spinner from './Spinner.vue'
+import PageHeader from './PageHeader.vue'
+
 export {
   Footer,
   Icon,
@@ -14,5 +16,6 @@ export {
   Input,
   Button,
   CheckBox,
-  Spinner
+  Spinner,
+  PageHeader
 }

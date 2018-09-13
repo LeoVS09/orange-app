@@ -41,7 +41,7 @@
     display: flex;
     flex-direction: column;
     margin-top: $topBarHeight;
-    padding-top: 2rem;
+    padding-top: 0;
     padding-bottom: 3rem;
     z-index: 10;
     margin-bottom: $footerHeight;
@@ -49,17 +49,14 @@
     position: relative;
     box-shadow: 0 0 28px rgba(0,0,0,0.5);
 
-    h1 {
-      text-align: center;
-    }
     .content-wrapper {
       min-height: 100%;
-      width: calc(100% - #{2*$contentPaddingSides});
-      max-width: $maxContentWidth;
-      padding: $contentPaddingTop $contentPaddingSides;
-      margin: auto;
+      width: 100%;
+      padding: $contentPaddingTop 0;
+      margin: 0;
       flex: 1;
       &.text-page {
+        margin: 0 auto;
         max-width: $maxTextWidth;
       }
     }

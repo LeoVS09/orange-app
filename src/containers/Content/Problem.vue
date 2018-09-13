@@ -191,22 +191,22 @@
 
   .problem-loading {
     @include skeleton(60rem, 80rem, (
-        (1rem, 1rem, 10rem, 2rem),
+        (1rem, 2rem, 10rem, 2rem),
         (40rem, 3rem, 15rem, 1rem),
-        (1rem, 6rem, 20rem, 1rem),
-        (1rem, 8rem, 25rem, 1rem),
-        (1rem, 10rem, 30rem, 1rem),
-        (49rem, 14rem, 6rem, 1rem),
-        (49rem, 16rem, 6rem, 1rem),
-        (49rem, 18rem, 4rem, 1rem),
-        (1rem, 24rem, 5rem, 0.8rem),
-        (1rem, 25rem, 55rem, 1.5rem),
-        (1rem, 28rem, 5rem, 0.8rem),
-        (1rem, 29rem, 55rem, 1.5rem),
-        (1rem, 36rem, 5rem, 0.8rem),
-        (1rem, 37rem, 55rem, 1.5rem),
-        (1rem, 40rem, 5rem, 0.8rem),
-        (1rem, 41rem, 55rem, 1.5rem)
+        (1rem, 9rem, 20rem, 1rem),
+        (1rem, 11rem, 25rem, 1rem),
+        (1rem, 13rem, 30rem, 1rem),
+        (49rem, 19rem, 6rem, 1rem),
+        (49rem, 21rem, 6rem, 1rem),
+        (49rem, 23rem, 4rem, 1rem),
+        (1rem, 29rem, 5rem, 0.8rem),
+        (1rem, 30rem, 55rem, 1.5rem),
+        (1rem, 33rem, 5rem, 0.8rem),
+        (1rem, 34rem, 55rem, 1.5rem),
+        (1rem, 41rem, 5rem, 0.8rem),
+        (1rem, 42rem, 55rem, 1.5rem),
+        (1rem, 45rem, 5rem, 0.8rem),
+        (1rem, 46rem, 55rem, 1.5rem)
     ));
   }
 
@@ -215,6 +215,7 @@
     &--header {
       display: flex;
       flex-direction: row;
+      margin-top: 1.5rem;
 
       .text {
         color: $headerTextColor;
@@ -299,8 +300,8 @@
     &--description {
       padding-bottom: 1rem;
       padding-top: 2rem;
-      margin-top: 0;
-      margin-bottom: 0;
+      margin-top: 3rem;
+      margin-bottom: 3rem;
       font-size: 1.1rem;
       line-height: 1.7;
     }
