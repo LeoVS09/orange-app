@@ -311,7 +311,7 @@
       flex-direction: row;
       width: 100%;
       font-size: 0.9rem;
-      margin-bottom: 2.5rem;
+      margin-bottom: 4.5rem;
 
       .configuration-line {
         flex: 1;

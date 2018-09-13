@@ -3,7 +3,7 @@
     <div class="auth">
       <div :class="{'auth--container': true, 'signin': isSignInPage}">
         <p class="auth--description">Welcome to</p>
-        <Logo @click.native="clickHome" class="auth--logo" />
+        <Logo @click.native="clickHome" class="auth--logo" :isAuth="true"/>
         <router-view></router-view>
       </div>
     </div>
@@ -76,7 +76,6 @@
       background-color: white;
       max-width: $inputWidth + 6rem;
 
-
       &.signin {
         margin-bottom: auto;
       }
@@ -85,13 +84,14 @@
     &--description {
       margin-bottom: 0;
       position: relative;
-      left: -2.1rem;
-      color: $secondaryTextColor
+      left: -2.5rem;
+      color: $secondaryTextColor;
+      top: 1rem;
     }
 
     &--logo {
       margin-top: 0;
-      font-size: 2.5rem;
+      font-size: 3rem;
       margin-bottom: 0;
     }
 
