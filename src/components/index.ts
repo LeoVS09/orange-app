@@ -7,6 +7,7 @@ import Button from './Button.vue'
 import CheckBox from './CheckBox.vue'
 import Spinner from './Spinner.vue'
 import PageHeader from './PageHeader.vue'
+import ProblemListItem from './ProblemListItem.vue'
 
 export {
   Footer,
@@ -17,5 +18,6 @@ export {
   Button,
   CheckBox,
   Spinner,
-  PageHeader
+  PageHeader,
+  ProblemListItem
 }

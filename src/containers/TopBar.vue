@@ -195,12 +195,16 @@
       align-items: center;
       color: $menuTextColor;
       padding: 0 1rem;
+      font-family: "Montserrat", sans-serif;
+      font-weight: bold;
 
       span {
         cursor: pointer;
+        border-bottom: 2px solid transparent;
 
         &:hover {
           color: $activeColor;
+          border-bottom-color: $activeColor;
         }
       }
     }

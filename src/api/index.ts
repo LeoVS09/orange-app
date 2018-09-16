@@ -31,6 +31,6 @@ export function getProblem(problemId: string): Promise<Problem> {
       let problem = createProblem();
       problem.id = problemId;
       resolve(problem)
-    }, 3000)
+    }, 30000)
   }))
 }

@@ -3,10 +3,10 @@
     <PageHeader class="problems--header">Problems</PageHeader>
     <div class="problems--content">
       <div class="problems--filters">
-        <p class="active">All</p>
-        <p>Open</p>
-        <p>Closed</p>
-        <p>Resolved</p>
+        <p :class="{active: filter === 'All'}" @click="viewAll">All</p>
+        <p :class="{active: filter === 'Open'}" @click="viewOpen">Open</p>
+        <p :class="{active: filter === 'Closed'}" @click="viewClosed">Closed</p>
+        <p :class="{active: filter === 'Resolved'}" @click="viewResolved">Resolved</p>
       </div>
       <table class="problems--list">
         <tr class="problems--list-header">
@@ -14,12 +14,8 @@
           <th>Author</th>
           <th>Upload date</th>
         </tr>
-        <tbody name="list-item-down" is="transition-group">
-          <tr v-for="item in items" v-on:click="chooseProblem(item)" v-bind:key="item.name + item.author" class="problems--problem">
-            <td>{{item.name}}</td>
-            <td class="problems--author">{{item.author}}</td>
-            <td class="problems--date">{{uploadDateFormat(item.uploadDate)}}</td>
-          </tr>
+        <tbody name="list-item-down" is="transition-group" mode="out-in">
+          <ListItem v-for="item in filtered" v-on:click.native="chooseProblem(item)" v-bind:key="item.name + item.author" :item="item" />
         </tbody>
       </table>
     </div>
@@ -32,26 +28,64 @@
   import {Getter} from 'vuex-class'
   import {Problem} from "../../state"
   import * as actions from '../../store/actionTypes';
-  import {PageHeader} from '../../components';
+  import {PageHeader, ProblemListItem} from '../../components';
+
+  enum Filter {
+    All = "All",
+    Open = "Open",
+    Closed = "Closed",
+    Resolved = "Resolved"
+  }
 
   @Component({
     components: {
-      PageHeader
+      PageHeader,
+      ListItem: ProblemListItem
     }
   })
   export default class ProblemsList extends Vue {
     // @ts-ignore
-    @Getter('openProblems') items: Array<Problem>;
+    @Getter('problems') items: Array<Problem>;
+
+    filter = Filter.All;
+
+    get filtered() {
+      if(this.filter === Filter.All) {
+        return this.items
+      }
+
+      if(this.filter === Filter.Open) {
+        return this.items.filter(p => p.isOpen)
+      }
+
+      if(this.filter === Filter.Closed) {
+        return this.items.filter(p => !p.isOpen)
+      }
+
+      return this.items
+    }
+
+    viewAll(){
+      this.filter = Filter.All
+    }
+
+    viewOpen(){
+      this.filter = Filter.Open
+    }
+
+    viewClosed(){
+      this.filter = Filter.Closed
+    }
+
+    viewResolved(){
+      this.filter = Filter.Resolved
+    }
 
     created() {
       this.$store.dispatch(actions.SET_STANDARD_PAGE);
       this.$store.dispatch(actions.SYNC_PROBLEMS);
     }
 
-    uploadDateFormat(value: number) {
-      const date = new Date(value);
-      return date.toLocaleDateString()
-    }
 
     chooseProblem(problem: Problem){
       console.log("Go to problem:", problem);
@@ -69,13 +103,11 @@
 <style lang="scss" scoped>
   @import "../../styles/config";
 
-  $linePadding: 0.7rem;
-
   .problems {
     width: 100%;
 
     &--header {
-      margin-top: 1rem;
+      margin-top: 0;
       margin-bottom: 3rem;
     }
 
@@ -132,20 +164,20 @@
       padding: 0;
     }
 
-    &--problem, &--list-header {
+    &--list-header {
       width: 100%;
       display: flex;
       flex-direction: row;
-      padding-bottom: $linePadding;
-      padding-top: $linePadding;
+      border-top: 1px solid $secondaryColor;
+      padding-top: 1.5*$problemLinePadding;
+      padding-bottom: 1.5*$problemLinePadding;
       transition: box-shadow 0.2s cubic-bezier(.25,.8,.25,1);
       border-bottom: 1px solid $secondaryColor;
 
-      &:hover {
-        box-shadow: 0 0 5px rgba(0,0,0,0.3);
-        cursor: pointer;
-        color: $activeColor;
-
+      &, &:hover {
+        box-shadow: none;
+        cursor: default;
+        color: $mainTextColor;
       }
 
       td, th {
@@ -159,33 +191,22 @@
       }
     }
 
-    &--list-header {
-      border-top: 1px solid $secondaryColor;
-      border-bottom: 1px solid $secondaryColor;
-      padding-top: 1.5*$linePadding;
-      padding-bottom: 1.5*$linePadding;
 
-      &, &:hover {
-        box-shadow: none;
-        cursor: default;
-        color: $mainTextColor;
-      }
-    }
-
-    &--author {
-      text-align: center;
-    }
-
-    &--date {
-      text-align: center;
-    }
-
-    .list-item-down-enter-active, .list-item-down-leave-active {
+    .list-item-down-enter-active {
       transition: all 0.2s;
     }
-    .list-item-down-enter, .list-item-down-leave-to {
+
+    .list-item-down-leave-active {
+      transition: all 0.05s;
+    }
+
+    .list-item-down-enter {
       opacity: 0;
       transform: translateY(-1rem);
     }
+    .list-item-down-leave-to {
+      opacity: 0;
+    }
+
   }
 </style>

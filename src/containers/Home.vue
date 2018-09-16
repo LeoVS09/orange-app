@@ -52,7 +52,7 @@
     .content-wrapper {
       min-height: 100%;
       width: 100%;
-      padding: $contentPaddingTop 0;
+      padding: 0 0;
       margin: 0;
       flex: 1;
       &.text-page {
