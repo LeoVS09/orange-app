@@ -1,5 +1,5 @@
 <template>
-  <tr class="problem" :style="{ background: backgroundData}" @mousemove="gradientCircleAtMouse" @mouseleave="transparentBackground">
+  <tr class="problem" :style="{ background: backgroundData}" @mousemove="gradientCircleAtMouse" @mouseleave="transparentBackground" @mouseover="gradientCircleAtMouse">
     <td>{{item.name}}</td>
     <td class="problem--author">{{item.author}}</td>
     <td class="problem--date">{{uploadDateFormat(item.uploadDate)}}</td>
@@ -27,7 +27,7 @@
 
       let positionX = x - box.left;
       let positionY = y - box.top;
-      this.backgroundData = `radial-gradient(circle at ${positionX}px ${positionY}px, rgb(255, 75, 117) 0%, #FD7501 100%)`
+      this.backgroundData = `radial-gradient(circle at ${positionX}px ${positionY}px, rgb(255, 75, 117) 0%, #FD7501 40%, #FD9624 100%)`
     }
 
     transparentBackground(){

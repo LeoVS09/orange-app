@@ -5,8 +5,8 @@
           <span class="signin--registration-text">Not a member yet? <span class="signin--registration-go">Sign Up</span> now!</span>
         </div>
       </div>
-      <Input type="text" placeholder="Login or Email" :value.sync="login" :error.sync="isLoginError" :tabindex="1" :autofocus="true" :disabled="isLoginDisabled"/>
-      <Input type="password" placeholder="Password" :value.sync="password" :error.sync="isPasswordError" :tabindex="2" :disabled="isPasswordDisabled"/>
+      <Input type="text" placeholder="Login or Email" :value.sync="login" @keyup.enter.native="clickSignIn" :error.sync="isLoginError" :tabindex="1" :autofocus="true" :disabled="isLoginDisabled"/>
+      <Input type="password" placeholder="Password" :value.sync="password" @keyup.enter.native="clickSignIn" :error.sync="isPasswordError" :tabindex="2" :disabled="isPasswordDisabled"/>
       <CheckBox :value.sync="isRemember">Remember me</CheckBox>
       <Button :tabindex="3" @click.native="clickSignIn" class="signin--button" :disabled="isSubmitDisabled">Sign In</Button>
       <div class="signin--forgot">

@@ -6,7 +6,7 @@ export interface Problem {
   input: string,
   output: string,
   note?: string,
-  examples: Array<Example>,
+  examples: Array<Test>,
   isOpen: boolean,
   uploadDate: number,
   publicationDate: number,
@@ -21,7 +21,8 @@ export interface Problem {
     input: IO,
     output: IO
   },
-  resultRun?: ResultRunProgram
+  resultRun?: ResultRunProgram,
+  tests?: Array<Test>
 }
 
 export interface ResultRunProgram {
@@ -35,9 +36,11 @@ export enum IO {
   FILE
 }
 
-export interface Example {
+export interface Test {
+  id: string,
   input: string,
-  output: string
+  output: string,
+  synced: boolean
 }
 
 export interface ResultOfTest {

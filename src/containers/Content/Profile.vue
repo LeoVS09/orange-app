@@ -1,26 +1,29 @@
+import { UserType } from '@/state'
 <template>
   <div class="profile">
-    <PageHeader class="profile--header">Hello, {{name}}</PageHeader>
+    <PageHeader class="profile--header">Hello, {{isTeacher ? 'teacher ' : ''}}{{name}}</PageHeader>
 
     <aside class="profile--sidebar">
       <p class="profile--sidebar-link active">Information</p>
       <p class="profile--sidebar-link">Teams</p>
-      <p class="profile--sidebar-link">Sign Out</p>
+      <p class="profile--sidebar-link" @click="clickSignOut">Sign Out</p>
     </aside>
 
     <div class="profile--content">
+      <h4 class="profile--data-header">Public data</h4>
       <Input type="text" placeholder="First Name" :value.sync="firstName" :error.sync="isFirstNameError" :tabindex="1" :disabled="isDisabled"/>
       <Input type="text" placeholder="Family Name" :value.sync="familyName" :error.sync="isFamilyNameError" :tabindex="2" :disabled="isDisabled"/>
       <Input type="text" placeholder="Last Name" :value.sync="lastName" :error.sync="isLastNameError" :tabindex="3" :disabled="isDisabled"/>
+      <Input type="text" placeholder="Login" :value.sync="login" :error.sync="isLoginError" :tabindex="4" :disabled="isDisabled"/>
 
       <div class="profile--delimiter"></div>
-
-      <Input type="text" placeholder="Email" :value.sync="email" :error.sync="isEmailError" :tabindex="4" :autofocus="true" :disabled="isDisabled"/>
+      <h4 class="profile--data-header">Confidential data</h4>
+      <Input type="text" placeholder="Email" :value.sync="email" :error.sync="isEmailError" :tabindex="5" :autofocus="true" :disabled="isDisabled"/>
 
       <div class="profile--delimiter"></div>
-
-      <Input type="password" placeholder="Old password" :value.sync="oldPassword" :error.sync="isOldPasswordError" :tabindex="5" :disabled="isDisabled"/>
-      <Input type="password" placeholder="New Password" :value.sync="newPassword" :error.sync="isNewPasswordError" :tabindex="6" :disabled="isDisabled"/>
+      <h4 class="profile--data-header">Change password</h4>
+      <Input type="password" placeholder="Old password" :value.sync="oldPassword" :error.sync="isOldPasswordError" :tabindex="6" :disabled="isDisabled"/>
+      <Input type="password" placeholder="New Password" :value.sync="newPassword" :error.sync="isNewPasswordError" :tabindex="7" :disabled="isDisabled"/>
     </div>
 
   </div>
@@ -30,10 +33,10 @@
   import Vue from 'vue'
   import {Component} from 'vue-property-decorator'
   import {Getter} from 'vuex-class'
-  import {User} from "../../state"
+  import {User, UserType} from "../../state"
   import * as actions from '../../store/actionTypes';
   import {checkIsLogin} from '../../identity'
-  import {SourceView, Icon, Input, PageHeader} from '../../components';
+  import {Icon, Input, PageHeader, SourceView} from '../../components';
 
   function capitalise(s: string): string {
     return s[0].toUpperCase() + s.slice(1);
@@ -54,9 +57,14 @@
   export default class Profile extends Vue {
     // @ts-ignore
     @Getter('profile') userData: User;
+    // @ts-ignore
+    @Getter isTeacher: boolean;
 
     email = "";
     isEmailError = false;
+
+    login = "";
+    isLoginError = false;
 
     oldPassword = "";
     isOldPasswordError = false;
@@ -89,6 +97,7 @@
       }
 
       this.email = this.userData.email || "";
+      this.login = this.userData.login || "";
       this.firstName = this.userData.firstName;
       this.familyName = this.userData.familyName || "";
       this.lastName = this.userData.lastName;
@@ -104,6 +113,11 @@
       result += " " + capitalise(this.userData.lastName);
 
       return result;
+    }
+
+    clickSignOut(){
+      this.$store.dispatch(actions.LOGOUT_FROM_PROFILE);
+      this.$router.go(0);
     }
   }
 </script>
@@ -168,8 +182,17 @@
     &--delimiter {
       width: 100%;
       height: 1px;
-      margin-top: 2.5rem;
+      margin-top: 4rem;
       padding: 0;
+    }
+
+    &--data-header {
+      padding: 0;
+      text-align: left;
+      margin-top: 0;
+      margin-bottom: 0;
+      width: $inputWidth;
+      color: $secondaryTextColor;
     }
   }
 

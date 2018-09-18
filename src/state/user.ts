@@ -1,7 +1,7 @@
 
 export enum UserType {
-  CONTESTANT,
-  TEACHER
+  CONTESTANT = "CONTESTANT",
+  TEACHER = "TEACHER"
 }
 
 export interface User {

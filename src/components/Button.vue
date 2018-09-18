@@ -1,6 +1,6 @@
 <template>
     <div class="button-container">
-      <button v-if="!disabled" class="button-container--submit"><slot>Submit</slot></button>
+      <button v-if="!disabled" class="button-container--submit"><span v-if="!!icon"><Icon :type="icon" class="button-container--icon"/> </span><slot>Submit</slot></button>
       <div v-else><Spinner /></div>
     </div>
 </template>
@@ -9,6 +9,7 @@
   import Vue from 'vue'
   import {Component} from 'vue-property-decorator'
   import Spinner from './Spinner.vue'
+  import Icon from './Icon.vue'
 
   interface Options {
     tabindex?: number,
@@ -18,10 +19,12 @@
   @Component({
     props: {
       tabindex: Number,
-      disabled: Boolean
+      disabled: Boolean,
+      icon: String
     },
     components: {
-      Spinner
+      Spinner,
+      Icon
     }
   })
   export default class Button extends Vue {
@@ -65,6 +68,10 @@
       &.disabled {
         background-color: #969696;
       }
+    }
+
+    &--icon {
+      font-size: 1rem;
     }
   }
 </style>

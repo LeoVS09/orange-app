@@ -8,6 +8,7 @@ import CheckBox from './CheckBox.vue'
 import Spinner from './Spinner.vue'
 import PageHeader from './PageHeader.vue'
 import ProblemListItem from './ProblemListItem.vue'
+import TestView from './TestView.vue';
 
 export {
   Footer,
@@ -19,5 +20,6 @@ export {
   CheckBox,
   Spinner,
   PageHeader,
-  ProblemListItem
+  ProblemListItem,
+  TestView
 }

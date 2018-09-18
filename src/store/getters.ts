@@ -1,4 +1,4 @@
-import {RootState} from "../state";
+import {RootState, UserType} from "../state";
 import {GetterTree} from "vuex";
 
 const getters: GetterTree<RootState, any> = {
@@ -8,6 +8,7 @@ const getters: GetterTree<RootState, any> = {
   isSignInPage: (state) => state.ui.isSignInPage,
 
   profile: (state) => state.profile.data,
+  isTeacher: (state) => !!state.profile.data ? state.profile.data.type === UserType.TEACHER : false,
 
   openProblems: (state) => state.problems.data.filter(p => p.isOpen),
   closedProblems: (state) => state.problems.data.filter(p => !p.isOpen),

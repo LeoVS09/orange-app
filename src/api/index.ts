@@ -1,8 +1,10 @@
-import {ResultRunProgram, Problem} from "../state/problem";
+import {ResultRunProgram, Problem, Test} from "../state/problem";
 import {createProblem} from "../store/plugins/mock/generator";
 
 const orangeManagerServerUrl = "http://localhost:3010";
 const credentials: RequestCredentials = 'same-origin';
+
+const randomString = (): string => Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
 
 enum URL {
   RUN_PROGRAM = '/run'
@@ -31,6 +33,31 @@ export function getProblem(problemId: string): Promise<Problem> {
       let problem = createProblem();
       problem.id = problemId;
       resolve(problem)
-    }, 30000)
+    }, 10)
   }))
+}
+
+export function getAllTests(problemId: string): Promise<Array<Test>> {
+  return new Promise<Array<Test>>((resolve, reject) => {
+    resolve([])
+  })
+}
+
+interface SyncTestResult {
+  ok: boolean,
+  id: string
+}
+
+export function syncTest(test: Test): Promise<SyncTestResult> {
+  return new Promise<SyncTestResult>( (resolve, reject) => {
+    setTimeout(() => {
+      let result: SyncTestResult = {ok: true, id: test.id};
+
+      if(result.id.length) {
+        result.id = randomString();
+      }
+
+      resolve(result);
+    }, 1000)
+  })
 }

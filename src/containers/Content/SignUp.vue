@@ -7,17 +7,17 @@
     </div>
     <h2 class="signup--header">Create account</h2>
 
-    <Input type="text" placeholder="First Name" :value.sync="firstName" :error.sync="isFirstNameError" :tabindex="1" :disabled="isDisabled"/>
-    <Input type="text" placeholder="Last Name" :value.sync="lastName" :error.sync="isLastNameError" :tabindex="2" :disabled="isDisabled"/>
+    <Input type="text" placeholder="First Name" @keyup.enter.native="clickRegister" :value.sync="firstName" :error.sync="isFirstNameError" :tabindex="1" :disabled="isDisabled"/>
+    <Input type="text" placeholder="Last Name" @keyup.enter.native="clickRegister" :value.sync="lastName" :error.sync="isLastNameError" :tabindex="2" :disabled="isDisabled"/>
 
     <div class="signup--delimiter"></div>
 
-    <Input type="text" placeholder="Email" :value.sync="email" :error.sync="isEmailError" :tabindex="3" :autofocus="true" :disabled="isDisabled"/>
+    <Input type="text" placeholder="Email" @keyup.enter.native="clickRegister" :value.sync="email" :error.sync="isEmailError" :tabindex="3" :autofocus="true" :disabled="isDisabled"/>
 
     <div class="signup--delimiter"></div>
 
-    <Input type="password" placeholder="Password" :value.sync="password" :error.sync="isPasswordError" :tabindex="4" :disabled="isDisabled"/>
-    <Input type="password" placeholder="Confirm Password" :value.sync="confirmPassword" :error.sync="isConfirmPasswordError" :tabindex="5" :disabled="isDisabled"/>
+    <Input type="password" placeholder="Password" @keyup.enter.native="clickRegister" :value.sync="password" :error.sync="isPasswordError" :tabindex="4" :disabled="isDisabled"/>
+    <Input type="password" placeholder="Confirm Password" @keyup.enter.native="clickRegister" :value.sync="confirmPassword" :error.sync="isConfirmPasswordError" :tabindex="5" :disabled="isDisabled"/>
 
     <p class="signup--agreement">We promise don't publish this information.</p>
 

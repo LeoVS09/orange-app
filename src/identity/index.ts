@@ -36,8 +36,6 @@ export function checkIsLogin (): boolean {
     token = window.sessionStorage.getItem(TOKEN_NAME);
   }
 
-  console.log("Check is login result", token);
-
   if(!!token){ // TODO: add real check
     return true;
   }

@@ -7,16 +7,22 @@
   "note": "As collected deficient objection by it discovery sincerity curiosity. Quiet decay who round three world whole has mrs man. Built the china there tried jokes which gay why. Assure in adieus wicket it is. But spoke round point and one joy.",
   "examples": [
     {
+      "id": "asd",
       "input": "1 1",
-      "output": "0"
+      "output": "0",
+      "synced": true
     },
     {
+      "id": "zxc",
       "input": "2 3",
-      "output": "6"
+      "output": "6",
+      "synced": true
     },
     {
+      "id": "qwe",
       "input": "49 1808",
-      "output": "359087121"
+      "output": "359087121",
+      "synced": true
     }
   ],
   "isOpen": true,

@@ -1,6 +1,7 @@
 <template>
   <div class="source-view">
-    <code class="source-view--code">{{text}}</code>
+    <code v-if="!editable" class="source-view--code">{{text}}</code>
+    <input v-else class="source-view--input" type="text" :value="text" @input="updateValue" placeholder="// Add test"/>
   </div>
 </template>
 
@@ -10,10 +11,24 @@
 
   @Component({
     props: {
-      text: String
+      text: String,
+      editable: Boolean,
+      update: {
+        type: Function,
+        required: true
+      }
     }
   })
   export default class SourceView extends Vue {
+
+    updateValue(event: any){
+      // @ts-ignore
+      if(this.update) {
+        // @ts-ignore
+        this.update(event.target.value);
+      }
+    }
+
   }
 </script>
 
@@ -32,6 +47,18 @@
       white-space: pre;
       color: #bfbfbf;
       font-family: 'Source Code Pro', monospace;
+    }
+
+    &--input {
+      background-color: transparent;
+      border: none;
+      outline: none;
+      color: white;
+      width: 100%;
+
+      &::placeholder {
+        color: #b5b5b5;
+      }
     }
   }
 </style>

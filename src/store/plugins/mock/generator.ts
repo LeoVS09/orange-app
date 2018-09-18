@@ -3,7 +3,7 @@ import * as Vuex from 'vuex'
 import staticUserData from './user.json'
 import staticProblemData from './problem.json'
 import {Problem, User} from "../../../state";
-import {IO} from "../../../state/problem";
+import {IO, Test} from "../../../state/problem";
 import {UserType} from "../../../state/user";
 
 const USE_STATIC_ID = true;
@@ -32,7 +32,13 @@ export function createProblem(): Problem {
     io: {
       input: IO.STANDARD,
       output: IO.STANDARD
-    }
+    },
+    tests: [...staticProblemData.examples, {
+      id: "",
+      input: "",
+      output: "",
+      synced: false
+    } as Test]
   })
 }
 
@@ -44,7 +50,7 @@ export function createUser(login: string, password: string, type: UserType): Use
     lastName: AUTHORS[random(0, AUTHORS.length)],
     login,
     type,
-    email: `${login}@lol.com`,
+    email: login,
   }
 }
 

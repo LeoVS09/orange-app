@@ -32,12 +32,7 @@
       </div>
     </div>
 
-    <div v-for="example in problemData.examples" class="problem--example">
-      <h4>Input</h4>
-      <source-view :text="example.input"></source-view>
-      <h4>Output</h4>
-      <source-view :text="example.output"></source-view>
-    </div>
+    <TestView class="problem--example" v-for="example in problemData.examples" :testData="example" />
 
     <div class="problem--code-upload">
       <textarea placeholder="Paste you code here..." v-model="codeOfProgram"></textarea>
@@ -52,7 +47,11 @@
         <p>Is all tests successful {{resultRun.isAllTestsSuccessful}}</p>
         <p>Number test failed {{resultRun.failedTest}}</p>
       </div>
+    </div>
 
+    <div class="problem--tests" v-if="isTeacher && problemData.tests">
+      <h2>Tests</h2>
+      <TestView class="problem--test" v-for="test in problemData.tests" :testData="test" :editable="true" />
     </div>
 
     <div class="problem--data">
@@ -89,7 +88,7 @@
   import {Getter} from 'vuex-class'
   import {Problem, ResultRunProgram} from "../../state"
   import * as actions from '../../store/actionTypes';
-  import {SourceView, Icon} from '../../components';
+  import {TestView, Icon, Button} from '../../components';
   import {IO} from "../../state/problem"
 
   Component.registerHooks([
@@ -98,13 +97,16 @@
 
   @Component({
     components: {
-      SourceView,
-      Icon
+      TestView,
+      Icon,
+      Button
     }
   })
   export default class ProblemView extends Vue {
     // @ts-ignore
     @Getter('currentProblem') problemData?: Problem;
+    // @ts-ignore
+    @Getter isTeacher: boolean;
 
     codeOfProgram = "";
     isLoading = false;
@@ -113,7 +115,7 @@
       this.$store.dispatch(actions.SET_TEXT_PAGE);
 
       this.isLoading = true;
-      this.$store.dispatch(actions.SET_CURRRENT_PROBLEM, this.$route.params.id)
+      this.$store.dispatch(actions.SET_CURRENT_PROBLEM, this.$route.params.id)
         .then(() => {
           this.isLoading = false;
         })
@@ -125,7 +127,7 @@
     beforeRouteUpdate(to: any, from: any, next: any){
       console.log("before route update id: ", to.params.id);
       this.isLoading = true;
-      this.$store.dispatch(actions.SET_CURRRENT_PROBLEM, to.params.id)
+      this.$store.dispatch(actions.SET_CURRENT_PROBLEM, to.params.id)
         .then(() => {
           this.isLoading = false;
           next();
@@ -180,6 +182,10 @@
 
     handleUpload(){
       this.$store.dispatch(actions.UPLOAD_CODE, {id: this.$route.params.id, text: this.codeOfProgram} )
+    }
+
+    addTest(){
+      this.$store.dispatch(actions.ADD_NEW_TEST);
     }
 
   }
@@ -333,15 +339,21 @@
       }
     }
 
-
-
-    &--example {
+    &--example, &--test {
       margin-bottom: 2.5rem;
+    }
 
-      h4 {
-        margin-top: 0.3rem;
-        margin-bottom: 0.1rem;
-      }
+    &--tests {
+      display: flex;
+      flex-direction: column;
+
+    }
+
+    &--add-test-button {
+      display: inline-block;
+      width: auto;
+      margin-left: auto;
+      margin-right: auto;
     }
 
     &--code-upload {
