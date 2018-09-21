@@ -38,7 +38,8 @@ export function createProblem(): Problem {
       input: "",
       output: "",
       synced: false
-    } as Test]
+    } as Test],
+    synced: true
   })
 }
 

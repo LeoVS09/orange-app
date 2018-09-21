@@ -2,12 +2,17 @@
   <div class="problems">
     <PageHeader class="problems--header">Problems</PageHeader>
     <div class="problems--content">
+      <div class="problems--add">
+        <Button icon="add" @click.native="addProblem" class="problems--add-button">Add problem</Button>
+      </div>
+
       <div class="problems--filters">
         <p :class="{active: filter === 'All'}" @click="viewAll">All</p>
         <p :class="{active: filter === 'Open'}" @click="viewOpen">Open</p>
         <p :class="{active: filter === 'Closed'}" @click="viewClosed">Closed</p>
         <p :class="{active: filter === 'Resolved'}" @click="viewResolved">Resolved</p>
       </div>
+
       <table class="problems--list">
         <tr class="problems--list-header">
           <th>Name</th>
@@ -28,7 +33,7 @@
   import {Getter} from 'vuex-class'
   import {Problem} from "../../state"
   import * as actions from '../../store/actionTypes';
-  import {PageHeader, ProblemListItem} from '../../components';
+  import {PageHeader, ProblemListItem, Button} from '../../components';
 
   enum Filter {
     All = "All",
@@ -40,12 +45,15 @@
   @Component({
     components: {
       PageHeader,
-      ListItem: ProblemListItem
+      ListItem: ProblemListItem,
+      Button
     }
   })
   export default class ProblemsList extends Vue {
     // @ts-ignore
     @Getter('problems') items: Array<Problem>;
+    // @ts-ignore
+    @Getter isTeacher: boolean;
 
     filter = Filter.All;
 
@@ -86,6 +94,9 @@
       this.$store.dispatch(actions.SYNC_PROBLEMS);
     }
 
+    addProblem(){
+      this.$router.push({name: 'create problem'});
+    }
 
     chooseProblem(problem: Problem){
       console.log("Go to problem:", problem);
@@ -155,6 +166,14 @@
           border-right-color: #ff6977;
           cursor: default;
         }
+      }
+    }
+
+    &--add {
+      &-button {
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-end;
       }
     }
 

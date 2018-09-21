@@ -1,6 +1,6 @@
 <template>
     <div class="button-container">
-      <button v-if="!disabled" class="button-container--submit"><span v-if="!!icon"><Icon :type="icon" class="button-container--icon"/> </span><slot>Submit</slot></button>
+      <button v-if="!disabled" :class="{'button-container--submit': true, shadow}"><span v-if="!!icon"><Icon :type="icon" class="button-container--icon"/> </span><slot>Submit</slot></button>
       <div v-else><Spinner /></div>
     </div>
 </template>
@@ -11,6 +11,8 @@
   import Spinner from './Spinner.vue'
   import Icon from './Icon.vue'
 
+  // TODO: change type of disable into linear gradient
+
   interface Options {
     tabindex?: number,
     disabled?: boolean
@@ -20,7 +22,8 @@
     props: {
       tabindex: Number,
       disabled: Boolean,
-      icon: String
+      icon: String,
+      shadow: Boolean
     },
     components: {
       Spinner,
@@ -54,6 +57,11 @@
       cursor: pointer;
       transition-property: box-shadow;
       transition-duration: 0.1s;
+      outline: none;
+
+      &.shadow {
+        box-shadow: 0 0 10px 0 rgba(0,0,0,0.8);
+      }
 
       &:hover {
 

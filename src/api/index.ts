@@ -53,11 +53,25 @@ export function syncTest(test: Test): Promise<SyncTestResult> {
     setTimeout(() => {
       let result: SyncTestResult = {ok: true, id: test.id};
 
-      if(result.id.length) {
+      if(result.id.length === 0) {
         result.id = randomString();
       }
 
       resolve(result);
     }, 1000)
+  })
+}
+
+interface SyncProblemResult {
+  ok: boolean,
+  problem: Problem
+}
+
+export function syncProblem(problem: Problem): Promise<SyncProblemResult> {
+  return new Promise<SyncProblemResult>((resolve, reject) => {
+    let result: SyncProblemResult = {ok: true, problem};
+    setTimeout(() => {
+      resolve(result);
+    }, 20000);
   })
 }

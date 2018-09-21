@@ -25,3 +25,4 @@ export const ADD_NEW_TEST = 'ADD_NEW_TEST';
 export const EDIT_TEST = 'EDIT_TEST';
 export const DELETE_TEST = 'DELETE_TEST';
 export const SYNC_TEST = 'SYNC_TEST';
+export const SYNC_PROBLEM = 'SYNC_PROBLEM';

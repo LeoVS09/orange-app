@@ -9,6 +9,7 @@ import Spinner from './Spinner.vue'
 import PageHeader from './PageHeader.vue'
 import ProblemListItem from './ProblemListItem.vue'
 import TestView from './TestView.vue';
+import TextareaAutoresize from './TextareaAutoresize.vue';
 
 export {
   Footer,
@@ -21,5 +22,6 @@ export {
   Spinner,
   PageHeader,
   ProblemListItem,
-  TestView
+  TestView,
+  TextareaAutoresize
 }

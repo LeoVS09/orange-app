@@ -9,6 +9,7 @@ import Competitions from '@/containers/Content/Competitions.vue'
 import ProblemsList from '@/containers/Content/ProblemsList.vue'
 import Profile from '@/containers/Content/Profile.vue'
 import Problem from '@/containers/Content/Problem.vue'
+
 import SignIn from '@/containers/Content/SignIn.vue'
 import SignUp from '@/containers/Content/SignUp.vue'
 
@@ -36,6 +37,12 @@ const router = new Router({
           path: '/problem/:id',
           name: 'problem',
           component: Problem as Component
+        },
+        {
+          path: '/problem/create',
+          name: 'create problem',
+          component: Problem as Component,
+          props: () => ({isCreate: true})
         },
         {
           path: '/profile',

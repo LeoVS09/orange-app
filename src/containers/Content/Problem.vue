@@ -1,8 +1,11 @@
 <template>
   <div v-if="isLoading" class="skeleton-loading problem-loading"></div>
   <div v-else-if="!!problemData" class="problem">
-    <div v-bind:class="{'problem--header': true, 'done': done}">
-      <h1 class="text">{{problemData.name}}</h1>
+    <div class="problem--header" v-if="isTeacher">
+      <input class="input" type="text" :value="problemData.name" @input="updateName" placeholder="Problem name..."/>
+    </div>
+    <div v-else v-bind:class="{'problem--header': true, 'done': done}">
+      <h1 class="name">{{problemData.name}}</h1>
       <div class="color-line">
         <div class="left-triangle"></div>
         <div class="right-triangle"></div>
@@ -19,7 +22,13 @@
     >{{tag}}</span>
     </p>
 
-    <p class="problem--description">{{problemData.text}}</p>
+    <TextareaAutoresize
+      class="problem--description-textarea"
+      v-if="isTeacher"
+      :value="problemData.text"
+      :update="updateText"
+      placeholder="Problem description..."></TextareaAutoresize>
+    <p v-else class="problem--description">{{problemData.text}}</p>
 
     <div class="problem--configuration">
       <div class="configuration-line"></div>
@@ -51,7 +60,15 @@
 
     <div class="problem--tests" v-if="isTeacher && problemData.tests">
       <h2>Tests</h2>
-      <TestView class="problem--test" v-for="test in problemData.tests" :testData="test" :editable="true" />
+
+      <div v-for="test in problemData.tests">
+        <div class="problem--new-test" v-if="!test.id">
+          <div class="line"></div>
+          <p class="text">New test</p>
+        </div>
+        <TestView class="problem--test" :testData="test" :editable="true" />
+      </div>
+
     </div>
 
     <div class="problem--data">
@@ -76,19 +93,27 @@
         </div>
       </div>
     </div>
-
-
+    <transition name="sync-fade-up">
+      <div class="problem--sync" v-if="!isSynced">
+        <Button
+          @click.native="syncProblem"
+          class="problem--sync-button"
+          :disabled="syncing"
+          :shadow="true">Synchronize</Button>
+      </div>
+    </transition>
   </div>
+
   <h1 v-else>Not have this problem or you can permissions for see it :(</h1>
 </template>
 
 <script lang="ts">
   import Vue from 'vue'
-  import {Component} from 'vue-property-decorator'
+  import {Component, Watch} from 'vue-property-decorator'
   import {Getter} from 'vuex-class'
   import {Problem, ResultRunProgram} from "../../state"
   import * as actions from '../../store/actionTypes';
-  import {TestView, Icon, Button} from '../../components';
+  import {TestView, Icon, Button, TextareaAutoresize} from '../../components';
   import {IO} from "../../state/problem"
 
   Component.registerHooks([
@@ -99,7 +124,8 @@
     components: {
       TestView,
       Icon,
-      Button
+      Button,
+      TextareaAutoresize
     }
   })
   export default class ProblemView extends Vue {
@@ -110,6 +136,15 @@
 
     codeOfProgram = "";
     isLoading = false;
+    syncing = false;
+
+    @Watch('problemData')
+    onProblemDataChanged(data: Problem, oldData: Problem) {
+
+      if(!oldData.synced && data.synced) {
+        this.syncing = false;
+      }
+    }
 
     created() {
       this.$store.dispatch(actions.SET_TEXT_PAGE);
@@ -152,6 +187,13 @@
       return false
     }
 
+    get isSynced(): boolean {
+      if(this.problemData){
+        return this.problemData.synced;
+      }
+      return true;
+    }
+
     formatData(value: number) {
       const date = new Date(value);
       return date.toLocaleDateString()
@@ -188,6 +230,20 @@
       this.$store.dispatch(actions.ADD_NEW_TEST);
     }
 
+    updateName(event: any) {
+      this.$store.dispatch(actions.EDIT_PROBLEM, {...this.problemData, name: event.target.value})
+    }
+
+    updateText(text: string) {
+      this.$store.dispatch(actions.EDIT_PROBLEM, {...this.problemData, text})
+    }
+
+    syncProblem(){
+      if(this.problemData) {
+        this.syncing = true;
+        this.$store.dispatch(actions.SYNC_PROBLEM, this.problemData.id)
+      }
+    }
   }
 </script>
 
@@ -223,7 +279,16 @@
       flex-direction: row;
       margin-top: 1.5rem;
 
-      .text {
+      .input {
+        font-size: 2rem;
+        border: none;
+        width: 100%;
+        outline: none;
+        font-family: Roboto, sans-serif;
+        color: $headerTextColor;
+      }
+
+      .name {
         color: $headerTextColor;
         margin-bottom: 0;
         margin-top: 0;
@@ -286,8 +351,6 @@
       }
     }
 
-
-
     &--tags {
       margin-top: 0;
       margin-bottom: 0;
@@ -303,13 +366,17 @@
       margin-right: 1em;
     }
 
-    &--description {
+    &--description, &--description-textarea {
       padding-bottom: 1rem;
       padding-top: 2rem;
       margin-top: 3rem;
       margin-bottom: 3rem;
       font-size: 1.1rem;
       line-height: 1.7;
+    }
+
+    &--description-textarea {
+
     }
 
     &--configuration {
@@ -394,6 +461,44 @@
       }
     }
 
+    &--new-test {
+      display: flex;
+      flex-direction: row;
+      margin-top: -1rem;
+      margin-bottom: 0.5rem;
+
+      .line {
+        border-bottom: 1px solid $secondaryColor;
+        margin-top: auto;
+        margin-bottom: auto;
+        height: 1px;
+        margin-right: 0;
+        width: 100%;
+        padding-bottom: 0;
+        flex: 1;
+      }
+
+      .text {
+        color: $secondaryTextColor;
+        font-size: 0.9rem;
+        margin: 0 0.3rem 0 0.3rem;
+      }
+    }
+
+    &--sync {
+      position: fixed;
+      right: 3rem;
+      bottom: 3rem;
+      z-index: 6;
+      width: 15rem;
+      display: flex;
+      flex-direction: row;
+      &-button {
+        margin-left: auto;
+        margin-right: auto;
+      }
+    }
+
     .fade-enter-active, .fade-leave-active {
       transition: all 0.3s;
       top: 0;
@@ -402,6 +507,17 @@
     .fade-enter, .fade-leave-to /* .fade-leave-active до версии 2.1.8 */ {
       opacity: 0;
       top: -100px;
+    }
+
+    .sync-fade-up {
+      &-enter-active, &-leave-active {
+        transition: all 0.3s;
+      }
+
+      &-enter, &-leave-to {
+        opacity: 0;
+        bottom: -3rem;
+      }
     }
 
     &--data {

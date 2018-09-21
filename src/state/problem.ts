@@ -22,7 +22,8 @@ export interface Problem {
     output: IO
   },
   resultRun?: ResultRunProgram,
-  tests?: Array<Test>
+  tests?: Array<Test>,
+  synced: boolean
 }
 
 export interface ResultRunProgram {

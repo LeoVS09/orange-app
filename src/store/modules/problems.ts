@@ -11,6 +11,8 @@ const ADD_CLEAR_TEST = 'ADD_CLEAR_TEST';
 const EDIT_TEST = 'EDIT_TEST';
 const SYNC_TEST = 'SYNC_TEST';
 const SYNC_NEW_TEST = 'SYNC_NEW_TEST';
+const EDIT_PROBLEM = 'EDIT_PROBLEM';
+const SYNC_PROBLEM = 'SYNC_PROBLEM';
 
 const initState: ProblemsState = {
   data: [],
@@ -32,6 +34,23 @@ export default {
         }, 100)
       };
       add();
+    },
+    [actionTypes.EDIT_PROBLEM](context: IActionContext<ProblemsState>, problem: Problem) {
+      context.commit(EDIT_PROBLEM, problem);
+    },
+    [actionTypes.SYNC_PROBLEM](context: IActionContext<ProblemsState>, id: string) {
+      for(let problem of context.rootGetters.problems){
+        if(problem.id === id){
+          API.syncProblem(problem )
+            .then(result => {
+              if(result.ok){
+                context.commit(SYNC_PROBLEM, {...problem, result, synced: true});
+              }
+            });
+          return;
+        }
+      }
+
     },
     [actionTypes.SET_CURRENT_PROBLEM](context: IActionContext<ProblemsState>, problemId: string): Promise<any> {
       console.log("Problem params id", problemId);
@@ -82,7 +101,7 @@ export default {
             }
 
             if(test.id.length){
-              context.commit(SYNC_TEST, test.id);
+              context.commit(SYNC_TEST, id);
               return
             }
 
@@ -184,6 +203,8 @@ export default {
           return
         }
 
+        console.log("Sync new test id", testId);
+
         problem.tests = problem.tests.map(t => {
           if(t.id.length === 0){
             t.id = testId;
@@ -192,6 +213,23 @@ export default {
 
           return t
         })
+      })
+    },
+    [EDIT_PROBLEM](state: ProblemsState, problem: Problem) {
+      state.data = state.data.map(p => {
+        if(p.id === problem.id) {
+          problem.synced = false;
+          return problem;
+        }
+        return p;
+      })
+    },
+    [SYNC_PROBLEM](state: ProblemsState, problem: Problem) {
+      state.data = state.data.map(p => {
+        if(p.id === problem.id){
+          return problem;
+        }
+        return p;
       })
     }
   }

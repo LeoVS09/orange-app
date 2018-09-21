@@ -1,6 +1,6 @@
 <template>
   <div :class="{test: true, syncing: isSyncing}">
-    <h4>Input <Icon type="cached" v-if="isSyncing" class="test--sync-icon"/></h4>
+    <h4>Input <Icon type="cached" v-if="isSyncing" class="test--status-icon"/><Icon type="create" v-if="isEdited" class="test--status-icon"/></h4>
     <source-view :text="testData.input" :update="updateInput" :editable="editable"></source-view>
     <h4>Output</h4>
     <source-view :text="testData.output" :update="updateOutput" :editable="editable"></source-view>
@@ -33,17 +33,21 @@
 
     lastInput = Date.now();
     syncId = 0;
+    isEdited = false;
 
     sync(){
       if(this.syncId){
         clearTimeout(this.syncId)
       }
 
+      this.isEdited = true;
+
       this.syncId = setTimeout(() => {
         // @ts-ignore
         let data = this.testData;
         console.log("test syncing", data.input.length, data.output.length, (Date.now() - this.lastInput > MIN_TIME_SYNC));
         if (!!data.input.length && !!data.output.length && (Date.now() - this.lastInput > MIN_TIME_SYNC)) {
+          this.isEdited = false;
           this.$store.dispatch(actions.SYNC_TEST, data)
         }
       }, MIN_TIME_SYNC + 5)
@@ -62,6 +66,9 @@
     }
 
     get isSyncing(){
+      if(this.isEdited){
+        return false;
+      }
       // @ts-ignore
       return !!this.testData.input.length && !!this.testData.output.length && !this.testData.synced
     }
@@ -77,9 +84,10 @@
       margin-bottom: 0.1rem;
       display: flex;
       flex-direction: row;
+      height: 1.3rem;
     }
 
-    &--sync-icon {
+    &--status-icon {
       font-size: 1.3rem;
       color: green;
       margin-left: auto;
