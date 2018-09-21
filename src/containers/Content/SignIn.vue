@@ -8,7 +8,7 @@
       <Input type="text" placeholder="Login or Email" :value.sync="login" @keyup.enter.native="clickSignIn" :error.sync="isLoginError" :tabindex="1" :autofocus="true" :disabled="isLoginDisabled"/>
       <Input type="password" placeholder="Password" :value.sync="password" @keyup.enter.native="clickSignIn" :error.sync="isPasswordError" :tabindex="2" :disabled="isPasswordDisabled"/>
       <CheckBox :value.sync="isRemember">Remember me</CheckBox>
-      <Button :tabindex="3" @click.native="clickSignIn" class="signin--button" :disabled="isSubmitDisabled">Sign In</Button>
+      <Button :tabindex="3" :click="clickSignIn" class="signin--button" :disabled="isSubmitDisabled">Sign In</Button>
       <div class="signin--forgot">
         <span class="signin--forgot-text">Forgot password?</span>
       </div>

@@ -1,7 +1,6 @@
 <template>
-    <div class="button-container">
-      <button v-if="!disabled" :class="{'button-container--submit': true, shadow}"><span v-if="!!icon"><Icon :type="icon" class="button-container--icon"/> </span><slot>Submit</slot></button>
-      <div v-else><Spinner /></div>
+    <div class="button-container" @click="onClick">
+      <button :class="{'button-container--submit': true, shadow, disabled}"><span v-if="!!icon"><Icon :type="icon" class="button-container--icon"/> </span><slot>Submit</slot></button>
     </div>
 </template>
 
@@ -10,8 +9,6 @@
   import {Component} from 'vue-property-decorator'
   import Spinner from './Spinner.vue'
   import Icon from './Icon.vue'
-
-  // TODO: change type of disable into linear gradient
 
   interface Options {
     tabindex?: number,
@@ -23,7 +20,8 @@
       tabindex: Number,
       disabled: Boolean,
       icon: String,
-      shadow: Boolean
+      shadow: Boolean,
+      click: Function
     },
     components: {
       Spinner,
@@ -40,6 +38,14 @@
       }
       return result;
     }
+
+    onClick(){
+      // @ts-ignore
+      if(!this.disabled){
+        // @ts-ignore
+        this.click()
+      }
+    }
   }
 </script>
 
@@ -53,12 +59,12 @@
       background-color: $buttonColor;
       border: none;
       box-shadow: 0 0 3px 0 lighten($buttonColor, 10%);
-      color: white;
+      color: $buttonTextColor;
       cursor: pointer;
-      transition-property: box-shadow;
+      transition-property: all;
       transition-duration: 0.1s;
       outline: none;
-
+      font-weight: 700;
       &.shadow {
         box-shadow: 0 0 10px 0 rgba(0,0,0,0.8);
       }
@@ -74,12 +80,22 @@
       }
 
       &.disabled {
-        background-color: #969696;
+        background: linear-gradient(145deg, $buttonColor 0%, $buttonColor 40%, $buttonHighlightColor 50%, $buttonColor 60%, $buttonColor 100%);
+        background-size: 200% 200%;
+        animation: background-gradient 0.7s ease-in infinite;
       }
     }
 
     &--icon {
       font-size: 1rem;
+    }
+    
+    @keyframes background-gradient {
+      0%{background-position: 150% 50%}
+      25%{background-position: 100% 50%}
+      50%{background-position: 50% 50%}
+      75%{background-position: 0% 50%}
+      100%{background-position: -50% 50%}
     }
   }
 </style>

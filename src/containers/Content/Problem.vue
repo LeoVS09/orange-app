@@ -96,7 +96,7 @@
     <transition name="sync-fade-up">
       <div class="problem--sync" v-if="!isSynced">
         <Button
-          @click.native="syncProblem"
+          :click="syncProblem"
           class="problem--sync-button"
           :disabled="syncing"
           :shadow="true">Synchronize</Button>

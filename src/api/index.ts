@@ -72,6 +72,6 @@ export function syncProblem(problem: Problem): Promise<SyncProblemResult> {
     let result: SyncProblemResult = {ok: true, problem};
     setTimeout(() => {
       resolve(result);
-    }, 20000);
+    }, 2000);
   })
 }

@@ -3,7 +3,7 @@
     <PageHeader class="problems--header">Problems</PageHeader>
     <div class="problems--content">
       <div class="problems--add">
-        <Button icon="add" @click.native="addProblem" class="problems--add-button">Add problem</Button>
+        <Button icon="add" :click="addProblem" class="problems--add-button">Add problem</Button>
       </div>
 
       <div class="problems--filters">
