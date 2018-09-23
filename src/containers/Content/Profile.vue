@@ -86,13 +86,8 @@ import { UserType } from '@/state'
     created() {
       this.$store.dispatch(actions.SET_STANDARD_PAGE);
 
-      if (!checkIsLogin()) {
-        this.$router.push({name: 'signin'});
-        return
-      }
       if (!this.userData) {
-        console.log("User is sign in, but not have data");
-        this.$router.push({name: 'home'});
+        this.$router.push({name: 'signin'});
         return
       }
 

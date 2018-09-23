@@ -1,5 +1,6 @@
 import {RootState, UserType} from "../state";
 import {GetterTree} from "vuex";
+import {checkIsLogin} from "../identity";
 
 const getters: GetterTree<RootState, any> = {
   platform: (state) => state.ui.currentPlatform,
@@ -7,7 +8,25 @@ const getters: GetterTree<RootState, any> = {
   isTextPage: (state) => state.ui.isTextPage,
   isSignInPage: (state) => state.ui.isSignInPage,
 
-  profile: (state) => state.profile.data,
+  profile: (state) => {
+    let login = checkIsLogin();
+
+    if(!login.ok) {
+      return undefined;
+    }
+
+    if(!state.profile.data) {
+      console.error("Unexpected situation in identity system");
+      return undefined;
+    }
+
+    if(state.profile.data.id == login.id){
+      return state.profile.data
+    }
+
+    console.error("Unexpected situation in identity system");
+    return undefined;
+  },
   isTeacher: (state) => !!state.profile.data ? state.profile.data.type === UserType.TEACHER : false,
 
   openProblems: (state) => state.problems.data.filter(p => p.isOpen),

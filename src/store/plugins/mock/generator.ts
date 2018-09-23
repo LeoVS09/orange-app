@@ -2,9 +2,9 @@ import * as actionTypes from '../../actionTypes'
 import * as Vuex from 'vuex'
 import staticUserData from './user.json'
 import staticProblemData from './problem.json'
-import {Problem, User} from "../../../state";
+import {Problem, User, UserType} from "../../../state";
 import {IO, Test} from "../../../state/problem";
-import {UserType} from "../../../state/user";
+
 
 const USE_STATIC_ID = true;
 const STATIC_ID = 'do5n32edbzsjb0ynz3b7i';
@@ -45,7 +45,7 @@ export function createProblem(): Problem {
 
 export function createUser(login: string, password: string, type: UserType): User {
   return {
-    id: randomString(),
+    id: type === UserType.TEACHER ? UserType.TEACHER : randomString(),
     firstName: AUTHORS[random(0, AUTHORS.length)],
     familyName: AUTHORS[random(0, AUTHORS.length)],
     lastName: AUTHORS[random(0, AUTHORS.length)],
@@ -62,7 +62,6 @@ export default function createDataGeneratorPlugin <S>() {
     openProblems[0].id = STATIC_ID;
 
   return (store: Vuex.Store<S>) => {
-    store.dispatch(actionTypes.SETUP_USER_PROFILE, Object.assign({}, staticUserData));
     store.dispatch(actionTypes.SETUP_PROBLEMS, openProblems);
   }
 }

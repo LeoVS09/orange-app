@@ -1,5 +1,5 @@
-import {ResultRunProgram, Problem, Test} from "../state/problem";
-import {createProblem} from "../store/plugins/mock/generator";
+import {Problem, ResultRunProgram, Test, User, UserType} from "../state";
+import {createProblem, createUser} from "../store/plugins/mock/generator";
 
 const orangeManagerServerUrl = "http://localhost:3010";
 const credentials: RequestCredentials = 'same-origin';
@@ -33,7 +33,7 @@ export function getProblem(problemId: string): Promise<Problem> {
       let problem = createProblem();
       problem.id = problemId;
       resolve(problem)
-    }, 10)
+    }, 3000)
   }))
 }
 
@@ -72,6 +72,21 @@ export function syncProblem(problem: Problem): Promise<SyncProblemResult> {
     let result: SyncProblemResult = {ok: true, problem};
     setTimeout(() => {
       resolve(result);
+    }, 2000);
+  })
+}
+
+interface GetUserResult {
+  user: User,
+  ok: boolean
+}
+
+export function getUser(id: string): Promise<GetUserResult> {
+  return new Promise<GetUserResult>((resolve, reject) => {
+    let user = createUser("Some", "pass", id === UserType.TEACHER ? UserType.TEACHER : UserType.CONTESTANT);
+    user.id = id;
+    setTimeout(() => {
+      resolve({ user, ok: true });
     }, 2000);
   })
 }

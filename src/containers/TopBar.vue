@@ -115,19 +115,18 @@
     }
 
     get profileText(){
-      if(checkIsLogin()){
-        if(!this.userData){
-          return 'Profile'
-        }
-        let name = this.userData.firstName;
-        name = name[0].toUpperCase() + name.slice(1);
-        return name;
+      if(!this.userData){
+        return 'Sign In'
       }
-      return 'Sign In';
+
+      let name = this.userData.firstName;
+      name = name[0].toUpperCase() + name.slice(1);
+
+      return name;
     }
 
     startHoverProfile(){
-      if(checkIsLogin()){
+      if(this.userData){
         this.isViewProfileActions = true;
       }
     }
@@ -147,7 +146,7 @@
     }
 
     clickProfile() {
-      if(checkIsLogin()){
+      if(this.userData){
         this.$router.push({ name: 'profile' })
       }else {
         this.$router.push({name: 'signin'});
@@ -156,7 +155,6 @@
 
     clickSignOut() {
       this.$store.dispatch(actions.LOGOUT_FROM_PROFILE);
-      this.$router.go(0);
     }
   }
 </script>

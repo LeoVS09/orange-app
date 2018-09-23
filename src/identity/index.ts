@@ -10,19 +10,33 @@ export function signin (login: string, password: string, isRemember: boolean): P
 
   return new Promise((resolve, reject) => {
     setTimeout(() => {
-      if(isRemember){
-        window.localStorage.setItem(TOKEN_NAME, "LOL");
+      let user;
+      if(login === 'teacher') {
+        user = createUser(login, password, UserType.TEACHER);
       } else {
-        window.sessionStorage.setItem(TOKEN_NAME, "LOL");
+        user = createUser(login, password, UserType.CONTESTANT);
       }
 
-      if(login === 'teacher') {
-        resolve(createUser(login, password, UserType.TEACHER));
+      const token = encryptId(user.id);
+
+      if(isRemember){
+        window.localStorage.setItem(TOKEN_NAME, token);
       } else {
-        resolve(createUser(login, password, UserType.CONTESTANT));
+        window.sessionStorage.setItem(TOKEN_NAME, token);
       }
+
+      resolve(user);
+
     }, 1000)
   })
+}
+
+function encryptId(id: string): string {
+  return id // TODO
+}
+
+function decryptId(token: string): string {
+  return token // TODO
 }
 
 export function signout () {
@@ -30,15 +44,23 @@ export function signout () {
   window.sessionStorage.removeItem(TOKEN_NAME);
 }
 
-export function checkIsLogin (): boolean {
+interface checkResult {
+  id: string,
+  ok: boolean
+}
+
+export function checkIsLogin (): checkResult {
   let token = window.localStorage.getItem(TOKEN_NAME);
   if(!token){
     token = window.sessionStorage.getItem(TOKEN_NAME);
   }
 
-  if(!!token){ // TODO: add real check
-    return true;
+  if(token== null){ // TODO: add real check
+    return {ok: false, id: ''};
   }
 
-  return false;
+  return {
+    id: decryptId(token),
+    ok: true
+  };
 }

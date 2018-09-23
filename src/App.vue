@@ -6,8 +6,15 @@
 </template>
 
 <script lang="ts">
-  export default {
-    name: 'app'
+  import Vue from 'vue'
+  import {Component} from 'vue-property-decorator'
+  import * as actions from './store/actionTypes';
+
+  @Component
+  export default class App extends Vue {
+    created(){
+      this.$store.dispatch(actions.INIT_PROFILE);
+    }
   }
 </script>
 

@@ -72,7 +72,7 @@ const router = new Router({
 });
 
 
-const isAuth = () => !USE_AUTH_COMPONENT || checkIsLogin();
+const isAuth = () => !USE_AUTH_COMPONENT || checkIsLogin().ok;
 
 router.beforeEach((to: Router.Route, from: Router.Route, next: Function) => {
   if (isAuth()) {

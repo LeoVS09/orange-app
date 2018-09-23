@@ -2,9 +2,14 @@ import * as actionTypes from '../actionTypes'
 import Vue from 'vue'
 import {Commit} from 'vuex'
 import {User, ProfileState, IActionContext} from '../../state'
-import {signin, signout} from '../../identity';
+import {signin, signout, checkIsLogin} from '../../identity';
+import * as API from '../../api';
+import {INIT_PROFILE} from "../actionTypes";
 
 const SET_PROFILE_DATA = 'SET_PROFILE_DATA';
+const LOGOUT_FROM_PROFILE = 'LOGOUT_FROM_PROFILE';
+
+
 const initState: ProfileState = {};
 
 export default {
@@ -28,7 +33,7 @@ export default {
     },
     [actionTypes.LOGOUT_FROM_PROFILE] (context: IActionContext<ProfileState>){
       signout();
-      context.commit(SET_PROFILE_DATA, {});
+      context.commit(LOGOUT_FROM_PROFILE);
     },
     [actionTypes.REGISTER_PROFILE] (context: IActionContext<ProfileState>, user: {firstName: string, lastName: string, email: string, password: string}): Promise<boolean> {
       return signin(user.email, user.password, false)
@@ -37,8 +42,26 @@ export default {
           if(!result){
             return Promise.reject(false)
           }
+
           context.commit(SET_PROFILE_DATA, {...result, ...user});
           return Promise.resolve(true)
+        })
+    },
+    [actionTypes.INIT_PROFILE] (context: IActionContext<ProfileState>) {
+      const login = checkIsLogin();
+
+      if(!login.ok) {
+        return;
+      }
+
+      API.getUser(login.id)
+        .then(result => {
+          if(!result.ok) {
+            console.error("Unexpected situation when try fetch profile");
+            return;
+          }
+
+          context.commit(SET_PROFILE_DATA, result.user);
         })
     }
   },
@@ -46,6 +69,10 @@ export default {
   mutations: {
     [SET_PROFILE_DATA] (state: ProfileState, user: User) {
       Vue.set(state,'data', user);
+    },
+
+    [LOGOUT_FROM_PROFILE] (state: ProfileState) {
+      state.data = undefined;
     }
   }
 }
