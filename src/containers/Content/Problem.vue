@@ -41,9 +41,9 @@
       </div>
     </div>
 
-    <TestView class="problem--example" v-for="example in problemData.examples" :testData="example" />
+    <TestView class="problem--example" v-for="(example, i) in problemData.examples" :key="'test-' + i + '-' + example.id" :testData="example" v-if="!isTeacher"/>
 
-    <div class="problem--code-upload">
+    <div class="problem--code-upload" v-if="!isTeacher">
       <textarea placeholder="Paste you code here..." v-model="codeOfProgram"></textarea>
 
       <div  class="problem--code-button-wrapper">
@@ -141,7 +141,7 @@
     @Watch('problemData')
     onProblemDataChanged(data: Problem, oldData: Problem) {
 
-      if(!oldData.synced && data.synced) {
+      if((!!oldData && !!data) && (!oldData.synced && data.synced)) {
         this.syncing = false;
       }
     }
@@ -376,7 +376,7 @@
     }
 
     &--description-textarea {
-
+      margin-bottom: 0;
     }
 
     &--configuration {
@@ -414,6 +414,10 @@
       display: flex;
       flex-direction: column;
 
+      h2 {
+        margin-top: 0;
+        padding-top: 0;
+      }
     }
 
     &--add-test-button {

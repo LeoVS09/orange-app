@@ -17,7 +17,7 @@ export function signin (login: string, password: string, isRemember: boolean): P
         user = createUser(login, password, UserType.CONTESTANT);
       }
 
-      const token = encryptId(user.id);
+      const token = encryptId(user);
 
       if(isRemember){
         window.localStorage.setItem(TOKEN_NAME, token);
@@ -31,12 +31,12 @@ export function signin (login: string, password: string, isRemember: boolean): P
   })
 }
 
-function encryptId(id: string): string {
-  return id // TODO
+function encryptId(user: User): string {
+  return JSON.stringify(user) // TODO
 }
 
-function decryptId(token: string): string {
-  return token // TODO
+function decryptId(token: string): User {
+  return JSON.parse(token) // TODO
 }
 
 export function signout () {
@@ -44,23 +44,27 @@ export function signout () {
   window.sessionStorage.removeItem(TOKEN_NAME);
 }
 
-interface checkResult {
-  id: string,
-  ok: boolean
+interface checkResultOk {
+  user: User,
+  ok: true
 }
 
-export function checkIsLogin (): checkResult {
+interface checkResultFalse {
+  ok: false
+}
+
+export function checkIsLogin (): checkResultOk | checkResultFalse {
   let token = window.localStorage.getItem(TOKEN_NAME);
   if(!token){
     token = window.sessionStorage.getItem(TOKEN_NAME);
   }
 
-  if(token== null){ // TODO: add real check
-    return {ok: false, id: ''};
+  if(token == null || token[0] !== '{'){ // TODO: add real check
+    return {ok: false};
   }
 
   return {
-    id: decryptId(token),
+    user: decryptId(token),
     ok: true
   };
 }

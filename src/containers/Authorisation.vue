@@ -3,7 +3,7 @@
     <div class="auth">
       <div :class="{'auth--container': true, 'signin': isSignInPage}">
         <p class="auth--description">Welcome to</p>
-        <Logo @click.native="clickHome" class="auth--logo" :isAuth="true"/>
+        <Logo :click="clickHome" class="auth--logo" :isAuth="true"/>
         <router-view></router-view>
       </div>
     </div>

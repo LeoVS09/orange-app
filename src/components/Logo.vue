@@ -1,5 +1,5 @@
 <template>
-  <div @click="clickHome" class="logo">
+  <div @click="click" class="logo">
     <h1 class="logo--text">Orange</h1>
     <sup :class="{'logo--sup': true, auth: isAuth}">alpha</sup>
   </div>
@@ -11,7 +11,8 @@
 
   @Component({
     props: {
-      isAuth: Boolean
+      isAuth: Boolean,
+      click: Function
     }
   })
   export default class Logo extends Vue {

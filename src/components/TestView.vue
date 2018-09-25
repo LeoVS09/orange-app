@@ -10,7 +10,7 @@
 <script lang="ts">
   import Vue from 'vue'
   import {Component} from 'vue-property-decorator'
-  import SourceView from './sourceView.vue';
+  import SourceView from './SourceView.vue';
   import Icon from './Icon.vue';
   import * as actions from '../store/actionTypes';
 

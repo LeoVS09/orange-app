@@ -2,7 +2,7 @@
   <div class="top-bar--container">
     <transition name="scroll-down" >
       <div v-if="!scrollTop || isScroll" :class="{'top-bar': true, 'scrolled': scrollTop ? isScroll : false }" >
-        <Logo @click.native="clickHome" class="top-bar--logo" />
+        <Logo :click="clickHome" class="top-bar--logo" />
         <div class="top-bar--menu">
           <span @click="clickProblems">Problems</span>
           <span @click="clickContests">Contests</span>

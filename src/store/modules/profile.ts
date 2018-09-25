@@ -48,13 +48,16 @@ export default {
         })
     },
     [actionTypes.INIT_PROFILE] (context: IActionContext<ProfileState>) {
-      const login = checkIsLogin();
+      const checkResult = checkIsLogin();
 
-      if(!login.ok) {
+      if(!checkResult.ok) {
         return;
       }
 
-      API.getUser(login.id)
+      const user = checkResult.user;
+      context.commit(SET_PROFILE_DATA, user);
+
+      API.getUser(user.id)
         .then(result => {
           if(!result.ok) {
             console.error("Unexpected situation when try fetch profile");
@@ -72,7 +75,7 @@ export default {
     },
 
     [LOGOUT_FROM_PROFILE] (state: ProfileState) {
-      state.data = undefined;
+      Vue.set(state,'data', undefined);
     }
   }
 }
