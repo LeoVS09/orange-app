@@ -14,11 +14,13 @@
       </div>
     </transition>
     <transition name="fade-down">
-      <div v-if="isViewProfileActions && !!userData && (isScroll || !scrollTop)" class="top-bar--profile-actions">
-        <ul>
-          <li @click="clickProfile">Profile</li>
-          <li @click="clickSignOut">Sign Out</li>
-        </ul>
+      <div v-if="isViewProfileActions && !!userData && (isScroll || !scrollTop)" class="top-bar--profile-actions-back">
+        <div class="top-bar--profile-actions">
+          <ul>
+            <li @click="clickProfile">Profile</li>
+            <li @click="clickSignOut">Sign Out</li>
+          </ul>
+        </div>
       </div>
     </transition>
   </div>
@@ -224,31 +226,35 @@
         }
       }
 
-      &-actions {
-        font-size: 0.9rem;
+      &-actions-back {
         position: fixed;
-        top: $topBarHeight + 0.5rem;
-        right: 0.5rem;
-        background-color: $backgroundColor;
-        box-shadow: 0 0 6px rgba(0,0,0,0.23);
+        top: $topBarHeight;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        z-index: 19;
+        background: linear-gradient(45deg, rgba(253, 161, 48, 0.06) 0%, rgba(253, 116, 0, 0.51) 40%, #ff6977 100%);
+      }
+
+      &-actions {
+        font-size: 1.3rem;
         border-radius: 0.3rem;
         cursor: pointer;
-        z-index: 19;
+        position: absolute;
+        top: 0;
+        right: 0;
 
         ul {
           padding: 0;
-          margin: 0;
           list-style: none;
-
+          margin: 2rem 2rem 0 0;
           li {
             padding: 0.5rem 2rem;
-
-            &:last-child {
-              border-top: 1px solid #bfbfbf;
-            }
+            color: white;
+            margin-top: 1rem;
 
             &:hover {
-              background-color: rgba(0,0,0, 0.05);
+              text-decoration: underline;
             }
           }
         }
@@ -261,7 +267,6 @@
   }
   .fade-down-enter, .fade-down-leave-to {
     opacity: 0;
-    top: -5rem;
   }
 
   .scroll-down-enter, .scroll-down-leave-to {
