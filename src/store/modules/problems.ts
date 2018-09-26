@@ -1,6 +1,13 @@
 import * as actionTypes from '../actionTypes';
 import * as API from '../../api';
-import {IActionContext, ProblemsState, Problem, ResultRunProgram, Test} from "../../state";
+import {
+  IActionContext,
+  ProblemsState,
+  Problem,
+  ResultRunProgram,
+  Test,
+  defaultProblem
+} from "../../state";
 import {createProblem} from "../plugins/mock/generator";
 
 const SET_PROBLEMS = 'SET_PROBLEMS';
@@ -13,6 +20,7 @@ const SYNC_TEST = 'SYNC_TEST';
 const SYNC_NEW_TEST = 'SYNC_NEW_TEST';
 const EDIT_PROBLEM = 'EDIT_PROBLEM';
 const SYNC_PROBLEM = 'SYNC_PROBLEM';
+const UPDATE_CURRENT_PROBLEM = 'UPDATE_CURRENT_PROBLEM';
 
 const initState: ProblemsState = {
   data: [],
@@ -109,6 +117,35 @@ export default {
             context.commit(ADD_CLEAR_TEST);
           });
       }
+    },
+    [actionTypes.START_CREATE_PROBLEM](context: IActionContext<ProblemsState>) {
+      const id = "new";
+      context.commit(ADD_PROBLEM, {
+        ...defaultProblem(),
+        id,
+        tests: [{
+          id: "",
+          input: "",
+          output: "",
+          synced: false
+        }]
+      });
+      context.commit(SET_CURRENT_PROBLEM, id);
+    },
+    [actionTypes.CREATE_PROBLEM](context: IActionContext<ProblemsState>, problem: Problem) : Promise<any> {
+      return API.putCreateProblem(problem)
+        .then((result): Promise<any> =>  {
+          if(!result.ok){
+            console.log("Unexpected result");
+            return Promise.reject();
+          }
+
+          context.commit(UPDATE_CURRENT_PROBLEM, {...result.problem, synced: true });
+          return Promise.resolve({ok: true, id: result.problem.id});
+        })
+        .catch((err: any) => {
+          console.error('createProblem', err);
+        })
     }
   },
 
@@ -120,9 +157,11 @@ export default {
     [SET_PROBLEMS](state: ProblemsState, problems: Array<Problem>) {
       state.data = problems
     },
+
     [ADD_PROBLEM](state: ProblemsState, problem: Problem) {
       state.data.push(problem)
     },
+
     [SET_RESULT_OF_PROGRAM](state: ProblemsState, result: ResultRunProgram) {
       state.data = state.data.map(problem => {
         if(problem.id !== result.problemId){
@@ -132,6 +171,7 @@ export default {
         return problem
       })
     },
+
     [ADD_CLEAR_TEST](state: ProblemsState) {
       state.data = state.data.map(problem => {
         if(problem.id === state.currentProblemId){
@@ -231,6 +271,16 @@ export default {
         }
         return p;
       })
+    },
+    [UPDATE_CURRENT_PROBLEM](state: ProblemsState, problem: Problem) {
+      state.data = state.data.map(p => {
+        if(p.id === state.currentProblemId) {
+          return problem;
+        }
+        return p
+      });
+
+      state.currentProblemId = problem.id;
     }
   }
 }

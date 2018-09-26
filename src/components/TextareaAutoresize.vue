@@ -3,7 +3,7 @@
       class="textarea-autoresize"
       :value="value"
       @input="updateValue"
-      placeholder="placeholder"></textarea>
+      :placeholder="placeholder"></textarea>
 </template>
 
 <script lang="ts">

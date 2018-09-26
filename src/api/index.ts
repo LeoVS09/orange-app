@@ -90,3 +90,38 @@ export function getUser(id: string): Promise<GetUserResult> {
     }, 2000);
   })
 }
+
+interface CreateProblemResultOk {
+  ok: false
+}
+
+interface CreateProblemResultFailed {
+  ok: true,
+  problem: Problem
+}
+
+export function putCreateProblem(problem: Problem): Promise<CreateProblemResultOk | CreateProblemResultFailed> {
+  return new Promise<CreateProblemResultOk|CreateProblemResultFailed>((resolve, reject) => {
+    if(!problem.tests){
+      reject("Not have tests");
+      return;
+    }
+    let examples = [problem.tests[0]];
+    if(problem.tests[1] && problem.tests[1].id.length){
+      examples.push(problem.tests[1]);
+    }
+    if(problem.tests[2] && problem.tests[1].id.length){
+      examples.push(problem.tests[2]);
+    }
+    setTimeout(() => {
+      resolve({
+        ok: true,
+        problem: {
+          ...problem,
+          id: randomString(),
+          examples
+        }
+      })
+    }, 3000)
+  })
+}

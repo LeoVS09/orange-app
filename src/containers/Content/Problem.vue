@@ -93,13 +93,13 @@
         </div>
       </div>
     </div>
-    <transition name="sync-fade-up">
+    <transition name="button-fade-up">
       <div class="problem--sync" v-if="!isSynced">
         <Button
           :click="syncProblem"
           class="problem--sync-button"
           :disabled="syncing"
-          :shadow="true">Synchronize</Button>
+          :shadow="true">{{isCreate ? 'Create' : 'Synchronize'}}</Button>
       </div>
     </transition>
   </div>
@@ -109,7 +109,7 @@
 
 <script lang="ts">
   import Vue from 'vue'
-  import {Component, Watch} from 'vue-property-decorator'
+  import {Component, Watch, Prop} from 'vue-property-decorator'
   import {Getter} from 'vuex-class'
   import {Problem, ResultRunProgram} from "../../state"
   import * as actions from '../../store/actionTypes';
@@ -129,6 +129,8 @@
     }
   })
   export default class ProblemView extends Vue {
+
+    @Prop(Boolean) isCreate!: boolean;
     // @ts-ignore
     @Getter('currentProblem') problemData?: Problem;
     // @ts-ignore
@@ -149,6 +151,11 @@
     created() {
       this.$store.dispatch(actions.SET_TEXT_PAGE);
 
+      if(this.isCreate){
+        this.isLoading = false;
+        this.$store.dispatch(actions.START_CREATE_PROBLEM)
+        return;
+      }
       this.isLoading = true;
       this.$store.dispatch(actions.SET_CURRENT_PROBLEM, this.$route.params.id)
         .then(() => {
@@ -240,8 +247,35 @@
 
     syncProblem(){
       if(this.problemData) {
-        this.syncing = true;
-        this.$store.dispatch(actions.SYNC_PROBLEM, this.problemData.id)
+
+        if(this.isCreate){
+          if(!this.problemData.name.length){
+            console.error("Not have name");
+            return;
+          }
+          if(!this.problemData.text.length){
+            console.error("Not have text");
+            return;
+          }
+          if(!this.problemData.tests || !this.problemData.tests.length) {
+            console.error("Unexpected situation in tests");
+            return;
+          }
+          if(!this.problemData.tests[0].id.length){
+            console.error("Not have tests");
+            return;
+          }
+          this.syncing = true;
+          this.$store.dispatch(actions.CREATE_PROBLEM, this.problemData)
+            .then(({ok, id}) => {
+              this.syncing = false;
+              if(ok) {
+                this.$router.push({path: `/problem/${id}`})
+              }
+            });
+          return;
+        }
+        this.$store.dispatch(actions.SYNC_PROBLEM, this.problemData.id);
       }
     }
   }
@@ -503,17 +537,19 @@
       }
     }
 
-    .fade-enter-active, .fade-leave-active {
-      transition: all 0.3s;
-      top: 0;
+    .fade {
+      &-enter-active, &-leave-active {
+        transition: all 0.3s;
+        top: 0;
+      }
+
+      &-enter, &-leave-to /* .fade-leave-active до версии 2.1.8 */ {
+        opacity: 0;
+        top: -100px;
+      }
     }
 
-    .fade-enter, .fade-leave-to /* .fade-leave-active до версии 2.1.8 */ {
-      opacity: 0;
-      top: -100px;
-    }
-
-    .sync-fade-up {
+    .button-fade-up {
       &-enter-active, &-leave-active {
         transition: all 0.3s;
       }

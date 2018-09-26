@@ -14,7 +14,7 @@
       </div>
     </transition>
     <transition name="fade-down">
-      <div v-if="isViewProfileActions && (isScroll || !scrollTop)" class="top-bar--profile-actions">
+      <div v-if="isViewProfileActions && !!userData && (isScroll || !scrollTop)" class="top-bar--profile-actions">
         <ul>
           <li @click="clickProfile">Profile</li>
           <li @click="clickSignOut">Sign Out</li>

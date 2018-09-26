@@ -12,11 +12,23 @@ import Problem from '@/containers/Content/Problem.vue'
 
 import SignIn from '@/containers/Content/SignIn.vue'
 import SignUp from '@/containers/Content/SignUp.vue'
+import {UserType} from "./state";
 
 const authPath = '/signin';
 const USE_AUTH_COMPONENT = true;
 
 Vue.use(Router);
+
+enum ROUTES {
+  HOME = 'home',
+  COMPETITIONS = 'competitions',
+  CREATE_PROBLEM = 'create problem',
+  PROBLEM = 'problem',
+  PROFILE = 'profile',
+  AUTHORISATION = 'authorisation',
+  SIGNIN = 'signin',
+  SIGNUP = 'signup'
+}
 
 const router = new Router({
   routes: [
@@ -25,44 +37,45 @@ const router = new Router({
       component: Home as Component,
       children: [
         {
-          name: 'home',
+          name: ROUTES.HOME,
           path: '',
           component: ProblemsList as Component
         },
         {
+          name: ROUTES.COMPETITIONS,
           path: '/competitions',
           component: Competitions as Component
         },
         {
+          path: '/problem/create',
+          name: ROUTES.CREATE_PROBLEM,
+          component: Problem as Component,
+          props: {isCreate: true}
+        },
+        {
           path: '/problem/:id',
-          name: 'problem',
+          name: ROUTES.PROBLEM,
           component: Problem as Component
         },
         {
-          path: '/problem/create',
-          name: 'create problem',
-          component: Problem as Component,
-          props: () => ({isCreate: true})
-        },
-        {
           path: '/profile',
-          name: 'profile',
+          name: ROUTES.PROFILE,
           component: Profile as Component
         }
       ]
     },
     {
       path: '/authorisation',
-      name: 'authorisation',
+      name: ROUTES.AUTHORISATION,
       component: Authorisation as Component,
       children: [
         {
-          name: 'signin',
+          name: ROUTES.SIGNIN,
           path: authPath,
           component: SignIn as Component
         },
         {
-          name: 'signup',
+          name: ROUTES.SIGNUP,
           path: '/signup',
           component: SignUp as Component
         }
@@ -71,16 +84,37 @@ const router = new Router({
   ]
 });
 
-
-const isAuth = () => !USE_AUTH_COMPONENT || checkIsLogin().ok;
-
 router.beforeEach((to: Router.Route, from: Router.Route, next: Function) => {
-  if (isAuth()) {
-    to.path !== authPath ? next() : next({ path: '/' });
+  if(!USE_AUTH_COMPONENT){
+    next();
+    return;
+  }
+
+  const resultCheck = checkIsLogin();
+  if(!resultCheck.ok) {
+    switch (to.name) {
+      case ROUTES.PROFILE: next({ name: ROUTES.SIGNIN });
+        break;
+      case ROUTES.CREATE_PROBLEM: next({name: ROUTES.SIGNIN});
+        break;
+      default:
+        next();
+    }
+    return
+  }
+
+  if(resultCheck.user.type === UserType.CONTESTANT) {
+    switch (to.name) {
+      case ROUTES.CREATE_PROBLEM: next({name: ROUTES.HOME});
+        break;
+      default:
+        next();
+    }
     return
   }
 
   next();
+  return;
 });
 
-export default router
+export default router;

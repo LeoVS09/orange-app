@@ -26,6 +26,32 @@ export interface Problem {
   synced: boolean
 }
 
+export function defaultProblem() : Problem {
+  return {
+    id: '',
+    name: '',
+    text: '',
+    input: '',
+    output: '',
+    examples: [],
+    isOpen: true,
+    uploadDate: Date.now(),
+    publicationDate: Date.now(),
+    author: "Author",
+    tester: "Tester",
+    tags: ['some', 'tags'],
+    limits: {
+      time: 30000,
+      memory: 2048
+    },
+    io: {
+      input: IO.STANDARD,
+      output: IO.STANDARD,
+    },
+    synced: false
+  }
+}
+
 export interface ResultRunProgram {
   problemId: string,
   isAllTestsSuccessful: boolean,

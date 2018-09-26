@@ -2,7 +2,7 @@
   <div class="problems">
     <PageHeader class="problems--header">Problems</PageHeader>
     <div class="problems--content">
-      <div class="problems--add">
+      <div class="problems--add" v-if="isTeacher">
         <Button icon="add" :click="addProblem" class="problems--add-button">Add problem</Button>
       </div>
 
