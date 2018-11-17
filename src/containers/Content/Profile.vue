@@ -126,12 +126,12 @@ import { UserType } from '@/state'
     display: grid;
     grid:
       "header header"
-      "sidebar content"
-      "sidebar content"
+      "sidebar content" 1fr
       / 1fr 3fr;
 
     &--header {
       grid-area: header;
+      height: auto;
     }
 
     $contentPaddingTop: 1rem;

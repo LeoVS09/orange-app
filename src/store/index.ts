@@ -11,6 +11,9 @@ import getters from './getters'
 // @ts-ignore
 const debug = process.env.NODE_ENV !== 'production';
 
+if(debug) {
+  console.log("Debug mode enabled");
+}
 Vue.use(Vuex as any);
 
 const generator = createDataGeneratorPlugin();
