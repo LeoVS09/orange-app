@@ -3,6 +3,7 @@ const utils = require('./utils')
 const config = require('../config')
 const vueLoaderConfig = require('./vue-loader.conf')
 const VueLoaderPlugin = require('vue-loader/lib/plugin')
+const getTransformer = require('ts-transform-graphql-tag').getTransformer
 
 function resolve (dir) {
   return path.join(__dirname, '..', dir)
@@ -20,7 +21,8 @@ module.exports = {
       : config.dev.assetsPublicPath
   },
   resolve: {
-    extensions: ['.ts', '.js', '.vue', '.json'],
+    mainFields: ['browser', 'main', 'module'],
+    extensions: ['.ts', '.js', '.vue', '.json', '.graphql', '.gql'],
     alias: {
       'vue$': 'vue/dist/vue.esm.js',
       '@': resolve('src')
@@ -38,13 +40,22 @@ module.exports = {
         loader: 'ts-loader',
         exclude: /node_modules/,
         options: {
-          appendTsSuffixTo: [/\.vue$/],
+          appendTsSuffixTo: [/\.vue$/]
         }
       },
       {
         test: /\.js$/,
         loader: 'babel-loader',
         include: [resolve('src'), resolve('test')]
+      },
+      {
+        test: /\.(graphql|gql)$/,
+        exclude: /node_modules/,
+        loader: 'webpack-graphql-loader',
+        options: {
+          validate: true,
+          schema: "../graphql.schema.json"
+        }
       },
       {
         test: /\.svg$/,

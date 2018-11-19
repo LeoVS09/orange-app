@@ -1,8 +1,20 @@
 import {Problem, ResultRunProgram, Test, User, UserType} from "../state";
 import {createProblem, createUser} from "../store/plugins/mock/generator";
+import {makeClient, APIClient} from "./apollo";
+import {queries, mutations} from './graphql'
 
 const orangeManagerServerUrl = "http://localhost:3010";
 const credentials: RequestCredentials = 'same-origin';
+const databaseServerUri = "http://localhost:8349/graphql";
+
+export function makeApiClient (): APIClient {
+  return makeClient(databaseServerUri);
+}
+
+export {
+  queries,
+  mutations
+}
 
 const randomString = (): string => Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
 

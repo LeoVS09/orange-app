@@ -3,9 +3,7 @@ import * as Vuex from 'vuex'
 
 import createDataGeneratorPlugin from './plugins/mock/generator'
 
-import ui from './modules/ui'
-import profile from './modules/profile'
-import problems from './modules/problems'
+import modules from './modules'
 import getters from './getters'
 
 // @ts-ignore
@@ -19,11 +17,7 @@ Vue.use(Vuex as any);
 const generator = createDataGeneratorPlugin();
 
 export default new Vuex.Store({
-  modules: {
-    ui,
-    profile,
-    problems
-  },
+  modules,
   getters,
   plugins: debug ? [generator] : [],
   strict: debug

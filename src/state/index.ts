@@ -10,7 +10,7 @@ import {
   Test,
   defaultProblem} from "./problem";
 import {Contest, Requirements} from "./contest";
-import problems from "../store/modules/problems";
+import {APIClient} from "../api/apollo";
 
 export {
   User,
@@ -35,7 +35,8 @@ export enum Platform {
 export interface RootState {
   ui: UIState,
   profile: ProfileState,
-  problems: ProblemsState
+  problems: ProblemsState,
+  api: APIState
 }
 
 export interface ProfileState {
@@ -54,6 +55,10 @@ export interface ProblemsState {
   currentProblemId?: string
 }
 
+export interface APIState {
+  client: APIClient;
+}
+
 export interface RootGetters {
   platform: Platform,
   isSideBarVisible: boolean,
@@ -61,7 +66,8 @@ export interface RootGetters {
   openProblems: Array<Problem>,
   closedProblems: Array<Problem>,
   problems: Array<Problem>,
-  currentProblem?: Problem
+  currentProblem?: Problem,
+  apiClient: APIClient
 }
 
 export interface IActionContext<S> extends ActionContext<S,RootState> {

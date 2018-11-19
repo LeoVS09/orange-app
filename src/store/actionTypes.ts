@@ -29,3 +29,6 @@ export const SYNC_TEST = 'SYNC_TEST';
 export const SYNC_PROBLEM = 'SYNC_PROBLEM';
 export const START_CREATE_PROBLEM = 'START_CREATE_PROBLEM';
 export const CREATE_PROBLEM = 'CREATE_PROBLEM';
+
+// API
+export const SET_CLIENT = 'SET_CLIENT';

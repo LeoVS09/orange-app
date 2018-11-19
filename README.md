@@ -19,3 +19,7 @@ npm run build
 # start production server at port 80
 npm run server
 ```
+
+### TODO
+* Auto-load graphql schema and rebuild application (auto-exported schema contain all data
+in "data" field, need fix!)
