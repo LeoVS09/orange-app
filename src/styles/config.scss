@@ -1,3 +1,5 @@
+
+// ---------------------------------------- Colors -----------------------------------------
 $primaryColor: #ffffff;
 $secondaryColor: #d7d7d7;
 $backgroundColor: $primaryColor;
@@ -11,13 +13,26 @@ $footerColor: #363636;
 $doneColor: green;
 $inputColor: #F57C00;
 $inputErrorColor: #D50000;
-$buttonColor: #039BE5;
+
+$activeGradient: linear-gradient(160deg, #fda130, #fd7400, #ff6977);
+
+$buttonColor: #F57C00;
+$buttonShadowColor: #fda130;
+$buttonPrimaryColor: #039BE5;
+$buttonPrimaryShadowColor: #039BE5;
 $buttonHighlightColor: #FFB300;
-$buttonTextColor: white;
+$buttonTextColor: #505254;
+$buttonBorderColor: $secondaryColor;
+$buttonActiveColor: linear-gradient(160deg, #fda130, #ff7b78);
+$buttonActiveTextColor: white;
+$buttonPrimaryTextColor: white;
+
 $spinnerColor: $buttonColor;
 $activeColor: #F57C00;
 $menuTextColor: lighten($mainTextColor, 20%);
-$activeGradient: linear-gradient(160deg, #fda130, #fd7400, #ff6977);
+
+
+// ---------------------------------------- Sizes ------------------------------------------
 
 $topBarHeight: 3rem;
 $contentMargin: 3rem;
@@ -29,6 +44,11 @@ $footerHeight: 10rem;
 $inputWidth: 30rem;
 $headerPadding: 0.7rem $contentPaddingSides;
 $problemLinePadding: 0.7rem;
+
+$buttonPaddingTop: 0.3rem;
+$buttonPaddingSides: 1.1rem;
+
+// ---------------------------------------- Skelet -----------------------------------------
 
 $skeletonColor: #ECECEC;
 $skeletonAnimationTime: 1.5s;

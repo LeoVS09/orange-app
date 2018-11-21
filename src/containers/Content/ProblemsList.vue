@@ -7,10 +7,26 @@
       </div>
 
       <div class="problems--filters">
-        <p :class="{active: filter === 'All'}" @click="viewAll">All</p>
-        <p :class="{active: filter === 'Open'}" @click="viewOpen">Open</p>
-        <p :class="{active: filter === 'Closed'}" @click="viewClosed">Closed</p>
-        <p :class="{active: filter === 'Resolved'}" @click="viewResolved">Resolved</p>
+        <Button
+          :click="viewAll"
+          :active="filter === 'All'"
+          class="problems--filter-item"
+        >All</Button>
+        <Button
+          :click="viewOpen"
+          :active="filter === 'Open'"
+          class="problems--filter-item"
+        >Open</Button>
+        <Button
+          :click="viewClosed"
+          :active="filter === 'Closed'"
+          class="problems--filter-item"
+        >Closed</Button>
+        <Button
+          :click="viewResolved"
+          :active="filter === 'Resolved'"
+          class="problems--filter-item"
+        >Resolved</Button>
       </div>
 
       <table class="problems--list">
@@ -137,35 +153,17 @@
       width: 100%;
       display: flex;
       flex-direction: row;
-      justify-content: flex-start;
-      color: $primaryTextColor;
-      margin-bottom: -2px;
+      justify-content: flex-end;
+      margin-bottom: 1rem;
+      margin-top: 1rem;
       margin-left: 0;
+    }
 
+    &--filter-item {
+      margin-right: 1rem;
 
-      p {
-        padding: 0.1rem 2.5rem;
-        margin-top: 0.9rem;
-        margin-bottom: 0;
-        cursor: pointer;
-        transition: box-shadow 0.2s;
-
-        &:last-child {
-          border-right: none;
-        }
-
-        &:hover {
-          color: $activeColor;
-          box-shadow: inset 0 -5px 5px -5px $activeColor;
-        }
-
-        &.active {
-          box-shadow: none;
-          background: $activeGradient;
-          color: white;
-          border-right-color: #ff6977;
-          cursor: default;
-        }
+      &:last-child {
+        margin-right: 0;
       }
     }
 
@@ -187,7 +185,6 @@
       width: 100%;
       display: flex;
       flex-direction: row;
-      border-top: 1px solid $secondaryColor;
       padding-top: 1.5*$problemLinePadding;
       padding-bottom: 1.5*$problemLinePadding;
       transition: box-shadow 0.2s cubic-bezier(.25,.8,.25,1);

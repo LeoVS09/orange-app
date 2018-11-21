@@ -21,7 +21,13 @@
 
     <p class="signup--agreement">We promise don't publish this information.</p>
 
-    <Button :tabindex="6" :click="clickRegister" class="signup--button" :disabled="isDisabled">Sign Up</Button>
+    <Button
+      :tabindex="6"
+      :click="clickRegister"
+      class="signup--button"
+      :disabled="isDisabled"
+      :primary="true"
+    >Sign Up</Button>
   </div>
 </template>
 

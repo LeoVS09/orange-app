@@ -37,9 +37,8 @@
   import * as actions from '../store/actionTypes';
   import {checkIsLogin} from '../identity'
 
-  function isHover(x: number, y: number, maxX: number, maxY: number) {
+  function isHover(x: number, y: number, maxX: number, maxY: number, limit: number = 0.25) {
 
-    const limit = 0.25;
     let isSideXHovered = x / (maxX + 0.0) > (1 - limit);
     let isSideYHovered = y / (maxY + 0.0) < (limit);
 
@@ -82,7 +81,7 @@
             this.endHoverProfile();
           }
         } else {
-          if (isHover(event.pageX, event.pageY - el.scrollTop, el.offsetWidth, el.offsetHeight)) {
+          if (isHover(event.pageX, event.pageY - el.scrollTop, el.offsetWidth, el.offsetHeight, 0.1)) {
             this.startHoverProfile();
           }
         }
