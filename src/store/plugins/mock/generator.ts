@@ -46,12 +46,18 @@ export function createProblem(): Problem {
 export function createUser(login: string, password: string, type: UserType): User {
   return {
     id: type === UserType.TEACHER ? UserType.TEACHER : randomString(),
+    isAdmin: false,
     firstName: AUTHORS[random(0, AUTHORS.length)],
     familyName: AUTHORS[random(0, AUTHORS.length)],
     lastName: AUTHORS[random(0, AUTHORS.length)],
     login,
     type,
-    email: login,
+    emails: [{
+      email:login,
+      updatedAt: '',
+      createdAt: '',
+      isVerified: true
+    }],
   }
 }
 

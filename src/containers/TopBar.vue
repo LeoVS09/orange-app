@@ -1,20 +1,22 @@
 <template>
   <div class="top-bar--container">
-    <transition name="scroll-down" >
-      <div v-if="!scrollTop || isScroll" :class="{'top-bar': true, 'scrolled': scrollTop ? isScroll : false }" >
-        <Logo :click="clickHome" class="top-bar--logo" />
+    <transition name="scroll-down">
+      <div v-if="!scrollTop || isScroll" :class="{'top-bar': true, 'scrolled': scrollTop ? isScroll : false }">
+        <Logo :click="clickHome" class="top-bar--logo"/>
         <div class="top-bar--menu">
           <span @click="clickProblems">Problems</span>
           <span @click="clickContests">Contests</span>
         </div>
         <div class="top-bar--profile" @click="clickProfile">
-          <span class="top-bar--profile-text" >{{profileText}}</span>
-          <Icon type="account_circle" class="top-bar--profile-icon"/>
+          <span class="top-bar--profile-text">{{profileText}}</span>
+          <Icon type="menu" class="top-bar--profile-icon"/>
         </div>
       </div>
     </transition>
     <transition name="fade-down">
-      <div v-if="isViewProfileActions && !!userData && (isScroll || !scrollTop)" class="top-bar--profile-actions-back">
+      <div
+        v-if="isProfileActionsHover && !!userData && (isScroll || !scrollTop)"
+        class="top-bar--profile-actions-back">
         <div class="top-bar--profile-actions">
           <ul>
             <li @click="clickProfile">Profile</li>
@@ -28,7 +30,7 @@
 
 <script lang="ts">
   import Vue from 'vue'
-  import {Component} from 'vue-property-decorator'
+  import {Component, Prop} from 'vue-property-decorator'
   import {Logo, Icon} from '../components'
   import {Getter} from 'vuex-class'
   import {User} from "../state"
@@ -56,25 +58,31 @@
     // @ts-ignore
     @Getter('profile') userData?: User;
 
-    isViewProfileActions = false;
+    @Prop({
+      type: Boolean,
+      default: false
+    })
+    showProfileActions = false;
+
+    isProfileActionsHover = this.showProfileActions;
     isScroll = false;
     scrollTop = 0;
 
-    created(){
+    created() {
       // @ts-ignore
       mousemoveListener = (event: MouseEvent) => {
         let el: HTMLElement | null = document.querySelector('html');
-        if(!el) {
+        if (!el) {
           console.error("Unexpected error");
           return
         }
 
-        if(this.isViewProfileActions){
-          if(!isHover(event.pageX, event.pageY - el.scrollTop, el.offsetWidth, el.offsetHeight)){
+        if (this.isProfileActionsHover) {
+          if (!isHover(event.pageX, event.pageY - el.scrollTop, el.offsetWidth, el.offsetHeight)) {
             this.endHoverProfile();
           }
-        }else {
-          if(isHover(event.pageX, event.pageY - el.scrollTop, el.offsetWidth, el.offsetHeight)){
+        } else {
+          if (isHover(event.pageX, event.pageY - el.scrollTop, el.offsetWidth, el.offsetHeight)) {
             this.startHoverProfile();
           }
         }
@@ -85,12 +93,12 @@
       let oldScroll = 0;
       window.onscroll = () => {
         let el: HTMLElement | null = document.querySelector('html');
-        if(!el) {
+        if (!el) {
           console.error("Unexpected error");
           return
         }
 
-        if(oldScroll - el.scrollTop > 0){
+        if (oldScroll - el.scrollTop > 0) {
           this.startScroll(el.scrollTop)
         } else {
           this.endScroll(el.scrollTop)
@@ -100,24 +108,24 @@
       }
     }
 
-    beforeDestroy(){
+    beforeDestroy() {
       document.removeEventListener("mousemove", mousemoveListener)
     }
 
-    clickHome(){
-      this.$router.push({ name: 'home' });
+    clickHome() {
+      this.$router.push({name: 'home'});
     }
 
-    clickProblems(){
-      this.$router.push({ name: 'home' });
+    clickProblems() {
+      this.$router.push({name: 'home'});
     }
 
-    clickContests(){
+    clickContests() {
       console.log("clickContests")
     }
 
-    get profileText(){
-      if(!this.userData){
+    get profileText() {
+      if (!this.userData) {
         return 'Sign In'
       }
 
@@ -127,30 +135,38 @@
       return name;
     }
 
-    startHoverProfile(){
-      if(this.userData){
-        this.isViewProfileActions = true;
+    calcShowProfileActions(){
+      return this.isProfileActionsHover && !!this.userData && (this.isScroll || !this.scrollTop)
+    }
+
+    startHoverProfile() {
+      if (this.userData) {
+        this.isProfileActionsHover = true;
+        this.showProfileActions = this.calcShowProfileActions();
+        this.$emit("update:showProfileActions", this.showProfileActions);
       }
     }
 
-    endHoverProfile(){
-      this.isViewProfileActions = false;
+    endHoverProfile() {
+      this.isProfileActionsHover = false;
+      this.showProfileActions = this.calcShowProfileActions();
+      this.$emit("update:showProfileActions", this.showProfileActions);
     }
 
-    startScroll(top: number){
+    startScroll(top: number) {
       this.isScroll = true;
       this.scrollTop = top;
     }
 
-    endScroll(top: number){
+    endScroll(top: number) {
       this.isScroll = false;
       this.scrollTop = top;
     }
 
     clickProfile() {
-      if(this.userData){
-        this.$router.push({ name: 'profile' })
-      }else {
+      if (this.userData) {
+        this.$router.push({name: 'profile'})
+      } else {
         this.$router.push({name: 'signin'});
       }
     }
@@ -177,7 +193,7 @@
     transition: all 0.15s;
 
     &.scrolled {
-      box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+      box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
     }
 
     &--logo {
@@ -233,6 +249,7 @@
         left: 0;
         right: 0;
         z-index: 19;
+
         background: linear-gradient(45deg, rgba(253, 161, 48, 0.06) 0%, rgba(253, 116, 0, 0.51) 40%, #ff6977 100%);
       }
 
@@ -248,6 +265,7 @@
           padding: 0;
           list-style: none;
           margin: 2rem 2rem 0 0;
+
           li {
             padding: 0.5rem 2rem;
             color: white;
@@ -265,6 +283,7 @@
   .fade-down-enter-active, .fade-down-leave-active {
     transition: all .3s;
   }
+
   .fade-down-enter, .fade-down-leave-to {
     opacity: 0;
   }

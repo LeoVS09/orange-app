@@ -1,12 +1,14 @@
 <template>
   <main>
-    <top-bar></top-bar>
-    <div class="home">
+    <top-bar
+      :showProfileActions.sync="showProfileActions"
+    ></top-bar>
+    <div :class="{home: true, blured:showProfileActions}">
       <div v-bind:class='{ "content-wrapper": true, "text-page": isTextPage }'>
         <router-view></router-view>
       </div>
     </div>
-    <footer-view></footer-view>
+    <footer-view :class="{blured: showProfileActions}"></footer-view>
   </main>
 </template>
 
@@ -27,12 +29,18 @@
   export default class Home extends Vue {
     // @ts-ignore
     @Getter('isTextPage') isTextPage: boolean;
+
+    showProfileActions = false
   }
 
 </script>
 
 <style scoped lang="scss">
   @import "../styles/config.scss";
+
+  .blured {
+    filter: blur(10px);
+  }
 
   .home {
     width: 100%;

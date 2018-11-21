@@ -1,25 +1,13 @@
-import gql from 'graphql-tag'
+import * as mutations from './mutations'
+import * as queries from './queries'
+import { makeClient} from "./apollo";
+import urls from '../urls.json'
 
-import * as queriesGQls from './queries'
-import * as mutationsGQLs from './mutations'
+const client = makeClient(urls.DATABASE_SERVER);
 
-// TODO: add precompiling queries when build project
+// TODO: add pre-compiling queries when build project
+// TODO: add uto client insert
 
-let queries = {...queriesGQls };
+export const login = mutations.login(client);
 
-Object.keys(queriesGQls).forEach(key => {
-  // @ts-ignore
-  queries[key] = gql(queriesGQls[key])
-});
-
-let mutations = {...mutationsGQLs};
-
-Object.keys(mutationsGQLs).forEach(key => {
-  // @ts-ignore
-  mutations[key] = gql(mutationsGQLs[key])
-});
-
-export {
-  queries,
-  mutations
-}
+export const currentUser = queries.currentUser(client);

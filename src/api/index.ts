@@ -1,43 +1,16 @@
-import {Problem, ResultRunProgram, Test, User, UserType} from "../state";
+import {Problem, Test, User, UserType} from "../state";
 import {createProblem, createUser} from "../store/plugins/mock/generator";
-import {makeClient, APIClient} from "./apollo";
-import {queries, mutations} from './graphql'
-
-const orangeManagerServerUrl = "http://localhost:3010";
-const credentials: RequestCredentials = 'same-origin';
-const databaseServerUri = "http://localhost:8349/graphql";
-
-export function makeApiClient (): APIClient {
-  return makeClient(databaseServerUri);
-}
 
 export {
-  queries,
-  mutations
-}
+  login,
+  currentUser
+} from './graphql'
+
+export {
+  runProgram
+} from './judge'
 
 const randomString = (): string => Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
-
-enum URL {
-  RUN_PROGRAM = '/run'
-}
-
-interface RunProgramRequestBody {
-  problemId: string,
-  code: string
-}
-
-export function runProgram(problemId: string, code: string): Promise<ResultRunProgram> {
-  let body: RunProgramRequestBody = {
-    problemId,
-    code
-  };
-  return fetch(orangeManagerServerUrl + URL.RUN_PROGRAM, {
-    method: "POST",
-    credentials,
-    body: JSON.stringify(body)
-  }).then(response => response.json())
-}
 
 export function getProblem(problemId: string): Promise<Problem> {
   return new Promise<Problem>((resolve => {

@@ -14,9 +14,7 @@ const getters: GetterTree<RootState, any> = {
   openProblems: state => state.problems.data.filter(p => p.isOpen),
   closedProblems: state => state.problems.data.filter(p => !p.isOpen),
   problems: state => state.problems.data,
-  currentProblem: state => state.problems.data.find( p => p.id == state.problems.currentProblemId),
-
-  apiClient: state => state.api.client
+  currentProblem: state => state.problems.data.find( p => p.id == state.problems.currentProblemId)
 };
 
 export default getters;

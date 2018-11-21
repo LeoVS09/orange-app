@@ -56,7 +56,7 @@ import { UserType } from '@/state'
   })
   export default class Profile extends Vue {
     // @ts-ignore
-    @Getter('profile') userData: User;
+    @Getter('profile') userData: Profile;
     // @ts-ignore
     @Getter isTeacher: boolean;
 
