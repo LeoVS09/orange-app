@@ -1,4 +1,5 @@
-
+// TODO: change variables names to kebab-case
+// TODO: change palette to google material style colors
 // ---------------------------------------- Colors -----------------------------------------
 $primaryColor: #ffffff;
 $secondaryColor: #d7d7d7;
@@ -23,7 +24,7 @@ $buttonPrimaryShadowColor: #039BE5;
 $buttonHighlightColor: #FFB300;
 $buttonTextColor: #505254;
 $buttonBorderColor: $secondaryColor;
-$buttonActiveColor: linear-gradient(160deg, #fda130, #ff7b78);
+$buttonActiveColor: linear-gradient(120deg, #fda130, #ff7b78);
 $buttonActiveTextColor: white;
 $buttonPrimaryTextColor: white;
 
@@ -47,6 +48,13 @@ $problemLinePadding: 0.7rem;
 
 $buttonPaddingTop: 0.3rem;
 $buttonPaddingSides: 1.1rem;
+
+// ---------------------------------------- Fonts ------------------------------------------
+
+$font-size-text-primary: 1rem;
+$font-size-input-primary: $font-size-text-primary;
+
+$font-line-height-input-primary: 1rem;
 
 // ---------------------------------------- Skelet -----------------------------------------
 

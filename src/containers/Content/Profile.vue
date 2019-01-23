@@ -11,19 +11,20 @@ import { UserType } from '@/state'
 
     <div class="profile--content">
       <h4 class="profile--data-header">Public data</h4>
-      <Input type="text" placeholder="First Name" :value.sync="firstName" :error.sync="isFirstNameError" :tabindex="1" :disabled="isDisabled"/>
-      <Input type="text" placeholder="Family Name" :value.sync="familyName" :error.sync="isFamilyNameError" :tabindex="2" :disabled="isDisabled"/>
-      <Input type="text" placeholder="Last Name" :value.sync="lastName" :error.sync="isLastNameError" :tabindex="3" :disabled="isDisabled"/>
-      <Input type="text" placeholder="Login" :value.sync="login" :error.sync="isLoginError" :tabindex="4" :disabled="isDisabled"/>
+      <Input type="text" placeholder="First Name" v-model="firstName" :error.sync="isFirstNameError" :tabindex="1" :disabled="isDisabled"/>
+      <Input type="text" placeholder="Family Name" v-model="familyName" :error.sync="isFamilyNameError" :tabindex="2" :disabled="isDisabled"/>
+      <Input type="text" placeholder="Last Name" v-model="lastName" :error.sync="isLastNameError" :tabindex="3" :disabled="isDisabled"/>
+      <Input type="text" placeholder="Login" v-model="login" :error.sync="isLoginError" :tabindex="4" :disabled="isDisabled"/>
 
       <div class="profile--delimiter"></div>
       <h4 class="profile--data-header">Confidential data</h4>
-      <Input type="text" placeholder="Email" :value.sync="email" :error.sync="isEmailError" :tabindex="5" :autofocus="true" :disabled="isDisabled"/>
+      <Input type="text" placeholder="Email" v-model="email" :error.sync="isEmailError" :tabindex="5" :disabled="isDisabled"/>
+			<Select type="text" placeholder="Country" :value="country" :items="allCountries" :error.sync="isCountryError" :tabindex="6" :disabled="isDisabled" />
 
       <div class="profile--delimiter"></div>
       <h4 class="profile--data-header">Change password</h4>
-      <Input type="password" placeholder="Old password" :value.sync="oldPassword" :error.sync="isOldPasswordError" :tabindex="6" :disabled="isDisabled"/>
-      <Input type="password" placeholder="New Password" :value.sync="newPassword" :error.sync="isNewPasswordError" :tabindex="7" :disabled="isDisabled"/>
+      <Input type="password" placeholder="Old password" v-model="oldPassword" :error.sync="isOldPasswordError" :tabindex="6" :disabled="isDisabled"/>
+      <Input type="password" placeholder="New Password" v-model="newPassword" :error.sync="isNewPasswordError" :tabindex="7" :disabled="isDisabled"/>
     </div>
 
   </div>
@@ -36,7 +37,7 @@ import { UserType } from '@/state'
   import {User, UserType} from "../../state"
   import * as actions from '../../store/actionTypes';
   import {checkIsLogin} from '../../identity'
-  import {Icon, Input, PageHeader, SourceView} from '../../components';
+  import {Icon, Input, PageHeader, SourceView, Button, Select} from '../../components';
 
   function capitalise(s: string): string {
     return s[0].toUpperCase() + s.slice(1);
@@ -51,7 +52,9 @@ import { UserType } from '@/state'
       SourceView,
       Icon,
       Input,
-      PageHeader
+      PageHeader,
+			Button,
+			Select
     }
   })
   export default class Profile extends Vue {
@@ -81,6 +84,10 @@ import { UserType } from '@/state'
     lastName = "";
     isLastNameError = false;
 
+    country = "";
+		countryAutoComplete = [];
+    isCountryError = false;
+
     isDisabled = false;
 
     created() {
@@ -96,6 +103,7 @@ import { UserType } from '@/state'
       this.firstName = this.userData.firstName;
       this.familyName = this.userData.familyName || "";
       this.lastName = this.userData.lastName;
+      this.country = this.userData.country;
     }
 
     get name(): string {
@@ -114,6 +122,24 @@ import { UserType } from '@/state'
       this.$store.dispatch(actions.LOGOUT_FROM_PROFILE);
       this.$router.go(0);
     }
+
+		inputCountry(value: string) {
+    	// TODO: validation
+    	this.country = value;
+			this.$store.dispatch(actions.SEARCH_COUNTRIES, value)
+				.then(results => this.countryAutoComplete = results);
+		}
+
+    searchCountries(value: string){
+    	console.log(value)
+			this.country = value;
+    	this.$store.dispatch(actions.SEARCH_COUNTRIES, value)
+				.then(result => console.log(result));
+		}
+
+		get allCountries(){
+    	// TODO: all countries from server
+		}
   }
 </script>
 

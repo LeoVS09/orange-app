@@ -1,3 +1,10 @@
+import {City, Country} from "./country";
+import {University} from "./university";
+import {Language} from "./language";
+import {CodeEditor} from "./codeEditor";
+import {Travel} from "./travel";
+import {Email} from "./email";
+
 export enum UserType {
   CONTESTANT = "CONTESTANT",
   TEACHER = "TEACHER"
@@ -7,31 +14,19 @@ export interface User {
   id: string
   login: string
   isAdmin: boolean
-  emails: [
-    {
-      email: string
-      isVerified: boolean
-      createdAt: string
-      updatedAt: string
-    }
-  ]
+  emails: Array<Email>
   firstName: string
   familyName?: string
   lastName: string
   type: UserType
   photography?: string
-  group?: string
+  groupNumber?: string
   course?: number
-  universityShortName?: string
-  universityLongName?: string
-  city?: string
-  country?: string
+  university?: University
+  city?: City
+  country?: Country
   phone?: string
-  languages?: Array<string>
-  codeEditors?: Array<string>
-  travel?: {
-    arrival: number
-    departure: number
-    isNeedHousing: boolean
-  }
+  languages?: Array<Language>
+  codeEditors?: Array<CodeEditor>
+  travel?: Array<Travel>
 }

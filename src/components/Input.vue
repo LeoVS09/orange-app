@@ -1,13 +1,13 @@
 <template>
     <div :class="{'input-container': true, error}">
-      <span :class="{'visible': !!value.length, 'input-container--text':true}">{{placeholder}}</span>
-      <input :type="type" :placeholder="placeholder" :value="value" @input="updateValue" class="input-container--input" v-bind="options"/>
+      <span :class="{'visible': !!currentValue.length, 'input-container--placeholder':true}">{{placeholder}}</span>
+      <input :type="type" :placeholder="placeholder" :value="currentValue" @input="inputValue" class="input-container--input" v-bind="options"/>
     </div>
 </template>
 
 <script lang="ts">
   import Vue from 'vue'
-  import {Component} from 'vue-property-decorator'
+  import {Component, Prop, Watch} from 'vue-property-decorator'
 
   interface Options {
     tabindex?: number,
@@ -15,43 +15,66 @@
     disabled?: boolean
   }
 
-  @Component({
-    props: {
-      type: String,
-      placeholder: String,
-      value: String,
-      tabindex: Number,
-      autofocus: Boolean,
-      error: Boolean,
-      disabled: Boolean
-    }
-  })
+  @Component
   export default class Input extends Vue {
-    error = false;
+		currentValue = "";
 
-    updateValue(event: any){
+    @Prop(String)
+		type: string;
+
+		@Prop(String)
+		placeholder: string;
+
+		@Prop(String)
+		value: string;
+
+		@Prop(Number)
+		tabindex: number;
+
+		@Prop(Boolean)
+		autofocus: boolean;
+
+		@Prop({
+			type: Boolean,
+			default: false
+		})
+		error: boolean;
+
+		@Prop(Boolean)
+		disabled: boolean;
+
+    inputValue(event: any){
       if(event.target.value.length) {
         this.error = false;
       }
+      const value = event.target.value;
+
+      this.currentValue = value;
+
       this.$emit('update:error', this.error);
-      this.$emit('update:value', event.target.value)
+      this.$emit('input', value)
     }
 
+		@Watch('value')
+		updateValue(value: string){
+    	this.currentValue = value;
+		}
+
     get options(): Options {
-      let result: Options = {};
-      // @ts-ignore
+      let result = {} as Options;
+
       if(this.tabindex) {
-        // @ts-ignore
         result['tabindex'] = this.tabindex;
       }
-      // @ts-ignore
+
       if(this.autofocus){
         result['autofocus'] = true;
       }
-      // @ts-ignore
+
       if(this.disabled){
         result['disabled'] = true;
       }
+
       return result;
     }
   }
@@ -82,7 +105,7 @@
       }
     }
 
-    &--text {
+    &--placeholder {
       z-index: 2;
       font-size: 0.7rem;
       color: rgba(0, 0, 0, 0.65);

@@ -3,7 +3,8 @@ import {createProblem, createUser} from "../store/plugins/mock/generator";
 
 export {
   login,
-  currentUser
+  currentUser,
+	searchCountries
 } from './graphql'
 
 export {

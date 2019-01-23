@@ -1,0 +1,9 @@
+query SearchCountries($name: String!){
+  searchCountries(search: $name) {
+    nodes {
+      id
+      nodeId
+      name
+    }
+  }
+}

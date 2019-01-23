@@ -1,5 +1,5 @@
 {
   "ORANGE_MANAGER_SERVER": "http://localhost:3010",
-  "DATABASE_SERVER": "http://localhost:8349/graphql",
+  "DATABASE_SERVER": "http://localhost:8765/graphql",
   "RUN_PROGRAM": "/run"
 }

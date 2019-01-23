@@ -11,3 +11,5 @@ const client = makeClient(urls.DATABASE_SERVER);
 export const login = mutations.login(client);
 
 export const currentUser = queries.currentUser(client);
+
+export const searchCountries = queries.searchCountries(client);

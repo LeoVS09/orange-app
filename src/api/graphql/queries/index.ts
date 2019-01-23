@@ -1,4 +1,5 @@
 import currentUserGql from './currentUser.graphql'
+import searchCountriesGql from './searchCountries.graphql'
 import gql from 'graphql-tag'
 import {APIClient} from "../apollo";
 
@@ -26,6 +27,26 @@ export const currentUser = (client: APIClient) => () => {
     query: gql(currentUserGql)
   })
     .then(result => result.data && result.data.currentUser)
+}
+
+interface ISearchCountries {
+  searchCountries: {
+    nodes: Array<{
+      id: string
+      nodeId: string
+      name: string
+    }>
+  }
+}
+
+export const searchCountries = (client: APIClient) => (name: string) => {
+  return client.query<ISearchCountries>({
+    query: gql(searchCountriesGql),
+		variables: {
+    	name
+		}
+  })
+    .then(result => result.data && result.data.searchCountries.nodes)
 }
 
 

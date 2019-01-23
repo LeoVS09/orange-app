@@ -16,9 +16,11 @@ export default {
   state: initState,
 
   actions: {
+
     [actionTypes.SETUP_USER_PROFILE] (context: IActionContext<ProfileState>, user: User) {
       context.commit(SET_PROFILE_DATA, user)
     },
+
     [actionTypes.LOGIN_TO_PROFILE] (context: IActionContext<ProfileState>, {login, password, isRemember}: {login: string, password: string, isRemember: boolean}): Promise<boolean>{
       console.log("Sign in with login:", login, "and password:", password, ",remember:", isRemember);
       return signin(login, password, isRemember)
@@ -31,10 +33,16 @@ export default {
           return Promise.resolve(true)
         })
     },
+
     [actionTypes.LOGOUT_FROM_PROFILE] (context: IActionContext<ProfileState>){
       signout();
       context.commit(LOGOUT_FROM_PROFILE);
     },
+
+		[actionTypes.SEARCH_COUNTRIES](context: IActionContext<ProfileState>, name: string) {
+    	return API.searchCountries(name)
+		},
+
     [actionTypes.REGISTER_PROFILE] (context: IActionContext<ProfileState>, user: {firstName: string, lastName: string, email: string, password: string}): Promise<boolean> {
       return signin(user.email, user.password, false)
         .then(result => {

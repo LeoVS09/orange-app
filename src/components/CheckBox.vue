@@ -2,7 +2,7 @@
   <div class="checkbox-container" @click="click">
     <span class="checkbox-container--description"><slot>Ok</slot></span>
     <div class="checkbox-container--checkbox">
-      <input type="checkbox" v-model="value"/>
+      <input type="checkbox" :value="value" />
       <label></label>
     </div>
   </div>
@@ -21,8 +21,8 @@
     value = true;
 
     click(){
-      console.log("checkbox", this.value);
-      this.$emit('update:value', !this.value)
+			this.value = !this.value;
+      this.$emit('input:value', this.value)
     }
   }
 </script>

@@ -3,6 +3,7 @@ import Icon from './Icon.vue'
 import SourceView from './SourceView.vue'
 import Logo from './Logo.vue'
 import Input from './Input.vue'
+import Select from './Select.vue'
 import Button from './Button.vue'
 import CheckBox from './CheckBox.vue'
 import Spinner from './Spinner.vue'
@@ -20,6 +21,7 @@ export {
   Button,
   CheckBox,
   Spinner,
+	Select,
   PageHeader,
   ProblemListItem,
   TestView,

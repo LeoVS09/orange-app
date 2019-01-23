@@ -15,7 +15,8 @@
     "baseUrl": "./",
     "paths": {
       "@": ["src"]
-    }
+    },
+		"strictPropertyInitialization": false
   },
   "include": [
     "./src/**/*"
