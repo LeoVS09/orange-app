@@ -29,10 +29,12 @@
     }
 
     resize(){
+      // @ts-ignore
       this.$el.style.setProperty('height', 'auto');
       let contentHeight = this.$el.scrollHeight + 1;
 
       const heightVal = contentHeight + 'px';
+      // @ts-ignore
       this.$el.style.setProperty('height', heightVal);
 
       return this

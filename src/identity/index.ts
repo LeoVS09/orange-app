@@ -6,7 +6,7 @@ const TOKEN_NAME = 'token';
 
 export function signin(username: string, password: string, isRemember: boolean): Promise<User | null> {
   if (!username.length || !password.length) {
-    return Promise.resolve(null);
+    return Promise.reject('Not have login or password');
   }
 
   return login({

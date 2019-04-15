@@ -139,6 +139,7 @@ import { UserType } from '@/state'
 
 		get allCountries(){
     	// TODO: all countries from server
+       return []
 		}
   }
 </script>

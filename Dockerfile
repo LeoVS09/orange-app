@@ -1,16 +1,21 @@
-FROM node:8.11.4-jessie
+FROM node:11.14-stretch as base
 
-WORKDIR /orange-app
+# Need for developming for developming
+RUN apt update && apt upgrade -y && \
+   apt install -y bash bash-completion make curl
 
-RUN npm i npm@latest -g
+WORKDIR /ws
 
-COPY package*.json ./
-RUN npm install --verbose
+COPY package*.json /ws/
 
-ADD . .
+RUN yarn
 
-RUN npm run build
+FROM base
 
-EXPOSE 80
+COPY . /ws
+
+RUN yarn build
+
+EXPOSE 8080
 
 CMD ["node",  "server/index.js"]

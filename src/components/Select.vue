@@ -24,6 +24,11 @@
 	import Vue from 'vue'
 	import {Component, Prop, Watch} from 'vue-property-decorator'
 
+  interface SelectItem {
+	   text: string
+     value: any
+  }
+
 	interface Options {
 		tabindex?: number,
 		autofocus?: boolean,
@@ -86,7 +91,7 @@
 			this.isItemsVisible = !this.isItemsVisible
 		}
 
-		chooseItem(item){
+		chooseItem(item: SelectItem){
 			this.currentValue = item.text;
 			this.$emit('input', item.value)
 		}
