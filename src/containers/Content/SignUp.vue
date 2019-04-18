@@ -137,7 +137,7 @@
       margin-top: 1rem;
       margin-bottom: 1rem;
       width: 100%;
-      max-width: $inputWidth;
+      max-width: $input-width;
       display: flex;
       flex-direction: row;
       justify-content: flex-end;
@@ -145,20 +145,20 @@
       &-link {
         cursor: pointer;
         font-size: 0.8rem;
-        color: $secondaryTextColor;
+        color: $secondary-text-color;
 
         &:hover {
-          color: $inputColor;
+          color: $input-color;
         }
       }
 
       &-go {
-        color: $inputColor;
+        color: $input-color;
       }
     }
 
     &--agreement {
-      color: $secondaryTextColor;
+      color: $secondary-text-color;
       font-size: 0.9rem;
     }
 

@@ -11,6 +11,8 @@ export {
   runProgram
 } from './judge'
 
+const DEFAULT_MOCK_DURATION = 3
+
 const randomString = (): string => Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
 
 export function getProblem(problemId: string): Promise<Problem> {
@@ -19,7 +21,7 @@ export function getProblem(problemId: string): Promise<Problem> {
       let problem = createProblem();
       problem.id = problemId;
       resolve(problem)
-    }, 3000)
+    }, DEFAULT_MOCK_DURATION)
   }))
 }
 
@@ -44,7 +46,7 @@ export function syncTest(test: Test): Promise<SyncTestResult> {
       }
 
       resolve(result);
-    }, 1000)
+    }, DEFAULT_MOCK_DURATION)
   })
 }
 
@@ -58,7 +60,7 @@ export function syncProblem(problem: Problem): Promise<SyncProblemResult> {
     let result: SyncProblemResult = {ok: true, problem};
     setTimeout(() => {
       resolve(result);
-    }, 2000);
+    }, DEFAULT_MOCK_DURATION);
   })
 }
 
@@ -73,7 +75,7 @@ export function getUser(id: string): Promise<GetUserResult> {
     user.id = id;
     setTimeout(() => {
       resolve({ user, ok: true });
-    }, 2000);
+    }, DEFAULT_MOCK_DURATION);
   })
 }
 
@@ -108,6 +110,6 @@ export function putCreateProblem(problem: Problem): Promise<CreateProblemResultO
           examples
         }
       })
-    }, 3000)
+    }, DEFAULT_MOCK_DURATION)
   })
 }

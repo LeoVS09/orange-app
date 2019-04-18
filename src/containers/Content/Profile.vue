@@ -91,8 +91,6 @@ import { UserType } from '@/state'
     isDisabled = false;
 
     created() {
-      this.$store.dispatch(actions.SET_STANDARD_PAGE);
-
       if (!this.userData) {
         this.$router.push({name: 'signin'});
         return
@@ -170,7 +168,7 @@ import { UserType } from '@/state'
       padding-top: $contentPaddingTop;
 
       &-link {
-        border-right: 1px solid $borderLineColor;
+        border-right: 1px solid $border-line-color;
         width: 100%;
         text-align: center;
         cursor: pointer;
@@ -179,13 +177,13 @@ import { UserType } from '@/state'
         margin-bottom: 0;
 
         &:hover {
-          color: $activeColor;
+          color: $active-color;
         }
 
         &.active {
-          background: linear-gradient(90deg, rgba(0,0,0,0) 30%, lighten($activeColor, 48%) 100%);
-          border-right: 1px solid $activeColor;
-          color: $activeColor;
+          background: linear-gradient(90deg, rgba(0,0,0,0) 30%, lighten($active-color, 48%) 100%);
+          border-right: 1px solid $active-color;
+          color: $active-color;
           cursor: default;
         }
       }
@@ -213,8 +211,8 @@ import { UserType } from '@/state'
       text-align: left;
       margin-top: 0;
       margin-bottom: 0;
-      width: $inputWidth;
-      color: $secondaryTextColor;
+      width: $input-width;
+      color: $secondary-text-color;
     }
   }
 

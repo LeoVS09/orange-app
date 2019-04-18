@@ -43,7 +43,7 @@ docker-build:
 	@docker build -t $(DOCKER_IMAGE_TAG) .
 
 docker-console:
-	docker-compose run orange-app /bin/bash
+	docker-compose run -p 8080:8080 orange-app /bin/bash
 
 build-console: docker-build docker-console
 

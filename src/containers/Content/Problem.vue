@@ -1,45 +1,42 @@
 <template>
    <div v-if="isLoading" class="skeleton-loading problem-loading"></div>
    <div v-else-if="!!problemData" class="problem">
-      <div class="problem--header" v-if="isTeacher">
-         <input class="input" type="text" :value="problemData.name" @input="updateName" placeholder="Problem name..."/>
-      </div>
-      <div v-else v-bind:class="{'problem--header': true, 'done': done}">
-         <h1 class="name">{{problemData.name}}</h1>
-         <div class="color-line">
-            <div class="left-triangle"></div>
-            <div class="right-triangle"></div>
-            <div class="left-triangle"></div>
-            <div class="right-triangle"></div>
-            <div class="left-triangle"></div>
-            <div class="right-triangle last"></div>
-         </div>
-         <i class="material-icons icon">done</i>
-      </div>
-      <p class="problem--tags"><span
-         v-for="tag in problemData.tags"
-         class="problem--tag-item"
-      >{{tag}}</span>
-      </p>
 
-      <TextareaAutoresize
-         class="problem--description-textarea"
-         v-if="isTeacher"
+      <page-header
+         :editable="isTeacher"
+         :value="problemData.name"
+         @input="updateName"
+         placeholder="Problem name..."
+         :colorLine="done && 'success'"
+         :highlight="false"
+         :textWidth="true"
+      >{{problemData.name}}</page-header>
+
+      <tags :values="problemData.tags" ></tags>
+
+      <page-section
+         :editable="isTeacher"
          :value="problemData.text"
-         :update="updateText"
-         placeholder="Problem description..."></TextareaAutoresize>
-      <p v-else class="problem--description">{{problemData.text}}</p>
+         :input="updateText"
+         placeholder="Problem description..."
+      >{{problemData.text}}</page-section>
 
-      <div class="problem--configuration">
-         <div class="configuration-line"></div>
+      <page-section highlight :textWidth="false">
          <div class="problem--limits">
-            <h4>Limits per test</h4>
-            <div class="time">Time: {{formatTime(problemData.limits.time)}}</div>
-            <div class="memory">Memory: {{formatBytes(problemData.limits.memory)}}</div>
-            <div class="input">Input: {{formatIO(problemData.io.input)}}</div>
-            <div class="output">Output: {{formatIO(problemData.io.output)}}</div>
+            <h4 class="problem--limits-header">Limits per test</h4>
+
+            <data-view
+               :values="{
+                  Time: formatTime(problemData.limits.time),
+                  Memory: formatBytes(problemData.limits.memory),
+                  Input: formatIO(problemData.io.input),
+                  Output: formatIO(problemData.io.output)
+               }"
+            />
          </div>
-      </div>
+      </page-section>
+
+      <h4 class="problem--example-header">Examples</h4>
 
       <TestView class="problem--example" v-for="(example, i) in problemData.examples"
                 :key="'test-' + i + '-' + example.id" :testData="example" v-if="!isTeacher"/>
@@ -94,6 +91,7 @@
             </div>
          </div>
       </div>
+
       <transition name="button-fade-up">
          <div class="problem--sync" v-if="!isSynced">
             <Button
@@ -113,31 +111,44 @@
    import Vue from 'vue'
    import {Component, Watch, Prop} from 'vue-property-decorator'
    import {Getter} from 'vuex-class'
-   import {Problem, ResultRunProgram} from "../../state"
-   import * as actions from '../../store/actionTypes';
-   import {TestView, Icon, Button, TextareaAutoresize} from '../../components';
-   import {IO} from "../../state/problem"
+   import {Problem, ResultRunProgram} from "@/state"
+   import * as actions from '@/store/actionTypes';
+   import {
+      TestView,
+      Icon,
+      Button,
+      TextareaAutoresize,
+      PageHeader,
+      Tags,
+      PageSection,
+      DataView
+   } from '@/components';
+   import {ProgramInput, ProgramOutput, Tag} from "@/state/problem"
+   // TODO: examples and description on one screen
 
    Component.registerHooks([
       'beforeRouteUpdate'
    ]);
 
    @Component({
-      // @ts-ignore
       components: {
          TestView,
          Icon,
          Button,
-         TextareaAutoresize
+         TextareaAutoresize,
+         PageHeader,
+         Tags,
+         PageSection,
+         DataView
       }
    })
    export default class ProblemView extends Vue {
 
-      @Prop(Boolean) isCreate!: boolean;
-      // @ts-ignore
+      @Prop(Boolean) isCreate?: boolean;
+
       @Getter('currentProblem') problemData?: Problem;
-      // @ts-ignore
-      @Getter isTeacher: boolean;
+
+      @Getter isTeacher?: boolean;
 
       codeOfProgram = "";
       isLoading = false;
@@ -152,8 +163,6 @@
       }
 
       created() {
-         this.$store.dispatch(actions.SET_TEXT_PAGE);
-
          if (this.isCreate) {
             this.isLoading = false;
             this.$store.dispatch(actions.START_CREATE_PROBLEM)
@@ -209,11 +218,8 @@
          return date.toLocaleDateString()
       }
 
-      formatIO(value: IO) {
-         if (value === IO.STANDARD) {
-            return 'standard'
-         }
-         return 'file'
+      formatIO(value: ProgramInput | ProgramOutput) {
+         return value.name
       }
 
       formatBytes(bytes: number, decimals: number = 0) {
@@ -244,8 +250,8 @@
          this.$store.dispatch(actions.EDIT_PROBLEM, {...this.problemData, name: event.target.value})
       }
 
-      updateText(text: string) {
-         this.$store.dispatch(actions.EDIT_PROBLEM, {...this.problemData, text})
+      updateText(event: any) {
+         this.$store.dispatch(actions.EDIT_PROBLEM, {...this.problemData, text: event.target.value})
       }
 
       syncProblem() {
@@ -289,6 +295,11 @@
    @import "../../styles/skeleton";
 
    .problem-loading {
+      width: 100%;
+      max-width: $max-text-width;
+      margin-left: auto;
+      margin-right: auto;
+
       @include skeleton(60rem, 80rem, (
             (1rem, 2rem, 10rem, 2rem),
             (40rem, 3rem, 15rem, 1rem),
@@ -310,141 +321,29 @@
    }
 
    .problem {
-
-      &--header {
-         display: flex;
-         flex-direction: row;
-         margin-top: 1.5rem;
-
-         .input {
-            font-size: 2rem;
-            border: none;
-            width: 100%;
-            outline: none;
-            font-family: Roboto, sans-serif;
-            color: $headerTextColor;
-         }
-
-         .name {
-            color: $headerTextColor;
-            margin-bottom: 0;
-            margin-top: 0;
-            background-color: $backgroundColor;
-            padding-right: 1rem;
-         }
-
-         .icon {
-            display: none;
-            background-color: $backgroundColor;
-         }
-
-         &.done {
-            .text {
-               color: $doneColor;
-            }
-
-            .icon {
-               display: inline-block;
-               color: $doneColor;
-               top: 0;
-               padding-top: 0.1em;
-               font-size: 2.4rem;
-            }
-
-            $triangle-height: 1.4rem;
-            $triangle-weight: 1.5rem;
-
-            .color-line {
-               flex: 1;
-               background-color: $doneColor;
-               display: flex;
-               flex-direction: row;
-               height: $triangle-height;
-               margin-top: 0.6rem;
-            }
-
-            .left-triangle, .right-triangle {
-               font-size: 0;
-               line-height: 0;
-               width: 0;
-
-            }
-
-            .left-triangle {
-               background-color: $doneColor;
-               border-top: $triangle-height solid $backgroundColor;
-               border-right: $triangle-weight solid $doneColor;
-            }
-
-            .right-triangle {
-               background-color: $doneColor;
-               border-bottom: $triangle-height solid $backgroundColor;
-               border-left: $triangle-weight solid $doneColor;
-
-               &.last {
-                  margin-left: auto;
-               }
-            }
-         }
-      }
-
-      &--tags {
-         margin-top: 0;
-         margin-bottom: 0;
-         color: $secondaryTextColor;
-         font-size: 0.8rem;
-         display: flex;
-         flex-direction: row;
-         width: 100%;
-         justify-content: flex-end;
-      }
-
-      &--tag-item {
-         margin-right: 1em;
-      }
-
-      &--description, &--description-textarea {
-         padding-bottom: 1rem;
-         padding-top: 2rem;
-         margin-top: 3rem;
-         margin-bottom: 3rem;
-         font-size: 1.1rem;
-         line-height: 1.7;
-      }
-
-      &--description-textarea {
-         margin-bottom: 0;
-      }
-
-      &--configuration {
-         display: flex;
-         flex-direction: row;
-         width: 100%;
-         font-size: 0.9rem;
-         margin-bottom: 4.5rem;
-
-         .configuration-line {
-            flex: 1;
-            border-bottom: 1px solid $secondaryColor;
-            margin-top: 4rem;
-            height: 50%;
-            margin-right: 1rem;
-         }
-      }
+      display: flex;
+      flex-direction: column;
+      align-items: center;
 
       &--limits {
-         h4 {
-            margin-top: 0;
-            margin-bottom: 0.5rem;
-         }
+         width: 100%;
+         max-width: 20rem;
+         box-sizing: border-box;
+         margin-left: auto;
+         margin-right: auto;
 
-         .memory {
-            margin-bottom: 0.5rem;
+         &-header {
+            margin-top: 0;
+            text-align: center;
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
          }
       }
 
       &--example, &--test {
          margin-bottom: 2.5rem;
+         width: 100%;
+         max-width: $max-text-width;
       }
 
       &--test-result {
@@ -480,6 +379,8 @@
       }
 
       &--code-upload {
+         width: 100%;
+         max-width: $max-text-width;
          textarea {
             width: calc(100% - 4px);
             height: 10rem;
@@ -500,9 +401,9 @@
          button {
             width: 100%;
             font-family: "Roboto", sans-serif;
-            background-color: $backgroundColor;
+            background-color: $background-color;
             height: 2rem;
-            border: 1px solid $secondaryTextColor;
+            border: 1px solid $secondary-text-color;
             margin-top: 1rem;
             margin-bottom: 2rem;
             cursor: pointer;
@@ -511,11 +412,24 @@
             position: relative;
 
             &:hover {
-               background-color: $secondaryTextColor;
+               background-color: $secondary-text-color;
                color: white;
             }
          }
       }
+
+      &--data {
+         color: $secondary-text-color;
+         font-size: 0.9rem;
+         display: flex;
+         flex-direction: row;
+         width: 100%;
+         max-width: $max-text-width;
+         justify-content: space-between;
+
+      }
+
+
 
       &--new-test {
          display: flex;
@@ -524,7 +438,7 @@
          margin-bottom: 0.5rem;
 
          .line {
-            border-bottom: 1px solid $secondaryColor;
+            border-bottom: 1px solid $secondary-color;
             margin-top: auto;
             margin-bottom: auto;
             height: 1px;
@@ -535,7 +449,7 @@
          }
 
          .text {
-            color: $secondaryTextColor;
+            color: $secondary-text-color;
             font-size: 0.9rem;
             margin: 0 0.3rem 0 0.3rem;
          }
@@ -580,14 +494,6 @@
          }
       }
 
-      &--data {
-         color: $secondaryTextColor;
-         font-size: 0.9rem;
-         display: flex;
-         flex-direction: row;
-         width: 100%;
-         justify-content: space-between;
 
-      }
    }
 </style>

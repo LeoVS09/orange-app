@@ -133,7 +133,7 @@
 
 	.select {
 		width: 100%;
-		max-width: $inputWidth;
+		max-width: $input-width;
 		display: flex;
 		flex-direction: column;
 		justify-content: left;
@@ -147,13 +147,13 @@
 			margin-top: 0;
 			padding: $input-padding-top 0.2rem;
 			border: none;
-			border-bottom: 1px solid $borderLineColor;
+			border-bottom: 1px solid $border-line-color;
 			width: 100%;
 			font-size: $font-size-input-primary;
 			line-height: $font-line-height-input-primary;
 
 			&:active, &:focus {
-				border-bottom-color: $inputColor;
+				border-bottom-color: $input-color;
 			}
 		}
 
@@ -181,7 +181,7 @@
 
 		&.error {
 			.select--input {
-				border-bottom-color: $inputErrorColor;
+				border-bottom-color: $input-error-color;
 			}
 		}
 

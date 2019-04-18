@@ -45,7 +45,7 @@
       top: -0.5rem;
       left: -0.2rem;
       font-size: 0.8rem;
-      color: $secondaryTextColor;
+      color: $secondary-text-color;
 
       &.auth {
         top: 0.1rem;

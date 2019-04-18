@@ -8,20 +8,23 @@
 
 <script lang="ts">
   import Vue from 'vue'
-  import {Component} from 'vue-property-decorator'
+  import {Component, Prop} from 'vue-property-decorator'
 
-  @Component({
-    props: {
-      value: String,
-      update: Function,
-      placeholder: String
-    }
-  })
+  @Component
   export default class TextareaAutoresize extends Vue {
+
+     @Prop({
+        type: String
+     }) value?: string
+
+     @Prop({
+        type: String
+     }) placeholder?: string
+
     updateValue(event: any){
       this.$nextTick(this.resize);
-      // @ts-ignore
-      this.update(event.target.value);
+
+      this.$emit('input', event);
     }
 
     mounted(){
@@ -48,7 +51,7 @@
   .textarea-autoresize{
     width: 100%;
     border: none;
-    color: $mainTextColor;
+    color: $main-text-color;
     height: auto;
     overflow: hidden;
     min-height: 3rem;

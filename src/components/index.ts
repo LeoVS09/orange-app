@@ -8,22 +8,30 @@ import Button from './Button.vue'
 import CheckBox from './CheckBox.vue'
 import Spinner from './Spinner.vue'
 import PageHeader from './PageHeader.vue'
+import ColorLine from './ColorLine.vue'
 import ProblemListItem from './ProblemListItem.vue'
 import TestView from './TestView.vue';
 import TextareaAutoresize from './TextareaAutoresize.vue';
+import Tags from './Tags.vue';
+import PageSection from './PageSection.vue';
+import DataView from './DataView.vue';
 
 export {
-  Footer,
-  Icon,
-  Logo,
-  SourceView,
-  Input,
-  Button,
-  CheckBox,
-  Spinner,
-	Select,
-  PageHeader,
-  ProblemListItem,
-  TestView,
-  TextareaAutoresize
+   Footer,
+   Icon,
+   Logo,
+   SourceView,
+   Input,
+   Button,
+   CheckBox,
+   Spinner,
+   Select,
+   PageHeader,
+   ProblemListItem,
+   TestView,
+   TextareaAutoresize,
+   ColorLine,
+   Tags,
+   PageSection,
+   DataView
 }

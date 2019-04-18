@@ -44,7 +44,6 @@ export interface ProfileState {
 export interface UIState {
   currentPlatform: Platform,
   sideBarVisible: boolean,
-  isTextPage: boolean,
   isSignInPage: boolean
 }
 

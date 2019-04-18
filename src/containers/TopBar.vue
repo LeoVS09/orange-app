@@ -54,7 +54,7 @@
     }
   })
   export default class TopBar extends Vue {
-    // @ts-ignore
+
     @Getter('profile') userData?: User;
 
     @Prop({
@@ -183,11 +183,11 @@
     position: fixed;
     top: 0;
     width: 100%;
-    height: $topBarHeight;
+    height: $top-bar-height;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    background-color: $backgroundColor;
+    background-color: $background-color;
     z-index: 20;
     transition: all 0.15s;
 
@@ -208,7 +208,7 @@
       flex-direction: row;
       justify-content: space-around;
       align-items: center;
-      color: $menuTextColor;
+      color: $menu-text-color;
       padding: 0 1rem;
       font-family: "Montserrat", sans-serif;
       font-weight: bold;
@@ -218,8 +218,8 @@
         border-bottom: 2px solid transparent;
 
         &:hover {
-          color: $activeColor;
-          border-bottom-color: $activeColor;
+          color: $active-color;
+          border-bottom-color: $active-color;
         }
       }
     }
@@ -231,19 +231,19 @@
       font-size: 1.7rem;
 
       &-text {
-        color: $secondaryTextColor;
+        color: $secondary-text-color;
         font-size: 0.8rem;
         position: relative;
         top: -0.3em;
 
         &:hover {
-          color: $activeColor
+          color: $active-color
         }
       }
 
       &-actions-back {
         position: fixed;
-        top: $topBarHeight;
+        top: $top-bar-height;
         bottom: 0;
         left: 0;
         right: 0;

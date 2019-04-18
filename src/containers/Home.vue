@@ -4,7 +4,7 @@
       :showProfileActions.sync="showProfileActions"
     ></top-bar>
     <div :class="{home: true, blured:showProfileActions}">
-      <div v-bind:class='{ "content-wrapper": true, "text-page": isTextPage }'>
+      <div class='content-wrapper'>
         <router-view></router-view>
       </div>
     </div>
@@ -27,8 +27,6 @@
     }
   })
   export default class Home extends Vue {
-    // @ts-ignore
-    @Getter('isTextPage') isTextPage: boolean;
 
     showProfileActions = false
   }
@@ -48,12 +46,12 @@
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-    margin-top: $topBarHeight;
+    margin-top: $top-bar-height;
     padding-top: 0;
     padding-bottom: 3rem;
     z-index: 10;
-    margin-bottom: $footerHeight;
-    background-color: $backgroundColor;
+    margin-bottom: $footer-height;
+    background-color: $background-color;
     position: relative;
     box-shadow: 0 0 28px rgba(0,0,0,0.5);
 
@@ -63,10 +61,6 @@
       padding: 0 0;
       margin: 0;
       flex: 1;
-      &.text-page {
-        margin: 0 auto;
-        max-width: $maxTextWidth;
-      }
     }
   }
 </style>

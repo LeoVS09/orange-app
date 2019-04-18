@@ -97,11 +97,11 @@
 
   .button-container {
     &--submit {
-      padding: $buttonPaddingTop $buttonPaddingSides;
+      padding: $button-padding-top $button-padding-sides;
       border-radius: 3px;
       background-color: transparent;
-      border: 1px solid $buttonBorderColor;
-      color: $buttonTextColor;
+      border: 1px solid $button-border-color;
+      color: $button-text-color;
       cursor: pointer;
       transition-property: box-shadow;
       transition-duration: 0.1s;
@@ -109,11 +109,11 @@
       font-weight: 500;
 
       &.active {
-        background: $buttonActiveColor;
+        background: $button-active-color;
         border: none;
-        padding: calc(#{$buttonPaddingTop} + 1px) calc(#{$buttonPaddingSides} + 1px);
-        box-shadow: 0 0 20px 0 lighten($buttonShadowColor, 30%);
-        color: $buttonActiveTextColor;
+        padding: calc(#{$button-padding-top} + 1px) calc(#{$button-padding-sides} + 1px);
+        box-shadow: 0 0 20px 0 lighten($button-shadow-color, 30%);
+        color: $button-active-text-color;
         font-weight: 700;
       }
 
@@ -122,39 +122,39 @@
       }
 
       &:hover {
-        color: $buttonColor;
+        color: $button-color;
       }
 
       &.active:hover {
-        color: $buttonActiveTextColor;
+        color: $button-active-text-color;
       }
 
       &.primary {
         padding: 0.5rem 5rem;
         border-radius: 1rem;
-        background-color: $buttonPrimaryColor;
-        border-color: $buttonPrimaryColor;
-        box-shadow: 0 0 3px 0 lighten($buttonPrimaryShadowColor, 10%);
-        color: $buttonPrimaryTextColor;
+        background-color: $button-primary-color;
+        border-color: $button-primary-color;
+        box-shadow: 0 0 3px 0 lighten($button-primary-shadow-color, 10%);
+        color: $button-primary-text-color;
 
         &:hover {
-          background-color: lighten($buttonPrimaryColor, 3%);
-          box-shadow: 0 0 10px 0 lighten($buttonPrimaryShadowColor, 10%);
+          background-color: lighten($button-primary-color, 3%);
+          box-shadow: 0 0 10px 0 lighten($button-primary-shadow-color, 10%);
         }
       }
 
       &:active {
-        border-color: $buttonColor;
+        border-color: $button-color;
       }
 
       &.disabled {
-        background: linear-gradient(145deg, $buttonColor 0%, $buttonColor 40%, $buttonHighlightColor 50%, $buttonColor 60%, $buttonColor 100%);
+        background: linear-gradient(145deg, $button-color 0%, $button-color 40%, $button-highlight-color 50%, $button-color 60%, $button-color 100%);
         background-size: 200% 200%;
         animation: background-gradient 0.7s ease-in infinite;
       }
 
       &.primary.disabled {
-        background: linear-gradient(145deg, $buttonPrimaryColor 0%, $buttonPrimaryColor 40%, $buttonHighlightColor 50%, $buttonPrimaryColor 60%, $buttonPrimaryColor 100%);
+        background: linear-gradient(145deg, $button-primary-color 0%, $button-primary-color 40%, $button-highlight-color 50%, $button-primary-color 60%, $button-primary-color 100%);
         background-size: 200% 200%;
         animation: background-gradient 0.7s ease-in infinite;
       }

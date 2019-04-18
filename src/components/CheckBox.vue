@@ -33,9 +33,9 @@
   .checkbox-container {
     margin-top: 1rem;
     width: 100%;
-    max-width: $inputWidth;
+    max-width: $input-width;
     font-size: 0.8rem;
-    $rememberColor: lighten($mainTextColor, 30%);
+    $rememberColor: lighten($main-text-color, 30%);
     color: $rememberColor;
     display: flex;
     flex-direction: row;
@@ -90,11 +90,11 @@
 
     &:hover {
       .checkbox-container--description {
-        color: $inputColor;
+        color: $input-color;
       }
       .checkbox-container--checkbox label:after{
         opacity: 0.3;
-        border-color: $inputColor;
+        border-color: $input-color;
       }
     }
   }

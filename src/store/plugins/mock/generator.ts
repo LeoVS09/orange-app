@@ -3,7 +3,7 @@ import * as Vuex from 'vuex'
 import staticUserData from './user.json'
 import staticProblemData from './problem.json'
 import {Problem, User, UserType} from "../../../state";
-import {IO, Test} from "../../../state/problem";
+import {Test, mockInput, mockOutput, mockTag} from "../../../state/problem";
 
 
 const USE_STATIC_ID = true;
@@ -27,11 +27,11 @@ export function createProblem(): Problem {
     publicationDate: Date.now() - random(0, 10000000000),
     author: AUTHORS[random(0, AUTHORS.length)],
     tester: AUTHORS[random(0, AUTHORS.length)],
-    tags: [TAGS[random(0, TAGS.length)], TAGS[random(0, TAGS.length)], TAGS[random(0, TAGS.length)]],
+    tags: [mockTag(TAGS[random(0, TAGS.length)]), mockTag(TAGS[random(0, TAGS.length)]), mockTag(TAGS[random(0, TAGS.length)])],
     isOpen: !!random(0,2),
     io: {
-      input: IO.STANDARD,
-      output: IO.STANDARD
+      input: mockInput('stdin'),
+      output: mockOutput('stdout')
     },
     tests: [...staticProblemData.examples, {
       id: "",

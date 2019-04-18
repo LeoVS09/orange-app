@@ -20,7 +20,7 @@
   @import "../styles/config.scss";
 
   .footer {
-    height: $footerHeight;
+    height: $footer-height;
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -31,7 +31,7 @@
     position: fixed;
     bottom: 0;
     z-index: 5;
-    background-color: $footerColor;
+    background-color: $footer-color;
 
 
   }

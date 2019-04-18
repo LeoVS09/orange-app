@@ -131,7 +131,7 @@
          margin-top: 1rem;
          margin-bottom: 3rem;
          width: 100%;
-         max-width: $inputWidth;
+         max-width: $input-width;
          display: flex;
          flex-direction: row;
          justify-content: flex-end;
@@ -139,15 +139,15 @@
          &-link {
             cursor: pointer;
             font-size: 0.8rem;
-            color: $secondaryTextColor;
+            color: $secondary-text-color;
 
             &:hover {
-               color: $inputColor;
+               color: $input-color;
             }
          }
 
          &-go {
-            color: $inputColor;
+            color: $input-color;
          }
 
          &-icon {
@@ -159,12 +159,12 @@
 
       &--error {
          width: 100%;
-         background-color: $blockErrorColor;
+         background-color: $block-error-color;
          display: flex;
          flex-direction: column;
          align-items: center;
          padding: 1rem 0;
-         color: $blockErrorTextColor;
+         color: $block-error-text-color;
          font-weight: lighter;
       }
 
@@ -174,7 +174,7 @@
          width: 100%;
          flex-direction: row;
          justify-content: center;
-         color: $secondaryTextColor;
+         color: $secondary-text-color;
          cursor: pointer;
 
          &-text {
@@ -182,7 +182,7 @@
          }
 
          &:hover {
-            color: $inputColor;
+            color: $input-color;
          }
       }
 

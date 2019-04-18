@@ -106,7 +106,6 @@
     }
 
     created() {
-      this.$store.dispatch(actions.SET_STANDARD_PAGE);
       this.$store.dispatch(actions.SYNC_PROBLEMS);
     }
 
@@ -133,20 +132,15 @@
   .problems {
     width: 100%;
 
-    &--header {
-      margin-top: 0;
-      margin-bottom: 3rem;
-    }
-
     &--content {
       display: flex;
       flex-direction: column;
       justify-content: center;
       width: 100%;
       margin: 0 auto;
-      padding: 0 $contentPaddingSides;
+      padding: 0 $content-padding-sides;
       box-sizing: border-box;
-      max-width: $maxContentWidth;
+      max-width: $max-content-width;
     }
 
     &--filters {
@@ -185,15 +179,15 @@
       width: 100%;
       display: flex;
       flex-direction: row;
-      padding-top: 1.5*$problemLinePadding;
-      padding-bottom: 1.5*$problemLinePadding;
+      padding-top: 1.5*$problem-line-padding;
+      padding-bottom: 1.5*$problem-line-padding;
       transition: box-shadow 0.2s cubic-bezier(.25,.8,.25,1);
-      border-bottom: 1px solid $secondaryColor;
+      border-bottom: 1px solid $secondary-color;
 
       &, &:hover {
         box-shadow: none;
         cursor: default;
-        color: $mainTextColor;
+        color: $main-text-color;
       }
 
       td, th {
@@ -202,7 +196,7 @@
         &:first-child {
           flex: 3;
           padding-left: 1rem;
-          text-underline: $mainTextColor;
+          text-underline: $main-text-color;
         }
       }
     }

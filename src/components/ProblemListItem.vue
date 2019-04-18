@@ -48,10 +48,10 @@
      width: 100%;
      display: flex;
      flex-direction: row;
-     padding-bottom: $problemLinePadding;
-     padding-top: $problemLinePadding;
+     padding-bottom: $problem-line-padding;
+     padding-top: $problem-line-padding;
      transition: box-shadow 0.2s cubic-bezier(.25,.8,.25,1);
-     border-bottom: 1px solid $secondaryColor;
+     border-bottom: 1px solid $secondary-color;
 
 
     &:hover {
@@ -67,7 +67,7 @@
     &:first-child {
        flex: 3;
        padding-left: 1rem;
-       text-underline: $mainTextColor;
+       text-underline: $main-text-color;
      }
     }
 

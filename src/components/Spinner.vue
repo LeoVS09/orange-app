@@ -27,7 +27,7 @@
         position: absolute;
         width: 5px;
         height: 5px;
-        background: $spinnerColor;
+        background: $spinner-color;
         border-radius: 50%;
         animation: lds-default 1.2s linear infinite;
 

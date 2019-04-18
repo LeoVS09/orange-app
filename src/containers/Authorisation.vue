@@ -74,7 +74,7 @@
       padding-top: 3rem;
       padding-bottom: 5rem;
       background-color: white;
-      max-width: $inputWidth + 6rem;
+      max-width: $input-width + 6rem;
 
       &.signin {
         margin-bottom: auto;
@@ -85,7 +85,7 @@
       margin-bottom: 0;
       position: relative;
       left: -2.5rem;
-      color: $secondaryTextColor;
+      color: $secondary-text-color;
       top: 1rem;
     }
 

@@ -3,8 +3,6 @@ export interface Problem {
   id: string,
   name: string,
   text: string,
-  input: string,
-  output: string,
   note?: string,
   examples: Array<Test>,
   isOpen: boolean,
@@ -12,14 +10,14 @@ export interface Problem {
   publicationDate: number,
   author: string,
   tester: string,
-  tags: Array<string>,
+  tags: Array<Tag>,
   limits: {
     time: number, // ms
     memory: number // byte
   }
   io: {
-    input: IO,
-    output: IO
+    input: ProgramInput,
+    output: ProgramOutput
   },
   resultRun?: ResultRunProgram,
   tests?: Array<Test>,
@@ -31,25 +29,49 @@ export function defaultProblem() : Problem {
     id: '',
     name: '',
     text: '',
-    input: '',
-    output: '',
     examples: [],
     isOpen: true,
     uploadDate: Date.now(),
     publicationDate: Date.now(),
     author: "Author",
     tester: "Tester",
-    tags: ['some', 'tags'],
+    tags: [mockTag('some'), mockTag('tags')],
     limits: {
       time: 30000,
       memory: 2048
     },
     io: {
-      input: IO.STANDARD,
-      output: IO.STANDARD,
+      input: mockInput('stdin'),
+      output: mockOutput('stdout'),
     },
     synced: false
   }
+}
+
+export function mockTag(name: string): Tag {
+   return {
+      id: 'test' + name,
+      name
+   }
+}
+
+export function mockInput(name: string): ProgramInput {
+   return {
+      id: 'test' + name,
+      name
+   }
+}
+
+export function mockOutput(name: string): ProgramOutput {
+   return {
+      id: 'test' + name,
+      name
+   }
+}
+
+export interface Tag {
+   id: string
+   name: string
 }
 
 export interface ResultRunProgram {
@@ -58,9 +80,12 @@ export interface ResultRunProgram {
   failedTest: number
 }
 
-export enum IO {
-  STANDARD,
-  FILE
+export interface ProgramInput {
+   id: string,
+   name: string
+}
+
+export interface ProgramOutput extends ProgramInput {
 }
 
 export interface Test {

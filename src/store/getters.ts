@@ -5,7 +5,6 @@ import {checkIsLogin} from "../identity";
 const getters: GetterTree<RootState, any> = {
   platform: state => state.ui.currentPlatform,
   isSideBarVisible: state => state.ui.sideBarVisible,
-  isTextPage: state => state.ui.isTextPage,
   isSignInPage: state => state.ui.isSignInPage,
 
   profile: state => state.profile.data,
