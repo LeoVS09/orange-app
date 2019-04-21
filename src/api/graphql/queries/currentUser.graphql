@@ -1,17 +1,17 @@
 query CurrentUser {
-  currentUser {
-    id
-    nodeId
-    name
-    isAdmin
-    avatarUrl
-    userEmails {
-      nodes {
-        email
-        isVerified
-        createdAt
-        updatedAt
+   currentUser {
+      id
+      nodeId
+      name
+      isAdmin
+      avatarUrl
+      userEmails {
+         nodes {
+            email
+            isVerified
+            createdAt
+            updatedAt
+         }
       }
-    }
-  }
+   }
 }

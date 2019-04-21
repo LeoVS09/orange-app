@@ -1,5 +1,6 @@
 import currentUserGql from './currentUser.graphql'
 import searchCountriesGql from './searchCountries.graphql'
+import allCountriesGql from './allCountries.graphql'
 import gql from 'graphql-tag'
 import {APIClient} from "../apollo";
 
@@ -22,12 +23,11 @@ interface ICurrentUser {
   }
 }
 
-export const currentUser = (client: APIClient) => () => {
-  return client.query<ICurrentUser>({
+export const currentUser = (client: APIClient) => () =>
+  client.query<ICurrentUser>({
     query: gql(currentUserGql)
   })
     .then(result => result.data && result.data.currentUser)
-}
 
 interface ISearchCountries {
   searchCountries: {
@@ -39,15 +39,38 @@ interface ISearchCountries {
   }
 }
 
-export const searchCountries = (client: APIClient) => (name: string) => {
-  return client.query<ISearchCountries>({
+export const searchCountries = (client: APIClient) => (name: string) =>
+  client.query<ISearchCountries>({
     query: gql(searchCountriesGql),
 		variables: {
     	name
 		}
   })
     .then(result => result.data && result.data.searchCountries.nodes)
+
+interface IAllCountries {
+   allCountries: {
+      nodes: Array<{
+         id: string
+         name: string
+         createdAt: any
+         updatedAt: any
+         cities: {
+            nodes: Array<{
+               id: string
+               name: string
+            }>
+         }
+      }>
+   }
 }
 
-
-
+export const allCountries = (client: APIClient) => (name: string) =>
+   client.query<IAllCountries>({
+      query: gql(allCountriesGql)
+   })
+      .then(result => result.data && result.data.allCountries.nodes)
+      .then(countries => {
+         console.log('countries', countries)
+         return countries
+      })

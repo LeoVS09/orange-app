@@ -1,0 +1,39 @@
+query AllCountries {
+   allCountries {
+      nodes {
+         id
+         name
+         createdAt
+         updatedAt
+         cities {
+            nodes {
+               id
+               name
+               createdAt
+               updatedAt
+               universities {
+                  nodes {
+                     id
+                     shortName
+                     longName
+                     profiles {
+                        nodes {
+                           id
+                           familyName
+                           familyName
+                           lastName
+                           phone
+                           groupNumber
+                           course
+                           isTeacher
+                           createdAt
+                           updatedAt
+                        }
+                     }
+                  }
+               }
+            }
+         }
+      }
+   }
+}

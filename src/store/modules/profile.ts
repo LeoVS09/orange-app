@@ -40,7 +40,8 @@ export default {
     },
 
 		[actionTypes.SEARCH_COUNTRIES](context: IActionContext<ProfileState>, name: string) {
-    	return API.searchCountries(name)
+    	// return API.searchCountries(name)
+      return API.allCountries(name)
 		},
 
     [actionTypes.REGISTER_PROFILE] (context: IActionContext<ProfileState>, user: {firstName: string, lastName: string, email: string, password: string}): Promise<boolean> {

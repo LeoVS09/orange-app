@@ -45,6 +45,7 @@
       font-size: 1rem;
       display: flex;
       flex-direction: column;
+      padding-bottom: 2rem;
 
       &--item {
          width: 100%;

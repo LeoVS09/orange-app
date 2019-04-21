@@ -28,7 +28,12 @@
             <data-view
                :values="{
                   Time: formatTime(problemData.limits.time),
-                  Memory: formatBytes(problemData.limits.memory),
+                  Memory: formatBytes(problemData.limits.memory)
+               }"
+            />
+
+            <data-view
+               :values="{
                   Input: formatIO(problemData.io.input),
                   Output: formatIO(problemData.io.output)
                }"

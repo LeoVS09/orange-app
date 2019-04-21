@@ -92,7 +92,7 @@
             padding-bottom: 0.5rem;
             padding-top: 1rem;
             margin-top: 2rem;
-            margin-bottom: 3rem;
+            margin-bottom: 1rem;
          }
       }
    }

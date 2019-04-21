@@ -19,7 +19,7 @@ import { UserType } from '@/state'
       <div class="profile--delimiter"></div>
       <h4 class="profile--data-header">Confidential data</h4>
       <Input type="text" placeholder="Email" v-model="email" :error.sync="isEmailError" :tabindex="5" :disabled="isDisabled"/>
-			<Select type="text" placeholder="Country" :value="country" :items="allCountries" :error.sync="isCountryError" :tabindex="6" :disabled="isDisabled" />
+			<Select type="text" placeholder="Country" :value="country" textField="name" :items="allCountries" :error.sync="isCountryError" :tabindex="6" :disabled="isDisabled" />
 
       <div class="profile--delimiter"></div>
       <h4 class="profile--data-header">Change password</h4>
@@ -33,11 +33,12 @@ import { UserType } from '@/state'
 <script lang="ts">
   import Vue from 'vue'
   import {Component} from 'vue-property-decorator'
-  import {Getter} from 'vuex-class'
+  import {Getter, Action} from 'vuex-class'
   import {User, UserType} from "../../state"
   import * as actions from '../../store/actionTypes';
   import {checkIsLogin} from '../../identity'
   import {Icon, Input, PageHeader, SourceView, Button, Select} from '../../components';
+  import {Country} from "@/state/country";
 
   function capitalise(s: string): string {
     return s[0].toUpperCase() + s.slice(1);
@@ -62,6 +63,8 @@ import { UserType } from '@/state'
     @Getter('profile') userData: Profile;
     // @ts-ignore
     @Getter isTeacher: boolean;
+
+    @Action(actions.SEARCH_COUNTRIES) searchCountriesAction?: (name: string) => Promise<Array<Country>>
 
     email = "";
     isEmailError = false;
@@ -88,6 +91,14 @@ import { UserType } from '@/state'
 		countryAutoComplete = [];
     isCountryError = false;
 
+    allCountries: Array<any> = [
+       {name: 'Russia'},
+       {name: 'USA'},
+       {name: 'Unaided Kingdom'},
+       {name: 'Canada'},
+       {name: 'Belarus'}
+       ];
+
     isDisabled = false;
 
     created() {
@@ -102,6 +113,10 @@ import { UserType } from '@/state'
       this.familyName = this.userData.familyName || "";
       this.lastName = this.userData.lastName;
       this.country = this.userData.country;
+
+      // this.searchCountriesAction ? this.searchCountriesAction('')
+      //    .then(countres => this.allCountries = countres) :
+      //    console.error('Not have action searchCountriesAction')
     }
 
     get name(): string {
@@ -133,11 +148,6 @@ import { UserType } from '@/state'
 			this.country = value;
     	this.$store.dispatch(actions.SEARCH_COUNTRIES, value)
 				.then(result => console.log(result));
-		}
-
-		get allCountries(){
-    	// TODO: all countries from server
-       return []
 		}
   }
 </script>
