@@ -57,12 +57,18 @@ $problem-line-padding: 0.7rem;
 $button-padding-top: 0.3rem;
 $button-padding-sides: 1.1rem;
 
+// Default browser size, used only for compatibility with other pseudo-inputs
+$min-input-height: 19px;
 // ---------------------------------------- Fonts ------------------------------------------
 
 $font-size-text-primary: 1rem;
 $font-size-input-primary: $font-size-text-primary;
 
 $font-line-height-input-primary: 1rem;
+
+// ---------------------------------------- Animation --------------------------------------
+
+$input-animation-time: 0.2s;
 
 // ---------------------------------------- Skelet -----------------------------------------
 

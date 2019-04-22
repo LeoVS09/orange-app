@@ -6,7 +6,10 @@ import { sync } from 'vuex-router-sync'
 import store from './store/index'
 import router from './router'
 import { UIEventEmitter, UIEvents } from './utils/UIEventEmitter'
+// @ts-ignore
+import vClickOutside from 'v-click-outside'
 
+Vue.use(vClickOutside)
 // TODO lodash types
 // @ts-ignore
 import throttle from 'lodash.throttle'

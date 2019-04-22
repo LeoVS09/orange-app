@@ -1,17 +1,16 @@
 <template>
-   <div :class="{'select': true, error}" @click="handleClick">
+   <div :class="{'select': true, error}" @click="handleClick" v-click-outside="onBlur">
 
-      <span
-         :class="{'visible': !!currentValue.length || isItemsVisible, 'select--placeholder':true}"
-      >{{placeholder}}</span>
-
-      <div class="select--input-container">
-         <input type="text" :placeholder="placeholder" :value="currentValue" class="select--input" v-bind="options"
-                readonly="readonly"/>
-
+      <div :class="{
+         'select--input-container': true,
+         focused,
+         'have-value': !!currentValue.length
+      }">
          <div class="select--text-container">
-            <span :class="{'select--text': true, }" >{{currentValue}}</span>
+            <span class="select-text" >{{currentValue}}</span>
          </div>
+
+         <label class="select--input-container--label">{{placeholder}}</label>
 
          <div class="select--arrow">
             <span>&#9662;</span>
@@ -19,7 +18,7 @@
       </div>
 
       <transition name="fade-items">
-         <div v-if="isItemsVisible" class="select--options-container">
+         <div v-if="focused" class="select--options-container">
             <div v-for="item in visibleItems" @mousedown="chooseItem(item)" class="select--option">
                <span class="select--option-text">{{item.text}}</span>
             </div>
@@ -31,6 +30,8 @@
 <script lang="ts">
    import Vue from 'vue'
    import {Component, Prop, Watch} from 'vue-property-decorator'
+   import {toStringWhenDefined} from "@/components/utils";
+   import Focusable from "./mixins/inputs/focusable";
 
    interface SelectItem {
       text: string
@@ -43,7 +44,9 @@
       disabled?: boolean
    }
 
-   @Component
+   @Component({
+      mixins: [Focusable]
+   })
    export default class Select extends Vue {
 
       @Prop({
@@ -58,7 +61,7 @@
       @Prop([String, Number, Boolean])
       value: any;
 
-      currentValue = '' + this.value;
+      currentValue = toStringWhenDefined(this.value);
 
       @Prop({
          type: String,
@@ -84,28 +87,27 @@
       @Prop(Function)
       extractText?: (value: any) => string
 
-      extractTextDefault = (value: any) => {
+      extractTextFromItem = (value: any) => {
+         if(this.extractText)
+            return this.extractText(value)
+
          if (typeof value !== 'object')
             return value as string
 
          return value[this.textField]
       }
 
-      isItemsVisible: boolean = true;
-
       get visibleItems() {
-         console.log(this)
          return this.items.map(value => {
-            const text = this.extractText ?
-               this.extractText(value) :
-               this.extractTextDefault(value)
+            const text = this.extractTextFromItem(value)
 
             return {text, value}
          })
       }
 
       handleClick() {
-         this.isItemsVisible = !this.isItemsVisible
+         // @ts-ignore
+         this.focused = !this.focused
       }
 
       chooseItem(item: SelectItem) {
@@ -144,6 +146,8 @@
 
 <style scoped lang="scss">
    @import "../styles/config.scss";
+   @import "../styles/mixins/inputBottomHighlight.scss";
+   @import "../styles/mixins/inputLabelAnimation.scss";
 
    $input-padding-top: 0.5rem;
    $container-padding-top: 0;
@@ -158,43 +162,63 @@
       position: relative;
       padding-top: $container-padding-top;
 
-      &--input {
-         z-index: 3;
-         outline: none;
-         margin-top: 0;
-         padding: $input-padding-top 0.2rem;
-         border: none;
-         border-bottom: 1px solid $border-line-color;
+      &--input-container {
+         display: flex;
+         flex-direction: row;
+         cursor: pointer;
+
+         @include input-bottom-highlight();
+         @include input-label-animation(false);
+      }
+
+      &--text-container {
+         font-size: 1rem;
+         padding: 0.5rem 0 0.2rem 0.3rem;
          width: 100%;
-         font-size: $font-size-input-primary;
-         line-height: $font-line-height-input-primary;
-
-         &:active, &:focus {
-            border-bottom-color: $input-color;
-         }
+         min-height: $min-input-height;
       }
 
-      &--placeholder {
-         z-index: 2;
-         font-size: 0.7rem;
-         color: rgba(0, 0, 0, 0.65);
-         opacity: 0;
-         position: relative;
-         bottom: -1rem;
-         transition-property: all;
-         transition-duration: 0.3s;
-
-         &.visible {
-            opacity: 1;
-            bottom: 0;
-         }
+      &--arrow {
+         margin-top: 0.5rem;
+         transition: $input-animation-time all;
+         color: $placeholder-color;
       }
 
-      &--opions-container {
+      &--input-container.focused &--arrow {
+         transform: rotate(180deg);
+         color: $main-text-color;
+      }
+
+      &--options-container {
          position: absolute;
          cursor: pointer;
          top: $font-line-height-input-primary + ($input-padding-top * 2) + $container-padding-top;
+         z-index: 3;
+         background: $background-color;
+         box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+         width: 100%;
+         display: flex;
+         flex-direction: column;
       }
+
+      &--option {
+         padding: 0.5rem;
+         transition: $input-animation-time all;
+
+         &:hover {
+            padding-left: 1rem;
+            color: $highlight-text-color;
+         }
+
+         &:active {
+            background: darken($background-color, 10%);
+         }
+      }
+
+      &--options-container:hover &--option:not(:hover) {
+         opacity: 0.6;
+      }
+
 
       &.error {
          .select--input {

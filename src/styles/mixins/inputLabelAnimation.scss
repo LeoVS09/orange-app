@@ -1,0 +1,38 @@
+@import "../config.scss";
+
+%label-to-top {
+   top: -0.3rem;
+   font-size: 0.7rem;
+}
+
+@mixin input-label-animation($move-to-top-on-focus: true) {
+   position: relative;
+
+   &--label {
+      color: $placeholder-color;
+      font-size: 0.9rem;
+      position: absolute;
+      pointer-events: none;
+      left: 0.3rem;
+      top: 0.7rem;
+      transition: $input-animation-time ease all;
+   }
+
+   @if $move-to-top-on-focus {
+      &.focused &--label, &.have-value &--label {
+         @extend %label-to-top;
+      }
+   } @else {
+      &.have-value &--label {
+         @extend %label-to-top;
+      }
+   }
+
+   &.focused &--label {
+      color: $highlight-text-color;
+   }
+
+   &.error &--label {
+      color: $input-error-color;
+   }
+}

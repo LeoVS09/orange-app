@@ -1,13 +1,14 @@
 <template>
-   <div :class="{'input': true, error, 'have-value': !!currentValue.length}">
+   <div :class="{'input': true, error, 'have-value': !!currentValue.length, focused}">
       <input
          :type="type"
          :value="currentValue"
          @input="inputValue"
+         @focus="onFocus"
+         @blur="onBlur"
          class="input--field"
          v-bind="options"
       />
-      <span class="input--bar"></span>
       <label class="input--label">{{placeholder}}</label>
    </div>
 </template>
@@ -15,6 +16,8 @@
 <script lang="ts">
    import Vue from 'vue'
    import {Component, Prop, Watch} from 'vue-property-decorator'
+   import Focusable from "./mixins/inputs/focusable";
+   import {toStringWhenDefined} from "./utils";
 
    interface Options {
       tabindex?: number,
@@ -22,9 +25,10 @@
       disabled?: boolean
    }
 
-   @Component
+   @Component({
+      mixins: [Focusable]
+   })
    export default class Input extends Vue {
-      currentValue = "";
 
       @Prop(String)
       type: string;
@@ -34,6 +38,8 @@
 
       @Prop(String)
       value: string;
+
+      currentValue = toStringWhenDefined(this.value);
 
       @Prop(Number)
       tabindex: number;
@@ -89,8 +95,8 @@
 
 <style scoped lang="scss">
    @import "../styles/config.scss";
-
-   $padding-left-width: 0.2rem;
+   @import "../styles/mixins/inputBottomHighlight.scss";
+   @import "../styles/mixins/inputLabelAnimation.scss";
 
    .input {
       width: 100%;
@@ -99,77 +105,24 @@
       flex-direction: column;
       justify-content: left;
       margin-top: 1rem;
-      position: relative;
+
+      @include input-bottom-highlight();
 
       &--field {
          outline: none;
          margin-top: 0;
-         padding: 0.5rem 0 $padding-left-width 0.3rem;
+         padding: 0.5rem 0 0.2rem 0.3rem;
          border: none;
-         border-bottom: 1px solid $border-line-color;
          width: 100%;
          font-size: 1rem;
+         min-height: $min-input-height;
 
          &:active, &:focus {
-            // border-bottom-color: $input-color;
             outline: none;
          }
       }
 
-      &--label {
-         color: $placeholder-color;
-         font-size: 0.9rem;
-         position: absolute;
-         pointer-events: none;
-         left: 0.3rem;
-         top: 0.7rem;
-         transition: 0.2s ease all;
-      }
+      @include input-label-animation();
 
-      &--field:focus ~ &--label, &.have-value &--field ~ &--label {
-         top: -0.3rem;
-         font-size: 0.6rem;
-      }
-
-      &--field:focus ~ &--label {
-         color: $highlight-text-color;
-      }
-
-      &--bar {
-         position: relative;
-         display: block;
-         width: calc(100% + #{$padding-left-width});
-
-         &:before, &:after {
-            content: '';
-            height: 2px;
-            width: 0;
-            bottom: 1px;
-            position: absolute;
-            background: $input-color;
-            transition: 0.2s ease all;
-         }
-
-         &:before {
-            left: 50%;
-         }
-
-         &:after {
-            right: 50%;
-         }
-      }
-
-      &--field:focus ~ &--bar:before, &--field:focus ~ &--bar:after {
-         width: 50%;
-      }
-
-      &.error {
-         &--field:focus ~ &--label, &.have-value &--field ~ &--label {
-            color: $input-error-color;
-         }
-         .input-container--input {
-            border-bottom-color: $input-error-color;
-         }
-      }
    }
 </style>
