@@ -2,7 +2,7 @@ import * as actionTypes from '../actionTypes'
 import Vue from 'vue'
 import {Commit} from 'vuex'
 import {User, ProfileState, IActionContext} from '../../state'
-import {signin, signout, checkIsLogin} from '../../identity';
+import {signin, signout, checkIsLogin, currentUserIfHave} from '../../identity';
 import * as API from '../../api';
 import {INIT_PROFILE} from "../actionTypes";
 
@@ -22,7 +22,7 @@ export default {
     },
 
     [actionTypes.LOGIN_TO_PROFILE] (context: IActionContext<ProfileState>, {login, password, isRemember}: {login: string, password: string, isRemember: boolean}): Promise<boolean>{
-      console.log("Sign in with login:", login, "and password:", password, ",remember:", isRemember);
+
       return signin(login, password, isRemember)
         .then(result => {
 
@@ -56,25 +56,21 @@ export default {
           return Promise.resolve(true)
         })
     },
-    [actionTypes.INIT_PROFILE] (context: IActionContext<ProfileState>) {
+    async [actionTypes.INIT_PROFILE] (context: IActionContext<ProfileState>) {
       const checkResult = checkIsLogin();
 
       if(!checkResult.ok) {
         return;
       }
 
-      const user = checkResult.user;
-      context.commit(SET_PROFILE_DATA, user);
+      const current = await currentUserIfHave()
+      if(!current.ok)
+         return
 
-      API.getUser(user.id)
-        .then(result => {
-          if(!result.ok) {
-            console.error("Unexpected situation when try fetch profile");
-            return;
-          }
+      if(current.user.id !== checkResult.userId)
+         return
 
-          context.commit(SET_PROFILE_DATA, result.user);
-        })
+      context.commit(SET_PROFILE_DATA, current.user);
     }
   },
 

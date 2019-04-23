@@ -91,13 +91,7 @@ import { UserType } from '@/state'
 		countryAutoComplete = [];
     isCountryError = false;
 
-    allCountries: Array<any> = [
-       {name: 'Russia'},
-       {name: 'USA'},
-       {name: 'Unaided Kingdom'},
-       {name: 'Canada'},
-       {name: 'Belarus'}
-       ];
+    allCountries: Array<Country> = [];
 
     isDisabled = false;
 
@@ -114,9 +108,9 @@ import { UserType } from '@/state'
       this.lastName = this.userData.lastName;
       this.country = this.userData.country;
 
-      // this.searchCountriesAction ? this.searchCountriesAction('')
-      //    .then(countres => this.allCountries = countres) :
-      //    console.error('Not have action searchCountriesAction')
+      this.searchCountriesAction ? this.searchCountriesAction('')
+         .then(countres => this.allCountries = countres) :
+         console.error('Not have action searchCountriesAction')
     }
 
     get name(): string {

@@ -15,7 +15,7 @@
 
 <script lang="ts">
    import Vue from 'vue'
-   import {Component, Prop, Watch} from 'vue-property-decorator'
+   import {Component, Prop, Watch, Mixins} from 'vue-property-decorator'
    import Focusable from "./mixins/inputs/focusable";
    import {toStringWhenDefined} from "./utils";
 
@@ -25,10 +25,8 @@
       disabled?: boolean
    }
 
-   @Component({
-      mixins: [Focusable]
-   })
-   export default class Input extends Vue {
+   @Component
+   export default class Input extends Mixins(Focusable) {
 
       @Prop(String)
       type: string;

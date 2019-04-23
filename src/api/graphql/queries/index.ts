@@ -6,61 +6,79 @@ import {APIClient} from "../apollo";
 
 
 interface ICurrentUser {
-  currentUser: {
-    id: string
-    nodeId: string
-    name: string
-    isAdmin: boolean
-    avatarUrl: string
-    userEmails: {
-      nodes: {
-        email: string
-        isVerified: boolean
-        createdAt: string
-        updatedAt: string
-      }
-    }
-  }
-}
-
-export const currentUser = (client: APIClient) => () =>
-  client.query<ICurrentUser>({
-    query: gql(currentUserGql)
-  })
-    .then(result => result.data && result.data.currentUser)
-
-interface ISearchCountries {
-  searchCountries: {
-    nodes: Array<{
+   currentUser: {
       id: string
       nodeId: string
       name: string
-    }>
-  }
+      isAdmin: boolean
+      avatarUrl: string
+      userEmails: {
+         nodes: Array<{
+            email: string
+            isVerified: boolean
+            createdAt: string
+            updatedAt: string
+         }>
+      },
+
+      profiles: {
+         nodes: Array<{
+            id: string,
+            firstName: string,
+            lastName: string,
+            familyName: string,
+            phone: string,
+            groupNumber: string,
+            course: number,
+            isTeacher: boolean,
+            createdAt: string,
+            updatedAt: string,
+            city: {
+               id: string,
+               name: string
+            },
+            university: {
+               id: string,
+               shortName: string,
+               longName: string
+            }
+         }>
+      }
+   }
+}
+
+export const currentUser = (client: APIClient) => () =>
+   client.query<ICurrentUser>({
+      query: gql(currentUserGql)
+   })
+      .then(result => result.data && result.data.currentUser)
+
+interface ISearchCountries {
+   searchCountries: {
+      nodes: Array<{
+         id: string
+         nodeId: string
+         name: string
+      }>
+   }
 }
 
 export const searchCountries = (client: APIClient) => (name: string) =>
-  client.query<ISearchCountries>({
-    query: gql(searchCountriesGql),
-		variables: {
-    	name
-		}
-  })
-    .then(result => result.data && result.data.searchCountries.nodes)
+   client.query<ISearchCountries>({
+      query: gql(searchCountriesGql),
+      variables: {
+         name
+      }
+   })
+      .then(result => result.data && result.data.searchCountries.nodes)
 
 interface IAllCountries {
    allCountries: {
       nodes: Array<{
          id: string
          name: string
-         createdAt: any
-         updatedAt: any
-         cities: {
-            nodes: Array<{
-               id: string
-               name: string
-            }>
-         }
+         createdAt: string
+         updatedAt: string
       }>
    }
 }

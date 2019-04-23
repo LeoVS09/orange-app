@@ -61,6 +61,8 @@ export function createUser(login: string, password: string, type: UserType): Use
   }
 }
 
+
+
 export default function createDataGeneratorPlugin <S>() {
   let openProblems = new Array(random(5, 10)).fill(0).map(createProblem);
 

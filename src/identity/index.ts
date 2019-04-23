@@ -1,73 +1,120 @@
 import {User, UserType} from '../state';
-import {createUser} from '../store/plugins/mock/generator'
-import {login} from '../api'
+import {login, currentUser} from '../api'
+// @ts-ignore
+import crypto from 'crypto-js'
+import {ILogin} from "@/api/graphql/mutations";
 
 const TOKEN_NAME = 'token';
 
 export function signin(username: string, password: string, isRemember: boolean): Promise<User | null> {
-  if (!username.length || !password.length) {
-    return Promise.reject('Not have login or password');
-  }
+   if (!username.length || !password.length) {
+      return Promise.reject('Not have login or password');
+   }
 
-  return login({
-    username,
-    password
-  })
-    .then(userdata => {
-      console.log('signin result', userdata)
-      let user;
-      if (username === 'teacher') {
-        user = createUser(username, password, UserType.TEACHER);
-      } else {
-        user = createUser(username, password, UserType.CONTESTANT);
-      }
+   return login({
+      username,
+      password
+   })
+      .then(userData => {
+         console.log('signin result', userData)
+         if (!userData)
+            throw new Error('Cannot login')
+         let user = toUser(userData);
 
-      const token = encryptId(user);
+         const token = encryptId(user);
 
-      if (isRemember) {
-        window.localStorage.setItem(TOKEN_NAME, token);
-      } else {
-        window.sessionStorage.setItem(TOKEN_NAME, token);
-      }
+         if (isRemember) {
+            window.localStorage.setItem(TOKEN_NAME, token);
+         } else {
+            window.sessionStorage.setItem(TOKEN_NAME, token);
+         }
 
-      return user;
-    })
+         return user;
+      })
+}
+
+function toUser(userData: ILogin['login']['user']): User {
+   if (!userData.profiles.nodes.length)
+      throw new Error('User not have profile')
+
+   const profile = userData.profiles.nodes[0]
+   return {
+      id: userData.id,
+      login: userData.name,
+      isAdmin: userData.isAdmin,
+      avatarUrl: userData.avatarUrl,
+      emails: userData.userEmails.nodes,
+      firstName: profile.firstName,
+      lastName: profile.lastName,
+      familyName: profile.familyName,
+      type: profile.isTeacher ? UserType.TEACHER : UserType.CONTESTANT,
+      course: profile.course,
+      groupNumber: profile.groupNumber,
+      university: profile.university,
+      city: profile.city,
+      phone: profile.phone,
+      languages: [],
+      codeEditors: [],
+      travel: []
+   }
 }
 
 function encryptId(user: User): string {
-  return JSON.stringify(user) // TODO
+   return crypto.AES.encrypt(user.id, 'key') // TODO
 }
 
-function decryptId(token: string): User {
-  return JSON.parse(token) // TODO
+function decryptId(token: string): string {
+   return crypto.AES.decrypt(token, 'key') // TODO
 }
 
 export function signout() {
-  window.localStorage.removeItem(TOKEN_NAME);
-  window.sessionStorage.removeItem(TOKEN_NAME);
+   window.localStorage.removeItem(TOKEN_NAME);
+   window.sessionStorage.removeItem(TOKEN_NAME);
 }
 
 interface checkResultOk {
-  user: User,
-  ok: true
+   userId: string,
+   ok: true
 }
 
 interface checkResultFalse {
-  ok: false
+   ok: false
 }
 
 export function checkIsLogin(): checkResultOk | checkResultFalse {
-  let token = window.localStorage.getItem(TOKEN_NAME);
-  if (!token) {
-    token = window.sessionStorage.getItem(TOKEN_NAME);
-  }
+   let token = window.localStorage.getItem(TOKEN_NAME);
+   if (!token) {
+      token = window.sessionStorage.getItem(TOKEN_NAME);
+   }
 
-  if (token == null || token[0] !== '{') { // TODO: add real check
-    return {ok: false};
-  }
+   if (token == null) { // TODO: add real check
+      return {ok: false};
+   }
 
-  return {
-    user: decryptId(token),
-    ok: true
-  };
+   return {
+      userId: decryptId(token),
+      ok: true
+   };
+}
+
+interface currentUserOk {
+   user: User,
+   ok: true
+}
+
+interface currentUserFalse {
+   ok: false
+}
+
+export async function currentUserIfHave(): Promise<currentUserOk | currentUserFalse> {
+   const userData = await currentUser()
+   if (!userData)
+      return {
+         ok: false
+      }
+
+   return {
+      user: toUser(userData),
+      ok: true
+   }
 }

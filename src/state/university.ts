@@ -4,6 +4,4 @@ export interface University {
   id: string,
   shortName: string,
   longName: string,
-  country: Country,
-  city: City
 }

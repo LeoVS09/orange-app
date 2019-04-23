@@ -29,7 +29,7 @@
 
 <script lang="ts">
    import Vue from 'vue'
-   import {Component, Prop, Watch} from 'vue-property-decorator'
+   import {Component, Prop, Watch, Mixins} from 'vue-property-decorator'
    import {toStringWhenDefined} from "@/components/utils";
    import Focusable from "./mixins/inputs/focusable";
 
@@ -44,10 +44,8 @@
       disabled?: boolean
    }
 
-   @Component({
-      mixins: [Focusable]
-   })
-   export default class Select extends Vue {
+   @Component
+   export default class Select extends Mixins(Focusable) {
 
       @Prop({
          type: Array,
@@ -106,7 +104,6 @@
       }
 
       handleClick() {
-         // @ts-ignore
          this.focused = !this.focused
       }
 
