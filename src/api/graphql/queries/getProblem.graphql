@@ -1,0 +1,66 @@
+query GetProblem ($id: UUID!){
+   problemById(id: $id) {
+      nodeId
+      id
+      name
+      description
+      inputDescription
+      outputDescription
+      note
+      programInputType {
+         nodeId
+         id
+         name
+      }
+      programOutputType {
+         nodeId
+         id
+         name
+      }
+      limitTime
+      limitMemory
+      isOpen
+      createdAt
+      updatedAt
+      publishedAt
+      author_profile {
+         nodeId
+         id
+         user {
+            nodeId
+            name
+         }
+      }
+      tester_profile {
+         nodeId
+         id
+         user {
+            nodeId
+            name
+         }
+      }
+      problemsToTags {
+         nodes {
+            tag {
+               nodeId
+               id
+               name
+            }
+         }
+      }
+
+      tests {
+         nodes {
+            nodeId
+            id
+            index
+            input
+            output
+            public
+            createdAt
+            updatedAt
+         }
+      }
+
+   }
+}

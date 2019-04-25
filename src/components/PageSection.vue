@@ -17,10 +17,15 @@
 <script lang="ts">
    import Vue from 'vue'
    import {Component, Prop} from 'vue-property-decorator'
+   import TextareaAutoresize from './TextareaAutoresize.vue'
 
    // TODO: add markdown editor
 
-   @Component
+   @Component({
+      components: {
+         TextareaAutoresize
+      }
+   })
    export default class PageSection extends Vue {
 
       @Prop({

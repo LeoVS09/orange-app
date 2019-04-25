@@ -59,12 +59,14 @@ function toUser(userData: ILogin['login']['user']): User {
    }
 }
 
+const TOKEN_KEY = 'key' // TODO
+
 function encryptId(user: User): string {
-   return crypto.AES.encrypt(user.id, 'key') // TODO
+   return crypto.AES.encrypt(user.id, TOKEN_KEY).toString() // TODO
 }
 
 function decryptId(token: string): string {
-   return crypto.AES.decrypt(token, 'key') // TODO
+   return crypto.AES.decrypt(token, TOKEN_KEY).toString(crypto.enc.Utf8) // TODO
 }
 
 export function signout() {

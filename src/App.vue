@@ -1,21 +1,20 @@
-
 <template>
-  <div id="app">
-    <router-view></router-view>
-  </div>
+   <div id="app">
+      <router-view></router-view>
+   </div>
 </template>
 
 <script lang="ts">
-  import Vue from 'vue'
-  import {Component} from 'vue-property-decorator'
-  import * as actions from './store/actionTypes';
+   import Vue from 'vue'
+   import {Component} from 'vue-property-decorator'
+   import * as actions from './store/actionTypes';
 
-  @Component
-  export default class App extends Vue {
-    created(){
-      this.$store.dispatch(actions.INIT_PROFILE);
-    }
-  }
+   @Component
+   export default class App extends Vue {
+      created() {
+         this.$store.dispatch(actions.INIT_PROFILE);
+      }
+   }
 </script>
 
 <style lang="scss">

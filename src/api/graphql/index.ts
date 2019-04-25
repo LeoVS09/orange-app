@@ -14,3 +14,7 @@ export const currentUser = queries.currentUser(client);
 export const searchCountries = queries.searchCountries(client);
 
 export const allCountries = queries.allCountries(client);
+
+export const allProblems = queries.allProblems(client)
+
+export const getProblem = queries.getProblem(client)

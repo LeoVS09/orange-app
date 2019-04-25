@@ -7,9 +7,10 @@ import modules from './modules'
 import getters from './getters'
 
 // @ts-ignore
-const debug = process.env.NODE_ENV !== 'production';
+// const DEBUG = process.env.NODE_ENV !== 'production'
+const DEBUG = false
 
-if(debug) {
+if(DEBUG) {
   console.log("Debug mode enabled");
 }
 Vue.use(Vuex as any);
@@ -19,6 +20,6 @@ const generator = createDataGeneratorPlugin();
 export default new Vuex.Store({
   modules,
   getters,
-  plugins: debug ? [generator] : [],
-  strict: debug
+  plugins: DEBUG ? [generator] : [],
+  strict: true
 });

@@ -5,7 +5,9 @@ export {
    login,
    currentUser,
    searchCountries,
-   allCountries
+   allCountries,
+   allProblems,
+   getProblem
 } from './graphql'
 
 export {
@@ -16,15 +18,22 @@ const DEFAULT_MOCK_DURATION = 3
 
 const randomString = (): string => Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
 
-export function getProblem(problemId: string): Promise<Problem> {
-   return new Promise<Problem>((resolve => {
-      setTimeout(() => {
-         let problem = createProblem();
-         problem.id = problemId;
-         resolve(problem)
-      }, DEFAULT_MOCK_DURATION)
-   }))
-}
+// TODO: all mocks must be in api
+// const DEBUG = process.env.NODE_ENV !== 'production'
+// const DEBUG = false
+//
+// export function getProblem(problemId: string): Promise<Problem> {
+//    if (DEBUG)
+//       return new Promise<Problem>((resolve => {
+//          setTimeout(() => {
+//             let problem = createProblem();
+//             problem.id = problemId;
+//             resolve(problem)
+//          }, DEFAULT_MOCK_DURATION)
+//       }))
+//
+//    return
+// }
 
 export function getAllTests(problemId: string): Promise<Array<Test>> {
    return new Promise<Array<Test>>((resolve, reject) => {

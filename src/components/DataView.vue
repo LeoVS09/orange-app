@@ -20,7 +20,7 @@
    }
 
    @Component
-   export default class PageSection extends Vue {
+   export default class DataView extends Vue {
 
       @Prop({
          type: Object,
@@ -29,7 +29,8 @@
 
       @Prop({
          type: Function,
-      }) valueToText = (value: any) => value
+         default: (value: any) => value
+      }) valueToText: (value: any) => any
 
       choseItem(value: any) {
          this.$emit('click', value)

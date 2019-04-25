@@ -16,10 +16,10 @@
 
       <page-section
          :editable="isTeacher"
-         :value="problemData.text"
+         :value="problemData.description"
          :input="updateText"
          placeholder="Problem description..."
-      >{{problemData.text}}</page-section>
+      >{{problemData.description}}</page-section>
 
       <page-section highlight :textWidth="false">
          <div class="problem--limits">
@@ -41,10 +41,10 @@
          </div>
       </page-section>
 
-      <h4 class="problem--example-header">Examples</h4>
+      <h4 v-if="!isTeacher" class="problem--example-header" >Examples</h4>
 
-      <TestView class="problem--example" v-for="(example, i) in problemData.examples"
-                :key="'test-' + i + '-' + example.id" :testData="example" v-if="!isTeacher"/>
+      <TestView v-if="!isTeacher" class="problem--example" v-for="(example, i) in problemData.examples"
+                :key="'test-' + i + '-' + example.id" :testData="example" />
 
       <div class="problem--code-upload" v-if="!isTeacher">
          <textarea placeholder="Paste you code here..." v-model="codeOfProgram"></textarea>
@@ -64,13 +64,13 @@
       <div class="problem--tests" v-if="isTeacher && problemData.tests">
          <h2>Tests</h2>
 
-         <div v-for="test in problemData.tests">
+         <template v-for="test in problemData.tests">
             <div class="problem--new-test" v-if="!test.id">
                <div class="line"></div>
                <p class="text">New test</p>
             </div>
             <TestView class="problem--test" :testData="test" :editable="true"/>
-         </div>
+         </template>
 
       </div>
 
@@ -267,7 +267,7 @@
                   console.error("Not have name");
                   return;
                }
-               if (!this.problemData.text.length) {
+               if (!this.problemData.description.length) {
                   console.error("Not have text");
                   return;
                }
@@ -369,7 +369,8 @@
       &--tests {
          display: flex;
          flex-direction: column;
-
+         width: 100%;
+         align-items: center;
          h2 {
             margin-top: 0;
             padding-top: 0;

@@ -1,51 +1,52 @@
-
 export interface Problem {
-  id: string,
-  name: string,
-  text: string,
-  note?: string,
-  examples: Array<Test>,
-  isOpen: boolean,
-  uploadDate: number,
-  publicationDate: number,
-  author: string,
-  tester: string,
-  tags: Array<Tag>,
-  limits: {
-    time: number, // ms
-    memory: number // byte
-  }
-  io: {
-    input: ProgramInput,
-    output: ProgramOutput
-  },
-  resultRun?: ResultRunProgram,
-  tests?: Array<Test>,
-  synced: boolean
+   id: string,
+   name: string,
+   description: string,
+   note?: string,
+   examples: Array<Test>,
+   isOpen: boolean,
+   createdAt: string,
+   updatedAt: string,
+   publishedAt: string,
+   author: string,
+   tester: string,
+   tags: Array<Tag>,
+   limits: {
+      time: number, // ms
+      memory: number // byte
+   }
+   io: {
+      input: ProgramInput,
+      output: ProgramOutput
+   },
+   resultRun?: ResultRunProgram,
+   tests?: Array<Test>,
+   synced: boolean
 }
 
-export function defaultProblem() : Problem {
-  return {
-    id: '',
-    name: '',
-    text: '',
-    examples: [],
-    isOpen: true,
-    uploadDate: Date.now(),
-    publicationDate: Date.now(),
-    author: "Author",
-    tester: "Tester",
-    tags: [mockTag('some'), mockTag('tags')],
-    limits: {
-      time: 30000,
-      memory: 2048
-    },
-    io: {
-      input: mockInput('stdin'),
-      output: mockOutput('stdout'),
-    },
-    synced: false
-  }
+export function defaultProblem(): Problem {
+   return {
+      id: '',
+      name: '',
+      description: '',
+      examples: [],
+      isOpen: true,
+      createdAt: new Date().toDateString(),
+      updatedAt: new Date().toDateString(),
+      publishedAt: new Date().toDateString(),
+      author: "Author",
+      tester: "Tester",
+      tags: [mockTag('some'), mockTag('tags')],
+      limits: {
+         time: 30000,
+         memory: 2048
+      },
+      io: {
+         input: mockInput('stdin'),
+         output: mockOutput('stdout'),
+      },
+      synced: false
+   }
 }
 
 export function mockTag(name: string): Tag {
@@ -75,9 +76,9 @@ export interface Tag {
 }
 
 export interface ResultRunProgram {
-  problemId: string,
-  isAllTestsSuccessful: boolean,
-  failedTest: number
+   problemId: string,
+   isAllTestsSuccessful: boolean,
+   failedTest: number
 }
 
 export interface ProgramInput {
@@ -89,20 +90,21 @@ export interface ProgramOutput extends ProgramInput {
 }
 
 export interface Test {
-  id: string,
-  input: string,
-  output: string,
-  synced: boolean
+   id: string,
+   input: string,
+   output: string,
+   synced: boolean
 }
 
 export interface ResultOfTest {
-  id: string,
-  test: string,
-  solved: boolean,
-  time: number
+   id: string,
+   test: string,
+   solved: boolean,
+   time: number
 }
+
 export interface ResultOfProblem {
-  id: string,
-  member: string,
-  testsResults: Array<ResultOfTest>
+   id: string,
+   member: string,
+   testsResults: Array<ResultOfTest>
 }

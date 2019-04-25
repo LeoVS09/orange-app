@@ -60,6 +60,10 @@
          default: false
       }) textWidth?: boolean
 
+      @Prop({
+         type: String
+      }) placeholder?: string
+
       ColorLineType = ColorLineType
 
       updateValue(event: any) {
@@ -88,10 +92,21 @@
          max-width: $max-content-width;
       }
 
-      h1 {
+      h1, &--input {
          margin: 0 auto 0 0;
          color: $header-text-color;
          font-size: 2.5rem;
+         font-weight: bold;
+      }
+
+      &--input {
+         border: none;
+         width: 100%;
+         outline: none;
+         font-family: Roboto, sans-serif;
+         max-width: $max-content-width;
+         margin: 0 auto;
+         padding: 0 2rem;
       }
 
       &.text-width {
@@ -99,16 +114,14 @@
             padding: 0;
             max-width: $max-text-width;
          }
+
+         .page-header--input {
+            padding: 0;
+            max-width: $max-text-width;
+         }
       }
 
-      &--input {
-         font-size: 2rem;
-         border: none;
-         width: 100%;
-         outline: none;
-         font-family: Roboto, sans-serif;
-         color: $header-text-color;
-      }
+
 
       &.highlight {
          background: $active-gradient;
