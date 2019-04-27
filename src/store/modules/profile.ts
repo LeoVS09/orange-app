@@ -2,7 +2,7 @@ import * as actionTypes from '../actionTypes'
 import Vue from 'vue'
 import {Commit} from 'vuex'
 import {User, ProfileState, IActionContext} from '../../state'
-import {signin, signout, checkIsLogin, currentUserIfHave} from '../../identity';
+import {signin, signout, checkIsLogin, currentUserIfHave, signup} from '../../identity';
 import * as API from '../../api';
 
 const SET_PROFILE_DATA = 'SET_PROFILE_DATA';
@@ -10,6 +10,16 @@ const LOGOUT_FROM_PROFILE = 'LOGOUT_FROM_PROFILE';
 
 
 const initState: ProfileState = {};
+
+export interface RegisterProfileData {
+   firstName: string,
+   middleName?: string,
+   lastName: string,
+   email: string,
+   username: string,
+   password: string,
+   avatarUrl?: string
+}
 
 export default {
    state: initState,
@@ -40,11 +50,21 @@ export default {
 
       [actionTypes.SEARCH_COUNTRIES](context: IActionContext<ProfileState>, name: string) {
          // return API.searchCountries(name)
-         return API.allCountries(name)
+         return API.countries()
       },
 
-      [actionTypes.REGISTER_PROFILE](context: IActionContext<ProfileState>, user: { firstName: string, lastName: string, email: string, password: string }): Promise<boolean> {
-         return signin(user.email, user.password, false)
+      [actionTypes.REGISTER_PROFILE](context: IActionContext<ProfileState>, user: RegisterProfileData): Promise<boolean> {
+         // TODO: add login
+         return signup({
+            username: user.username,
+            email: user.email,
+            password: user.password,
+            name: user.username,
+            firstName: user.firstName,
+            middleName: user.middleName,
+            lastName: user.lastName,
+            avatarUrl: user.avatarUrl
+         })
             .then(result => {
 
                if (!result) {
@@ -72,6 +92,7 @@ export default {
             return
 
          context.commit(SET_PROFILE_DATA, current.user);
+         console.log("cookie", document.cookie);
       }
    },
 

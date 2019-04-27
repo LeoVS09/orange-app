@@ -5,9 +5,10 @@ export {
    login,
    currentUser,
    searchCountries,
-   allCountries,
-   allProblems,
-   getProblem
+   countries,
+   problems,
+   problem,
+   register
 } from './graphql'
 
 export {

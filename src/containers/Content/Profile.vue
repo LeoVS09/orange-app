@@ -19,7 +19,7 @@ import { UserType } from '@/state'
       <div class="profile--delimiter"></div>
       <h4 class="profile--data-header">Confidential data</h4>
       <Input type="text" placeholder="Email" v-model="email" :error.sync="isEmailError" :tabindex="5" :disabled="isDisabled"/>
-			<Select type="text" placeholder="Country" :value="country" textField="name" :items="allCountries" :error.sync="isCountryError" :tabindex="6" :disabled="isDisabled" />
+			<Select type="text" placeholder="Country" :value="country" textField="name" :items="countries" :error.sync="isCountryError" :tabindex="6" :disabled="isDisabled" />
 
       <div class="profile--delimiter"></div>
       <h4 class="profile--data-header">Change password</h4>

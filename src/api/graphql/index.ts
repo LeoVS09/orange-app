@@ -9,12 +9,14 @@ const client = makeClient(urls.DATABASE_SERVER);
 
 export const login = mutations.login(client);
 
+export const register = mutations.register(client);
+
 export const currentUser = queries.currentUser(client);
 
 export const searchCountries = queries.searchCountries(client);
 
-export const allCountries = queries.allCountries(client);
+export const countries = queries.countries(client);
 
-export const allProblems = queries.allProblems(client)
+export const problems = queries.problems(client)
 
-export const getProblem = queries.getProblem(client)
+export const problem = queries.problem(client)

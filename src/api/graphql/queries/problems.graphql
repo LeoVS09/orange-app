@@ -1,5 +1,5 @@
-query AllProblems {
-   allProblems {
+query Problems {
+   problems {
       totalCount
       nodes {
          nodeId
@@ -9,12 +9,12 @@ query AllProblems {
          inputDescription
          outputDescription
          note
-         programInputType {
+         inputType {
             nodeId
             id
             name
          }
-         programOutputType {
+         outputType {
             nodeId
             id
             name
@@ -25,7 +25,7 @@ query AllProblems {
          createdAt
          updatedAt
          publishedAt
-         author_profile {
+         author {
             nodeId
             id
             user {
@@ -33,7 +33,7 @@ query AllProblems {
                name
             }
          }
-         tester_profile {
+         tester {
             nodeId
             id
             user {
@@ -41,7 +41,7 @@ query AllProblems {
                name
             }
          }
-         problemsToTags {
+         problemsTags {
             nodes {
                tag {
                   nodeId

@@ -8,9 +8,9 @@
       </div>
       <div class="signin--error" v-if="error"><span>{{error}}</span></div>
       <Input type="text" placeholder="Login or Email" v-model="login" @keyup.enter.native="clickSignIn"
-             :error.sync="isLoginError" :tabindex="1" :autofocus="true" :disabled="isLoginDisabled"/>
+             :error="isLoginError" :tabindex="1" :autofocus="true" :disabled="isLoginDisabled"/>
       <Input type="password" placeholder="Password" v-model="password" @keyup.enter.native="clickSignIn"
-             :error.sync="isPasswordError" :tabindex="2" :disabled="isPasswordDisabled"/>
+             :error="isPasswordError" :tabindex="2" :disabled="isPasswordDisabled"/>
       <CheckBox v-model="isRemember">Remember me</CheckBox>
       <Button
          :tabindex="3"

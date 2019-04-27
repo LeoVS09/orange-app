@@ -1,36 +1,49 @@
 import {User, UserType} from '../state';
-import {login, currentUser} from '../api'
+import {login, currentUser, register} from '../api'
 // @ts-ignore
 import crypto from 'crypto-js'
-import {ILogin} from "@/api/graphql/mutations";
+import {ILogin, IUser, RegisterInput} from "@/api/graphql/mutations";
 
 const TOKEN_NAME = 'token';
 
 export function signin(username: string, password: string, isRemember: boolean): Promise<User | null> {
-   if (!username.length || !password.length) {
+   if (!username.length || !password.length)
       return Promise.reject('Not have login or password');
-   }
 
    return login({
       username,
       password
    })
-      .then(userData => {
-         console.log('signin result', userData)
-         if (!userData)
-            throw new Error('Cannot login')
-         let user = toUser(userData);
+      .then(handleLoginResult(isRemember))
+}
 
-         const token = encryptId(user);
+export function signup(input: RegisterInput) {
+   const {username, password, email, firstName} = input
+   if (!username.length || !password.length || !email.length || !firstName.length)
+      return Promise.reject('Not have login or password');
 
-         if (isRemember) {
-            window.localStorage.setItem(TOKEN_NAME, token);
-         } else {
-            window.sessionStorage.setItem(TOKEN_NAME, token);
-         }
+   return register(input)
+      .then(handleLoginResult(false))
 
-         return user;
-      })
+}
+
+function handleLoginResult(isRemember: boolean) {
+   return (userData?: IUser) => {
+      console.log('login result', userData)
+      if (!userData)
+         throw new Error('Cannot login')
+      let user = toUser(userData);
+
+      const token = encryptId(user);
+
+      if (isRemember) {
+         window.localStorage.setItem(TOKEN_NAME, token);
+      } else {
+         window.sessionStorage.setItem(TOKEN_NAME, token);
+      }
+
+      return user;
+   }
 }
 
 function toUser(userData: ILogin['login']['user']): User {

@@ -1,6 +1,6 @@
 import * as actionTypes from '../actionTypes';
 import * as API from '@/api';
-import {IAllProblems} from '@/api/graphql/queries';
+import {IProblems, IProblem, ITest} from '@/api/graphql/queries';
 import {
    IActionContext,
    ProblemsState,
@@ -28,7 +28,7 @@ const initState: ProblemsState = {
    currentProblemId: undefined
 };
 
-export function responseToTest(t: IAllProblems['allProblems']['nodes'][0]['tests']['nodes'][0]): Test {
+export function responseToTest(t: ITest): Test {
    return {
       id: t.id,
       input: t.input.split('\\n').join(String.fromCharCode(13, 10)), // TODO: dev fix, remove in production
@@ -37,7 +37,7 @@ export function responseToTest(t: IAllProblems['allProblems']['nodes'][0]['tests
    }
 }
 
-export function responseToProblem(p: IAllProblems['allProblems']['nodes'][0]): Problem {
+export function responseToProblem(p: IProblem): Problem {
    return {
       id: p.id,
       name: p.name,
@@ -48,9 +48,9 @@ export function responseToProblem(p: IAllProblems['allProblems']['nodes'][0]): P
       createdAt: p.createdAt,
       updatedAt: p.updatedAt,
       publishedAt: p.publishedAt,
-      author: p.author_profile.user.name,
-      tester: p.tester_profile.user.name,
-      tags: p.problemsToTags.nodes.map(t => ({
+      author: p.author.user.name,
+      tester: p.tester.user.name,
+      tags: p.problemsTags.nodes.map(t => ({
          id: t.tag.id,
          name: t.tag.name
       })),
@@ -59,8 +59,8 @@ export function responseToProblem(p: IAllProblems['allProblems']['nodes'][0]): P
          memory: p.limitMemory
       },
       io: {
-         input: p.programInputType,
-         output: p.programOutputType
+         input: p.inputType,
+         output: p.outputType
       },
       tests: p.tests.nodes.map(responseToTest),
       synced: true
@@ -96,7 +96,7 @@ export default {
 
          const {state, commit} = context
 
-         API.allProblems()
+         API.problems()
             .then(problems => {
                if (!problems)
                   return console.error('Not found problems')
@@ -137,7 +137,7 @@ export default {
             return Promise.resolve(true)
          }
 
-         return API.getProblem(problemId)
+         return API.problem(problemId)
             .then(result => {
                if(!result) {
                   console.error('Cannot load problem')

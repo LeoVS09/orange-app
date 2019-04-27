@@ -1,5 +1,5 @@
-query AllCountries {
-   allCountries {
+query Countries {
+   countries {
       nodes {
          id
          name
@@ -19,8 +19,8 @@ query AllCountries {
                      profiles {
                         nodes {
                            id
-                           familyName
-                           familyName
+                           firstName
+                           middleName
                            lastName
                            phone
                            groupNumber

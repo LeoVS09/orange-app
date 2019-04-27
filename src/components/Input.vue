@@ -10,6 +10,7 @@
          v-bind="options"
       />
       <label class="input--label">{{placeholder}}</label>
+      <span class="input--error-message" v-if="typeof error === 'string'">{{error}}</span>
    </div>
 </template>
 
@@ -46,23 +47,19 @@
       autofocus: boolean;
 
       @Prop({
-         type: Boolean,
+         type: [Boolean, String],
          default: false
       })
-      error: boolean;
+      error: boolean | string;
 
       @Prop(Boolean)
       disabled: boolean;
 
       inputValue(event: any) {
-         if (event.target.value.length) {
-            this.error = false;
-         }
          const value = event.target.value;
 
          this.currentValue = value;
 
-         this.$emit('update:error', this.error);
          this.$emit('input', value)
       }
 
@@ -103,6 +100,7 @@
       flex-direction: column;
       justify-content: left;
       margin-top: 1rem;
+      position: relative;
 
       @include input-bottom-highlight();
 
@@ -121,6 +119,16 @@
       }
 
       @include input-label-animation();
+
+      &--error-message {
+         width: 100%;
+         margin: 0 auto 0.2rem;
+         color: $error-color;
+         font-size: 0.8rem;
+         position: absolute;
+         bottom: -1.2rem;
+         text-align: center;
+      }
 
    }
 </style>

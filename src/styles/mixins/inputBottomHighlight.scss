@@ -24,5 +24,8 @@
 
    &.error {
       border-bottom-color: $input-error-color;
+      &:after {
+         background-color: $input-error-color;
+      }
    }
 }

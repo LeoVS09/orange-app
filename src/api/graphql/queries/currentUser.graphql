@@ -19,8 +19,8 @@ query CurrentUser {
             id
             nodeId
             firstName
+            middleName
             lastName
-            familyName
             phone
             groupNumber
             course

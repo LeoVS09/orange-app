@@ -1,169 +1,217 @@
 <template>
-  <div class="signup">
-    <div class="signup--in">
-      <div class="signup--in-link" @click="clickLogin">
-        <span class="signup-in-text">Have profile? <span class="signup--in-go">Sign In</span> now!</span>
+   <div class="signup">
+      <div class="signup--in">
+         <div class="signup--in-link" @click="clickLogin">
+            <span class="signup-in-text">Have profile? <span class="signup--in-go">Sign In</span> now!</span>
+         </div>
       </div>
-    </div>
-    <h2 class="signup--header">Create account</h2>
+      <h2 class="signup--header">Create account</h2>
 
-    <Input type="text" placeholder="First Name" @keyup.enter.native="clickRegister" v-model="firstName" :error.sync="isFirstNameError" :tabindex="1" :disabled="isDisabled"/>
-    <Input type="text" placeholder="Last Name" @keyup.enter.native="clickRegister" v-model="lastName" :error.sync="isLastNameError" :tabindex="2" :disabled="isDisabled"/>
+      <Input type="text" placeholder="First Name" @keyup.enter.native="clickRegister" v-model="firstName"
+             :error="isFirstNameError" :tabindex="1" :disabled="isDisabled"/>
+      <Input type="text" placeholder="Last Name" @keyup.enter.native="clickRegister" v-model="lastName"
+             :error="isLastNameError" :tabindex="2" :disabled="isDisabled"/>
 
-    <div class="signup--delimiter"></div>
+      <div class="signup--delimiter"></div>
 
-    <Input type="text" placeholder="Email" @keyup.enter.native="clickRegister" v-model="email" :error.sync="isEmailError" :tabindex="3" :autofocus="true" :disabled="isDisabled"/>
+      <Input type="text" placeholder="Email" @keyup.enter.native="clickRegister" v-model="email"
+             :error="isEmailError" :tabindex="3" :autofocus="true" :disabled="isDisabled"/>
 
-    <div class="signup--delimiter"></div>
+      <Input type="text" placeholder="Login" @keyup.enter.native="clickRegister" :value="login"
+             @input="value => username = value"
+             :error="isUsernameError" :tabindex="3" :autofocus="true" :disabled="isDisabled"/>
 
-    <Input type="password" placeholder="Password" @keyup.enter.native="clickRegister" v-model="password" :error.sync="isPasswordError" :tabindex="4" :disabled="isDisabled"/>
-    <Input type="password" placeholder="Confirm Password" @keyup.enter.native="clickRegister" v-model="confirmPassword" :error.sync="isConfirmPasswordError" :tabindex="5" :disabled="isDisabled"/>
+      <div class="signup--delimiter"></div>
 
-    <p class="signup--agreement">We promise don't publish this information.</p>
+      <Input type="password" placeholder="Password" @keyup.enter.native="clickRegister" v-model="password"
+             :error="isPasswordError" :tabindex="4" :disabled="isDisabled"/>
+      <Input type="password" placeholder="Confirm Password" @keyup.enter.native="clickRegister"
+             v-model="confirmPassword" :error="isConfirmPasswordError" :tabindex="5" :disabled="isDisabled"/>
 
-    <Button
-      :tabindex="6"
-      :click="clickRegister"
-      class="signup--button"
-      :disabled="isDisabled"
-      :primary="true"
-    >Sign Up</Button>
-  </div>
+      <p class="signup--agreement">We promise don't publish this information.</p>
+
+      <Button
+         :tabindex="6"
+         :click="clickRegister"
+         class="signup--button"
+         :disabled="isDisabled"
+         :primary="true"
+      >Sign Up
+      </Button>
+   </div>
 </template>
 
 <script lang="ts">
-  import Vue from 'vue'
-  import {Component, Watch} from 'vue-property-decorator'
-  import { Logo, Input, Button, CheckBox, Icon } from '../../components'
-  import * as actions from '../../store/actionTypes';
+   import Vue from 'vue'
+   import {Component, Watch} from 'vue-property-decorator'
+   import {Logo, Input, Button, CheckBox, Icon} from '../../components'
+   import * as actions from '../../store/actionTypes';
 
-  @Component({
-    components: {
-      Logo,
-      Input,
-      Button,
-      CheckBox,
-      Icon
-    }
-  })
-  export default class SignUp extends Vue {
+   @Component({
+      components: {
+         Logo,
+         Input,
+         Button,
+         CheckBox,
+         Icon
+      }
+   })
+   export default class SignUp extends Vue {
 
-    email = "";
-    isEmailError = false;
+      email = "";
+      isEmailError: boolean | string = false;
 
-    password = "";
-    isPasswordError = false;
+      username = "";
+      isUsernameError: boolean | string = false;
 
-    confirmPassword = "";
-    isConfirmPasswordError = false;
+      password = "";
+      isPasswordError: boolean | string = false;
 
-    firstName = "";
-    isFirstNameError = false;
+      confirmPassword = "";
+      isConfirmPasswordError: boolean | string = false;
 
-    lastName = "";
-    isLastNameError = false;
+      firstName = "";
+      isFirstNameError: boolean | string = false;
 
-    isDisabled = false;
+      lastName = "";
+      isLastNameError: boolean | string = false;
 
-    created(){
-      this.$store.dispatch(actions.SET_SIGN_UP_PAGE);
-    }
+      isDisabled = false;
 
-    clickLogin() {
-      this.$router.push({ name: 'signin' });
-    }
+      get login() {
+         const isLoginHaveOnlyAllowedSymbols = (login: string) => !!login.match(/^[a-zA-Z]([a-zA-Z0-9][_]?)+$/)
 
-    clickRegister() {
-      this.isDisabled = true;
-      this.$store.dispatch(actions.REGISTER_PROFILE, {
-        firstName: this.firstName,
-        lastName: this.lastName,
-        password: this.password,
-        email: this.email
-      }).then(result => {
-        this.isDisabled = false;
-        if(result){
-          this.$router.push({name: 'home'})
-        }
-      }).catch(error => {
-        this.isDisabled = false;
-        console.error(error)
-      });
-    }
+         const extractLogin = () => {
+            if (this.username)
+               return this.username
 
-    @Watch('confirmPassword')
-    checkPassword(value: string, oldValue: string){
+            return this.email.split('@')[0]
+         }
 
-      if(!value.length){
-        this.isConfirmPasswordError = false;
-        return
+         const login = extractLogin()
+         if (login.length < 2)
+            return login
+
+         if (!isLoginHaveOnlyAllowedSymbols(login))
+            this.isUsernameError = 'Login should contain only letters, digits and "_"'
+         else
+            this.isUsernameError = false
+
+         return login
       }
 
-      if(value !== this.password){
-        this.isConfirmPasswordError = true;
-        return
+      created() {
+         this.$store.dispatch(actions.SET_SIGN_UP_PAGE);
       }
 
-      this.isConfirmPasswordError = false;
-    }
+      clickLogin() {
+         this.$router.push({name: 'signin'});
+      }
 
-  }
+      clickRegister() {
+         if (
+            this.isEmailError ||
+            this.isUsernameError ||
+            this.isPasswordError ||
+            this.isConfirmPasswordError ||
+            this.isFirstNameError ||
+            this.isLastNameError ||
+            this.isDisabled
+         )
+            return console.error('Have input error, or disabled')
+
+         this.isDisabled = true;
+
+         this.$store.dispatch(actions.REGISTER_PROFILE, {
+            firstName: this.firstName,
+            lastName: this.lastName,
+            password: this.password,
+            email: this.email,
+            username: this.login
+         }).then(result => {
+            this.isDisabled = false;
+            if (result) {
+               this.$router.push({name: 'home'})
+            }
+         }).catch(error => {
+            this.isDisabled = false;
+            console.error(error)
+         });
+      }
+
+      @Watch('confirmPassword')
+      checkPassword(value: string, oldValue: string) {
+
+         if (!value.length) {
+            this.isConfirmPasswordError = false;
+            return
+         }
+
+         if (value !== this.password) {
+            this.isConfirmPasswordError = "Passwords don't match";
+            return
+         }
+
+         this.isConfirmPasswordError = false;
+      }
+
+   }
 </script>
 
 <style scoped lang="scss">
-  @import "../../styles/config.scss";
+   @import "../../styles/config.scss";
 
-  .signup {
-    width: 100%;
-    height: 100%;
-    max-width: 95vw;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-
-    &--header {
-      font-size: 1.2rem;
-      margin-bottom: 0;
-    }
-
-    &--delimiter {
+   .signup {
       width: 100%;
-      height: 1px;
-      margin-top: 2.5rem;
-      padding: 0;
-    }
-
-    &--in {
-      margin-top: 1rem;
-      margin-bottom: 1rem;
-      width: 100%;
-      max-width: $input-width;
+      height: 100%;
+      max-width: 95vw;
       display: flex;
-      flex-direction: row;
-      justify-content: flex-end;
+      flex-direction: column;
+      align-items: center;
 
-      &-link {
-        cursor: pointer;
-        font-size: 0.8rem;
-        color: $secondary-text-color;
-
-        &:hover {
-          color: $input-color;
-        }
+      &--header {
+         font-size: 1.2rem;
+         margin-bottom: 0;
       }
 
-      &-go {
-        color: $input-color;
+      &--delimiter {
+         width: 100%;
+         height: 1px;
+         margin-top: 2.5rem;
+         padding: 0;
       }
-    }
 
-    &--agreement {
-      color: $secondary-text-color;
-      font-size: 0.9rem;
-    }
+      &--in {
+         margin-top: 1rem;
+         margin-bottom: 1rem;
+         width: 100%;
+         max-width: $input-width;
+         display: flex;
+         flex-direction: row;
+         justify-content: flex-end;
 
-    &--button {
-      margin-top: 2rem;
-    }
-  }
+         &-link {
+            cursor: pointer;
+            font-size: 0.8rem;
+            color: $secondary-text-color;
+
+            &:hover {
+               color: $input-color;
+            }
+         }
+
+         &-go {
+            color: $input-color;
+         }
+      }
+
+      &--agreement {
+         color: $secondary-text-color;
+         font-size: 0.9rem;
+      }
+
+      &--button {
+         margin-top: 2rem;
+      }
+   }
 </style>

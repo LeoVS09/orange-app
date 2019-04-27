@@ -1,8 +1,8 @@
 import currentUserGql from './currentUser.graphql'
 import searchCountriesGql from './searchCountries.graphql'
-import allCountriesGql from './allCountries.graphql'
-import allProblemsGql from './allProblems.graphql'
-import getProblemGql from './getProblem.graphql'
+import countriesGql from './Countries.graphql'
+import problemsGql from './problems.graphql'
+import problemGql from './Problem.graphql'
 import gql from 'graphql-tag'
 import {APIClient} from "../apollo";
 
@@ -74,8 +74,8 @@ export const searchCountries = (client: APIClient) => (name: string) =>
    })
       .then(result => result.data && result.data.searchCountries.nodes)
 
-interface IAllCountries {
-   allCountries: {
+interface ICountries {
+   countries: {
       nodes: Array<{
          id: string
          name: string
@@ -85,11 +85,21 @@ interface IAllCountries {
    }
 }
 
-export const allCountries = (client: APIClient) => (name: string) =>
-   client.query<IAllCountries>({
-      query: gql(allCountriesGql)
+export const countries = (client: APIClient) => () =>
+   client.query<ICountries>({
+      query: gql(countriesGql)
    })
-      .then(result => result.data && result.data.allCountries.nodes)
+      .then(result => result.data && result.data.countries.nodes)
+
+export interface ITest {
+   id: string
+   index: number
+   input: string
+   output: string
+   public: boolean
+   createdAt: string
+   updatedAt: string
+}
 
 export interface IProblem {
    id: string
@@ -98,11 +108,11 @@ export interface IProblem {
    inputDescription: string
    outputDescription: string
    note: string
-   programInputType: {
+   inputType: {
       id: string
       name: string
    }
-   programOutputType: {
+   outputType: {
       id: string
       name: string
    }
@@ -112,19 +122,19 @@ export interface IProblem {
    createdAt: string
    updatedAt: string
    publishedAt: string
-   author_profile: {
+   author: {
       id: string
       user: {
          name: string
       }
    }
-   tester_profile: {
+   tester: {
       id: string
       user: {
          name: string
       }
    }
-   problemsToTags: {
+   problemsTags: {
       nodes: Array<{
          tag: {
             id: string
@@ -134,44 +144,36 @@ export interface IProblem {
    }
 
    tests: {
-      nodes: Array<{
-         id: string
-         index: number
-         input: string
-         output: string
-         public: boolean
-         createdAt: string
-         updatedAt: string
-      }>
+      nodes: Array<ITest>
    }
 }
 
-export interface IAllProblems {
-   allProblems: {
+export interface IProblems {
+   problems: {
       totalCount: number
       nodes: Array<IProblem>
    }
 }
 
-export const allProblems = (client: APIClient) => () =>
-   client.query<IAllProblems>({
-      query: gql(allProblemsGql)
+export const problems = (client: APIClient) => () =>
+   client.query<IProblems>({
+      query: gql(problemsGql)
    })
-      .then(result => result.data && result.data.allProblems)
+      .then(result => result.data && result.data.problems)
       .then(result => {
-         console.log('allProblems', result)
+         console.log('problems', result)
          return result && result.nodes
       })
 
-export interface IGetProblem {
-   problemById: IProblem
+export interface IProblem {
+   problem: IProblem
 }
 
-export const getProblem = (client: APIClient) => (id: string) =>
-   client.query<IGetProblem>({
-      query: gql(getProblemGql),
+export const problem = (client: APIClient) => (id: string) =>
+   client.query<IProblem>({
+      query: gql(problemGql),
       variables: {
          id
       }
    })
-      .then(result => result.data && result.data.problemById)
+      .then(result => result.data && result.data.problem)

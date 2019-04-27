@@ -1,5 +1,5 @@
-query GetProblem ($id: UUID!){
-   problemById(id: $id) {
+query Problem ($id: UUID!){
+   problem(id: $id) {
       nodeId
       id
       name
@@ -7,12 +7,12 @@ query GetProblem ($id: UUID!){
       inputDescription
       outputDescription
       note
-      programInputType {
+      inputType {
          nodeId
          id
          name
       }
-      programOutputType {
+      outputType {
          nodeId
          id
          name
@@ -23,23 +23,25 @@ query GetProblem ($id: UUID!){
       createdAt
       updatedAt
       publishedAt
-      author_profile {
+      author {
          nodeId
          id
+         fullName
          user {
             nodeId
             name
          }
       }
-      tester_profile {
+      tester {
          nodeId
          id
+         fullName
          user {
             nodeId
             name
          }
       }
-      problemsToTags {
+      problemsTags {
          nodes {
             tag {
                nodeId
