@@ -1,7 +1,7 @@
 <template>
     <div class="button-container" @click="onClick">
       <button
-        :class="{'button-container--submit': true, shadow, disabled, primary, active}">
+        :class="{'button-container--submit': true, shadow, disabled, primary, active, 'max-width': maxWidth}">
         <span v-if="!!icon">
           <Icon :type="icon" class="button-container--icon"/>
         </span>
@@ -70,6 +70,13 @@
     // @ts-ignore
     click: () => void;
 
+    @Prop({
+       type: Boolean,
+       default: false
+    })
+    // @ts-ignore
+    maxWidth: boolean
+
     get options(): Options {
       let result = {} as Options;
 
@@ -87,6 +94,8 @@
     onClick(){
       if(!this.disabled){
         this.click()
+
+         this.$emit('click')
       }
     }
   }
@@ -107,6 +116,10 @@
       transition-duration: 0.1s;
       outline: none;
       font-weight: 500;
+
+      &.max-width {
+         width: 100%;
+      }
 
       &.active {
         background: $button-active-color;

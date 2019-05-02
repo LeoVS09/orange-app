@@ -15,6 +15,7 @@ const SET_PROBLEMS = 'SET_PROBLEMS';
 const ADD_PROBLEM = 'ADD_PROBLEM';
 const SET_RESULT_OF_PROGRAM = 'SET_RESULT_OF_PROGRAM';
 const SET_CURRENT_PROBLEM = 'SET_CURRENT_PROBLEM';
+const SET_PROBLEM_TESTING = 'SET_PROBLEM_TESTING';
 const ADD_CLEAR_TEST = 'ADD_CLEAR_TEST';
 const EDIT_TEST = 'EDIT_TEST';
 const SYNC_TEST = 'SYNC_TEST';
@@ -63,7 +64,8 @@ export function responseToProblem(p: ResponseDataProblem): Problem {
          output: p.outputType
       },
       tests: p.tests.nodes.map(responseToTest),
-      synced: true
+      synced: true,
+      isTesting: false
    }
 }
 
@@ -159,12 +161,29 @@ export default {
       [actionTypes.ADD_PROBLEM](context: IActionContext<ProblemsState>, problem: Problem) {
          context.commit(ADD_PROBLEM, problem);
       },
-      [actionTypes.UPLOAD_CODE](context: IActionContext<ProblemsState>, {id, text}: { id: string, text: string }) {
-         console.log("upload code", text);
-         API.runProgram(id, text)
-            .then(result => {
-               context.commit(SET_RESULT_OF_PROGRAM, result)
-            }).catch(e => console.error(e));
+      async [actionTypes.UPLOAD_CODE](context: IActionContext<ProblemsState>, {id, text}: { id: string, text: string }) {
+         context.commit(SET_PROBLEM_TESTING, {id, isTesting: true})
+
+         try {
+
+            const result = await API.runProgram(id, text)
+            context.commit(SET_RESULT_OF_PROGRAM, result)
+
+            context.commit(SET_PROBLEM_TESTING, {id, isTesting: false})
+
+         } catch (e) {
+            console.error("Error upload code:", e)
+
+            context.commit(SET_RESULT_OF_PROGRAM, {
+               problemId: id,
+               isAllTestsSuccessful: false,
+               failedTest: 0,
+               isCompilationSuccessful: true,
+               isUnexpectedError: true
+            } as ResultRunProgram)
+
+            context.commit(SET_PROBLEM_TESTING, {id, isTesting: false})
+         }
       },
       [actionTypes.ADD_NEW_TEST](context: IActionContext<ProblemsState>) {
          context.commit(ADD_CLEAR_TEST)
@@ -241,7 +260,19 @@ export default {
             if (problem.id !== result.problemId) {
                return problem
             }
+
             problem.resultRun = result;
+            return problem
+         })
+      },
+
+      [SET_PROBLEM_TESTING](state: ProblemsState, {id, isTesting}: {id: string, isTesting: boolean}) {
+         state.data = state.data.map(problem => {
+            if (problem.id !== id) {
+               return problem
+            }
+
+            problem.isTesting = isTesting;
             return problem
          })
       },

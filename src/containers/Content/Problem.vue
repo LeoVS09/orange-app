@@ -51,13 +51,20 @@
 
          <div class="problem--code-button-wrapper">
             <transition name="fade">
-               <button v-if="!!codeOfProgram.length" v-on:click="handleUpload">Upload</button>
+               <Button
+                  v-if="!!codeOfProgram.length"
+                  @click="handleUpload"
+                  :disabled="problemData.isTesting"
+                  :maxWidth="true"
+               >Upload</Button>
             </transition>
          </div>
 
          <div class="problem--test-result" v-if="!!resultRun">
-            <p class="success" v-if="resultRun.isAllTestsSuccessful">All tests successful!</p>
-            <p class="failed" v-else>Failed test {{resultRun.failedTest}}</p>
+            <p class="problem--test-result-error" v-if="resultRun.isUnexpectedError">Some unexpected error :(</p>
+            <p class="problem--test-result-success" v-else-if="resultRun.isAllTestsSuccessful">All tests successful!</p>
+            <p class="problem--test-result-error" v-else-if="!resultRun.isCompilationSuccessful">Compilation error</p>
+            <p class="problem--test-result-failed" v-else>Failed test {{resultRun.failedTest + 1}}</p>
          </div>
       </div>
 
@@ -109,7 +116,7 @@
       </transition>
    </div>
 
-   <h1 v-else>Not have this problem or you can permissions for see it :(</h1>
+   <div v-else class="problem--not-have"><h1>Not have this problem :(</h1></div>
 </template>
 
 <script lang="ts">
@@ -331,6 +338,18 @@
       flex-direction: column;
       align-items: center;
 
+      &--not-have {
+         width: 100%;
+         height: 100%;
+         display: flex;
+         min-height: 100%;
+         flex-direction: column;
+         flex: 1;
+         h1 {
+            margin: auto;
+         }
+      }
+
       &--limits {
          width: 100%;
          max-width: 20rem;
@@ -358,12 +377,16 @@
          flex-direction: column;
          align-items: center;
 
-         .failed {
+         &-failed {
             color: orange;
          }
 
-         .success {
+         &-success {
             color: green;
+         }
+
+         &-error {
+            color: red;
          }
       }
 
@@ -404,25 +427,8 @@
       &--code-button-wrapper {
          height: 5rem;
          z-index: 2;
+         margin-top: 1rem;
 
-         button {
-            width: 100%;
-            font-family: "Roboto", sans-serif;
-            background-color: $background-color;
-            height: 2rem;
-            border: 1px solid $secondary-text-color;
-            margin-top: 1rem;
-            margin-bottom: 2rem;
-            cursor: pointer;
-            outline: none;
-            border-radius: 3px;
-            position: relative;
-
-            &:hover {
-               background-color: $secondary-text-color;
-               color: white;
-            }
-         }
       }
 
       &--data {

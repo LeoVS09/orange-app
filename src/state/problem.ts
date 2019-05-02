@@ -21,7 +21,8 @@ export interface Problem {
    },
    resultRun?: ResultRunProgram,
    tests?: Array<Test>,
-   synced: boolean
+   synced: boolean,
+   isTesting: boolean
 }
 
 export function defaultProblem(): Problem {
@@ -45,7 +46,8 @@ export function defaultProblem(): Problem {
          input: mockInput('stdin'),
          output: mockOutput('stdout'),
       },
-      synced: false
+      synced: false,
+      isTesting: false
    }
 }
 
@@ -76,9 +78,11 @@ export interface Tag {
 }
 
 export interface ResultRunProgram {
-   problemId: string,
-   isAllTestsSuccessful: boolean,
+   problemId: string
+   isAllTestsSuccessful: boolean
    failedTest: number
+   isCompilationSuccessful: boolean
+   isUnexpectedError: boolean
 }
 
 export interface ProgramInput {

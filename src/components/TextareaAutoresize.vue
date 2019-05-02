@@ -24,7 +24,7 @@
     updateValue(event: any){
       this.$nextTick(this.resize);
 
-      this.$emit('input', event);
+      this.$emit('input', event.target.value);
     }
 
     mounted(){
