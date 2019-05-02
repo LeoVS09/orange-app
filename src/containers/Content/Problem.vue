@@ -64,7 +64,16 @@
             <p class="problem--test-result-error" v-if="resultRun.isUnexpectedError">Some unexpected error :(</p>
             <p class="problem--test-result-success" v-else-if="resultRun.isAllTestsSuccessful">All tests successful!</p>
             <p class="problem--test-result-error" v-else-if="!resultRun.isCompilationSuccessful">Compilation error</p>
-            <p class="problem--test-result-failed" v-else>Failed test {{resultRun.failedTest + 1}}</p>
+            <p class="problem--test-result-failed" v-else>
+               Failed test {{resultRun.failedTest + 1}}
+               <span v-if="resultRun.statusCode !== 0">{{
+                  resultRun.statusCode === 1 ? "Internal Error" :
+                  resultRun.statusCode === 2 ? "Real time limit exceeded" :
+                  resultRun.statusCode === 3 ? "Memory limit exceeded" :
+                  resultRun.statusCode === 4 ? "CPU limit exceeded" :
+                  "Unexpected error"
+                  }}</span>
+            </p>
          </div>
       </div>
 

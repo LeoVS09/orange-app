@@ -179,7 +179,8 @@ export default {
                isAllTestsSuccessful: false,
                failedTest: 0,
                isCompilationSuccessful: true,
-               isUnexpectedError: true
+               isUnexpectedError: true,
+               statusCode: 0
             } as ResultRunProgram)
 
             context.commit(SET_PROBLEM_TESTING, {id, isTesting: false})
