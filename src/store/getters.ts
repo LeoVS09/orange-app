@@ -1,6 +1,6 @@
 import {RootState, UserType} from "../state";
 import {GetterTree} from "vuex";
-import {checkIsLogin} from "../identity";
+import {checkIsLogin} from "../authentication";
 
 const getters: GetterTree<RootState, any> = {
   platform: state => state.ui.currentPlatform,

@@ -47,7 +47,7 @@
                 :key="'test-' + i + '-' + example.id" :testData="example" />
 
       <div class="problem--code-upload" v-if="!isTeacher">
-         <textarea placeholder="Paste you code here..." v-model="codeOfProgram"></textarea>
+         <textarea-autoresize class="problem--code-text" placeholder="Paste you code here..." v-model="codeOfProgram"></textarea-autoresize>
 
          <div class="problem--code-button-wrapper">
             <transition name="fade">
@@ -87,12 +87,12 @@
          </div>
          <div class="dates">
             <div title="date of upload">
+               <span>{{formatDate(problemData.updatedAt)}}</span>
                <Icon class="data" type="publish"/>
-               <span>{{formatData(problemData.uploadDate)}}</span>
             </div>
             <div title="date of publication">
+               <span>{{formatDate(problemData.publishedAt)}}</span>
                <Icon class="data" type="public"/>
-               <span>{{formatData(problemData.publicationDate)}}</span>
             </div>
          </div>
       </div>
@@ -126,9 +126,11 @@
       PageHeader,
       Tags,
       PageSection,
-      DataView
+      DataView,
    } from '@/components';
+   import {formatDate} from '@/components/utils'
    import {ProgramInput, ProgramOutput, Tag} from "@/state/problem"
+
    // TODO: examples and description on one screen
 
    Component.registerHooks([
@@ -218,9 +220,8 @@
          return true;
       }
 
-      formatData(value: number) {
-         const date = new Date(value);
-         return date.toLocaleDateString()
+      formatDate(value: Date) {
+         return formatDate(value)
       }
 
       formatIO(value: ProgramInput | ProgramOutput) {
@@ -387,17 +388,17 @@
       &--code-upload {
          width: 100%;
          max-width: $max-text-width;
-         textarea {
-            width: calc(100% - 4px);
-            height: 10rem;
-            resize: none;
-            border-color: rgb(43, 58, 66);
-            border-radius: 3px;
-            outline: none;
-            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
-            z-index: 3;
-            position: relative;
-         }
+      }
+
+      &--code-text {
+         width: calc(100% - 4px);
+         resize: none;
+         border-radius: 3px;
+         border: 1px solid rgb(179, 179, 186);
+         outline: none;
+         font-family: 'Source Code Pro', monospace;
+         z-index: 3;
+         position: relative;
       }
 
       &--code-button-wrapper {

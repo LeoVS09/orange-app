@@ -22,6 +22,8 @@
    @import url('https://fonts.googleapis.com/css?family=Montserrat:400,700');
    @import url('https://fonts.googleapis.com/css?family=Source+Code+Pro');
    @import url('https://fonts.googleapis.com/icon?family=Material+Icons');
+   @import url('https://fonts.googleapis.com/css?family=IBM+Plex+Mono');
+
    @import "./styles/default.scss";
 
    #app {

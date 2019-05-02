@@ -37,7 +37,7 @@
             <tr class="problems--list-header">
                <th>Name</th>
                <th>Author</th>
-               <th>Upload date</th>
+               <th>Date</th>
             </tr>
             <tbody name="list-item-down" is="transition-group" mode="out-in">
             <ListItem v-for="item in filtered" v-on:click.native="chooseProblem(item)"

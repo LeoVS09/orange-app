@@ -2,7 +2,7 @@ import * as actionTypes from '../actionTypes'
 import Vue from 'vue'
 import {Commit} from 'vuex'
 import {User, ProfileState, IActionContext} from '../../state'
-import {signin, signout, checkIsLogin, currentUserIfHave, signup} from '../../identity';
+import {signin, signout, checkIsLogin, currentUserIfHave, signup} from '../../authentication';
 import * as API from '../../api';
 
 const SET_PROFILE_DATA = 'SET_PROFILE_DATA';

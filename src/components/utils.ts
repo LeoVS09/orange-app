@@ -8,3 +8,10 @@ export function toStringWhenDefined(value: any): string {
 
    return '' + value
 }
+
+export function formatDate(date: Date) {
+   if(!date)
+      return ''
+
+   return date.toLocaleDateString()
+}

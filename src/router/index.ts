@@ -2,7 +2,7 @@ import Vue from 'vue'
 // @ts-ignore
 import Router from 'vue-router'
 import {Component} from "vue-router/types/router"
-import {checkIsLogin} from "../identity";
+import {checkIsLogin} from "../authentication";
 import Home from '@/containers/Home.vue'
 import Authorisation from '@/containers/Authorisation.vue'
 import Competitions from '@/containers/Content/Competitions.vue'

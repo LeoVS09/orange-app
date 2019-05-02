@@ -54,8 +54,8 @@ export function createUser(login: string, password: string, type: UserType): Use
     type,
     emails: [{
       email:login,
-      updatedAt: '',
-      createdAt: '',
+      updatedAt: new Date(),
+      createdAt: new Date(),
       isVerified: true
     }],
   }

@@ -56,7 +56,7 @@
       &--code {
          white-space: pre;
          color: #bfbfbf;
-         font-family: 'Source Code Pro', monospace;
+         font-family: 'IBM Plex Mono', monospace;
       }
 
       &--input {

@@ -1,6 +1,6 @@
 import * as actionTypes from '../actionTypes';
 import * as API from '@/api';
-import {IProblems, IProblem, ITest} from '@/api/graphql/queries';
+import {ResponseDataProblem, ResponseDataTest} from '@/api/graphql/queries/types';
 import {
    IActionContext,
    ProblemsState,
@@ -28,7 +28,7 @@ const initState: ProblemsState = {
    currentProblemId: undefined
 };
 
-export function responseToTest(t: ITest): Test {
+export function responseToTest(t: ResponseDataTest): Test {
    return {
       id: t.id,
       input: t.input.split('\\n').join(String.fromCharCode(13, 10)), // TODO: dev fix, remove in production
@@ -37,7 +37,7 @@ export function responseToTest(t: ITest): Test {
    }
 }
 
-export function responseToProblem(p: IProblem): Problem {
+export function responseToProblem(p: ResponseDataProblem): Problem {
    return {
       id: p.id,
       name: p.name,
@@ -103,7 +103,7 @@ export default {
 
                problems.forEach(p => {
                   if (!!state.data.find(inState => inState.id === p.id))
-                     return console.log('already have this problem', p)
+                     return console.log('already have this problem', p.name)
                   // TODO: update existing problems
 
                   commit(ADD_PROBLEM, responseToProblem(p))

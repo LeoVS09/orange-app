@@ -36,7 +36,7 @@ import { UserType } from '@/state'
   import {Getter, Action} from 'vuex-class'
   import {User, UserType} from "../../state"
   import * as actions from '../../store/actionTypes';
-  import {checkIsLogin} from '../../identity'
+  import {checkIsLogin} from '../../authentication'
   import {Icon, Input, PageHeader, SourceView, Button, Select} from '../../components';
   import {Country} from "@/state/country";
 

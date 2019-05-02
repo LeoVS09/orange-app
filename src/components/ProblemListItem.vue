@@ -1,14 +1,21 @@
 <template>
-  <tr class="problem" :style="{ background: backgroundData}" @mousemove="gradientCircleAtMouse" @mouseleave="transparentBackground" @mouseover="gradientCircleAtMouse">
+  <tr class="problem"
+      :style="{ background: backgroundData}"
+      @mousemove="gradientCircleAtMouse"
+      @mouseleave="transparentBackground"
+      @mouseover="gradientCircleAtMouse"
+
+  >
     <td>{{item.name}}</td>
     <td class="problem--author">{{item.author}}</td>
-    <td class="problem--date">{{uploadDateFormat(item.uploadDate)}}</td>
+    <td class="problem--date">{{uploadDateFormat(item.updatedAt ? item.updatedAt : item.createdAt)}}</td>
   </tr>
 </template>
 
 <script lang="ts">
   import Vue from 'vue'
   import {Component} from 'vue-property-decorator'
+  import {formatDate} from "./utils";
 
   @Component({
     props: {
@@ -34,9 +41,8 @@
       this.backgroundData = 'transparent';
     }
 
-    uploadDateFormat(value: number) {
-      const date = new Date(value);
-      return date.toLocaleDateString()
+    uploadDateFormat(value: Date) {
+      return formatDate(value)
     }
   }
 </script>

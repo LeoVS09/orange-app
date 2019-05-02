@@ -1,22 +1,19 @@
 import * as mutations from './mutations'
 import * as queries from './queries'
-import { makeClient, APIClient} from "./apollo";
-import urls from '../urls.json'
-
-const client = makeClient(urls.DATABASE_SERVER);
+import {mapRequester} from "./utils";
 
 // TODO: add pre-compiling queries when build project
 
-export const login = mutations.login(client);
+export const login = mapRequester(mutations.login);
 
-export const register = mutations.register(client);
+export const register = mapRequester(mutations.register);
 
-export const currentUser = queries.currentUser(client);
+export const currentUser = mapRequester(queries.currentUser);
 
-export const searchCountries = queries.searchCountries(client);
+export const searchCountries = mapRequester(queries.searchCountries);
 
-export const countries = queries.countries(client);
+export const countries = mapRequester(queries.countries);
 
-export const problems = queries.problems(client)
+export const problems = mapRequester(queries.problems)
 
-export const problem = queries.problem(client)
+export const problem = mapRequester(queries.problem)

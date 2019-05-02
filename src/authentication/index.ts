@@ -2,9 +2,19 @@ import {User, UserType} from '../state';
 import {login, currentUser, register} from '../api'
 // @ts-ignore
 import crypto from 'crypto-js'
-import {ILogin, IUser, RegisterInput} from "@/api/graphql/mutations";
+import {ResponseDataUser, RequestRegisterInput} from "@/api/graphql/mutations/types";
 
 const TOKEN_NAME = 'token';
+const TOKEN_KEY = 'key' // TODO
+
+function encryptId(user: User): string {
+   return crypto.AES.encrypt(user.id, TOKEN_KEY).toString() // TODO
+}
+
+function decryptId(token: string): string {
+   return crypto.AES.decrypt(token, TOKEN_KEY).toString(crypto.enc.Utf8) // TODO
+}
+
 
 export function signin(username: string, password: string, isRemember: boolean): Promise<User | null> {
    if (!username.length || !password.length)
@@ -17,7 +27,7 @@ export function signin(username: string, password: string, isRemember: boolean):
       .then(handleLoginResult(isRemember))
 }
 
-export function signup(input: RegisterInput) {
+export function signup(input: RequestRegisterInput) {
    const {username, password, email, firstName} = input
    if (!username.length || !password.length || !email.length || !firstName.length)
       return Promise.reject('Not have login or password');
@@ -28,7 +38,7 @@ export function signup(input: RegisterInput) {
 }
 
 function handleLoginResult(isRemember: boolean) {
-   return (userData?: IUser) => {
+   return (userData?: ResponseDataUser) => {
       console.log('login result', userData)
       if (!userData)
          throw new Error('Cannot login')
@@ -46,7 +56,7 @@ function handleLoginResult(isRemember: boolean) {
    }
 }
 
-function toUser(userData: ILogin['login']['user']): User {
+function toUser(userData: ResponseDataUser): User {
    if (!userData.profiles.nodes.length)
       throw new Error('User not have profile')
 
@@ -72,19 +82,14 @@ function toUser(userData: ILogin['login']['user']): User {
    }
 }
 
-const TOKEN_KEY = 'key' // TODO
-
-function encryptId(user: User): string {
-   return crypto.AES.encrypt(user.id, TOKEN_KEY).toString() // TODO
-}
-
-function decryptId(token: string): string {
-   return crypto.AES.decrypt(token, TOKEN_KEY).toString(crypto.enc.Utf8) // TODO
-}
 
 export function signout() {
    window.localStorage.removeItem(TOKEN_NAME);
    window.sessionStorage.removeItem(TOKEN_NAME);
+
+   // TODO: make normal when use ngins
+   // window.location.href = `${window.location.origin}/logout`
+
 }
 
 interface checkResultOk {
