@@ -14,12 +14,11 @@
       <CheckBox v-model="isRemember">Remember me</CheckBox>
       <Button
          :tabindex="3"
-         :click="clickSignIn"
+         @click="clickSignIn"
          class="signin--button"
          :disabled="isSubmitDisabled"
          :primary="true"
-      >Sign In
-      </Button>
+      >Sign In</Button>
       <div class="signin--forgot">
          <span class="signin--forgot-text">Forgot password?</span>
       </div>

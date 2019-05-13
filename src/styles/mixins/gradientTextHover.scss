@@ -1,0 +1,16 @@
+@import "../config.scss";
+
+@mixin gradient-text-hover($text-color: $button-text-color) {
+   position: relative;
+   color: transparent;
+   transition-duration: 0.3s;
+   background: $gradient-text-hover-color $text-color;
+   -webkit-background-clip: text;
+   background-clip: text;
+
+   &:hover {
+      background-position: 0 0;
+   }
+}
+
+

@@ -83,7 +83,7 @@ export interface ResultRunProgram {
    failedTest: number
    isCompilationSuccessful: boolean
    isUnexpectedError: boolean
-   statusCode: number
+   status: number
 }
 
 export interface ProgramInput {

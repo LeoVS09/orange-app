@@ -21,7 +21,11 @@ $highlight-header-text-color: white;
 $highlight-text-color: #F57C00;
 $placeholder-color: #999; // rgba(0, 0, 0, 0.65);
 
-$active-gradient: linear-gradient(160deg, #fda130, #fd7400, #ff6977);
+$gradient-start-color: #fda130;
+$gradient-middle-color: #fd7400;
+$gradient-end-color: #ff6977;
+
+$active-gradient: linear-gradient(160deg, $gradient-start-color, $gradient-middle-color, $gradient-end-color);
 $highlight-section-color: #F9F9F9;
 $divider-line-color: #e5e5e5;
 
@@ -30,16 +34,19 @@ $button-shadow-color: #fda130;
 $button-primary-color: #039BE5;
 $button-primary-shadow-color: #039BE5;
 $button-highlight-color: #FFB300;
-$button-text-color: #505254;
+$button-text-color: black;
+$button-fade-text-color: lighten($button-text-color, 30%);
 $button-border-color: $secondary-color;
 $button-active-color: linear-gradient(120deg, #fda130, #ff7b78);
 $button-active-text-color: white;
+$button-active-fade-text-color: darken($button-text-color, 30%);
 $button-primary-text-color: white;
 
 $spinner-color: $button-color;
 $active-color: #F57C00;
 $menu-text-color: lighten($main-text-color, 20%);
 
+$gradient-text-hover-color: linear-gradient(to right, $gradient-start-color 0%, $gradient-middle-color 25%, $gradient-end-color 50%, transparent 50%) 100% 0 / 200% 200%;
 
 // ---------------------------------------- Sizes ------------------------------------------
 
@@ -56,6 +63,8 @@ $problem-line-padding: 0.7rem;
 
 $button-padding-top: 0.3rem;
 $button-padding-sides: 1.1rem;
+
+$button-font-size: 0.85rem;
 
 // Default browser size, used only for compatibility with other pseudo-inputs
 $min-input-height: 19px;

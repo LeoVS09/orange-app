@@ -32,7 +32,7 @@
 
       <Button
          :tabindex="6"
-         :click="clickRegister"
+         @click="clickRegister"
          class="signup--button"
          :disabled="isDisabled"
          :primary="true"

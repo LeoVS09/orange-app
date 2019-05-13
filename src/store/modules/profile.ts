@@ -31,7 +31,7 @@ export default {
       },
 
       [actionTypes.LOGIN_TO_PROFILE](context: IActionContext<ProfileState>, {login, password, isRemember}: { login: string, password: string, isRemember: boolean }): Promise<boolean> {
-
+         
          return signin(login, password, isRemember)
             .then(result => {
 

@@ -15,6 +15,8 @@ import TextareaAutoresize from './TextareaAutoresize.vue';
 import Tags from './Tags.vue';
 import PageSection from './PageSection.vue';
 import DataView from './DataView.vue';
+import ButtonGroup from './ButtonGroup.vue';
+import List from './List.vue'
 
 export {
    Footer,
@@ -33,5 +35,7 @@ export {
    ColorLine,
    Tags,
    PageSection,
-   DataView
+   DataView,
+   ButtonGroup,
+   List
 }

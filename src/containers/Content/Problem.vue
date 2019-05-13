@@ -66,13 +66,7 @@
             <p class="problem--test-result-error" v-else-if="!resultRun.isCompilationSuccessful">Compilation error</p>
             <p class="problem--test-result-failed" v-else>
                Failed test {{resultRun.failedTest + 1}}
-               <span v-if="resultRun.statusCode !== 0">{{
-                  resultRun.statusCode === 1 ? "Internal Error" :
-                  resultRun.statusCode === 2 ? "Real time limit exceeded" :
-                  resultRun.statusCode === 3 ? "Memory limit exceeded" :
-                  resultRun.statusCode === 4 ? "CPU limit exceeded" :
-                  "Unexpected error"
-                  }}</span>
+               <span v-if="statusLabel">{{statusLabel}}</span>
             </p>
          </div>
       </div>
@@ -119,7 +113,9 @@
                :click="syncProblem"
                class="problem--sync-button"
                :disabled="syncing"
-               :shadow="true">{{isCreate ? 'Create' : 'Synchronize'}}
+               :primary="true"
+               :circle="true"
+            >{{isCreate ? 'Create' : 'Synchronize'}}
             </Button>
          </div>
       </transition>
@@ -262,6 +258,27 @@
 
       handleUpload() {
          this.$store.dispatch(actions.UPLOAD_CODE, {id: this.$route.params.id, text: this.codeOfProgram})
+      }
+
+      get statusLabel(): string | undefined {
+         if(!this.resultRun)
+            return
+
+         const {status} = this.resultRun
+         if(status === 0)
+            return
+
+         switch (status) {
+            case 1: return 'Internal Error'
+
+            case 2: return 'Real time limit exceeded'
+
+            case 3: return 'Memory limit exceeded'
+
+            case 4: return 'CPU limit exceeded'
+
+            default: return 'Unexpected error'
+         }
       }
 
       addTest() {

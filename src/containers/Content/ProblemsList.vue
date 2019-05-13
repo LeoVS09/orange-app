@@ -2,48 +2,59 @@
    <div class="problems">
       <PageHeader class="problems--header">Problems</PageHeader>
       <div class="problems--content">
-         <div class="problems--add" v-if="isTeacher">
-            <Button icon="add" :click="addProblem" class="problems--add-button">Add problem</Button>
+
+         <div class="problems--actions">
+            <Button
+               v-if="isTeacher"
+               icon="add"
+               @click="addProblem"
+               class="problems--add-button"
+               :primary="true"
+               :circle="true"
+            >Add problem</Button>
+            <ButtonGroup v-slot="group">
+               <Button
+                  @click="viewAll"
+                  :active="filter === 'All'"
+                  class="problems--filter-item"
+                  :hovered="group.hovered"
+                  :gradientHighlight="false"
+               >All</Button>
+               <Button
+                  @click="viewOpen"
+                  :active="filter === 'Open'"
+                  class="problems--filter-item"
+                  :hovered="group.hovered"
+                  :gradientHighlight="false"
+               >Open</Button>
+               <Button
+                  @click="viewClosed"
+                  :active="filter === 'Closed'"
+                  class="problems--filter-item"
+                  :hovered="group.hovered"
+                  :gradientHighlight="false"
+               >Closed</Button>
+               <Button
+                  @click="viewResolved"
+                  :active="filter === 'Resolved'"
+                  class="problems--filter-item"
+                  :hovered="group.hovered"
+                  :gradientHighlight="false"
+               >Resolved</Button>
+            </ButtonGroup>
          </div>
 
-         <div class="problems--filters">
-            <Button
-               :click="viewAll"
-               :active="filter === 'All'"
-               class="problems--filter-item"
-            >All
-            </Button>
-            <Button
-               :click="viewOpen"
-               :active="filter === 'Open'"
-               class="problems--filter-item"
-            >Open
-            </Button>
-            <Button
-               :click="viewClosed"
-               :active="filter === 'Closed'"
-               class="problems--filter-item"
-            >Closed
-            </Button>
-            <Button
-               :click="viewResolved"
-               :active="filter === 'Resolved'"
-               class="problems--filter-item"
-            >Resolved
-            </Button>
-         </div>
-
-         <table class="problems--list">
-            <tr class="problems--list-header">
-               <th>Name</th>
-               <th>Author</th>
-               <th>Date</th>
-            </tr>
-            <tbody name="list-item-down" is="transition-group" mode="out-in">
-            <ListItem v-for="item in filtered" v-on:click.native="chooseProblem(item)"
-                      v-bind:key="item.name + item.author" :item="item"/>
-            </tbody>
-         </table>
+         <list
+            :headers="[
+               {key: 'name', label: 'Name'},
+               {key: 'author', label: 'Author'},
+               {key: 'date', label: 'Date'},
+            ]"
+            :items="filtered"
+            :formatData="formatItem"
+            :isCanAdd="isTeacher"
+            @chooseItem="chooseProblem"
+         />
       </div>
    </div>
 </template>
@@ -54,7 +65,7 @@
    import {Getter, Action} from 'vuex-class'
    import {Problem} from "../../state"
    import * as actions from '../../store/actionTypes';
-   import {PageHeader, ProblemListItem, Button} from '../../components';
+   import {PageHeader, ProblemListItem, Button, ButtonGroup, List} from '../../components';
 
    enum Filter {
       All = "All",
@@ -67,7 +78,9 @@
       components: {
          PageHeader,
          ListItem: ProblemListItem,
-         Button
+         Button,
+         ButtonGroup,
+         List
       }
    })
    export default class ProblemsList extends Vue {
@@ -112,6 +125,13 @@
          this.filter = Filter.Resolved
       }
 
+      formatItem(item: Problem){
+         return {
+            ...item,
+            date: item.updatedAt ? item.updatedAt : item.createdAt
+         }
+      }
+
       created() {
          if (!this.syncProblems)
             return console.error('Not have action to sync problems')
@@ -153,7 +173,7 @@
          max-width: $max-content-width;
       }
 
-      &--filters {
+      &--actions {
          width: 100%;
          display: flex;
          flex-direction: row;
@@ -171,62 +191,12 @@
          }
       }
 
-      &--add {
-         &-button {
-            display: flex;
-            flex-direction: row;
-            justify-content: flex-end;
-         }
-      }
-
-      &--list {
-         width: 100%;
-         margin: 0;
-         padding: 0;
-      }
-
-      &--list-header {
-         width: 100%;
+      &--add-button {
+         margin-right: auto;
          display: flex;
          flex-direction: row;
-         padding-top: 1.5*$problem-line-padding;
-         padding-bottom: 1.5*$problem-line-padding;
-         transition: box-shadow 0.2s cubic-bezier(.25, .8, .25, 1);
-         border-bottom: 1px solid $secondary-color;
+         justify-content: flex-end;
 
-         &, &:hover {
-            box-shadow: none;
-            cursor: default;
-            color: $main-text-color;
-         }
-
-         td, th {
-            flex: 1;
-
-            &:first-child {
-               flex: 3;
-               padding-left: 1rem;
-               text-underline: $main-text-color;
-            }
-         }
-      }
-
-
-      .list-item-down-enter-active {
-         transition: all 0.2s;
-      }
-
-      .list-item-down-leave-active {
-         transition: all 0.05s;
-      }
-
-      .list-item-down-enter {
-         opacity: 0;
-         transform: translateY(-1rem);
-      }
-
-      .list-item-down-leave-to {
-         opacity: 0;
       }
 
    }
