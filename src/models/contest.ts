@@ -1,4 +1,4 @@
-import {Problem, ResultOfProblem} from "./problem";
+import {FullProblem, ResultOfProblem} from "./problem";
 
 export interface Requirements {
   course?: number
@@ -6,7 +6,7 @@ export interface Requirements {
 
 export interface Contest {
   id: string,
-  problems: Array<Problem>,
+  problems: Array<FullProblem>,
   isOpen: boolean,
   requirements?: {
     contestant?: Requirements,

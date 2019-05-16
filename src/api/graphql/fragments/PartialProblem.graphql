@@ -1,0 +1,28 @@
+#import "./PartialProfile.graphql"
+#import "./Tag.graphql"
+
+fragment PartialProblem on Problem {
+   id
+   name
+   difficulty
+   createdAt
+   updatedAt
+   publicationDate
+   author {
+      nodeId
+      ...PartialProfile
+   }
+   tester {
+      nodeId
+      ...PartialProfile
+   }
+   problemsTags {
+      nodes {
+         tag {
+            nodeId
+
+            ...Tag
+         }
+      }
+   }
+}

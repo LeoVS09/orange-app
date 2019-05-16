@@ -16,6 +16,6 @@ export function formatDate(date: Date) {
    return date.toLocaleDateString()
 }
 
-export function randomKey(): string {
+export function randomId(): string {
    return Math.random().toString(36).substring(2) + Math.random().toString(36).substring(2);
 }

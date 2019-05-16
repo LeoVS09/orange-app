@@ -33,7 +33,7 @@
    import {Component, Prop} from 'vue-property-decorator'
    import {Logo, Icon} from '../components'
    import {Getter} from 'vuex-class'
-   import {User} from "../state"
+   import {UserProfile} from "../models"
    import * as actions from '../store/actionTypes';
    import {ROUTES} from '@/router/rotues'
 
@@ -63,7 +63,7 @@
    })
    export default class TopBar extends Vue {
 
-      @Getter('profile') userData?: User;
+      @Getter('profile') userData?: UserProfile;
 
       @Prop({
          type: Boolean,

@@ -1,0 +1,11 @@
+#import "../fragments/OutputType.graphql"
+
+mutation deleteOutputType($input: DeleteProgramOutputTypeInput!) {
+   deleteProgramOutputType(input: $input){
+      programOutputType {
+         nodeId
+
+         ...OutputType
+      }
+   }
+}

@@ -1,6 +1,11 @@
+import {ProblemStatus} from "@/models";
+import {ProblemStatus} from "@/models";
+import {ProblemStatus} from "@/models";
+import {ProblemStatus} from "@/models";
+import {ProblemStatus} from "@/models";
 <template>
-   <div v-if="isLoading" class="skeleton-loading problem-loading"></div>
-   <div v-else-if="!!problemData" class="problem">
+   <div v-if="!problemData || problemData.status === ProblemStatus.Reading" class="skeleton-loading problem-loading"></div>
+   <div v-else-if="!!problemData && problemData.readState === ProblemReadState.Full" class="problem">
 
       <page-header
          :editable="isTeacher"
@@ -10,16 +15,18 @@
          :colorLine="done && 'success'"
          :highlight="false"
          :textWidth="true"
-      >{{problemData.name}}</page-header>
+      >{{problemData.name}}
+      </page-header>
 
-      <tags :values="problemData.tags" ></tags>
+      <tags :values="problemData.tags"></tags>
 
       <page-section
          :editable="isTeacher"
          :value="problemData.description"
          :input="updateText"
          placeholder="Problem description..."
-      >{{problemData.description}}</page-section>
+      >{{problemData.description}}
+      </page-section>
 
       <page-section highlight :textWidth="false">
          <div class="problem--limits">
@@ -41,28 +48,39 @@
          </div>
       </page-section>
 
-      <h4 v-if="!isTeacher" class="problem--example-header" >Examples</h4>
+      <h4 v-if="!isTeacher" class="problem--example-header">Examples</h4>
 
-      <TestView v-if="!isTeacher" class="problem--example" v-for="(example, i) in problemData.examples"
-                :key="'test-' + i + '-' + example.id" :testData="example" />
+      <TestView
+         v-if="!isTeacher" class="problem--example"
+         v-for="(example, i) in problemData.tests.filter(t => t.isPublic)"
+         :key="'test-' + i + '-' + example.id"
+         :testData="example"
+      />
 
       <div class="problem--code-upload" v-if="!isTeacher">
-         <textarea-autoresize class="problem--code-text" placeholder="Paste you code here..." v-model="codeOfProgram"></textarea-autoresize>
+         <textarea-autoresize
+            class="problem--code-text"
+            placeholder="Paste you code here..."
+            v-model="solutionCode"
+         />
 
          <div class="problem--code-button-wrapper">
             <transition name="fade">
                <Button
-                  v-if="!!codeOfProgram.length"
+                  v-if="!!solutionCode.length"
                   @click="handleUpload"
-                  :disabled="problemData.isTesting"
+                  :disabled="problemData.testingStatus === ProblemTestingStatus.Testing"
                   :maxWidth="true"
                >Upload</Button>
             </transition>
          </div>
 
-         <div class="problem--test-result" v-if="!!resultRun">
-            <p class="problem--test-result-error" v-if="resultRun.isUnexpectedError">Some unexpected error :(</p>
-            <p class="problem--test-result-success" v-else-if="resultRun.isAllTestsSuccessful">All tests successful!</p>
+         <div class="problem--test-result" v-if="problemData.testingStatus !== ProblemTestingStatus.NotTested">
+            <!-- TODO: refactor, better to use component-->
+            <!-- TODO: use spinner for testing process -->
+            <p class="problem--test-result-testing" v-if="problemData.testingStatus === ProblemTestingStatus.Testing">Testing...</p>
+            <p class="problem--test-result-error" v-if="problemData.testingStatus === ProblemTestingStatus.Error">Some unexpected error :(</p>
+            <p class="problem--test-result-success" v-else-if="problemData.testingStatus === ProblemTestingStatus.Solved">All tests successful!</p>
             <p class="problem--test-result-error" v-else-if="!resultRun.isCompilationSuccessful">Compilation error</p>
             <p class="problem--test-result-failed" v-else>
                Failed test {{resultRun.failedTest + 1}}
@@ -88,11 +106,11 @@
          <div class="authors">
             <div title="author">
                <Icon class="data" type="create"/>
-               <span>{{problemData.author}}</span>
+               <span>{{problemData.author.login}}</span>
             </div>
             <div title="tester">
                <Icon class="data" type="how_to_reg"/>
-               <span>{{problemData.tester}}</span>
+               <span>{{problemData.tester.login}}</span>
             </div>
          </div>
          <div class="dates">
@@ -101,24 +119,23 @@
                <Icon class="data" type="publish"/>
             </div>
             <div title="date of publication">
-               <span>{{formatDate(problemData.publishedAt)}}</span>
+               <span>{{formatDate(problemData.publicationDate)}}</span>
                <Icon class="data" type="public"/>
             </div>
          </div>
       </div>
 
-      <transition name="button-fade-up">
-         <div class="problem--sync" v-if="!isSynced">
-            <Button
-               :click="syncProblem"
-               class="problem--sync-button"
-               :disabled="syncing"
-               :primary="true"
-               :circle="true"
-            >{{isCreate ? 'Create' : 'Synchronize'}}
-            </Button>
-         </div>
-      </transition>
+      <FloatingButton
+         :visible="!isSynced"
+         @click="updateProblem"
+         :disabled="syncing"
+         :primary="true"
+         :circle="true"
+         :shadow="true"
+         :icon="isCreate ? 'add' : 'autorenew'"
+      >{{isCreate ? 'ForCreate' : 'Synchronize'}}
+      </FloatingButton>
+
    </div>
 
    <div v-else class="problem--not-have"><h1>Not have this problem :(</h1></div>
@@ -126,22 +143,29 @@
 
 <script lang="ts">
    import Vue from 'vue'
-   import {Component, Watch, Prop} from 'vue-property-decorator'
+   import {Component} from 'vue-property-decorator'
    import {Getter} from 'vuex-class'
-   import {Problem, ResultRunProgram} from "@/state"
+   import {FullProblem, ResultRunProgram} from "@/models"
    import * as actions from '@/store/actionTypes';
    import {
-      TestView,
-      Icon,
       Button,
-      TextareaAutoresize,
-      PageHeader,
-      Tags,
-      PageSection,
       DataView,
+      FloatingButton,
+      Icon,
+      PageHeader,
+      PageSection,
+      Tags,
+      TestView,
+      TextareaAutoresize
    } from '@/components';
    import {formatDate} from '@/components/utils'
-   import {ProgramInput, ProgramOutput, Tag} from "@/state/problem"
+   import {
+      PartialProgramInput,
+      PartialProgramOutput,
+      ProblemReadState,
+      ProblemStatus,
+      ProblemTestingStatus
+   } from "@/models/problem"
 
    // TODO: examples and description on one screen
 
@@ -158,57 +182,24 @@
          PageHeader,
          Tags,
          PageSection,
-         DataView
+         DataView,
+         FloatingButton
       }
    })
    export default class ProblemView extends Vue {
 
-      @Prop(Boolean) isCreate?: boolean;
-
-      @Getter('currentProblem') problemData?: Problem;
+      @Getter problemById: (id: string) => FullProblem;
 
       @Getter isTeacher?: boolean;
 
-      codeOfProgram = "";
-      isLoading = false;
-      syncing = false;
+      solutionCode = "";
 
-      @Watch('problemData')
-      onProblemDataChanged(data: Problem, oldData: Problem) {
+      ProblemStatus = ProblemStatus
+      ProblemTestingStatus = ProblemTestingStatus
+      ProblemReadState = ProblemReadState
 
-         if ((!!oldData && !!data) && (!oldData.synced && data.synced)) {
-            this.syncing = false;
-         }
-      }
-
-      created() {
-         if (this.isCreate) {
-            this.isLoading = false;
-            this.$store.dispatch(actions.START_CREATE_PROBLEM)
-            return;
-         }
-         this.isLoading = true;
-         this.$store.dispatch(actions.SET_CURRENT_PROBLEM, this.$route.params.id)
-            .then(() => {
-               this.isLoading = false;
-            })
-            .catch(() => {
-               this.isLoading = false;
-            });
-      }
-
-      beforeRouteUpdate(to: any, from: any, next: any) {
-         console.log("before route update id: ", to.params.id);
-         this.isLoading = true;
-         this.$store.dispatch(actions.SET_CURRENT_PROBLEM, to.params.id)
-            .then(() => {
-               this.isLoading = false;
-               next();
-            })
-            .catch(e => {
-               this.isLoading = false;
-               next(e);
-            });
+      get problemData(): FullProblem {
+         return this.problemById(this.$route.params.id)
       }
 
       get resultRun(): ResultRunProgram | undefined {
@@ -226,17 +217,36 @@
       }
 
       get isSynced(): boolean {
-         if (this.problemData) {
-            return this.problemData.synced;
-         }
-         return true;
+         if (!this.problemData)
+            return true
+
+         return this.problemData.status === ProblemStatus.Synced;
+      }
+
+      get isCreate(): boolean {
+         if(!this.problemData)
+            return false
+
+         return this.problemData.status === ProblemStatus.ForCreate ||
+            this.problemData.status === ProblemStatus.Creating ||
+            this.problemData.status === ProblemStatus.ErrorCreating
+      }
+
+      get syncing(): boolean {
+         if(!this.problemData)
+            return false
+
+         return this.problemData.status === ProblemStatus.Reading ||
+            this.problemData.status === ProblemStatus.Creating ||
+            this.problemData.status === ProblemStatus.Updating ||
+            this.problemData.status === ProblemStatus.Deleting
       }
 
       formatDate(value: Date) {
          return formatDate(value)
       }
 
-      formatIO(value: ProgramInput | ProgramOutput) {
+      formatIO(value: PartialProgramInput | PartialProgramOutput) {
          return value.name
       }
 
@@ -257,32 +267,37 @@
       }
 
       handleUpload() {
-         this.$store.dispatch(actions.UPLOAD_CODE, {id: this.$route.params.id, text: this.codeOfProgram})
+         this.$store.dispatch(actions.UPLOAD_CODE, {id: this.$route.params.id, text: this.solutionCode})
       }
 
       get statusLabel(): string | undefined {
-         if(!this.resultRun)
+         if (!this.resultRun)
             return
 
          const {status} = this.resultRun
-         if(status === 0)
+         if (status === 0)
             return
 
          switch (status) {
-            case 1: return 'Internal Error'
+            case 1:
+               return 'Internal Error'
 
-            case 2: return 'Real time limit exceeded'
+            case 2:
+               return 'Real time limit exceeded'
 
-            case 3: return 'Memory limit exceeded'
+            case 3:
+               return 'Memory limit exceeded'
 
-            case 4: return 'CPU limit exceeded'
+            case 4:
+               return 'CPU limit exceeded'
 
-            default: return 'Unexpected error'
+            default:
+               return 'Unexpected error'
          }
       }
 
       addTest() {
-         this.$store.dispatch(actions.ADD_NEW_TEST);
+         this.$store.dispatch(actions.ADD_FOR_CREATE_TEST);
       }
 
       updateName(event: any) {
@@ -294,37 +309,53 @@
       }
 
       syncProblem() {
-         if (this.problemData) {
+         if (!this.problemData) {
+            console.error("Not have problem data for sync")
+            return;
+         }
 
-            if (this.isCreate) {
-               if (!this.problemData.name.length) {
-                  console.error("Not have name");
-                  return;
-               }
-               if (!this.problemData.description.length) {
-                  console.error("Not have text");
-                  return;
-               }
-               if (!this.problemData.tests || !this.problemData.tests.length) {
-                  console.error("Unexpected situation in tests");
-                  return;
-               }
-               if (!this.problemData.tests[0].id.length) {
-                  console.error("Not have tests");
-                  return;
-               }
-               this.syncing = true;
-               this.$store.dispatch(actions.CREATE_PROBLEM, this.problemData)
-                  .then(({ok, id}) => {
-                     this.syncing = false;
-                     if (ok) {
-                        this.$router.push({path: `/problem/${id}`})
-                     }
-                  });
+         if (this.problemData.status === ProblemStatus.Changed || this.problemData.status === ProblemStatus.ErrorUpdating) {
+            this.$store.dispatch(actions.UPDATE_PROBLEM, this.problemData.id);
+            return;
+         }
+
+         if(this.problemData.status === ProblemStatus.ForCreate || this.problemData.status === ProblemStatus.ErrorCreating) {
+
+            // TODO: display errors
+            if (!this.problemData.name.length) {
+               console.error("Not have name");
                return;
             }
-            this.$store.dispatch(actions.SYNC_PROBLEM, this.problemData.id);
+            if (!this.problemData.description.length) {
+               console.error("Not have text");
+               return;
+            }
+            if (!this.problemData.tests || !this.problemData.tests.length) {
+               console.error("Unexpected situation in tests");
+               return;
+            }
+            if (!this.problemData.tests[0].id.length) {
+               console.error("Not have tests");
+               return;
+            }
+
+            this.$store.dispatch(actions.CREATE_PROBLEM, this.problemData)
+               .then((problem: FullProblem | undefined) => {
+                  if (!problem) {
+                     console.error('Error when create')
+                     // TODO: handle error
+                     return
+                  }
+
+                  // TODO: by name routing
+                  this.$router.push({path: `/problem/${problem.id}`})
+               });
+            return;
+
+            return;
          }
+
+         console.error('Cannot understand what do with this problem', this.problemData)
       }
    }
 </script>
@@ -371,6 +402,7 @@
          min-height: 100%;
          flex-direction: column;
          flex: 1;
+
          h1 {
             margin: auto;
          }
@@ -421,6 +453,7 @@
          flex-direction: column;
          width: 100%;
          align-items: center;
+
          h2 {
             margin-top: 0;
             padding-top: 0;
@@ -469,7 +502,6 @@
       }
 
 
-
       &--new-test {
          display: flex;
          flex-direction: row;
@@ -494,21 +526,6 @@
          }
       }
 
-      &--sync {
-         position: fixed;
-         right: 3rem;
-         bottom: 3rem;
-         z-index: 6;
-         width: 15rem;
-         display: flex;
-         flex-direction: row;
-
-         &-button {
-            margin-left: auto;
-            margin-right: auto;
-         }
-      }
-
       .fade {
          &-enter-active, &-leave-active {
             transition: all 0.3s;
@@ -519,17 +536,6 @@
          {
             opacity: 0;
             top: -100px;
-         }
-      }
-
-      .button-fade-up {
-         &-enter-active, &-leave-active {
-            transition: all 0.3s;
-         }
-
-         &-enter, &-leave-to {
-            opacity: 0;
-            bottom: -3rem;
          }
       }
 

@@ -17,7 +17,7 @@
 <script lang="ts">
    import Vue from 'vue'
    import {Component, Prop} from 'vue-property-decorator'
-   import {randomKey, formatDate} from './utils'
+   import {randomId, formatDate} from './utils'
    import {ListItemEvent, ListItemEvents, DataItem} from './types'
 
    const defaultBackground = 'transparent'
@@ -45,7 +45,7 @@
    @Component
    export default class ListItem extends Vue {
 
-      key = randomKey()
+      key = randomId()
       backgroundData = defaultBackground
 
       @Prop({

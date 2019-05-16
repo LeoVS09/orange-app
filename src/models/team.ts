@@ -1,8 +1,8 @@
-import {User} from "./user";
+import {UserProfile} from "./user";
 
 export interface Team {
   id: string,
-  users: Array<User>,
+  users: Array<UserProfile>,
   name: string,
   group?: string,
   course?: number,

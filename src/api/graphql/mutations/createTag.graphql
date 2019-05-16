@@ -1,0 +1,11 @@
+#import "../fragments/Tag.graphql"
+
+mutation createTag($input: CreateTagInput!) {
+   createTag(input: $input){
+      tag {
+         nodeId
+
+         ...Tag
+      }
+   }
+}

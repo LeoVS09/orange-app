@@ -63,9 +63,10 @@
    import Vue from 'vue'
    import {Component} from 'vue-property-decorator'
    import {Getter, Action} from 'vuex-class'
-   import {Problem} from "../../state"
-   import * as actions from '../../store/actionTypes';
-   import {PageHeader, ProblemListItem, Button, ButtonGroup, List} from '../../components';
+   import {FullProblem} from "@/models"
+   import * as actions from '@/store/actionTypes';
+   import {PageHeader, ProblemListItem, Button, ButtonGroup, List} from '@/components';
+   import {ROUTES} from '@/router'
 
    enum Filter {
       All = "All",
@@ -85,28 +86,30 @@
    })
    export default class ProblemsList extends Vue {
 
-      @Getter('problems') items: Array<Problem>;
+      @Getter problems: Array<FullProblem>;
+      @Getter openProblems: Array<FullProblem>;
+      @Getter closedProblems: Array<FullProblem>;
 
       @Getter isTeacher: boolean;
 
-      @Action(actions.SYNC_PROBLEMS) syncProblems?: () => void
+      @Action(actions.READ_PROBLEMS_LIST) syncProblems?: () => void
 
       filter = Filter.All;
 
       get filtered() {
          if (this.filter === Filter.All) {
-            return this.items
+            return this.problems
          }
 
          if (this.filter === Filter.Open) {
-            return this.items.filter(p => p.isOpen)
+            return this.openProblems
          }
 
          if (this.filter === Filter.Closed) {
-            return this.items.filter(p => !p.isOpen)
+            return this.closedProblems
          }
 
-         return this.items
+         return this.problems
       }
 
       viewAll() {
@@ -125,10 +128,11 @@
          this.filter = Filter.Resolved
       }
 
-      formatItem(item: Problem){
+      formatItem(item: FullProblem){
          return {
             ...item,
-            date: item.updatedAt ? item.updatedAt : item.createdAt
+            date: item.updatedAt ? item.updatedAt : item.createdAt,
+            author: item.author.login
          }
       }
 
@@ -140,13 +144,13 @@
       }
 
       addProblem() {
-         this.$router.push({name: 'create problem'});
+         this.$router.push({name: ROUTES.CREATE_PROBLEM});
       }
 
-      chooseProblem(problem: Problem) {
-         console.log("Go to problem:", problem);
+      chooseProblem(problem: FullProblem) {
+
          this.$router.push({
-            name: 'problem',
+            name: ROUTES.PROBLEM,
             params: {
                id: problem.id
             }

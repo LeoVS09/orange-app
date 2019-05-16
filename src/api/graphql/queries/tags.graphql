@@ -1,0 +1,11 @@
+#import "../fragments/Tag.graphql"
+
+query Tags {
+   tags {
+      nodes {
+         nodeId
+
+         ...Tag
+      }
+   }
+}

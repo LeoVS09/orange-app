@@ -12,8 +12,13 @@ import Problem from '@/containers/Content/Problem.vue'
 
 import SignIn from '@/containers/Content/SignIn.vue'
 import SignUp from '@/containers/Content/SignUp.vue'
-import {UserType} from "../state";
+import {UserType} from "../models";
 import {ROUTES} from "@/router/rotues";
+import guard, {problemMiddleware} from "./middlewares";
+
+export {
+   ROUTES
+}
 
 const authPath = '/signin';
 const USE_AUTH_COMPONENT = true;
@@ -40,12 +45,13 @@ const index = new Router({
                path: '/problem/create',
                name: ROUTES.CREATE_PROBLEM,
                component: Problem as Component,
-               props: {isCreate: true}
+               beforeEnter: problemMiddleware
             },
             {
                path: '/problem/:id',
                name: ROUTES.PROBLEM,
-               component: Problem as Component
+               component: Problem as Component,
+               beforeEnter: problemMiddleware
             },
             {
                path: '/profile',
@@ -72,42 +78,9 @@ const index = new Router({
          ]
       }
    ]
-});
+})
 
-index.beforeEach((to: Router.Route, from: Router.Route, next: Function) => {
-   if (!USE_AUTH_COMPONENT) {
-      next();
-      return;
-   }
-
-   const resultCheck = checkIsLogin();
-   if (!resultCheck.ok) {
-     console.log('resultCheck', resultCheck)
-      switch (to.name) {
-         case ROUTES.PROFILE:
-            next({name: ROUTES.SIGNIN});
-            break;
-         case ROUTES.CREATE_PROBLEM:
-            next({name: ROUTES.SIGNIN});
-            break;
-         default:
-            next();
-      }
-      return
-   }
-
-   // if(resultCheck.user.type === UserType.CONTESTANT) {
-   //   switch (to.name) {
-   //     case ROUTES.CREATE_PROBLEM: next({name: ROUTES.HOME});
-   //       break;
-   //     default:
-   //       next();
-   //   }
-   //   return
-   // }
-
-   next();
-   return;
-});
+// TODO: go to main page from sign-in if have profile data
+index.beforeEach(guard(USE_AUTH_COMPONENT));
 
 export default index;

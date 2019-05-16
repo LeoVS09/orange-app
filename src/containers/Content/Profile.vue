@@ -32,13 +32,13 @@ import { UserType } from '@/state'
 
 <script lang="ts">
   import Vue from 'vue'
-  import {Component} from 'vue-property-decorator'
+  import {Component, Watch} from 'vue-property-decorator'
   import {Getter, Action} from 'vuex-class'
-  import {User, UserType} from "../../state"
+  import {UserProfile, UserType} from "../../models"
   import * as actions from '../../store/actionTypes';
   import {checkIsLogin} from '../../authentication'
   import {Icon, Input, PageHeader, SourceView, Button, Select} from '../../components';
-  import {Country} from "@/state/country";
+  import {Country} from "@/models/country";
 
   function capitalise(s: string): string {
     return s[0].toUpperCase() + s.slice(1);
@@ -59,12 +59,17 @@ import { UserType } from '@/state'
     }
   })
   export default class Profile extends Vue {
-    // @ts-ignore
+
+     // TODO: add loading profile skeleton
     @Getter('profile') userData: Profile;
-    // @ts-ignore
+
     @Getter isTeacher: boolean;
 
-    @Action(actions.SEARCH_COUNTRIES) searchCountriesAction?: (name: string) => Promise<Array<Country>>
+    @Getter allCountries: Array<Country>;
+
+    @Action(actions.SEARCH_COUNTRIES) searchCountriesAction: (name: string) => Promise<Array<Country>>
+
+    @Action(actions.INITIALISE_PROFILE_DATA) initialiseProfileData: () => void
 
     email = "";
     isEmailError = false;
@@ -91,7 +96,7 @@ import { UserType } from '@/state'
 		countryAutoComplete = [];
     isCountryError = false;
 
-    allCountries: Array<Country> = [];
+    countries: Array<Country> = [];
 
     isDisabled = false;
 
@@ -108,9 +113,7 @@ import { UserType } from '@/state'
       this.lastName = this.userData.lastName;
       this.country = this.userData.country;
 
-      this.searchCountriesAction ? this.searchCountriesAction('')
-         .then(countres => this.allCountries = countres) :
-         console.error('Not have action searchCountriesAction')
+      this.initialiseProfileData()
     }
 
     get name(): string {
@@ -125,6 +128,19 @@ import { UserType } from '@/state'
       return result;
     }
 
+    @Watch('allCountries')
+    allCountriesChanged(countries: Array<Country>){
+       if(this.countries.length)
+          return
+
+       // TODO: complete search countries
+       // if(this.searchCountriesCondition)
+       //    return;
+
+       this.countries = countries
+    }
+
+
     clickSignOut(){
       this.$store.dispatch(actions.LOGOUT_FROM_PROFILE);
       this.$router.go(0);
@@ -138,7 +154,7 @@ import { UserType } from '@/state'
 		}
 
     searchCountries(value: string){
-    	console.log(value)
+    	// TODO: complete countries search
 			this.country = value;
     	this.$store.dispatch(actions.SEARCH_COUNTRIES, value)
 				.then(result => console.log(result));

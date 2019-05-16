@@ -3118,6 +3118,60 @@
                   "deprecationReason": null
                },
                {
+                  "name": "programInputTypeByName",
+                  "description": null,
+                  "args": [
+                     {
+                        "name": "name",
+                        "description": null,
+                        "type": {
+                           "kind": "NON_NULL",
+                           "name": null,
+                           "ofType": {
+                              "kind": "SCALAR",
+                              "name": "String",
+                              "ofType": null
+                           }
+                        },
+                        "defaultValue": null
+                     }
+                  ],
+                  "type": {
+                     "kind": "OBJECT",
+                     "name": "ProgramInputType",
+                     "ofType": null
+                  },
+                  "isDeprecated": false,
+                  "deprecationReason": null
+               },
+               {
+                  "name": "programInputTypeByCode",
+                  "description": null,
+                  "args": [
+                     {
+                        "name": "code",
+                        "description": null,
+                        "type": {
+                           "kind": "NON_NULL",
+                           "name": null,
+                           "ofType": {
+                              "kind": "SCALAR",
+                              "name": "String",
+                              "ofType": null
+                           }
+                        },
+                        "defaultValue": null
+                     }
+                  ],
+                  "type": {
+                     "kind": "OBJECT",
+                     "name": "ProgramInputType",
+                     "ofType": null
+                  },
+                  "isDeprecated": false,
+                  "deprecationReason": null
+               },
+               {
                   "name": "programOutputType",
                   "description": null,
                   "args": [
@@ -3130,6 +3184,60 @@
                            "ofType": {
                               "kind": "SCALAR",
                               "name": "UUID",
+                              "ofType": null
+                           }
+                        },
+                        "defaultValue": null
+                     }
+                  ],
+                  "type": {
+                     "kind": "OBJECT",
+                     "name": "ProgramOutputType",
+                     "ofType": null
+                  },
+                  "isDeprecated": false,
+                  "deprecationReason": null
+               },
+               {
+                  "name": "programOutputTypeByName",
+                  "description": null,
+                  "args": [
+                     {
+                        "name": "name",
+                        "description": null,
+                        "type": {
+                           "kind": "NON_NULL",
+                           "name": null,
+                           "ofType": {
+                              "kind": "SCALAR",
+                              "name": "String",
+                              "ofType": null
+                           }
+                        },
+                        "defaultValue": null
+                     }
+                  ],
+                  "type": {
+                     "kind": "OBJECT",
+                     "name": "ProgramOutputType",
+                     "ofType": null
+                  },
+                  "isDeprecated": false,
+                  "deprecationReason": null
+               },
+               {
+                  "name": "programOutputTypeByCode",
+                  "description": null,
+                  "args": [
+                     {
+                        "name": "code",
+                        "description": null,
+                        "type": {
+                           "kind": "NON_NULL",
+                           "name": null,
+                           "ofType": {
+                              "kind": "SCALAR",
+                              "name": "String",
                               "ofType": null
                            }
                         },
@@ -5095,9 +5203,13 @@
                   "description": null,
                   "args": [],
                   "type": {
-                     "kind": "SCALAR",
-                     "name": "UUID",
-                     "ofType": null
+                     "kind": "NON_NULL",
+                     "name": null,
+                     "ofType": {
+                        "kind": "SCALAR",
+                        "name": "UUID",
+                        "ofType": null
+                     }
                   },
                   "isDeprecated": false,
                   "deprecationReason": null
@@ -5837,9 +5949,13 @@
                   "description": null,
                   "args": [],
                   "type": {
-                     "kind": "SCALAR",
-                     "name": "UUID",
-                     "ofType": null
+                     "kind": "NON_NULL",
+                     "name": null,
+                     "ofType": {
+                        "kind": "SCALAR",
+                        "name": "UUID",
+                        "ofType": null
+                     }
                   },
                   "isDeprecated": false,
                   "deprecationReason": null
@@ -6484,9 +6600,13 @@
                   "description": null,
                   "args": [],
                   "type": {
-                     "kind": "SCALAR",
-                     "name": "UUID",
-                     "ofType": null
+                     "kind": "NON_NULL",
+                     "name": null,
+                     "ofType": {
+                        "kind": "SCALAR",
+                        "name": "UUID",
+                        "ofType": null
+                     }
                   },
                   "isDeprecated": false,
                   "deprecationReason": null
@@ -12124,9 +12244,13 @@
                   "description": "Language which compile",
                   "args": [],
                   "type": {
-                     "kind": "SCALAR",
-                     "name": "UUID",
-                     "ofType": null
+                     "kind": "NON_NULL",
+                     "name": null,
+                     "ofType": {
+                        "kind": "SCALAR",
+                        "name": "UUID",
+                        "ofType": null
+                     }
                   },
                   "isDeprecated": false,
                   "deprecationReason": null
@@ -12931,9 +13055,13 @@
                   "description": "Type input of problem, aka stdin",
                   "args": [],
                   "type": {
-                     "kind": "SCALAR",
-                     "name": "UUID",
-                     "ofType": null
+                     "kind": "NON_NULL",
+                     "name": null,
+                     "ofType": {
+                        "kind": "SCALAR",
+                        "name": "UUID",
+                        "ofType": null
+                     }
                   },
                   "isDeprecated": false,
                   "deprecationReason": null
@@ -12943,9 +13071,13 @@
                   "description": "Type output of problem, aka stdout",
                   "args": [],
                   "type": {
-                     "kind": "SCALAR",
-                     "name": "UUID",
-                     "ofType": null
+                     "kind": "NON_NULL",
+                     "name": null,
+                     "ofType": {
+                        "kind": "SCALAR",
+                        "name": "UUID",
+                        "ofType": null
+                     }
                   },
                   "isDeprecated": false,
                   "deprecationReason": null
@@ -12983,12 +13115,12 @@
                   "deprecationReason": null
                },
                {
-                  "name": "isOpen",
-                  "description": "Define if this problem can be visible in current moment",
+                  "name": "difficulty",
+                  "description": "Level of difficulty. Where 0 is very easy and 100 is very hard",
                   "args": [],
                   "type": {
                      "kind": "SCALAR",
-                     "name": "Boolean",
+                     "name": "Int",
                      "ofType": null
                   },
                   "isDeprecated": false,
@@ -13027,8 +13159,8 @@
                   "deprecationReason": null
                },
                {
-                  "name": "publishedAt",
-                  "description": "Date when problem must be open",
+                  "name": "publicationDate",
+                  "description": "Define when this problem can be visible",
                   "args": [],
                   "type": {
                      "kind": "SCALAR",
@@ -13043,9 +13175,13 @@
                   "description": "Creator of problem",
                   "args": [],
                   "type": {
-                     "kind": "SCALAR",
-                     "name": "UUID",
-                     "ofType": null
+                     "kind": "NON_NULL",
+                     "name": null,
+                     "ofType": {
+                        "kind": "SCALAR",
+                        "name": "UUID",
+                        "ofType": null
+                     }
                   },
                   "isDeprecated": false,
                   "deprecationReason": null
@@ -13461,6 +13597,22 @@
                   "deprecationReason": null
                },
                {
+                  "name": "code",
+                  "description": null,
+                  "args": [],
+                  "type": {
+                     "kind": "NON_NULL",
+                     "name": null,
+                     "ofType": {
+                        "kind": "SCALAR",
+                        "name": "String",
+                        "ofType": null
+                     }
+                  },
+                  "isDeprecated": false,
+                  "deprecationReason": null
+               },
+               {
                   "name": "createdAt",
                   "description": null,
                   "args": [],
@@ -13734,13 +13886,13 @@
                   "deprecationReason": null
                },
                {
-                  "name": "IS_OPEN_ASC",
+                  "name": "DIFFICULTY_ASC",
                   "description": null,
                   "isDeprecated": false,
                   "deprecationReason": null
                },
                {
-                  "name": "IS_OPEN_DESC",
+                  "name": "DIFFICULTY_DESC",
                   "description": null,
                   "isDeprecated": false,
                   "deprecationReason": null
@@ -13770,13 +13922,13 @@
                   "deprecationReason": null
                },
                {
-                  "name": "PUBLISHED_AT_ASC",
+                  "name": "PUBLICATION_DATE_ASC",
                   "description": null,
                   "isDeprecated": false,
                   "deprecationReason": null
                },
                {
-                  "name": "PUBLISHED_AT_DESC",
+                  "name": "PUBLICATION_DATE_DESC",
                   "description": null,
                   "isDeprecated": false,
                   "deprecationReason": null
@@ -13927,11 +14079,11 @@
                   "defaultValue": null
                },
                {
-                  "name": "isOpen",
-                  "description": "Checks for equality with the object’s `isOpen` field.",
+                  "name": "difficulty",
+                  "description": "Checks for equality with the object’s `difficulty` field.",
                   "type": {
                      "kind": "SCALAR",
-                     "name": "Boolean",
+                     "name": "Int",
                      "ofType": null
                   },
                   "defaultValue": null
@@ -13957,8 +14109,8 @@
                   "defaultValue": null
                },
                {
-                  "name": "publishedAt",
-                  "description": "Checks for equality with the object’s `publishedAt` field.",
+                  "name": "publicationDate",
+                  "description": "Checks for equality with the object’s `publicationDate` field.",
                   "type": {
                      "kind": "SCALAR",
                      "name": "Datetime",
@@ -14148,6 +14300,22 @@
                },
                {
                   "name": "name",
+                  "description": null,
+                  "args": [],
+                  "type": {
+                     "kind": "NON_NULL",
+                     "name": null,
+                     "ofType": {
+                        "kind": "SCALAR",
+                        "name": "String",
+                        "ofType": null
+                     }
+                  },
+                  "isDeprecated": false,
+                  "deprecationReason": null
+               },
+               {
+                  "name": "code",
                   "description": null,
                   "args": [],
                   "type": {
@@ -14923,13 +15091,13 @@
                   "deprecationReason": null
                },
                {
-                  "name": "PUBLIC_ASC",
+                  "name": "IS_PUBLIC_ASC",
                   "description": null,
                   "isDeprecated": false,
                   "deprecationReason": null
                },
                {
-                  "name": "PUBLIC_DESC",
+                  "name": "IS_PUBLIC_DESC",
                   "description": null,
                   "isDeprecated": false,
                   "deprecationReason": null
@@ -15032,8 +15200,8 @@
                   "defaultValue": null
                },
                {
-                  "name": "public",
-                  "description": "Checks for equality with the object’s `public` field.",
+                  "name": "isPublic",
+                  "description": "Checks for equality with the object’s `isPublic` field.",
                   "type": {
                      "kind": "SCALAR",
                      "name": "Boolean",
@@ -15245,7 +15413,7 @@
                   "deprecationReason": null
                },
                {
-                  "name": "public",
+                  "name": "isPublic",
                   "description": null,
                   "args": [],
                   "type": {
@@ -15261,9 +15429,13 @@
                   "description": null,
                   "args": [],
                   "type": {
-                     "kind": "SCALAR",
-                     "name": "UUID",
-                     "ofType": null
+                     "kind": "NON_NULL",
+                     "name": null,
+                     "ofType": {
+                        "kind": "SCALAR",
+                        "name": "UUID",
+                        "ofType": null
+                     }
                   },
                   "isDeprecated": false,
                   "deprecationReason": null
@@ -18242,6 +18414,18 @@
                   "deprecationReason": null
                },
                {
+                  "name": "CODE_ASC",
+                  "description": null,
+                  "isDeprecated": false,
+                  "deprecationReason": null
+               },
+               {
+                  "name": "CODE_DESC",
+                  "description": null,
+                  "isDeprecated": false,
+                  "deprecationReason": null
+               },
+               {
                   "name": "CREATED_AT_ASC",
                   "description": null,
                   "isDeprecated": false,
@@ -18299,6 +18483,16 @@
                {
                   "name": "name",
                   "description": "Checks for equality with the object’s `name` field.",
+                  "type": {
+                     "kind": "SCALAR",
+                     "name": "String",
+                     "ofType": null
+                  },
+                  "defaultValue": null
+               },
+               {
+                  "name": "code",
+                  "description": "Checks for equality with the object’s `code` field.",
                   "type": {
                      "kind": "SCALAR",
                      "name": "String",
@@ -18488,6 +18682,18 @@
                   "deprecationReason": null
                },
                {
+                  "name": "CODE_ASC",
+                  "description": null,
+                  "isDeprecated": false,
+                  "deprecationReason": null
+               },
+               {
+                  "name": "CODE_DESC",
+                  "description": null,
+                  "isDeprecated": false,
+                  "deprecationReason": null
+               },
+               {
                   "name": "CREATED_AT_ASC",
                   "description": null,
                   "isDeprecated": false,
@@ -18545,6 +18751,16 @@
                {
                   "name": "name",
                   "description": "Checks for equality with the object’s `name` field.",
+                  "type": {
+                     "kind": "SCALAR",
+                     "name": "String",
+                     "ofType": null
+                  },
+                  "defaultValue": null
+               },
+               {
+                  "name": "code",
+                  "description": "Checks for equality with the object’s `code` field.",
                   "type": {
                      "kind": "SCALAR",
                      "name": "String",
@@ -21356,6 +21572,60 @@
                   "deprecationReason": null
                },
                {
+                  "name": "updateProgramInputTypeByName",
+                  "description": "Updates a single `ProgramInputType` using a unique key and a patch.",
+                  "args": [
+                     {
+                        "name": "input",
+                        "description": "The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.",
+                        "type": {
+                           "kind": "NON_NULL",
+                           "name": null,
+                           "ofType": {
+                              "kind": "INPUT_OBJECT",
+                              "name": "UpdateProgramInputTypeByNameInput",
+                              "ofType": null
+                           }
+                        },
+                        "defaultValue": null
+                     }
+                  ],
+                  "type": {
+                     "kind": "OBJECT",
+                     "name": "UpdateProgramInputTypePayload",
+                     "ofType": null
+                  },
+                  "isDeprecated": false,
+                  "deprecationReason": null
+               },
+               {
+                  "name": "updateProgramInputTypeByCode",
+                  "description": "Updates a single `ProgramInputType` using a unique key and a patch.",
+                  "args": [
+                     {
+                        "name": "input",
+                        "description": "The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.",
+                        "type": {
+                           "kind": "NON_NULL",
+                           "name": null,
+                           "ofType": {
+                              "kind": "INPUT_OBJECT",
+                              "name": "UpdateProgramInputTypeByCodeInput",
+                              "ofType": null
+                           }
+                        },
+                        "defaultValue": null
+                     }
+                  ],
+                  "type": {
+                     "kind": "OBJECT",
+                     "name": "UpdateProgramInputTypePayload",
+                     "ofType": null
+                  },
+                  "isDeprecated": false,
+                  "deprecationReason": null
+               },
+               {
                   "name": "updateProgramOutputTypeByNodeId",
                   "description": "Updates a single `ProgramOutputType` using its globally unique id and a patch.",
                   "args": [
@@ -21395,6 +21665,60 @@
                            "ofType": {
                               "kind": "INPUT_OBJECT",
                               "name": "UpdateProgramOutputTypeInput",
+                              "ofType": null
+                           }
+                        },
+                        "defaultValue": null
+                     }
+                  ],
+                  "type": {
+                     "kind": "OBJECT",
+                     "name": "UpdateProgramOutputTypePayload",
+                     "ofType": null
+                  },
+                  "isDeprecated": false,
+                  "deprecationReason": null
+               },
+               {
+                  "name": "updateProgramOutputTypeByName",
+                  "description": "Updates a single `ProgramOutputType` using a unique key and a patch.",
+                  "args": [
+                     {
+                        "name": "input",
+                        "description": "The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.",
+                        "type": {
+                           "kind": "NON_NULL",
+                           "name": null,
+                           "ofType": {
+                              "kind": "INPUT_OBJECT",
+                              "name": "UpdateProgramOutputTypeByNameInput",
+                              "ofType": null
+                           }
+                        },
+                        "defaultValue": null
+                     }
+                  ],
+                  "type": {
+                     "kind": "OBJECT",
+                     "name": "UpdateProgramOutputTypePayload",
+                     "ofType": null
+                  },
+                  "isDeprecated": false,
+                  "deprecationReason": null
+               },
+               {
+                  "name": "updateProgramOutputTypeByCode",
+                  "description": "Updates a single `ProgramOutputType` using a unique key and a patch.",
+                  "args": [
+                     {
+                        "name": "input",
+                        "description": "The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.",
+                        "type": {
+                           "kind": "NON_NULL",
+                           "name": null,
+                           "ofType": {
+                              "kind": "INPUT_OBJECT",
+                              "name": "UpdateProgramOutputTypeByCodeInput",
                               "ofType": null
                            }
                         },
@@ -22976,6 +23300,60 @@
                   "deprecationReason": null
                },
                {
+                  "name": "deleteProgramInputTypeByName",
+                  "description": "Deletes a single `ProgramInputType` using a unique key.",
+                  "args": [
+                     {
+                        "name": "input",
+                        "description": "The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.",
+                        "type": {
+                           "kind": "NON_NULL",
+                           "name": null,
+                           "ofType": {
+                              "kind": "INPUT_OBJECT",
+                              "name": "DeleteProgramInputTypeByNameInput",
+                              "ofType": null
+                           }
+                        },
+                        "defaultValue": null
+                     }
+                  ],
+                  "type": {
+                     "kind": "OBJECT",
+                     "name": "DeleteProgramInputTypePayload",
+                     "ofType": null
+                  },
+                  "isDeprecated": false,
+                  "deprecationReason": null
+               },
+               {
+                  "name": "deleteProgramInputTypeByCode",
+                  "description": "Deletes a single `ProgramInputType` using a unique key.",
+                  "args": [
+                     {
+                        "name": "input",
+                        "description": "The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.",
+                        "type": {
+                           "kind": "NON_NULL",
+                           "name": null,
+                           "ofType": {
+                              "kind": "INPUT_OBJECT",
+                              "name": "DeleteProgramInputTypeByCodeInput",
+                              "ofType": null
+                           }
+                        },
+                        "defaultValue": null
+                     }
+                  ],
+                  "type": {
+                     "kind": "OBJECT",
+                     "name": "DeleteProgramInputTypePayload",
+                     "ofType": null
+                  },
+                  "isDeprecated": false,
+                  "deprecationReason": null
+               },
+               {
                   "name": "deleteProgramOutputTypeByNodeId",
                   "description": "Deletes a single `ProgramOutputType` using its globally unique id.",
                   "args": [
@@ -23015,6 +23393,60 @@
                            "ofType": {
                               "kind": "INPUT_OBJECT",
                               "name": "DeleteProgramOutputTypeInput",
+                              "ofType": null
+                           }
+                        },
+                        "defaultValue": null
+                     }
+                  ],
+                  "type": {
+                     "kind": "OBJECT",
+                     "name": "DeleteProgramOutputTypePayload",
+                     "ofType": null
+                  },
+                  "isDeprecated": false,
+                  "deprecationReason": null
+               },
+               {
+                  "name": "deleteProgramOutputTypeByName",
+                  "description": "Deletes a single `ProgramOutputType` using a unique key.",
+                  "args": [
+                     {
+                        "name": "input",
+                        "description": "The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.",
+                        "type": {
+                           "kind": "NON_NULL",
+                           "name": null,
+                           "ofType": {
+                              "kind": "INPUT_OBJECT",
+                              "name": "DeleteProgramOutputTypeByNameInput",
+                              "ofType": null
+                           }
+                        },
+                        "defaultValue": null
+                     }
+                  ],
+                  "type": {
+                     "kind": "OBJECT",
+                     "name": "DeleteProgramOutputTypePayload",
+                     "ofType": null
+                  },
+                  "isDeprecated": false,
+                  "deprecationReason": null
+               },
+               {
+                  "name": "deleteProgramOutputTypeByCode",
+                  "description": "Deletes a single `ProgramOutputType` using a unique key.",
+                  "args": [
+                     {
+                        "name": "input",
+                        "description": "The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.",
+                        "type": {
+                           "kind": "NON_NULL",
+                           "name": null,
+                           "ofType": {
+                              "kind": "INPUT_OBJECT",
+                              "name": "DeleteProgramOutputTypeByCodeInput",
                               "ofType": null
                            }
                         },
@@ -23985,9 +24417,13 @@
                   "name": "countryId",
                   "description": null,
                   "type": {
-                     "kind": "SCALAR",
-                     "name": "UUID",
-                     "ofType": null
+                     "kind": "NON_NULL",
+                     "name": null,
+                     "ofType": {
+                        "kind": "SCALAR",
+                        "name": "UUID",
+                        "ofType": null
+                     }
                   },
                   "defaultValue": null
                }
@@ -24331,9 +24767,13 @@
                   "name": "languageId",
                   "description": "Language which compile",
                   "type": {
-                     "kind": "SCALAR",
-                     "name": "UUID",
-                     "ofType": null
+                     "kind": "NON_NULL",
+                     "name": null,
+                     "ofType": {
+                        "kind": "SCALAR",
+                        "name": "UUID",
+                        "ofType": null
+                     }
                   },
                   "defaultValue": null
                },
@@ -25523,9 +25963,13 @@
                   "name": "inputTypeId",
                   "description": "Type input of problem, aka stdin",
                   "type": {
-                     "kind": "SCALAR",
-                     "name": "UUID",
-                     "ofType": null
+                     "kind": "NON_NULL",
+                     "name": null,
+                     "ofType": {
+                        "kind": "SCALAR",
+                        "name": "UUID",
+                        "ofType": null
+                     }
                   },
                   "defaultValue": null
                },
@@ -25533,9 +25977,13 @@
                   "name": "outputTypeId",
                   "description": "Type output of problem, aka stdout",
                   "type": {
-                     "kind": "SCALAR",
-                     "name": "UUID",
-                     "ofType": null
+                     "kind": "NON_NULL",
+                     "name": null,
+                     "ofType": {
+                        "kind": "SCALAR",
+                        "name": "UUID",
+                        "ofType": null
+                     }
                   },
                   "defaultValue": null
                },
@@ -25568,18 +26016,8 @@
                   "defaultValue": null
                },
                {
-                  "name": "isOpen",
-                  "description": "Define if this problem can be visible in current moment",
-                  "type": {
-                     "kind": "SCALAR",
-                     "name": "Boolean",
-                     "ofType": null
-                  },
-                  "defaultValue": null
-               },
-               {
-                  "name": "publishedAt",
-                  "description": "Date when problem must be open",
+                  "name": "publicationDate",
+                  "description": "Define when this problem can be visible",
                   "type": {
                      "kind": "SCALAR",
                      "name": "Datetime",
@@ -25591,9 +26029,13 @@
                   "name": "authorId",
                   "description": "Creator of problem",
                   "type": {
-                     "kind": "SCALAR",
-                     "name": "UUID",
-                     "ofType": null
+                     "kind": "NON_NULL",
+                     "name": null,
+                     "ofType": {
+                        "kind": "SCALAR",
+                        "name": "UUID",
+                        "ofType": null
+                     }
                   },
                   "defaultValue": null
                },
@@ -26736,6 +27178,20 @@
                      }
                   },
                   "defaultValue": null
+               },
+               {
+                  "name": "code",
+                  "description": null,
+                  "type": {
+                     "kind": "NON_NULL",
+                     "name": null,
+                     "ofType": {
+                        "kind": "SCALAR",
+                        "name": "String",
+                        "ofType": null
+                     }
+                  },
+                  "defaultValue": null
                }
             ],
             "interfaces": null,
@@ -26863,6 +27319,20 @@
             "inputFields": [
                {
                   "name": "name",
+                  "description": null,
+                  "type": {
+                     "kind": "NON_NULL",
+                     "name": null,
+                     "ofType": {
+                        "kind": "SCALAR",
+                        "name": "String",
+                        "ofType": null
+                     }
+                  },
+                  "defaultValue": null
+               },
+               {
+                  "name": "code",
                   "description": null,
                   "type": {
                      "kind": "NON_NULL",
@@ -28070,7 +28540,7 @@
                   "defaultValue": null
                },
                {
-                  "name": "public",
+                  "name": "isPublic",
                   "description": null,
                   "type": {
                      "kind": "SCALAR",
@@ -28403,9 +28873,13 @@
                   "name": "cityId",
                   "description": null,
                   "type": {
-                     "kind": "SCALAR",
-                     "name": "UUID",
-                     "ofType": null
+                     "kind": "NON_NULL",
+                     "name": null,
+                     "ofType": {
+                        "kind": "SCALAR",
+                        "name": "UUID",
+                        "ofType": null
+                     }
                   },
                   "defaultValue": null
                },
@@ -30632,18 +31106,8 @@
                   "defaultValue": null
                },
                {
-                  "name": "isOpen",
-                  "description": "Define if this problem can be visible in current moment",
-                  "type": {
-                     "kind": "SCALAR",
-                     "name": "Boolean",
-                     "ofType": null
-                  },
-                  "defaultValue": null
-               },
-               {
-                  "name": "publishedAt",
-                  "description": "Date when problem must be open",
+                  "name": "publicationDate",
+                  "description": "Define when this problem can be visible",
                   "type": {
                      "kind": "SCALAR",
                      "name": "Datetime",
@@ -31218,6 +31682,16 @@
                      "ofType": null
                   },
                   "defaultValue": null
+               },
+               {
+                  "name": "code",
+                  "description": null,
+                  "type": {
+                     "kind": "SCALAR",
+                     "name": "String",
+                     "ofType": null
+                  },
+                  "defaultValue": null
                }
             ],
             "interfaces": null,
@@ -31353,6 +31827,104 @@
          },
          {
             "kind": "INPUT_OBJECT",
+            "name": "UpdateProgramInputTypeByNameInput",
+            "description": "All input for the `updateProgramInputTypeByName` mutation.",
+            "fields": null,
+            "inputFields": [
+               {
+                  "name": "clientMutationId",
+                  "description": "An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client.",
+                  "type": {
+                     "kind": "SCALAR",
+                     "name": "String",
+                     "ofType": null
+                  },
+                  "defaultValue": null
+               },
+               {
+                  "name": "patch",
+                  "description": "An object where the defined keys will be set on the `ProgramInputType` being updated.",
+                  "type": {
+                     "kind": "NON_NULL",
+                     "name": null,
+                     "ofType": {
+                        "kind": "INPUT_OBJECT",
+                        "name": "ProgramInputTypePatch",
+                        "ofType": null
+                     }
+                  },
+                  "defaultValue": null
+               },
+               {
+                  "name": "name",
+                  "description": null,
+                  "type": {
+                     "kind": "NON_NULL",
+                     "name": null,
+                     "ofType": {
+                        "kind": "SCALAR",
+                        "name": "String",
+                        "ofType": null
+                     }
+                  },
+                  "defaultValue": null
+               }
+            ],
+            "interfaces": null,
+            "enumValues": null,
+            "possibleTypes": null
+         },
+         {
+            "kind": "INPUT_OBJECT",
+            "name": "UpdateProgramInputTypeByCodeInput",
+            "description": "All input for the `updateProgramInputTypeByCode` mutation.",
+            "fields": null,
+            "inputFields": [
+               {
+                  "name": "clientMutationId",
+                  "description": "An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client.",
+                  "type": {
+                     "kind": "SCALAR",
+                     "name": "String",
+                     "ofType": null
+                  },
+                  "defaultValue": null
+               },
+               {
+                  "name": "patch",
+                  "description": "An object where the defined keys will be set on the `ProgramInputType` being updated.",
+                  "type": {
+                     "kind": "NON_NULL",
+                     "name": null,
+                     "ofType": {
+                        "kind": "INPUT_OBJECT",
+                        "name": "ProgramInputTypePatch",
+                        "ofType": null
+                     }
+                  },
+                  "defaultValue": null
+               },
+               {
+                  "name": "code",
+                  "description": null,
+                  "type": {
+                     "kind": "NON_NULL",
+                     "name": null,
+                     "ofType": {
+                        "kind": "SCALAR",
+                        "name": "String",
+                        "ofType": null
+                     }
+                  },
+                  "defaultValue": null
+               }
+            ],
+            "interfaces": null,
+            "enumValues": null,
+            "possibleTypes": null
+         },
+         {
+            "kind": "INPUT_OBJECT",
             "name": "UpdateProgramOutputTypeByNodeIdInput",
             "description": "All input for the `updateProgramOutputTypeByNodeId` mutation.",
             "fields": null,
@@ -31408,6 +31980,16 @@
             "inputFields": [
                {
                   "name": "name",
+                  "description": null,
+                  "type": {
+                     "kind": "SCALAR",
+                     "name": "String",
+                     "ofType": null
+                  },
+                  "defaultValue": null
+               },
+               {
+                  "name": "code",
                   "description": null,
                   "type": {
                      "kind": "SCALAR",
@@ -31538,6 +32120,104 @@
                      "ofType": {
                         "kind": "SCALAR",
                         "name": "UUID",
+                        "ofType": null
+                     }
+                  },
+                  "defaultValue": null
+               }
+            ],
+            "interfaces": null,
+            "enumValues": null,
+            "possibleTypes": null
+         },
+         {
+            "kind": "INPUT_OBJECT",
+            "name": "UpdateProgramOutputTypeByNameInput",
+            "description": "All input for the `updateProgramOutputTypeByName` mutation.",
+            "fields": null,
+            "inputFields": [
+               {
+                  "name": "clientMutationId",
+                  "description": "An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client.",
+                  "type": {
+                     "kind": "SCALAR",
+                     "name": "String",
+                     "ofType": null
+                  },
+                  "defaultValue": null
+               },
+               {
+                  "name": "patch",
+                  "description": "An object where the defined keys will be set on the `ProgramOutputType` being updated.",
+                  "type": {
+                     "kind": "NON_NULL",
+                     "name": null,
+                     "ofType": {
+                        "kind": "INPUT_OBJECT",
+                        "name": "ProgramOutputTypePatch",
+                        "ofType": null
+                     }
+                  },
+                  "defaultValue": null
+               },
+               {
+                  "name": "name",
+                  "description": null,
+                  "type": {
+                     "kind": "NON_NULL",
+                     "name": null,
+                     "ofType": {
+                        "kind": "SCALAR",
+                        "name": "String",
+                        "ofType": null
+                     }
+                  },
+                  "defaultValue": null
+               }
+            ],
+            "interfaces": null,
+            "enumValues": null,
+            "possibleTypes": null
+         },
+         {
+            "kind": "INPUT_OBJECT",
+            "name": "UpdateProgramOutputTypeByCodeInput",
+            "description": "All input for the `updateProgramOutputTypeByCode` mutation.",
+            "fields": null,
+            "inputFields": [
+               {
+                  "name": "clientMutationId",
+                  "description": "An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client.",
+                  "type": {
+                     "kind": "SCALAR",
+                     "name": "String",
+                     "ofType": null
+                  },
+                  "defaultValue": null
+               },
+               {
+                  "name": "patch",
+                  "description": "An object where the defined keys will be set on the `ProgramOutputType` being updated.",
+                  "type": {
+                     "kind": "NON_NULL",
+                     "name": null,
+                     "ofType": {
+                        "kind": "INPUT_OBJECT",
+                        "name": "ProgramOutputTypePatch",
+                        "ofType": null
+                     }
+                  },
+                  "defaultValue": null
+               },
+               {
+                  "name": "code",
+                  "description": null,
+                  "type": {
+                     "kind": "NON_NULL",
+                     "name": null,
+                     "ofType": {
+                        "kind": "SCALAR",
+                        "name": "String",
                         "ofType": null
                      }
                   },
@@ -32881,7 +33561,7 @@
                   "defaultValue": null
                },
                {
-                  "name": "public",
+                  "name": "isPublic",
                   "description": null,
                   "type": {
                      "kind": "SCALAR",
@@ -37027,6 +37707,76 @@
          },
          {
             "kind": "INPUT_OBJECT",
+            "name": "DeleteProgramInputTypeByNameInput",
+            "description": "All input for the `deleteProgramInputTypeByName` mutation.",
+            "fields": null,
+            "inputFields": [
+               {
+                  "name": "clientMutationId",
+                  "description": "An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client.",
+                  "type": {
+                     "kind": "SCALAR",
+                     "name": "String",
+                     "ofType": null
+                  },
+                  "defaultValue": null
+               },
+               {
+                  "name": "name",
+                  "description": null,
+                  "type": {
+                     "kind": "NON_NULL",
+                     "name": null,
+                     "ofType": {
+                        "kind": "SCALAR",
+                        "name": "String",
+                        "ofType": null
+                     }
+                  },
+                  "defaultValue": null
+               }
+            ],
+            "interfaces": null,
+            "enumValues": null,
+            "possibleTypes": null
+         },
+         {
+            "kind": "INPUT_OBJECT",
+            "name": "DeleteProgramInputTypeByCodeInput",
+            "description": "All input for the `deleteProgramInputTypeByCode` mutation.",
+            "fields": null,
+            "inputFields": [
+               {
+                  "name": "clientMutationId",
+                  "description": "An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client.",
+                  "type": {
+                     "kind": "SCALAR",
+                     "name": "String",
+                     "ofType": null
+                  },
+                  "defaultValue": null
+               },
+               {
+                  "name": "code",
+                  "description": null,
+                  "type": {
+                     "kind": "NON_NULL",
+                     "name": null,
+                     "ofType": {
+                        "kind": "SCALAR",
+                        "name": "String",
+                        "ofType": null
+                     }
+                  },
+                  "defaultValue": null
+               }
+            ],
+            "interfaces": null,
+            "enumValues": null,
+            "possibleTypes": null
+         },
+         {
+            "kind": "INPUT_OBJECT",
             "name": "DeleteProgramOutputTypeByNodeIdInput",
             "description": "All input for the `deleteProgramOutputTypeByNodeId` mutation.",
             "fields": null,
@@ -37175,6 +37925,76 @@
                      "ofType": {
                         "kind": "SCALAR",
                         "name": "UUID",
+                        "ofType": null
+                     }
+                  },
+                  "defaultValue": null
+               }
+            ],
+            "interfaces": null,
+            "enumValues": null,
+            "possibleTypes": null
+         },
+         {
+            "kind": "INPUT_OBJECT",
+            "name": "DeleteProgramOutputTypeByNameInput",
+            "description": "All input for the `deleteProgramOutputTypeByName` mutation.",
+            "fields": null,
+            "inputFields": [
+               {
+                  "name": "clientMutationId",
+                  "description": "An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client.",
+                  "type": {
+                     "kind": "SCALAR",
+                     "name": "String",
+                     "ofType": null
+                  },
+                  "defaultValue": null
+               },
+               {
+                  "name": "name",
+                  "description": null,
+                  "type": {
+                     "kind": "NON_NULL",
+                     "name": null,
+                     "ofType": {
+                        "kind": "SCALAR",
+                        "name": "String",
+                        "ofType": null
+                     }
+                  },
+                  "defaultValue": null
+               }
+            ],
+            "interfaces": null,
+            "enumValues": null,
+            "possibleTypes": null
+         },
+         {
+            "kind": "INPUT_OBJECT",
+            "name": "DeleteProgramOutputTypeByCodeInput",
+            "description": "All input for the `deleteProgramOutputTypeByCode` mutation.",
+            "fields": null,
+            "inputFields": [
+               {
+                  "name": "clientMutationId",
+                  "description": "An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client.",
+                  "type": {
+                     "kind": "SCALAR",
+                     "name": "String",
+                     "ofType": null
+                  },
+                  "defaultValue": null
+               },
+               {
+                  "name": "code",
+                  "description": null,
+                  "type": {
+                     "kind": "NON_NULL",
+                     "name": null,
+                     "ofType": {
+                        "kind": "SCALAR",
+                        "name": "String",
                         "ofType": null
                      }
                   },

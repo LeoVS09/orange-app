@@ -1,19 +1,21 @@
-import {RootState, UserType} from "../state";
+import {RootState, } from "./state";
 import {GetterTree} from "vuex";
-import {checkIsLogin} from "../authentication";
+import {UserType} from '@/models'
 
 const getters: GetterTree<RootState, any> = {
-  platform: state => state.ui.currentPlatform,
-  isSideBarVisible: state => state.ui.sideBarVisible,
-  isSignInPage: state => state.ui.isSignInPage,
+   platform: state => state.ui.currentPlatform,
+   isSideBarVisible: state => state.ui.sideBarVisible,
+   isSignInPage: state => state.ui.isSignInPage,
 
-  profile: state => state.profile.data,
-  isTeacher: state => !!state.profile.data ? state.profile.data.type === UserType.TEACHER : false,
+   profile: state => state.profile.data,
+   isTeacher: state => !!state.profile.data ? state.profile.data.type === UserType.TEACHER : false,
 
-  openProblems: state => state.problems.data.filter(p => p.isOpen),
-  closedProblems: state => state.problems.data.filter(p => !p.isOpen),
-  problems: state => state.problems.data,
-  currentProblem: state => state.problems.data.find( p => p.id == state.problems.currentProblemId)
+   openProblems: state => state.problems.data.filter(p => p.publicationDate <= new Date()),
+   closedProblems: state => state.problems.data.filter(p => p.publicationDate > new Date()),
+   problems: state => state.problems.data,
+   problemById: state => (id: string) => state.problems.data.find(p => p.id == id),
+
+   allCountries: state => state.profile.countries
 };
 
 export default getters;

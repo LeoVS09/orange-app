@@ -51,7 +51,7 @@
             console.log("test syncing", data.input.length, data.output.length, (Date.now() - this.lastInput > MIN_TIME_SYNC));
             if (!!data.input.length && !!data.output.length && (Date.now() - this.lastInput > MIN_TIME_SYNC)) {
                this.isEdited = false;
-               this.$store.dispatch(actions.SYNC_TEST, data)
+               this.$store.dispatch(actions.UPDATE_TEST, data)
             }
          }, MIN_TIME_SYNC + 5)
       }

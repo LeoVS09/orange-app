@@ -1,3 +1,10 @@
+import {
+   ResponseDataPartialProblem,
+   ResponseDataProblem,
+   ResponseDataTag,
+   ResponseDataInputOutputType
+} from "../fragments/types";
+
 export interface ResponseCurrentUser {
    currentUser: {
       id: string
@@ -61,62 +68,6 @@ export interface ResponseCountries {
    }
 }
 
-export interface ResponseDataTest {
-   id: string
-   index: number
-   input: string
-   output: string
-   public: boolean
-   createdAt: Date
-   updatedAt: Date
-}
-
-export interface ResponseDataProblem {
-   id: string
-   name: string
-   description: string
-   inputDescription: string
-   outputDescription: string
-   note: string
-   inputType: {
-      id: string
-      name: string
-   }
-   outputType: {
-      id: string
-      name: string
-   }
-   limitTime: number
-   limitMemory: number
-   isOpen: boolean
-   createdAt: Date
-   updatedAt: Date
-   publishedAt: Date
-   author: {
-      id: string
-      user: {
-         name: string
-      }
-   }
-   tester: {
-      id: string
-      user: {
-         name: string
-      }
-   }
-   problemsTags: {
-      nodes: Array<{
-         tag: {
-            id: string
-            name: string
-         }
-      }>
-   }
-
-   tests: {
-      nodes: Array<ResponseDataTest>
-   }
-}
 
 export interface ResponseProblemsList {
    problems: {
@@ -125,6 +76,28 @@ export interface ResponseProblemsList {
    }
 }
 
+export interface ResponsePartialProblemsList {
+   problems: {
+      totalCount: number
+      nodes: Array<ResponseDataPartialProblem>
+   }
+}
+
 export interface ResponseProblem {
    problem: ResponseDataProblem
+}
+
+export interface ResponseInputOutputTypes {
+   programInputTypes: {
+      nodes: Array<ResponseDataInputOutputType>
+   }
+   programOutputTypes: {
+      nodes: Array<ResponseDataInputOutputType>
+   }
+}
+
+export interface ResponseTags {
+   tags: {
+      nodes: Array<ResponseDataTag>
+   }
 }

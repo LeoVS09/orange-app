@@ -10,16 +10,11 @@ export enum UserType {
    TEACHER = "TEACHER"
 }
 
-export interface User {
-   id: string
-   login: string
+export interface UserProfile extends PartialUserProfile{
    isAdmin: boolean
    avatarUrl?: string
    emails: Array<Email>
-   firstName: string
    familyName?: string
-   lastName: string
-   type: UserType
    groupNumber?: string
    course?: number
    university?: University
@@ -28,4 +23,13 @@ export interface User {
    languages?: Array<Language>
    codeEditors?: Array<CodeEditor>
    travel?: Array<Travel>
+}
+
+export interface PartialUserProfile {
+   id: string
+   userId: string
+   login: string
+   firstName: string
+   lastName: string
+   type: UserType
 }

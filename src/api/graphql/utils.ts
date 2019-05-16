@@ -21,8 +21,9 @@ export function mapRequester<R>(requester: (client: APIClient) => R): R  {
    }
 }
 
-const keysForMapDays = ['createdAt', 'updatedAt', 'publishedAt']
+const keysForMapDays = ['createdAt', 'updatedAt', 'publishedAt', 'publicationDate']
 
+// Transform to date types fields with matched names
 function dateToStringFormatter <T>(t: T): T {
    return deepMap<T>(t, (value, key) => {
       if(typeof key === "number")

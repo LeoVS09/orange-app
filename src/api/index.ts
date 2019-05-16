@@ -1,15 +1,7 @@
-import {Problem, Test, User, UserType} from "../state";
-import {createProblem, createUser} from "../store/plugins/mock/generator";
+import {FullProblem, Test, UserProfile, UserType} from "../models";
+import {createProblem, createUser} from "@/store/plugins/mock/generator";
 
-export {
-   login,
-   currentUser,
-   searchCountries,
-   countries,
-   problems,
-   problem,
-   register
-} from './graphql'
+export * from './graphql'
 
 export {
    runProgram
@@ -23,9 +15,9 @@ const randomString = (): string => Math.random().toString(36).substring(2, 15) +
 // const DEBUG = process.env.NODE_ENV !== 'production'
 // const DEBUG = false
 //
-// export function getProblem(problemId: string): Promise<Problem> {
+// export function getProblem(problemId: string): Promise<FullProblem> {
 //    if (DEBUG)
-//       return new Promise<Problem>((resolve => {
+//       return new Promise<FullProblem>((resolve => {
 //          setTimeout(() => {
 //             let problem = createProblem();
 //             problem.id = problemId;
@@ -47,36 +39,22 @@ interface SyncTestResult {
    id: string
 }
 
-export function syncTest(test: Test): Promise<SyncTestResult> {
-   return new Promise<SyncTestResult>((resolve, reject) => {
-      setTimeout(() => {
-         let result: SyncTestResult = {ok: true, id: test.id};
-
-         if (result.id.length === 0) {
-            result.id = randomString();
-         }
-
-         resolve(result);
-      }, DEFAULT_MOCK_DURATION)
-   })
-}
-
-interface SyncProblemResult {
-   ok: boolean,
-   problem: Problem
-}
-
-export function syncProblem(problem: Problem): Promise<SyncProblemResult> {
-   return new Promise<SyncProblemResult>((resolve, reject) => {
-      let result: SyncProblemResult = {ok: true, problem};
-      setTimeout(() => {
-         resolve(result);
-      }, DEFAULT_MOCK_DURATION);
-   })
-}
+// export function updateTest(test: Test): Promise<SyncTestResult> {
+//    return new Promise<SyncTestResult>((resolve, reject) => {
+//       setTimeout(() => {
+//          let result: SyncTestResult = {ok: true, id: test.id};
+//
+//          if (result.id.length === 0) {
+//             result.id = randomString();
+//          }
+//
+//          resolve(result);
+//       }, DEFAULT_MOCK_DURATION)
+//    })
+// }
 
 interface GetUserResult {
-   user: User,
+   user: UserProfile,
    ok: boolean
 }
 
@@ -96,29 +74,21 @@ interface CreateProblemResultOk {
 
 interface CreateProblemResultFailed {
    ok: true,
-   problem: Problem
+   problem: FullProblem
 }
 
-export function putCreateProblem(problem: Problem): Promise<CreateProblemResultOk | CreateProblemResultFailed> {
+export function putCreateProblem(problem: FullProblem): Promise<CreateProblemResultOk | CreateProblemResultFailed> {
    return new Promise<CreateProblemResultOk | CreateProblemResultFailed>((resolve, reject) => {
       if (!problem.tests) {
          reject("Not have tests");
          return;
-      }
-      let examples = [problem.tests[0]];
-      if (problem.tests[1] && problem.tests[1].id.length) {
-         examples.push(problem.tests[1]);
-      }
-      if (problem.tests[2] && problem.tests[1].id.length) {
-         examples.push(problem.tests[2]);
       }
       setTimeout(() => {
          resolve({
             ok: true,
             problem: {
                ...problem,
-               id: randomString(),
-               examples
+               id: randomString()
             }
          })
       }, DEFAULT_MOCK_DURATION)

@@ -1,0 +1,11 @@
+#import "../fragments/Test.graphql"
+
+mutation createTest($input: CreateTestInput!) {
+   createTest(input: $input){
+      test {
+         nodeId
+
+         ...Test
+      }
+   }
+}

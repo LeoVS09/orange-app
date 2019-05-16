@@ -1,0 +1,11 @@
+#import "../fragments/OutputType.graphql"
+
+mutation createOutputType($input: CreateProgramOutputTypeInput!) {
+   createProgramOutputType(input: $input){
+      programOutputType {
+         nodeId
+
+         ...OutputType
+      }
+   }
+}

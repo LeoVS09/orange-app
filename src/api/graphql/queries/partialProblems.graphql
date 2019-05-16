@@ -1,0 +1,11 @@
+#import "../fragments/PartialProblem.graphql"
+
+query PartialProblems {
+   problems {
+      totalCount
+      nodes {
+         nodeId
+         ...PartialProblem
+      }
+   }
+}

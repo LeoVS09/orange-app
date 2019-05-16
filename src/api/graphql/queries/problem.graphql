@@ -1,68 +1,8 @@
+#import "../fragments/FullProblem.graphql"
+
 query Problem ($id: UUID!){
    problem(id: $id) {
       nodeId
-      id
-      name
-      description
-      inputDescription
-      outputDescription
-      note
-      inputType {
-         nodeId
-         id
-         name
-      }
-      outputType {
-         nodeId
-         id
-         name
-      }
-      limitTime
-      limitMemory
-      isOpen
-      createdAt
-      updatedAt
-      publishedAt
-      author {
-         nodeId
-         id
-         fullName
-         user {
-            nodeId
-            name
-         }
-      }
-      tester {
-         nodeId
-         id
-         fullName
-         user {
-            nodeId
-            name
-         }
-      }
-      problemsTags {
-         nodes {
-            tag {
-               nodeId
-               id
-               name
-            }
-         }
-      }
-
-      tests {
-         nodes {
-            nodeId
-            id
-            index
-            input
-            output
-            public
-            createdAt
-            updatedAt
-         }
-      }
-
+      ...FullProblem
    }
 }

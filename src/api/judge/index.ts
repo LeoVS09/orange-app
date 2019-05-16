@@ -1,4 +1,4 @@
-import {ResultRunProgram} from "../../state";
+import {ResultRunProgram} from "../../models";
 import urls from '../urls.json';
 
 const credentials: RequestCredentials = 'same-origin';

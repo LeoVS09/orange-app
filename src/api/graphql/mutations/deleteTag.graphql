@@ -1,0 +1,11 @@
+#import "../fragments/Tag.graphql"
+
+mutation deleteTag($input: DeleteTagInput!) {
+   deleteTag(input: $input){
+      tag {
+         nodeId
+
+         ...Tag
+      }
+   }
+}

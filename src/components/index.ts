@@ -5,6 +5,7 @@ import Logo from './Logo.vue'
 import Input from './Input.vue'
 import Select from './Select.vue'
 import Button from './Button.vue'
+import FloatingButton from './FloatingButton.vue'
 import CheckBox from './CheckBox.vue'
 import Spinner from './Spinner.vue'
 import PageHeader from './PageHeader.vue'
@@ -25,6 +26,7 @@ export {
    SourceView,
    Input,
    Button,
+   FloatingButton,
    CheckBox,
    Spinner,
    Select,

@@ -1,0 +1,10 @@
+#import "../fragments/FullProblem.graphql"
+
+mutation updateProblem($input: UpdateProblemInput!) {
+   updateProblem(input: $input) {
+      problem {
+         nodeId
+         ...FullProblem
+      }
+   }
+}

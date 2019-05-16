@@ -33,11 +33,12 @@
 
 <script lang="ts">
    import Vue from 'vue'
-   import {Component, Prop} from 'vue-property-decorator'
+   import {Component, Prop, Mixins} from 'vue-property-decorator'
    import Spinner from './Spinner.vue'
    import Icon from './Icon.vue'
-   import {randomKey} from './utils'
+   import {randomId} from './utils'
    import {ButtonEvent, ButtonEvents} from './types'
+   import ButtonBase from './mixins/inputs/baseButton'
 
    interface Options {
       tabindex?: number,
@@ -50,78 +51,9 @@
          Icon
       }
    })
-   export default class Button extends Vue {
+   export default class Button extends Mixins(ButtonBase) {
 
-      @Prop(Number) tabindex: number;
-
-      @Prop({
-         type: Boolean,
-         default: false
-      })
-      disabled: boolean;
-
-      @Prop(String) icon: string;
-
-      @Prop({
-         type: Boolean,
-         default: false
-      })
-      shadow: boolean;
-
-      @Prop({
-         type: Boolean,
-         default: false
-      })
-      simple: boolean;
-
-      @Prop({
-         type: Boolean,
-         default: false
-      })
-      active: boolean;
-
-      @Prop({
-         type: Boolean,
-         default: false
-      })
-      primary: boolean;
-
-      @Prop({
-         type: Boolean,
-         default: false
-      })
-      maxWidth: boolean
-
-      @Prop({
-         type: Boolean,
-         default: true
-      })
-      gradientHighlight: boolean
-
-      @Prop({
-         type: String
-      })
-      hovered: string
-
-      @Prop({
-         type: Boolean,
-         default: false
-      })
-      fadeText: boolean
-
-      @Prop({
-         type: Boolean,
-         default: false
-      })
-      textCanFade: boolean
-
-      @Prop({
-         type: Boolean,
-         default: false
-      })
-      circle: boolean
-
-      key = randomKey()
+      key = randomId()
 
       get isAnotherButtonHovered(){
          if(this.hovered && this.hovered !== this.key)
@@ -225,10 +157,6 @@
 
          }
 
-         &.shadow {
-            box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.8);
-         }
-
          &.simple {
             border: none;
             border-radius: 0;
@@ -268,10 +196,6 @@
             color: $button-active-text-color;
          }
 
-         %primary {
-
-         }
-
          &.primary {
             padding: 0.5rem 5rem;
             border-radius: 1rem;
@@ -292,6 +216,10 @@
                background-color: lighten($button-primary-color, 3%);
                box-shadow: 0 0 10px 0 lighten($button-primary-shadow-color, 10%);
             }
+         }
+
+         &.shadow {
+            box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.8);
          }
 
          &.circle {

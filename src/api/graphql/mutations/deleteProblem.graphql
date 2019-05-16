@@ -1,0 +1,11 @@
+#import "../fragments/FullProblem.graphql"
+
+mutation deleteProblem($input: DeleteProblemInput!){
+   deleteProblem(input: $input) {
+      problem {
+         nodeId
+
+         ...FullProblem
+      }
+   }
+}

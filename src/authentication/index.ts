@@ -1,4 +1,4 @@
-import {User, UserType} from '../state';
+import {UserProfile, UserType} from '../models';
 import {login, currentUser, register} from '../api'
 // @ts-ignore
 import crypto from 'crypto-js'
@@ -7,7 +7,7 @@ import {ResponseDataUser, RequestRegisterInput} from "@/api/graphql/mutations/ty
 const TOKEN_NAME = 'token';
 const TOKEN_KEY = 'key' // TODO
 
-function encryptId(user: User): string {
+function encryptId(user: UserProfile): string {
    return crypto.AES.encrypt(user.id, TOKEN_KEY).toString() // TODO
 }
 
@@ -16,7 +16,7 @@ function decryptId(token: string): string {
 }
 
 
-export function signin(username: string, password: string, isRemember: boolean): Promise<User | null> {
+export function signin(username: string, password: string, isRemember: boolean): Promise<UserProfile | null> {
    if (!username.length || !password.length)
       return Promise.reject('Not have login or password');
 
@@ -56,13 +56,14 @@ function handleLoginResult(isRemember: boolean) {
    }
 }
 
-function toUser(userData: ResponseDataUser): User {
+function toUser(userData: ResponseDataUser): UserProfile {
    if (!userData.profiles.nodes.length)
-      throw new Error('User not have profile')
+      throw new Error('UserProfile not have profile')
 
    const profile = userData.profiles.nodes[0]
    return {
-      id: userData.id,
+      id: profile.id,
+      userId: userData.id,
       login: userData.name,
       isAdmin: userData.isAdmin,
       avatarUrl: userData.avatarUrl,
@@ -118,7 +119,7 @@ export function checkIsLogin(): checkResultOk | checkResultFalse {
 }
 
 interface currentUserOk {
-   user: User,
+   user: UserProfile,
    ok: true
 }
 

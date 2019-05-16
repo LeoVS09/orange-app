@@ -18,7 +18,7 @@
   import {Getter} from 'vuex-class'
   import TopBar from './TopBar.vue'
   import { Footer } from '@/components'
-  import {Problem} from "../state"
+  import {FullProblem} from "../models"
 
   @Component({
     components: {

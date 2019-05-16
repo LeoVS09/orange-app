@@ -1,0 +1,19 @@
+#import "../fragments/InputType.graphql"
+#import "../fragments/OutputType.graphql"
+
+query InputOutputTypes {
+   programInputTypes {
+      nodes {
+         nodeId
+
+         ...InputType
+      }
+   }
+   programOutputTypes {
+      nodes {
+         nodeId
+
+         ...OutputType
+      }
+   }
+}

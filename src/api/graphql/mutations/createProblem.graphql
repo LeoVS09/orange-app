@@ -1,0 +1,11 @@
+#import "../fragments/FullProblem.graphql"
+
+mutation createProblem($input: CreateProblemInput!) {
+   createProblem(input: $input) {
+      problem {
+         nodeId
+
+         ...FullProblem
+      }
+   }
+}

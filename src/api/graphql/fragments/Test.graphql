@@ -1,0 +1,9 @@
+fragment Test on Test {
+   id
+   index
+   input
+   output
+   isPublic
+   createdAt
+   updatedAt
+}
