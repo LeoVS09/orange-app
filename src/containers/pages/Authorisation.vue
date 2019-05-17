@@ -14,7 +14,7 @@
   import Vue from 'vue'
   import {Component} from 'vue-property-decorator'
   import {Getter} from 'vuex-class'
-  import { Logo, Input, Button } from '../components'
+  import { Logo, Input, Button } from '@/components'
 
   // TODO: add transition between pages change
 
@@ -46,7 +46,7 @@
 </script>
 
 <style scoped lang="scss">
-  @import "../styles/config.scss";
+  @import "../../styles/config";
 
   main {
     background: linear-gradient(135deg, #fdc020, #fd8320, #ff6977);

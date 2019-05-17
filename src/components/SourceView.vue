@@ -13,30 +13,24 @@
 
 <script lang="ts">
    import Vue from 'vue'
-   import {Component} from 'vue-property-decorator'
+   import {Component, Prop} from 'vue-property-decorator'
    import TextareaAutoresize from './TextareaAutoresize.vue'
 
    @Component({
       components: {
          TextareaAutoresize
-      },
-      props: {
-         text: String,
-         editable: Boolean,
-         update: {
-            type: Function,
-            required: true
-         }
       }
    })
    export default class SourceView extends Vue {
 
-      updateValue(event: any) {
-         // @ts-ignore
-         if (this.update) {
-            // @ts-ignore
-            this.update(event.target.value);
-         }
+      @Prop(String)
+      text: String
+
+      @Prop(Boolean)
+      editable: Boolean
+
+      updateValue(value: string) {
+         this.$emit('input', value)
       }
 
    }

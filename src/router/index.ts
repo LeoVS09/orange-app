@@ -3,15 +3,15 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import {Component} from "vue-router/types/router"
 import {checkIsLogin} from "../authentication";
-import Home from '@/containers/Home.vue'
-import Authorisation from '@/containers/Authorisation.vue'
-import Competitions from '@/containers/Content/Competitions.vue'
-import ProblemsList from '@/containers/Content/ProblemsList.vue'
-import Profile from '@/containers/Content/Profile.vue'
-import Problem from '@/containers/Content/Problem.vue'
+import Home from '@/containers/pages/Home.vue'
+import Authorisation from '@/containers/pages/Authorisation.vue'
+import Competitions from '@/containers/views/Competitions.vue'
+import ProblemsList from '@/containers/views/ProblemsList.vue'
+import Profile from '@/containers/views/Profile.vue'
+import Problem from '@/containers/views/Problem.vue'
 
-import SignIn from '@/containers/Content/SignIn.vue'
-import SignUp from '@/containers/Content/SignUp.vue'
+import SignIn from '@/containers/views/SignIn.vue'
+import SignUp from '@/containers/views/SignUp.vue'
 import {UserType} from "../models";
 import {ROUTES} from "@/router/rotues";
 import guard, {problemMiddleware} from "./middlewares";

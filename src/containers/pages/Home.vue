@@ -15,10 +15,8 @@
 <script lang="ts">
   import Vue from 'vue'
   import {Component} from 'vue-property-decorator'
-  import {Getter} from 'vuex-class'
   import TopBar from './TopBar.vue'
   import { Footer } from '@/components'
-  import {FullProblem} from "../models"
 
   @Component({
     components: {
@@ -34,7 +32,7 @@
 </script>
 
 <style scoped lang="scss">
-  @import "../styles/config.scss";
+  @import "../../styles/config";
 
   .blured {
     filter: blur(10px);

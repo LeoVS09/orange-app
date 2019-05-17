@@ -1,8 +1,3 @@
-import {ProblemStatus} from "@/models";
-import {ProblemStatus} from "@/models";
-import {ProblemStatus} from "@/models";
-import {ProblemStatus} from "@/models";
-import {ProblemStatus} from "@/models";
 <template>
    <div v-if="!problemData || problemData.status === ProblemStatus.Reading" class="skeleton-loading problem-loading"></div>
    <div v-else-if="!!problemData && problemData.readState === ProblemReadState.Full" class="problem">
@@ -54,6 +49,7 @@ import {ProblemStatus} from "@/models";
          v-if="!isTeacher" class="problem--example"
          v-for="(example, i) in problemData.tests.filter(t => t.isPublic)"
          :key="'test-' + i + '-' + example.id"
+         :problemId="problemData.id"
          :testData="example"
       />
 
@@ -97,7 +93,7 @@ import {ProblemStatus} from "@/models";
                <div class="line"></div>
                <p class="text">New test</p>
             </div>
-            <TestView class="problem--test" :testData="test" :editable="true"/>
+            <TestView class="problem--test" :testData="test" :editable="true" :problemId="problemData.id"/>
          </template>
 
       </div>
@@ -127,11 +123,12 @@ import {ProblemStatus} from "@/models";
 
       <FloatingButton
          :visible="!isSynced"
-         @click="updateProblem"
-         :disabled="syncing"
+         @click="syncProblem"
+         :disabled="isProcessing"
          :primary="true"
          :circle="true"
          :shadow="true"
+         :gradientHighlight="false"
          :icon="isCreate ? 'add' : 'autorenew'"
       >{{isCreate ? 'ForCreate' : 'Synchronize'}}
       </FloatingButton>
@@ -155,9 +152,9 @@ import {ProblemStatus} from "@/models";
       PageHeader,
       PageSection,
       Tags,
-      TestView,
       TextareaAutoresize
    } from '@/components';
+   import TestView from '../content/TestView.vue'
    import {formatDate} from '@/components/utils'
    import {
       PartialProgramInput,
@@ -232,7 +229,7 @@ import {ProblemStatus} from "@/models";
             this.problemData.status === ProblemStatus.ErrorCreating
       }
 
-      get syncing(): boolean {
+      get isProcessing(): boolean {
          if(!this.problemData)
             return false
 

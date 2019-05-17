@@ -87,9 +87,10 @@
       }
 
       onClick() {
-         if (!this.disabled) {
-            this.$emit('click')
-         }
+         if (this.disabled)
+            return
+
+         this.$emit('click')
       }
    }
 </script>
@@ -202,10 +203,12 @@
             background-color: $button-primary-color;
             border-color: $button-primary-color;
             box-shadow: 0 0 3px 0 lighten($button-primary-shadow-color, 10%);
+            color: $button-primary-text-color;
 
-            .button--content {
-               color: $button-primary-text-color;
-               background: none;
+            &.gradient-highlight {
+               .button--content {
+                  @include gradient-text-hover($button-primary-text-color);
+               }
             }
 
             .button--icon {
@@ -220,6 +223,10 @@
 
          &.shadow {
             box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.8);
+
+            &.primary {
+               box-shadow: 0 0 7px 0 lighten($button-primary-shadow-color, 10%);
+            }
          }
 
          &.circle {
@@ -228,6 +235,10 @@
 
             .button--content {
                margin-top: -0.1rem;
+
+               &:hover {
+                  background-position: 0 1rem;
+               }
             }
          }
 

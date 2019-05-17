@@ -72,18 +72,20 @@ export interface RequestLoginInput {
 }
 
 export interface RequestUpdateProblemInput {
-   id: string
-   patch: {
-      name?: string
-      description?: string
-      note?: string
-      inputTypeId?: string
-      outputTypeId?: string
-      limitTime?: number
-      limitMemory?: number
-      publicationDate?: Date
-      authorId?: string
-      testerId?: string
+   input: {
+      id: string
+      patch: {
+         name?: string
+         description?: string
+         note?: string
+         inputTypeId?: string
+         outputTypeId?: string
+         limitTime?: number
+         limitMemory?: number
+         publicationDate?: Date
+         authorId?: string
+         testerId?: string
+      }
    }
 }
 
@@ -94,17 +96,19 @@ export interface ResponseUpdateProblem {
 }
 
 export interface RequestCreateProblemInput {
-   problem: {
-      name: string
-      description: string
-      note?: string
-      inputTypeId: string
-      outputTypeId: string
-      limitTime: number
-      limitMemory: number
-      publicationDate?: Date
-      authorId: string
-      testerId?: string
+   input: {
+      problem: {
+         name: string
+         description: string
+         note?: string
+         inputTypeId: string
+         outputTypeId: string
+         limitTime: number
+         limitMemory: number
+         publicationDate?: Date
+         authorId: string
+         testerId?: string
+      }
    }
 }
 
@@ -115,7 +119,9 @@ export interface ResponseCreateProblem {
 }
 
 export interface RequestDeleteProblemInput {
-   id: string
+   input: {
+      id: string
+   }
 }
 
 export interface ResponseDeleteProblem {
@@ -125,11 +131,13 @@ export interface ResponseDeleteProblem {
 }
 
 export interface RequestCreateTestInput {
-   test: {
-      index: number
-      input: string
-      output: string
-      isPublic: boolean
+   input: {
+      test: {
+         index: number
+         input: string
+         output: string
+         isPublic: boolean
+      }
    }
 }
 
@@ -140,12 +148,14 @@ export interface ResponseCreateTest {
 }
 
 export interface RequestUpdateTestInput {
-   id: string
-   patch: {
-      index?: number
-      input?: string
-      output?: string
-      isPublic?: boolean
+   input: {
+      id: string
+      patch: {
+         index?: number
+         input?: string
+         output?: string
+         isPublic?: boolean
+      }
    }
 }
 
@@ -156,7 +166,9 @@ export interface ResponseUpdateTest {
 }
 
 export interface RequestDeleteTestInput {
-   id: string
+   input: {
+      id: string
+   }
 }
 
 export interface ResponseDeleteTest {
@@ -166,9 +178,11 @@ export interface ResponseDeleteTest {
 }
 
 export interface RequestUpdateTagInput {
-   id: string
-   patch: {
-      name: string
+   input: {
+      id: string
+      patch: {
+         name: string
+      }
    }
 }
 
@@ -179,8 +193,10 @@ export interface ResponseUpdateTag {
 }
 
 export interface RequestCreateTagInput {
-   tag: {
-      name: string
+   input: {
+      tag: {
+         name: string
+      }
    }
 }
 
@@ -191,7 +207,9 @@ export interface ResponseCreateTag {
 }
 
 export interface RequestDeleteTagInput {
-   id: string
+   input: {
+      id: string
+   }
 }
 
 export interface ResponseDeleteTag {
@@ -201,9 +219,11 @@ export interface ResponseDeleteTag {
 }
 
 export interface RequestCreateInputTypeInput {
-   programInputType: {
-      name: string
-      code: string
+   input: {
+      programInputType: {
+         name: string
+         code: string
+      }
    }
 }
 
@@ -214,10 +234,12 @@ export interface ResponseCreateInputType {
 }
 
 export interface RequestUpdateInputTypeInput {
-   id: string
-   patch: {
-      name?: string
-      code?: string
+   input: {
+      id: string
+      patch: {
+         name?: string
+         code?: string
+      }
    }
 }
 
@@ -228,7 +250,9 @@ export interface ResponseUpdateInputType {
 }
 
 export interface RequestDeleteInputTypeInput {
-   id: string
+   input: {
+      id: string
+   }
 }
 
 export interface ResponseDeleteInputType {
@@ -238,9 +262,11 @@ export interface ResponseDeleteInputType {
 }
 
 export interface RequestCreateOutputTypeInput {
-   programOutputType: {
-      name: string
-      code: string
+   input: {
+      programOutputType: {
+         name: string
+         code: string
+      }
    }
 }
 
@@ -251,10 +277,12 @@ export interface ResponseCreateOutputType {
 }
 
 export interface RequestUpdateOutputTypeInput {
-   id: string
-   patch: {
-      name?: string
-      code?: string
+   input: {
+      id: string
+      patch: {
+         name?: string
+         code?: string
+      }
    }
 }
 
@@ -265,7 +293,9 @@ export interface ResponseUpdateOutputType {
 }
 
 export interface RequestDeleteOutputTypeInput {
-   id: string
+   input: {
+      id: string
+   }
 }
 
 export interface ResponseDeleteOutputType {

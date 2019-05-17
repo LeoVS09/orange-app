@@ -31,11 +31,11 @@
 <script lang="ts">
    import Vue from 'vue'
    import {Component, Prop} from 'vue-property-decorator'
-   import {Logo, Icon} from '../components'
+   import {Logo, Icon} from '../../components'
    import {Getter} from 'vuex-class'
-   import {UserProfile} from "../models"
-   import * as actions from '../store/actionTypes';
-   import {ROUTES} from '@/router/rotues'
+   import {UserProfile} from "@/models"
+   import * as actions from '@/store/actionTypes';
+   import {ROUTES} from '@/router'
 
    function isHover(x: number, y: number, maxX: number, maxY: number, limit: number = 0.25) {
 
@@ -194,7 +194,7 @@
 </script>
 
 <style scoped lang="scss">
-   @import "../styles/config";
+   @import "../../styles/config";
 
    .top-bar {
       position: fixed;
