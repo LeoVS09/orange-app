@@ -56,21 +56,22 @@ export function problemMiddleware(to: Router.Route, from: Router.Route, next: Fu
                to.params.id = problem.id
                next()
             })
-         break
+
+         return
 
       case ROUTES.PROBLEM:
          const problem = store.state.problems.data.find(p => p.id === to.params.id)
          if(!problem || problem.readState === ProblemReadState.Partial)
             store.dispatch(actions.READ_PROBLEM, to.params.id)
-               .then(() => next())
-         else
-            next()
-         break
+               .then(problem => {
+                  if(problem)
+                     return
 
-      default:
+                  console.log('Not have problem')
+               })
          next()
-         break
+         return;
    }
 
-
+   next()
 }

@@ -61,7 +61,7 @@ import {TestStatus} from "@/models";
          return this.testData.status === TestStatus.Changed
       }
 
-      get isTestCorrent(){
+      get isTestCorect(){
          const test = this.testData
          return test.input.length && test.output.length
       }
@@ -69,11 +69,11 @@ import {TestStatus} from "@/models";
          if (this.syncId)
             clearTimeout(this.syncId)
 
-         if(!this.isTestCorrent)
+         if(!this.isTestCorect)
             return
 
          this.syncId = setTimeout(() => {
-            if (!this.isTestCorrent || !(Date.now() - this.lastInput > MIN_TIME_SYNC))
+            if (!this.isTestCorect || !(Date.now() - this.lastInput > MIN_TIME_SYNC))
                return
 
             this.updateTest({

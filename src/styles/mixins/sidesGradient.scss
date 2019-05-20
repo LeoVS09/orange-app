@@ -1,0 +1,38 @@
+@import "../config.scss";
+
+@mixin sides-gradient($height: 1rem, $color: $background-color, $left-selector: '&::before', $right-selector: '&::after') {
+   $sides-gradient-colors: $color 0%, transparentize($color, 0.25) 50%, transparent 100%;
+
+   #{$left-selector}, #{$right-selector} {
+      content: '';
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      height: 100%;
+      width: 2rem;
+      z-index: 1;
+      pointer-events: none;
+      background-attachment: fixed;
+   }
+
+   &.scrollable-horizontal #{$left-selector}, &.scrollable-horizontal #{$right-selector} {
+      position: fixed;
+      height: $height;
+      bottom: auto;
+      top: auto;
+   }
+
+   #{$left-selector} {
+      left: 0;
+      background: linear-gradient(to right, $sides-gradient-colors);
+   }
+
+   #{$right-selector} {
+      right: 0;
+      background: linear-gradient(to left, $sides-gradient-colors);
+   }
+
+   &.scrollable-horizontal #{$right-selector} {
+      margin-top: -3rem;
+   }
+}

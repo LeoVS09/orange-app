@@ -1,16 +1,50 @@
 @import "../config.scss";
 
-@mixin gradient-text-hover($text-color: $button-text-color) {
-   position: relative;
-   color: transparent;
-   transition-duration: 0.3s;
-   background: $gradient-text-hover-color $text-color;
-   -webkit-background-clip: text;
-   background-clip: text;
+$button-text-left-animation-time: 0.4s;
+
+@mixin gradient-text-inside-hover($content-class, $text-color: $button-text-color) {
+   .#{$content-class} {
+      position: relative;
+      color: transparent;
+      transition: all 0.3s ease-in-out;
+      background: $gradient-text-hover-color $text-color;
+      -webkit-background-clip: text;
+      background-clip: text;
+   }
 
    &:hover {
-      background-position: 0 0;
+      .#{$content-class} {
+         background-position: 0 0;
+      }
    }
 }
 
+@mixin gradient-text-hover-background($content-class, $text-color: $button-active-text-color) {
+   &::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 100%;
+      height: 100%;
+      transform: translateX(-100%);
+      background: $button-active-color;
+      transition: transform .25s ease-in;
+   }
 
+   .#{$content-class} {
+      position: relative;
+      z-index: 1;
+      transition: color $button-text-left-animation-time ease-out;
+   }
+
+   &:hover {
+      .#{$content-class} {
+         animation: animButtonSpan $button-text-left-animation-time;
+         color: $text-color;
+      }
+      &::before {
+         transform: translateX(0);
+      }
+   }
+}

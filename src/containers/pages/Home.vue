@@ -15,7 +15,7 @@
 <script lang="ts">
   import Vue from 'vue'
   import {Component} from 'vue-property-decorator'
-  import TopBar from './TopBar.vue'
+  import TopBar from '../content/TopBar.vue'
   import { Footer } from '@/components'
 
   @Component({

@@ -11,7 +11,8 @@ export {
    ProblemStatus,
    ProblemTestingStatus,
    TestStatus,
-   PartialProblem
+   PartialProblem,
+   ProblemError
 } from "./problem";
 export {Contest, Requirements} from "./contest";
 export {Country} from "./country";

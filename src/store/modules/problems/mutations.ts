@@ -6,10 +6,11 @@ import {
    ProblemTestingStatus,
    ResultRunProgram,
    Test,
-   TestStatus
+   TestStatus,
+   ProblemError
 } from "@/models";
-import {ProblemsState} from './state'
-import {ProblemReadState} from "@/models/problem";
+import {ProblemFilter, ProblemsState} from './state'
+import {ProblemReadState, Tag} from "@/models/problem";
 
 export interface IStartTestingSolutionPayload {
    problemId: string
@@ -168,7 +169,36 @@ export default {
          t.status = status
          return t
       })
-   }
+   },
+   [mutationTypes.ADD_PROBLEM_ERROR](state: ProblemsState, error: ProblemError) {
+      state.errorHistory.push(error)
+   },
+
+   [mutationTypes.SET_PROBLEMS_FILTER](state: ProblemsState, filter: ProblemFilter) {
+      state.filter = filter
+   },
+
+   [mutationTypes.SET_TAGS](state: ProblemsState, tags: Array<Tag>) {
+      state.tags = tags
+   },
+
+   [mutationTypes.ADD_FILTER_TAG](state: ProblemsState, tag: Tag) {
+      state.filterTags.push(tag)
+   },
+
+   [mutationTypes.REMOVE_FILTER_TAG](state: ProblemsState, index: number) {
+      state.filterTags = [...state.filterTags.slice(0, index), ...state.filterTags.slice(index+1)]
+   },
+
+   [mutationTypes.TOGGLE_FILER_TAG](state: ProblemsState, tag: Tag) {
+      const index = state.filterTags.findIndex(item => item.id === tag.id)
+      if(index === -1) {
+         state.filterTags.push(tag)
+         return
+      }
+
+      state.filterTags = [...state.filterTags.slice(0, index), ...state.filterTags.slice(index+1)]
+   },
 }
 
 function updateProblemWithId(state: ProblemsState, problemId: string, handler: (problem: FullProblem | PartialProblem) => FullProblem | PartialProblem) {

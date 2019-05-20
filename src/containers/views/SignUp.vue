@@ -36,6 +36,7 @@
          class="signup--button"
          :disabled="isDisabled"
          :primary="true"
+         :gradient-highlight="false"
       >Sign Up
       </Button>
    </div>

@@ -1,6 +1,12 @@
 <template>
    <div class="problems">
       <PageHeader class="problems--header">Problems</PageHeader>
+      <Tags
+         :values="allTags"
+         @choose="chooseTag"
+         :activeTags="activeTags"
+      />
+
       <div class="problems--content">
 
          <div class="problems--actions">
@@ -11,37 +17,25 @@
                class="problems--add-button"
                :primary="true"
                :circle="true"
+               :gradient-highlight="false"
             >Add problem</Button>
-            <ButtonGroup v-slot="group">
-               <Button
-                  @click="viewAll"
-                  :active="filter === 'All'"
-                  class="problems--filter-item"
-                  :hovered="group.hovered"
-                  :gradientHighlight="false"
-               >All</Button>
-               <Button
-                  @click="viewOpen"
-                  :active="filter === 'Open'"
-                  class="problems--filter-item"
-                  :hovered="group.hovered"
-                  :gradientHighlight="false"
-               >Open</Button>
-               <Button
-                  @click="viewClosed"
-                  :active="filter === 'Closed'"
-                  class="problems--filter-item"
-                  :hovered="group.hovered"
-                  :gradientHighlight="false"
-               >Closed</Button>
-               <Button
-                  @click="viewResolved"
-                  :active="filter === 'Resolved'"
-                  class="problems--filter-item"
-                  :hovered="group.hovered"
-                  :gradientHighlight="false"
-               >Resolved</Button>
-            </ButtonGroup>
+            <ButtonGroup
+               v-slot="group"
+               :hoverAnimation="false"
+               :meta="{
+                  attributes: {
+                     gradientHighlight: true
+                  },
+                  active: filter,
+                  buttons: [
+                     { 'All': ProblemFilter.All },
+                     { 'Public': ProblemFilter.Public },
+                     { 'Not public': ProblemFilter.NotPublic },
+                     { 'Resolved': ProblemFilter.Resolved }
+                  ]
+               }"
+               @click="onFilterClick"
+            />
          </div>
 
          <list
@@ -62,18 +56,15 @@
 <script lang="ts">
    import Vue from 'vue'
    import {Component} from 'vue-property-decorator'
-   import {Getter, Action} from 'vuex-class'
-   import {FullProblem} from "@/models"
+   import {Getter, Action, State} from 'vuex-class'
+   import {FullProblem, PartialProblem} from "@/models"
    import * as actions from '@/store/actionTypes';
    import {PageHeader, ProblemListItem, Button, ButtonGroup, List} from '@/components';
    import {ROUTES} from '@/router'
-
-   enum Filter {
-      All = "All",
-      Open = "Open",
-      Closed = "Closed",
-      Resolved = "Resolved"
-   }
+   import {RootState} from "@/store/state";
+   import {ProblemFilter} from "@/store/modules";
+   import {Tag} from "@/models/problem";
+   import Tags from '../content/Tags.vue'
 
    @Component({
       components: {
@@ -81,51 +72,36 @@
          ListItem: ProblemListItem,
          Button,
          ButtonGroup,
-         List
+         List,
+         Tags
       }
    })
    export default class ProblemsList extends Vue {
 
-      @Getter problems: Array<FullProblem>;
-      @Getter openProblems: Array<FullProblem>;
-      @Getter closedProblems: Array<FullProblem>;
-
+      @Getter filteredProblems: Array<FullProblem | PartialProblem>;
       @Getter isTeacher: boolean;
+      @Getter allTags: Array<Tag>;
 
-      @Action(actions.READ_PROBLEMS_LIST) syncProblems?: () => void
+      @Action(actions.READ_PROBLEMS_LIST) readProblems: () => void
+      @Action(actions.READ_TAGS) readTags: () => void
+      @Action(actions.TOGGLE_FILER_TAG) toggleFilterTag: (tag: Tag) => void
 
-      filter = Filter.All;
+      @Action(actions.SET_PROBLEMS_FILTER) setProblemsFilter: (filter: ProblemFilter) => void
+
+      @State((state: RootState) => state.problems.filter)
+      filter: ProblemFilter
+
+      @State((state: RootState) => state.problems.filterTags)
+      activeTags: Array<Tag>
+
+      ProblemFilter = ProblemFilter
 
       get filtered() {
-         if (this.filter === Filter.All) {
-            return this.problems
-         }
-
-         if (this.filter === Filter.Open) {
-            return this.openProblems
-         }
-
-         if (this.filter === Filter.Closed) {
-            return this.closedProblems
-         }
-
-         return this.problems
+         return this.filteredProblems
       }
 
-      viewAll() {
-         this.filter = Filter.All
-      }
-
-      viewOpen() {
-         this.filter = Filter.Open
-      }
-
-      viewClosed() {
-         this.filter = Filter.Closed
-      }
-
-      viewResolved() {
-         this.filter = Filter.Resolved
+      onFilterClick(value: ProblemFilter){
+         this.setProblemsFilter(value)
       }
 
       formatItem(item: FullProblem){
@@ -137,10 +113,8 @@
       }
 
       created() {
-         if (!this.syncProblems)
-            return console.error('Not have action to sync problems')
-
-         this.syncProblems()
+         this.readProblems()
+         this.readTags()
       }
 
       addProblem() {
@@ -157,6 +131,10 @@
          })
       }
 
+      chooseTag(tag: Tag) {
+         this.toggleFilterTag(tag)
+      }
+
    }
 </script>
 
@@ -165,6 +143,12 @@
 
    .problems {
       width: 100%;
+
+      &--tags {
+         width: 100%;
+         height: 3rem;
+         margin-bottom: 3rem;
+      }
 
       &--content {
          display: flex;

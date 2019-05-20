@@ -17,7 +17,11 @@
             'another-hover': isAnotherButtonHovered,
             'gradient-highlight': gradientHighlight,
             'text-can-fade': textCanFade,
-            'text-not-faded': !fadeText
+            'text-not-faded': !fadeText,
+            secondary,
+            bold,
+            'no-active-bold': noActiveBold,
+            'simple-active': simpleActive
          }">
          <div class="button--content">
             <span v-if="!!icon">
@@ -112,24 +116,21 @@
          background-color: transparent;
          border: 1px solid $button-border-color;
          cursor: pointer;
-         transition-property: all;
+         transition-property: opacity;
          transition-duration: 0.1s;
          outline: none;
          font-weight: 500;
          color: $button-text-color;
          font-size: $button-font-size;
+         position: relative;
+         overflow: hidden;
+
+         &.bold {
+            font-weight: bold;
+         }
 
          &.gradient-highlight {
-            .button--content {
-               @include gradient-text-hover();
-
-               &:hover {
-                  .button--icon {
-                     color: $gradient-start-color;
-                  }
-               }
-
-            }
+            @include gradient-text-hover-background('button--content')
          }
 
          &.max-width {
@@ -148,6 +149,10 @@
             color: $button-active-text-color;
             font-weight: 700;
 
+            &.no-active-bold {
+               font-weight: 400;
+            }
+
             .button--content {
                background: none;
             }
@@ -156,11 +161,43 @@
                color: inherit;
             }
 
+            &::before {
+               content: none;
+            }
+
+            &:hover {
+               .button--content {
+                  animation: none;
+               }
+            }
+
          }
 
          &.simple {
             border: none;
             border-radius: 0;
+
+            &::before {
+               content: none;
+            }
+
+            &:hover::before {
+               transform: none;
+            }
+
+            &.gradient-highlight {
+               @include gradient-text-inside-hover('button--content');
+
+               &:hover {
+                  .button--icon {
+                     color: $gradient-start-color;
+                  }
+
+                  .button--content {
+                     animation: none;
+                  }
+               }
+            }
 
             &.active {
                background: none;
@@ -168,13 +205,32 @@
                transition: all;
                transition-duration: 0.3s;
 
+               @include gradient-text-inside-hover('button--content');
+
                .button--content {
-                  @include gradient-text-hover();
                   background-position: 0 0;
+               }
+
+               &.simple-active .button--content {
+                  color: $gradient-start-color;
                }
 
                .button--icon {
                   color: $gradient-start-color;
+               }
+            }
+         }
+
+         &.secondary {
+            color: $secondary-text-color;
+            font-size: 0.9rem;
+            padding: 0.5rem 1rem;
+
+            &.active {
+               font-weight: bold;
+
+               &.no-active-bold {
+                  font-weight: 400;
                }
             }
          }
@@ -204,10 +260,21 @@
             border-color: $button-primary-color;
             box-shadow: 0 0 3px 0 lighten($button-primary-shadow-color, 10%);
             color: $button-primary-text-color;
+            transition: all 0.2s ease-in-out;
 
             &.gradient-highlight {
-               .button--content {
-                  @include gradient-text-hover($button-primary-text-color);
+               @include gradient-text-inside-hover('button--content', $button-primary-text-color);
+
+               &::before {
+                  content: none;
+               }
+
+               &:hover {
+
+                  .button--content {
+                     animation: none;
+
+                  }
                }
             }
 
@@ -275,6 +342,27 @@
          100% {
             background-position: -50% 50%
          }
+      }
+
+      @keyframes animButtonSpan {
+         0% {
+            transform: translateX(0);
+            opacity: 1;
+         }
+
+         35% {
+            transform: translateX(20px);
+            opacity: 0;
+         }
+
+         50.001% {
+            transform: translateX(-20px);
+         }
+
+         60% {
+            transform: translateX(0px);
+         }
+
       }
 
       .text-fade {

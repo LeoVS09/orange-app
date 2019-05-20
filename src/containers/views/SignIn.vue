@@ -18,6 +18,7 @@
          class="signin--button"
          :disabled="isSubmitDisabled"
          :primary="true"
+         :gradient-highlight="false"
       >Sign In</Button>
       <div class="signin--forgot">
          <span class="signin--forgot-text">Forgot password?</span>

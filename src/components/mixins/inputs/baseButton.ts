@@ -71,4 +71,28 @@ export default class BaseButton extends Vue {
       default: false
    })
    circle: boolean
+
+   @Prop({
+      type: Boolean,
+      default: false
+   })
+   secondary: boolean
+
+   @Prop({
+      type: Boolean,
+      default: false
+   })
+   bold: boolean
+
+   @Prop({
+      type: Boolean,
+      default: false
+   })
+   noActiveBold: boolean
+
+   @Prop({
+      type: Boolean,
+      default: false
+   })
+   simpleActive: boolean
 }

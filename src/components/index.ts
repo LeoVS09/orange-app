@@ -12,7 +12,6 @@ import PageHeader from './PageHeader.vue'
 import ColorLine from './ColorLine.vue'
 import ProblemListItem from './ProblemListItem.vue'
 import TextareaAutoresize from './TextareaAutoresize.vue';
-import Tags from './Tags.vue';
 import PageSection from './PageSection.vue';
 import DataView from './DataView.vue';
 import ButtonGroup from './ButtonGroup.vue';
@@ -33,7 +32,6 @@ export {
    ProblemListItem,
    TextareaAutoresize,
    ColorLine,
-   Tags,
    PageSection,
    DataView,
    ButtonGroup,

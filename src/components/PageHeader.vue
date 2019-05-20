@@ -126,7 +126,6 @@
       &.highlight {
          background: $active-gradient;
          margin-top: 0;
-         margin-bottom: 3rem;
 
          h1 {
             color: $highlight-header-text-color;

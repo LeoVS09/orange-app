@@ -36,24 +36,9 @@
    import {UserProfile} from "@/models"
    import * as actions from '@/store/actionTypes';
    import {ROUTES} from '@/router'
+   import {IListener, isPredictiveHover, onMouseOutOfWindow, onPredictiveHover, onScroll} from "@/components/predictive";
 
-   function isHover(x: number, y: number, maxX: number, maxY: number, limit: number = 0.25) {
-
-      let isSideXHovered = x / (maxX + 0.0) > (1 - limit);
-      let isSideYHovered = y / (maxY + 0.0) < (limit);
-
-      return isSideXHovered && isSideYHovered;
-   }
-
-   function mouseOutOfWindow(callback: () => void) {
-      document.addEventListener('mouseout',  event => {
-         // @ts-ignore
-         if(event.fromElement && event.fromElement.nodeName === 'HTML')
-            callback()
-      })
-   }
-
-   let mousemoveListener: EventListener;
+   let mousemoveListener: IListener
 
    @Component({
       components: {
@@ -77,52 +62,19 @@
       isActionCompleted = false;
 
       created() {
-         // @ts-ignore
-         mousemoveListener = (event: MouseEvent) => {
-            let el: HTMLElement | null = document.querySelector('html');
-            if (!el) {
-               console.error("Unexpected error");
-               return
-            }
+         mousemoveListener = onPredictiveHover(
+            () => this.startHoverProfile(),
+            () => this.endHoverProfile()
+         )
 
-            if (this.isProfileActionsHover) {
-               if (!isHover(event.pageX, event.pageY - el.scrollTop, el.offsetWidth, el.offsetHeight)) {
-                  this.endHoverProfile();
-               }
-            } else {
-               if (isHover(event.pageX, event.pageY - el.scrollTop, el.offsetWidth, el.offsetHeight, 0.1)) {
-                  this.startHoverProfile();
-               }
-            }
-         };
-
-         document.addEventListener("mousemove", mousemoveListener)
-
-         mouseOutOfWindow(() => {
-            if(this.isProfileActionsHover)
-               this.endHoverProfile()
-         })
-
-         let oldScroll = 0;
-         window.onscroll = () => {
-            let el: HTMLElement | null = document.querySelector('html');
-            if (!el) {
-               console.error("Unexpected error");
-               return
-            }
-
-            if (oldScroll - el.scrollTop > 0) {
-               this.startScroll(el.scrollTop)
-            } else {
-               this.endScroll(el.scrollTop)
-            }
-
-            oldScroll = el.scrollTop;
-         }
+         onScroll(
+            top => this.startScroll(top),
+            top => this.endScroll(top)
+         )
       }
 
       beforeDestroy() {
-         document.removeEventListener("mousemove", mousemoveListener)
+         mousemoveListener.destroy()
       }
 
       get profileText() {
@@ -140,12 +92,15 @@
          return this.isProfileActionsHover && !this.isActionCompleted && !!this.userData && (this.isScroll || !this.scrollTop)
       }
 
-      startHoverProfile() {
-         if (this.userData) {
-            this.isProfileActionsHover = true;
-            const showProfileActions = this.calcShowProfileActions;
-            this.$emit("update:showProfileActions", showProfileActions);
-         }
+      startHoverProfile(): boolean {
+         if (!this.userData)
+            return this.isProfileActionsHover
+
+         this.isProfileActionsHover = true;
+         const showProfileActions = this.calcShowProfileActions;
+         this.$emit("update:showProfileActions", showProfileActions);
+
+         return this.isProfileActionsHover
       }
 
       endHoverProfile() {
@@ -153,6 +108,8 @@
          this.isActionCompleted = false;
          const showProfileActions = this.calcShowProfileActions;
          this.$emit("update:showProfileActions", showProfileActions);
+
+         return this.isProfileActionsHover
       }
 
       startScroll(top: number) {

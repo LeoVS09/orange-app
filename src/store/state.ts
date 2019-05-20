@@ -1,6 +1,7 @@
 import {ActionContext} from "vuex";
 import {ProblemsState, ProfileState, UIState, Platform} from "./modules";
 import {Country, FullProblem, PartialProblem, UserProfile} from "@/models";
+import {ProblemError, Tag} from "@/models/problem";
 
 export interface RootState {
    ui: UIState,
@@ -16,12 +17,19 @@ export interface RootGetters {
    profile?: UserProfile
    isTeacher: boolean
 
-   openProblems: Array<FullProblem>,
-   closedProblems: Array<FullProblem>,
-   problems: Array<FullProblem>,
-   problemById: (id: string) => FullProblem | PartialProblem,
+   openProblems: Array<FullProblem | PartialProblem>,
+   closedProblems: Array<FullProblem | PartialProblem>,
+   problems: Array<FullProblem | PartialProblem>,
+   filteredProblems: Array<FullProblem | PartialProblem>,
+
+   problemById: (id: string) => FullProblem | PartialProblem | undefined,
+   randomProblem: FullProblem | PartialProblem,
+   similarProblems: Array<FullProblem | PartialProblem>,
+
+   problemErrorById: (id: string) => ProblemError | undefined
 
    allCountries: Array<Country>
+   allTags: Array<Tag>
 }
 
 export interface IActionContext<S> extends ActionContext<S, RootState> {

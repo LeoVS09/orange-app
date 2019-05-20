@@ -1,6 +1,26 @@
 <template>
-   <div v-if="!problemData || problemData.status === ProblemStatus.Reading" class="skeleton-loading problem-loading"></div>
-   <div v-else-if="!!problemData && problemData.readState === ProblemReadState.Full" class="problem">
+   <div
+      v-if="!problemData && isReadingError"
+     class="problem--not-found"
+   >
+      <div class="not-found--icons">
+         <LdrLove width="5rem" height="5rem"/>
+         <LdrX width="5rem" height="5rem"/>
+         <LdrRobot width="5rem" height="5rem"/>
+      </div>
+
+      <h1 class="not-found--text">Sorry, problem not found</h1>
+   </div>
+
+   <div
+      v-else-if="!problemData || problemData.status === ProblemStatus.Reading"
+      class="skeleton-loading problem-loading"
+   ></div>
+
+   <div
+      v-else-if="!!problemData && problemData.readState === ProblemReadState.Full"
+      class="problem"
+   >
 
       <page-header
          :editable="isTeacher"
@@ -10,18 +30,16 @@
          :colorLine="done && 'success'"
          :highlight="false"
          :textWidth="true"
-      >{{problemData.name}}
-      </page-header>
+      >{{problemData.name}}</page-header>
 
-      <tags :values="problemData.tags"></tags>
+<!--      <tags :values="problemData.tags"></tags>-->
 
       <page-section
          :editable="isTeacher"
          :value="problemData.description"
          :input="updateText"
          placeholder="Problem description..."
-      >{{problemData.description}}
-      </page-section>
+      >{{problemData.description}}</page-section>
 
       <page-section highlight :textWidth="false">
          <div class="problem--limits">
@@ -134,8 +152,6 @@
       </FloatingButton>
 
    </div>
-
-   <div v-else class="problem--not-have"><h1>Not have this problem :(</h1></div>
 </template>
 
 <script lang="ts">
@@ -151,14 +167,18 @@
       Icon,
       PageHeader,
       PageSection,
-      Tags,
       TextareaAutoresize
    } from '@/components';
+   import Tags from '../content/Tags.vue'
+   import LdrLove from '@/components/icons/LdrLove.vue'
+   import LdrX from '@/components/icons/LdrX.vue'
+   import LdrRobot from '@/components/icons/LdrRobot.vue'
    import TestView from '../content/TestView.vue'
    import {formatDate} from '@/components/utils'
    import {
       PartialProgramInput,
       PartialProgramOutput,
+      ProblemError,
       ProblemReadState,
       ProblemStatus,
       ProblemTestingStatus
@@ -180,12 +200,17 @@
          Tags,
          PageSection,
          DataView,
-         FloatingButton
+         FloatingButton,
+         LdrLove,
+         LdrX,
+         LdrRobot
       }
    })
    export default class ProblemView extends Vue {
 
-      @Getter problemById: (id: string) => FullProblem;
+      @Getter problemById: (id: string) => FullProblem | undefined;
+
+      @Getter problemErrorById: (id: string) => ProblemError | undefined;
 
       @Getter isTeacher?: boolean;
 
@@ -195,22 +220,33 @@
       ProblemTestingStatus = ProblemTestingStatus
       ProblemReadState = ProblemReadState
 
-      get problemData(): FullProblem {
+      get problemData() {
          return this.problemById(this.$route.params.id)
       }
 
+      get isReadingError() {
+         if (this.problemData)
+            return this.problemData.status === ProblemStatus.ErrorReading;
+
+         const error = this.problemErrorById(this.$route.params.id)
+         if(!error)
+            return false
+
+         return error.status === ProblemStatus.ErrorReading
+      }
+
       get resultRun(): ResultRunProgram | undefined {
-         if (this.problemData) {
+         if (this.problemData)
             return this.problemData.resultRun;
-         }
+
          return undefined;
       }
 
       get done(): boolean {
-         if (this.resultRun) {
-            return this.resultRun.isAllTestsSuccessful
-         }
-         return false
+         if (!this.resultRun)
+            return false
+
+         return this.resultRun.isAllTestsSuccessful
       }
 
       get isSynced(): boolean {
@@ -311,12 +347,18 @@
             return;
          }
 
-         if (this.problemData.status === ProblemStatus.Changed || this.problemData.status === ProblemStatus.ErrorUpdating) {
+         if (
+            this.problemData.status === ProblemStatus.Changed ||
+            this.problemData.status === ProblemStatus.ErrorUpdating
+         ) {
             this.$store.dispatch(actions.UPDATE_PROBLEM, this.problemData.id);
             return;
          }
 
-         if(this.problemData.status === ProblemStatus.ForCreate || this.problemData.status === ProblemStatus.ErrorCreating) {
+         if(
+            this.problemData.status === ProblemStatus.ForCreate ||
+            this.problemData.status === ProblemStatus.ErrorCreating
+         ) {
 
             // TODO: display errors
             if (!this.problemData.name.length) {
@@ -348,8 +390,6 @@
                   this.$router.push({path: `/problem/${problem.id}`})
                });
             return;
-
-            return;
          }
 
          console.error('Cannot understand what do with this problem', this.problemData)
@@ -369,13 +409,14 @@
 
       @include skeleton(60rem, 80rem, (
             (1rem, 2rem, 10rem, 2rem),
-            (40rem, 3rem, 15rem, 1rem),
+            (40rem, 5rem, 15rem, 1rem),
             (1rem, 9rem, 20rem, 1rem),
             (1rem, 11rem, 25rem, 1rem),
             (1rem, 13rem, 30rem, 1rem),
-            (49rem, 19rem, 6rem, 1rem),
-            (49rem, 21rem, 6rem, 1rem),
-            (49rem, 23rem, 4rem, 1rem),
+            (20rem, 19rem, 15rem, 1rem),
+            (20rem, 21rem, 15rem, 1rem),
+            (20rem, 23rem, 15rem, 1rem),
+            (20rem, 25rem, 15rem, 1rem),
             (1rem, 29rem, 5rem, 0.8rem),
             (1rem, 30rem, 55rem, 1.5rem),
             (1rem, 33rem, 5rem, 0.8rem),
@@ -392,16 +433,24 @@
       flex-direction: column;
       align-items: center;
 
-      &--not-have {
+      &--not-found {
          width: 100%;
          height: 100%;
          display: flex;
          min-height: 100%;
          flex-direction: column;
          flex: 1;
+         align-items: center;
 
-         h1 {
+         .not-found--icons {
+            display: flex;
+            flex-direction: row;
+            margin-top: 20rem;
+         }
+
+         .not-found--text {
             margin: auto;
+            margin-top: 1rem;
          }
       }
 

@@ -10,13 +10,19 @@ import gql from 'graphql-tag'
 import {APIClient} from "../apollo";
 import {
    ResponseCountries,
-   ResponseCurrentUser, ResponseInputOutputTypes,
+   ResponseCurrentUser,
+   ResponseInputOutputTypes,
    ResponsePartialProblemsList,
    ResponseProblem,
    ResponseProblemsList,
-   ResponseSearchCountries, ResponseTags
+   ResponseSearchCountries,
+   ResponseTags
 } from "./types";
+import {mockTags} from "@/models/problem";
 
+
+// const DEBUG = process.env.NODE_ENV !== 'production'
+const DEBUG = false
 
 export const currentUser = (client: APIClient) => () =>
    client.query<ResponseCurrentUser>({
@@ -77,8 +83,12 @@ export const inputOutputTypes = (client: APIClient) => () =>
       outputs: result.data.programOutputTypes.nodes
    })
 
-export const tags = (client: APIClient) => () =>
-   client.query<ResponseTags>({
+export const tags = (client: APIClient) => () => {
+   if(DEBUG)
+      return mockTags()
+
+   return client.query<ResponseTags>({
       query: gql(tagsGql)
    })
       .then(result => result.data && result.data.tags.nodes)
+}

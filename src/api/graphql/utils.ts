@@ -32,6 +32,9 @@ function dateToStringFormatter <T>(t: T): T {
       if(keysForMapDays.indexOf(key) === -1)
          return value
 
+      if(value === null || value === undefined)
+         return value
+
       return new Date(value)
    })
 }
