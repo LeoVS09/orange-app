@@ -4,12 +4,12 @@ import {ProblemFilter, ProblemsState} from "../state";
 import * as API from "@/api";
 import * as mutations from "../mutationTypes";
 import {responseToFullProblem, responseToPartialProblem} from "../utils";
-import {defaultProblem, FullProblem, ProblemStatus} from "@/models";
+import {defaultProblem, FullProblem, PartialProblem, ProblemStatus} from "@/models";
 import {ICreateProblemPayload, ISetProblemStatusPayload} from "../mutations";
 import {mockProblems, toUpdateProblem} from "./utils";
 import {randomId} from "@/components/utils";
 import {Commit} from "vuex";
-import {ProblemError, ProblemReadState, Tag} from "@/models/problem";
+import {ProblemError, ProblemReadState} from "@/models/problems";
 
 // const DEBUG = process.env.NODE_ENV !== 'production'
 const DEBUG = false
@@ -112,7 +112,7 @@ export default {
          console.error('Not have problem for update:', id)
          return false
       }
-      if (problem.readState === ProblemReadState.Partial) {
+      if (!isFullProblem(problem)) {
          console.error('Problem not full loaded', problem)
          return false
       }
@@ -140,14 +140,6 @@ export default {
 
       commit(mutations.UPDATE_PROBLEM, responseToFullProblem(result));
       return true
-   },
-
-   async [actionTypes.READ_TAGS]({commit}: IActionContext<ProblemsState>) {
-      const tags = await API.tags()
-      if(!tags)
-         return console.error('Cannot load tags')
-
-      commit(mutations.SET_TAGS, tags)
    },
 
    async [actionTypes.READ_PROBLEM]({commit, rootGetters}: IActionContext<ProblemsState>, problemId: string): Promise<FullProblem | undefined> {
@@ -181,10 +173,6 @@ export default {
 
    [actionTypes.SET_PROBLEMS_FILTER]({commit}: IActionContext<ProblemsState>, filter: ProblemFilter) {
       commit(mutations.SET_PROBLEMS_FILTER, filter)
-   },
-
-   [actionTypes.TOGGLE_FILER_TAG]({commit}: IActionContext<ProblemsState>, tag: Tag) {
-      commit(mutations.TOGGLE_FILER_TAG, tag)
    }
 }
 
@@ -206,4 +194,9 @@ function setProblemStatus(commit: Commit, problemId: string, status: ProblemStat
 
 function addProblemError(commit: Commit, error: ProblemError) {
    commit(mutations.ADD_PROBLEM_ERROR, error)
+}
+
+
+function isFullProblem(problem: PartialProblem | FullProblem): problem is FullProblem {
+   return problem.readState === ProblemReadState.Full
 }

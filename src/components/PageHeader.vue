@@ -16,8 +16,12 @@
       />
       <div v-else class="page-header--content">
          <h1>
-            <slot>Page</slot>
+            <slot></slot>
+            <slot name="text"></slot>
          </h1>
+         <div class="page-header--actions">
+            <slot name="actions"></slot>
+         </div>
          <color-line v-if="colorLine" :type="colorLine" />
       </div>
 
@@ -26,7 +30,7 @@
 
 <script lang="ts">
    import Vue from 'vue'
-   import {Component, Prop} from 'vue-property-decorator'
+   import {Component, Prop, Emit} from 'vue-property-decorator'
    import ColorLine from '@/components/ColorLine.vue'
    import {ColorLineType} from '@/components/types'
 
@@ -66,8 +70,9 @@
 
       ColorLineType = ColorLineType
 
+      @Emit('input')
       updateValue(event: any) {
-         this.$emit('input', event)
+         return event.target.value
       }
    }
 </script>
@@ -97,6 +102,15 @@
          color: $header-text-color;
          font-size: 2.5rem;
          font-weight: bold;
+         width: 100%;
+      }
+
+      &--actions {
+         width: 100%;
+         display: flex;
+         flex-direction: row;
+         justify-content: flex-end;
+         align-items: center;
       }
 
       &--input {

@@ -21,15 +21,23 @@
             secondary,
             bold,
             'no-active-bold': noActiveBold,
-            'simple-active': simpleActive
+            'simple-active': simpleActive,
+            contrast,
+            'text-on-hover': textOnHover,
+            'static-size': staticSize,
+            'icon-left': !!icon && iconLeft,
+            'icon-right': !!icon && !iconLeft
          }">
          <div class="button--content">
-            <span v-if="!!icon">
-              <Icon :type="icon" class="button--icon"/>
+            <span v-if="!!icon && iconLeft">
+              <Icon :type="icon" class="button--icon button--icon-left"/>
             </span>
             <transition name="text-fade">
                <span v-if="!fadeText" class="button--text"><slot>Submit</slot></span>
             </transition>
+            <span v-if="!!icon && !iconLeft">
+              <Icon :type="icon" class="button--icon button--icon-right"/>
+            </span>
          </div>
       </button>
    </div>
@@ -59,19 +67,19 @@
 
       key = randomId()
 
-      get isAnotherButtonHovered(){
-         if(this.hovered && this.hovered !== this.key)
+      get isAnotherButtonHovered() {
+         if (this.hovered && this.hovered !== this.key)
             return true
 
          return false
       }
 
-      onMouseOver(){
+      onMouseOver() {
          const event: ButtonEvent = {key: this.key}
          this.$parent.$emit(ButtonEvents.over, event)
       }
 
-      onMouseLeave(){
+      onMouseLeave() {
          const event: ButtonEvent = {key: this.key}
          this.$parent.$emit(ButtonEvents.leave, event)
       }
@@ -130,7 +138,15 @@
          }
 
          &.gradient-highlight {
-            @include gradient-text-hover-background('button--content')
+            @include gradient-text-hover-background('button--content');
+
+            &:hover {
+               .button--content {
+                  .button--icon {
+                     color: $button-active-text-color;
+                  }
+               }
+            }
          }
 
          &.max-width {
@@ -176,17 +192,33 @@
          &.simple {
             border: none;
             border-radius: 0;
+            padding: $button-padding-top $button-padding-sides;
 
             &::before {
                content: none;
             }
 
-            &:hover::before {
-               transform: none;
+            .button--content {
+               transition: all $default-animation-time;
+            }
+
+            &:hover {
+               &::before {
+                  transform: none;
+               }
+
+               .button--content {
+                  color: $gradient-start-color;
+               }
             }
 
             &.gradient-highlight {
                @include gradient-text-inside-hover('button--content');
+
+               .button--icon-right {
+                  transition: color;
+                  transition-delay: $default-animation-time;
+               }
 
                &:hover {
                   .button--icon {
@@ -208,7 +240,7 @@
                @include gradient-text-inside-hover('button--content');
 
                .button--content {
-                  background-position: 0 0;
+                  background-position: -1% 0;
                }
 
                &.simple-active .button--content {
@@ -223,7 +255,7 @@
 
          &.secondary {
             color: $secondary-text-color;
-            font-size: 0.9rem;
+            font-size: 1rem;
             padding: 0.5rem 1rem;
 
             &.active {
@@ -231,6 +263,24 @@
 
                &.no-active-bold {
                   font-weight: 400;
+               }
+            }
+         }
+
+         &.contrast {
+            border-color: $background-color;
+            transition: all $default-animation-time;
+
+            .button--content, .button--icon {
+               color: $background-color;
+               transition: all $default-animation-time;
+            }
+
+            &:hover {
+               background-color: $background-color;
+
+               .button--content, .button--icon {
+                  color: $primary-text-color;
                }
             }
          }
@@ -309,6 +359,138 @@
             }
          }
 
+         &.text-on-hover {
+            padding: 0.5rem 0.6rem;
+            position: relative;
+            transition: all $default-animation-time;
+
+            .button--text {
+               position: absolute;
+               white-space: nowrap;
+               opacity: 0;
+               top: 0.6rem;
+               transition: all $default-animation-time;
+            }
+
+            &.simple .button--text {
+               top: 0.7rem;
+            }
+
+            &:hover {
+               .button--text {
+                  opacity: 1;
+               }
+            }
+
+            &.static-size {
+               .button--icon {
+                  transition: all $default-animation-time;
+               }
+
+               &:hover {
+                  .button--text {
+                     opacity: 1;
+                  }
+               }
+            }
+
+            &.icon-left {
+               .button--text {
+                  left: 1rem;
+               }
+
+               &:hover {
+                  padding-right: 6rem;
+
+                  .button--text {
+                     left: 2rem;
+                  }
+               }
+
+               &.static-size {
+                  padding-right: 6rem;
+
+                  &:hover {
+                     padding-right: 6.5rem;
+
+                     .button--icon {
+                        margin-left: -0.5rem;
+                     }
+
+                     .button--text {
+                        left: 1.5rem;
+                     }
+                  }
+               }
+            }
+
+            &.icon-right {
+               .button--text {
+                  right: 1rem;
+               }
+
+               &:hover {
+                  padding-left: 6rem;
+
+                  .button--text {
+                     right: 2rem;
+                  }
+               }
+
+               &.static-size {
+                  padding-left: 6rem;
+
+                  &:hover {
+                     padding-left: 6.5rem;
+
+                     .button--icon {
+                        margin-right: -0.5rem;
+                     }
+
+                     .button--text {
+                        right: 1.5rem;
+                     }
+                  }
+               }
+            }
+         }
+
+         .doubleArrowLeft {
+            background: #474E51;
+            color: #fff;
+            display: inline-block;
+            height: 40px;
+            width: 120px;
+            line-height: 40px;
+            text-align: center;
+            transition: all 0.4s;
+         }
+
+         .doubleArrowLeft span {
+            display: inline-block;
+            position: relative;
+            transition: 0.4s;
+         }
+
+         .doubleArrowLeft span:after {
+            content: '\00ab';
+            position: absolute;
+            opacity: 0;
+            top: 0;
+            left: -10px;
+            transition: 0.4s;
+         }
+
+         .doubleArrowLeft:hover span {
+            padding-left: 15px;
+         }
+
+         .doubleArrowLeft:hover span:after {
+            opacity: 1;
+            left: 0;
+         }
+
+
          &:active {
             border-color: $button-color;
          }
@@ -344,26 +526,6 @@
          }
       }
 
-      @keyframes animButtonSpan {
-         0% {
-            transform: translateX(0);
-            opacity: 1;
-         }
-
-         35% {
-            transform: translateX(20px);
-            opacity: 0;
-         }
-
-         50.001% {
-            transform: translateX(-20px);
-         }
-
-         60% {
-            transform: translateX(0px);
-         }
-
-      }
 
       .text-fade {
          &-enter-active, &-leave-active {

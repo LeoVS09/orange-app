@@ -1,5 +1,5 @@
 import {FullProblem, PartialProblem, ProblemStatus, ProblemTestingStatus} from "@/models";
-import {ProblemError, Tag} from "@/models/problem";
+import {ProblemError, Tag} from "@/models/problems";
 
 export enum ProblemFilter {
    All = "All",

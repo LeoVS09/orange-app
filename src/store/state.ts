@@ -1,7 +1,7 @@
 import {ActionContext} from "vuex";
 import {ProblemsState, ProfileState, UIState, Platform} from "./modules";
 import {Country, FullProblem, PartialProblem, UserProfile} from "@/models";
-import {ProblemError, Tag} from "@/models/problem";
+import {ProblemError, Tag} from "@/models/problems";
 
 export interface RootState {
    ui: UIState,

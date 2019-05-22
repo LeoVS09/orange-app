@@ -1,25 +1,27 @@
 <template>
    <div
-      :id="id"
       :class="{tags: true, 'scrollable-horizontal': scrollable}"
    >
+      <span class="tags--separator" v-if="values && values.length"> </span>
       <span class="tags--left-gradient" v-if="scrollable && values && values.length"> </span>
-      <ButtonGroup
-         class="tags--content"
-         v-if="values && values.length"
-         :secondary="true"
-         :meta="{
-               attributes: {
-                  simple: true,
-                  gradientHighlight: false,
-                  noActiveBold: true,
-                  simpleActive: true
-               },
-               active: activeTags,
-               buttons: values.map(t => ({ [t.name]: t }))
-            }"
-         @click="chooseTag"
-      />
+      <div :id="id" class="tags--content-wrapper" >
+         <ButtonGroup
+            class="tags--content"
+            v-if="values && values.length"
+            :secondary="true"
+            :meta="{
+                  attributes: {
+                     simple: true,
+                     gradientHighlight: false,
+                     noActiveBold: true,
+                     simpleActive: true
+                  },
+                  active: activeTags,
+                  buttons: values.map(t => ({ [t.name]: t }))
+               }"
+            @click="chooseTag"
+         />
+      </div>
       <span class="tags--right-gradient" v-if="scrollable && values && values.length"> </span>
    </div>
 </template>
@@ -27,10 +29,14 @@
 <script lang="ts">
    import Vue from 'vue'
    import {Component, Prop, Emit} from 'vue-property-decorator'
-   import {Tag} from "@/models/problem";
-   import {ButtonGroup} from '@/components';
+   import {ButtonGroup} from '@/components/index';
    import {onWheel, randomId} from "@/components/utils";
    import {onSideHover} from "@/components/predictive";
+
+   export interface BaseTag {
+      [key: string]: any
+      name: string
+   }
 
    const scrollLeft = (el: Element, left = 100) => el.scrollBy({
       top: 0,
@@ -57,7 +63,7 @@
       @Prop({
          type: Array,
          default: []
-      }) values: Array<Tag>
+      }) values: Array<BaseTag>
 
       @Prop({
          type: Boolean,
@@ -69,12 +75,12 @@
          type: Array,
          default: []
       })
-      activeTags: Array<Tag>
+      activeTags: Array<BaseTag>
 
       scrollTo = ScroolTo.NONE
 
       @Emit('choose')
-      chooseTag(tag: Tag) {
+      chooseTag(tag: BaseTag) {
          return tag
       }
 
@@ -91,15 +97,12 @@
          })
 
          const infiniteScroll = () => {
-            console.log(this.scrollTo, el.scrollLeft)
             const step = 100
             if(this.scrollTo === ScroolTo.LEFT)
                el.scrollLeft -= step
 
             if(this.scrollTo === ScroolTo.RIGHT)
                el.scrollLeft += step
-
-            console.log(el.scrollLeft)
 
             if(this.isCanAnimateScroll)
                setTimeout(infiniteScroll, 100)
@@ -133,29 +136,41 @@
 </script>
 
 <style scoped lang="scss">
-   @import "../../styles/config";
-   @import "../../styles/mixins/sidesGradient";
+   @import "../styles/config";
+   @import "../styles/mixins/sidesGradient";
 
    .tags {
       position: relative;
       margin-top: 0;
       margin-bottom: 3rem;
-      min-height: 3rem;
+      min-height: 2rem;
       width: 100%;
-      white-space: nowrap;
-      overflow-x: auto;
-      -webkit-overflow-scrolling: touch;
-      -ms-overflow-style: -ms-autohiding-scrollbar;
-      scroll-behavior: smooth;
+
+      &--content-wrapper {
+         position: relative;
+         width: 100%;
+         white-space: nowrap;
+         overflow-x: auto;
+         -webkit-overflow-scrolling: touch;
+         -ms-overflow-style: -ms-autohiding-scrollbar;
+         scroll-behavior: smooth;
+
+         &::-webkit-scrollbar {
+            display: none;
+         }
+      }
 
       &--content {
-         min-height: 3rem;
+         min-height: 2rem;
       }
 
       @include sides-gradient(3rem, $background-color, '&--left-gradient', '&--right-gradient');
 
-      &::-webkit-scrollbar {
-         display: none;
+      &--separator {
+         position: absolute;
+         width: 100%;
+         border-bottom: 1px solid $divider-line-color;
+         bottom: 0;
       }
       
       &--placeholder {

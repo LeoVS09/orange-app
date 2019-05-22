@@ -45,8 +45,12 @@
 <script lang="ts">
    import Vue from 'vue'
    import {Component, Watch} from 'vue-property-decorator'
+   import {Action} from 'vuex-class'
    import {Logo, Input, Button, CheckBox, Icon} from '../../components'
    import * as actions from '../../store/actionTypes';
+   import {ROUTES} from "@/router";
+   import {IRegisterProfilePayload} from "@/store/modules/profile/types";
+   import eventBus, {AuthorisationEventPayload, AuthorisationEventState, BusEventTypes} from "@/containers/eventBus";
 
    @Component({
       components: {
@@ -58,6 +62,9 @@
       }
    })
    export default class SignUp extends Vue {
+
+      @Action(actions.SET_SIGN_UP_PAGE) setSignUpPage: () => void
+      @Action(actions.REGISTER_PROFILE) registerProfile: (payload: IRegisterProfilePayload) => Promise<boolean>
 
       email = "";
       isEmailError: boolean | string = false;
@@ -102,11 +109,11 @@
       }
 
       created() {
-         this.$store.dispatch(actions.SET_SIGN_UP_PAGE);
+         this.setSignUpPage();
       }
 
       clickLogin() {
-         this.$router.push({name: 'signin'});
+         this.$router.push({name: ROUTES.SIGNIN});
       }
 
       clickRegister() {
@@ -123,7 +130,7 @@
 
          this.isDisabled = true;
 
-         this.$store.dispatch(actions.REGISTER_PROFILE, {
+         this.registerProfile({
             firstName: this.firstName,
             lastName: this.lastName,
             password: this.password,
@@ -132,7 +139,10 @@
          }).then(result => {
             this.isDisabled = false;
             if (result) {
-               this.$router.push({name: 'home'})
+               const payload: AuthorisationEventPayload = {
+                  state: AuthorisationEventState.Completed
+               }
+               eventBus.$emit(BusEventTypes.Authorisation, payload)
             }
          }).catch(error => {
             this.isDisabled = false;

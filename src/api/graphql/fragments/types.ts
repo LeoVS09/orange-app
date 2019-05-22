@@ -1,3 +1,4 @@
+
 export interface ResponseDataTest {
    id: string
    index: number
@@ -60,5 +61,82 @@ export interface ResponseDataProblem extends ResponseDataPartialProblem {
 
    tests: {
       nodes: Array<ResponseDataTest>
+   }
+}
+
+export interface ResponseDataPartialUniversity {
+   id: string
+   shortName: string
+   longName: string
+   createdAt: Date
+   updatedAt: Date
+   cityId: string
+}
+
+export interface ResponseDataPartialCity {
+   id: string
+   name: string
+   countryId: string
+   createdAt: Date
+   updatedAt: Date
+}
+
+export interface ResponseDataPartialCountry {
+   id: string
+   name: string
+   createdAt: Date
+   updatedAt: Date
+}
+
+export interface ResponseDataFullCity extends ResponseDataPartialCity{
+   universities: {
+      nodes: Array<ResponseDataPartialUniversity>
+   }
+}
+
+export interface ResponseDataFullCountry extends ResponseDataPartialCountry {
+   cities: {
+      nodes: Array<ResponseDataPartialCity>
+   }
+}
+
+export interface ResponseDataFullProfile {
+   id: string
+   firstName: string
+   lastName: string
+   familyName: string
+   phone: string
+   groupNumber: string
+   course: number
+   isTeacher: boolean
+   createdAt: Date
+   updatedAt: Date
+
+   city: ResponseDataPartialCity
+
+   university: ResponseDataPartialUniversity
+}
+
+export interface ResponseDataEmail {
+   email: string
+   isVerified: boolean
+   createdAt: Date
+   updatedAt: Date
+}
+
+export interface ResponseDataUser {
+   id: string
+   name: string
+   isAdmin: boolean
+   avatarUrl: string
+   createdAt: Date
+   updatedAt: Date
+
+   userEmails: {
+      nodes: Array<ResponseDataEmail>
+   },
+
+   profiles: {
+      nodes: Array<ResponseDataFullProfile>
    }
 }

@@ -107,7 +107,7 @@
       &--field {
          outline: none;
          margin-top: 0;
-         padding: 0.5rem 0 0.2rem 0.3rem;
+         padding: 0.5rem 0 0.2rem $input-left-padding;
          border: none;
          width: 100%;
          font-size: 1rem;

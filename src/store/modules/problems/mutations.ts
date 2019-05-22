@@ -10,7 +10,7 @@ import {
    ProblemError
 } from "@/models";
 import {ProblemFilter, ProblemsState} from './state'
-import {ProblemReadState, Tag} from "@/models/problem";
+import {ProblemReadState, Tag} from "@/models/problems";
 
 export interface IStartTestingSolutionPayload {
    problemId: string

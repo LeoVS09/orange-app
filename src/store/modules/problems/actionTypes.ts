@@ -1,20 +1,22 @@
 export const SETUP_PROBLEMS = 'SETUP_PROBLEMS';
 export const ADD_FULL_READ_PROBLEM = 'ADD_FULL_READ_PROBLEM';
 export const EDIT_PROBLEM = 'EDIT_PROBLEM';
-export const DELETE_PROBLEM = 'DELETE_PROBLEM';
-export const UPLOAD_CODE = 'UPLOAD_CODE';
+// export const DELETE_PROBLEM = 'DELETE_PROBLEM'; TODO
 export const READ_PROBLEM = 'READ_PROBLEM';
 export const READ_PROBLEMS_LIST = 'READ_PROBLEMS_LIST';
 export const SET_PROBLEMS_FILTER = 'SET_PROBLEMS_FILTER';
-export const LOAD_TESTS = 'LOAD_TESTS';
-export const ADD_FOR_CREATE_TEST = 'ADD_FOR_CREATE_TEST';
-export const CREATE_TEST = 'CREATE_TEST';
-export const EDIT_TEST = 'EDIT_TEST';
-export const DELETE_TEST = 'DELETE_TEST';
-export const UPDATE_TEST = 'UPDATE_TEST';
 export const UPDATE_PROBLEM = 'UPDATE_PROBLEM';
 export const ADD_FOR_CREATE_PROBLEM = 'ADD_FOR_CREATE_PROBLEM';
 export const CREATE_PROBLEM = 'CREATE_PROBLEM';
-export const READ_TAGS = 'READ_TAGS';
 
+export const UPLOAD_CODE = 'UPLOAD_CODE';
+
+// export const LOAD_TESTS = 'LOAD_TESTS'; TODO
+export const ADD_FOR_CREATE_TEST = 'ADD_FOR_CREATE_TEST';
+export const CREATE_TEST = 'CREATE_TEST';
+export const EDIT_TEST = 'EDIT_TEST';
+// export const DELETE_TEST = 'DELETE_TEST'; TODO
+export const UPDATE_TEST = 'UPDATE_TEST';
+
+export const READ_TAGS = 'READ_TAGS';
 export const TOGGLE_FILER_TAG = 'TOGGLE_FILER_TAG'

@@ -3,7 +3,7 @@ import {IActionContext, RootGetters} from "@/store/state";
 import {ProblemsState} from "../state";
 import * as mutations from "../mutationTypes";
 import * as mock from "@/store/plugins/mock/generator";
-import {ProblemReadState} from "@/models/problem";
+import {ProblemReadState} from "@/models/problems";
 
 export function mockProblems({commit}: IActionContext<ProblemsState>) {
    let count = 10;

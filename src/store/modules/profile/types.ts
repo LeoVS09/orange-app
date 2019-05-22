@@ -1,4 +1,4 @@
-export interface RegisterProfileData {
+export interface IRegisterProfilePayload {
    firstName: string,
    middleName?: string,
    lastName: string,

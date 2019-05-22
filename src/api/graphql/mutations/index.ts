@@ -36,7 +36,6 @@ import {
    ResponseDeleteProblem,
    RequestCreateTestInput,
    ResponseCreateTest,
-   ResponseDataUser,
    RequestUpdateTestInput,
    ResponseUpdateTest,
    RequestDeleteTestInput,
@@ -60,7 +59,13 @@ import {
    RequestDeleteOutputTypeInput,
    ResponseDeleteOutputType
 } from "./types";
-import {ResponseDataInputOutputType, ResponseDataProblem, ResponseDataTag, ResponseDataTest} from "../fragments/types";
+import {
+   ResponseDataInputOutputType,
+   ResponseDataProblem,
+   ResponseDataTag,
+   ResponseDataTest,
+   ResponseDataUser
+} from "../fragments/types";
 
 // ------------------------------------------------ Auth ---------------------------------------------------------------
 

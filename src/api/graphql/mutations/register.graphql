@@ -1,3 +1,5 @@
+#import "../fragments/FullUser.graphql"
+
 mutation Register(
    $username: String!,
    $email: String!,
@@ -19,48 +21,9 @@ mutation Register(
      lastName: $lastName
   }) {
     user {
-       id
        nodeId
-       username
-       name
-       isAdmin
-       avatarUrl
-       userEmails {
-          nodes {
-             nodeId
-             email
-             isVerified
-             createdAt
-             updatedAt
-          }
-       }
 
-       profiles {
-          nodes {
-             id
-             nodeId
-             firstName
-             middleName
-             lastName
-             phone
-             groupNumber
-             course
-             isTeacher
-             createdAt
-             updatedAt
-             city {
-                id
-                nodeId
-                name
-             }
-             university {
-                id
-                nodeId
-                shortName
-                longName
-             }
-          }
-       }
+       ...FullUser
     }
   }
 }

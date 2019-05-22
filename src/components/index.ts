@@ -10,12 +10,13 @@ import CheckBox from './CheckBox.vue'
 import Spinner from './Spinner.vue'
 import PageHeader from './PageHeader.vue'
 import ColorLine from './ColorLine.vue'
-import ProblemListItem from './ProblemListItem.vue'
 import TextareaAutoresize from './TextareaAutoresize.vue';
-import PageSection from './PageSection.vue';
+import TextSection from './TextSection.vue';
+import Section from './Section.vue';
 import DataView from './DataView.vue';
 import ButtonGroup from './ButtonGroup.vue';
 import List from './List.vue'
+import Tags from './Tags.vue'
 
 export {
    Footer,
@@ -29,11 +30,12 @@ export {
    Spinner,
    Select,
    PageHeader,
-   ProblemListItem,
    TextareaAutoresize,
    ColorLine,
-   PageSection,
+   TextSection,
+   Section,
    DataView,
    ButtonGroup,
-   List
+   List,
+   Tags
 }

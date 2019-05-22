@@ -4,7 +4,7 @@ import {ROUTES} from './rotues'
 import {checkIsLogin} from "@/authentication";
 import store from '@/store'
 import * as actions from '@/store/actionTypes';
-import {ProblemReadState} from "@/models/problem";
+import {ProblemReadState} from "@/models/problems";
 
 const guard = (useAuthComponent: boolean): Router.NavigationGuard =>
    (to: Router.Route, from: Router.Route, next: Function) => {
@@ -19,15 +19,23 @@ const guard = (useAuthComponent: boolean): Router.NavigationGuard =>
 
          switch (to.name) {
             case ROUTES.PROFILE:
-               next({name: ROUTES.SIGNIN});
+               next({name: ROUTES.SIGNIN, query: {from: to.name}});
                break;
             case ROUTES.CREATE_PROBLEM:
-               next({name: ROUTES.SIGNIN});
+               next({name: ROUTES.SIGNIN, query: {from: to.name}});
                break;
             default:
                next();
          }
          return
+      }
+
+      if(to.name === ROUTES.PROFILE) {
+         const profile = store.state.profile.data
+         if(!profile) {
+            next({name: ROUTES.SIGNIN, query: {from: to.name}});
+            return;
+         }
       }
 
       // if(resultCheck.user.type === UserType.CONTESTANT) {

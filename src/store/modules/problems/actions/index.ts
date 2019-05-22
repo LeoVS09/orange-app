@@ -9,30 +9,38 @@ import * as actionTypes from '../actionTypes'
 import {
    IStartTestingSolutionPayload
 } from "../mutations";
-import problemActions from './problem'
-import testActions from './test'
+import problemsActions from './problems'
+import testsActions from './tests'
+import tagsActions from './tags'
 
 // const DEBUG = process.env.NODE_ENV !== 'production'
 const DEBUG = false
 
+// TODO: make solution creating
+export interface IUploadCodePayload {
+   problemId: string,
+   text: string
+}
+
 export default {
 
-   ...problemActions,
-   ...testActions,
+   ...problemsActions,
+   ...testsActions,
+   ...tagsActions,
 
-   async [actionTypes.UPLOAD_CODE]({commit}: IActionContext<ProblemsState>, {id, text}: { id: string, text: string }) {
-      const payload: IStartTestingSolutionPayload = {problemId: id}
+   async [actionTypes.UPLOAD_CODE]({commit}: IActionContext<ProblemsState>, {problemId, text}: IUploadCodePayload) {
+      const payload: IStartTestingSolutionPayload = {problemId}
       commit(mutations.START_TESTING_SOLUTION, payload)
 
       try {
-         const result = await API.runProgram(id, text)
+         const result = await API.runProgram(problemId, text)
 
          commit(mutations.SET_RESULT_OF_SOLUTION_RUN, result)
       } catch (e) {
          console.error("Error upload code:", e)
 
          commit(mutations.SET_RESULT_OF_SOLUTION_RUN, {
-            problemId: id,
+            problemId,
             isAllTestsSuccessful: false,
             failedTest: 0,
             isCompilationSuccessful: true,

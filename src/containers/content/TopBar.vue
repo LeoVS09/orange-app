@@ -20,6 +20,7 @@
             <div class="top-bar--profile-actions">
                <ul>
                   <li @click="clickProfile">Profile</li>
+                  <li @click="clickCountries">Countries</li>
                   <li @click="clickSignOut">Sign Out</li>
                </ul>
             </div>
@@ -37,6 +38,8 @@
    import * as actions from '@/store/actionTypes';
    import {ROUTES} from '@/router'
    import {IListener, isPredictiveHover, onMouseOutOfWindow, onPredictiveHover, onScroll} from "@/components/predictive";
+
+   // TODO: use router links
 
    let mousemoveListener: IListener
 
@@ -60,6 +63,8 @@
       isScroll = false;
       scrollTop = 0;
       isActionCompleted = false;
+
+      ROUTES = ROUTES
 
       created() {
          mousemoveListener = onPredictiveHover(
@@ -141,6 +146,10 @@
             this.$router.push({name: ROUTES.SIGNIN});
          }
          this.isActionCompleted = true;
+      }
+
+      clickCountries(){
+         this.$router.push({name: ROUTES.COUNTRIES})
       }
 
       clickSignOut() {

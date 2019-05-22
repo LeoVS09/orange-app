@@ -1,4 +1,5 @@
-import {FullProblem, ResultOfProblem} from "./problem";
+import {FullProblem} from "./problems";
+import {ResultOfProblem} from "./tests";
 
 export interface Requirements {
   course?: number

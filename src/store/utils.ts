@@ -1,10 +1,7 @@
 
 export const randomNumber = () => Math.floor(Math.random() * 1000000)
 
-export function randomItem<T>(array: Array<T>): T | undefined {
-   if(!array.length)
-      return 
-   
+export function randomItem<T>(array: Array<T>): T {
    return array[Math.floor(Math.random() * array.length)]
 }
 

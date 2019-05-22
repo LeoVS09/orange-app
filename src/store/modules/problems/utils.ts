@@ -6,7 +6,7 @@ import {
 } from "@/api/graphql/fragments/types";
 import {FullProblem, PartialProblem, ProblemStatus, ProblemTestingStatus, Test, TestStatus, UserType} from "@/models";
 import {PartialUserProfile} from "@/models/user";
-import {ProblemReadState} from "@/models/problem";
+import {ProblemReadState} from "@/models/problems";
 
 export function responseToTest(t: ResponseDataTest): Test {
    return {

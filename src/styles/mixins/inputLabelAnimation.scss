@@ -2,6 +2,7 @@
 
 %label-to-top {
    top: -0.3rem;
+   left: $input-left-padding;
    font-size: 0.7rem;
 }
 
@@ -13,8 +14,8 @@
       font-size: 0.9rem;
       position: absolute;
       pointer-events: none;
-      left: 0.3rem;
-      top: 0.7rem;
+      left: $input-left-padding;
+      top: 0.6rem;
       transition: $input-animation-time ease all;
    }
 

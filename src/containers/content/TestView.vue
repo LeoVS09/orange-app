@@ -21,7 +21,7 @@ import {TestStatus} from "@/models";
    import * as actions from '@/store/actionTypes';
    import {Test, TestStatus} from "@/models";
    import {IEditTestPayload} from "@/store/modules/problems/mutations";
-   import {IUpdateTestActionPayload} from "@/store/modules/problems/actions/test";
+   import {IUpdateTestActionPayload} from "@/store/modules/problems/actions/tests";
 
    const MIN_TIME_SYNC = 1500; // ms
 

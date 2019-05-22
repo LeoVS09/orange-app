@@ -1,0 +1,27 @@
+#import "./FullProfile.graphql"
+
+fragment FullUser on User {
+   id
+   name
+   isAdmin
+   avatarUrl
+   createdAt
+   updatedAt
+   userEmails {
+      nodes {
+         nodeId
+         email
+         isVerified
+         createdAt
+         updatedAt
+      }
+   }
+
+   profiles {
+      nodes {
+         nodeId
+
+         ...FullProfile
+      }
+   }
+}

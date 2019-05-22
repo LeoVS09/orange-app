@@ -3,7 +3,8 @@
       'button-group': true,
       horizontal,
       vertical,
-      secondary
+      secondary,
+      bordered
    }">
       <div class="button-group--content">
          <slot :hovered="hovered"></slot>
@@ -81,6 +82,12 @@
       })
       secondary: boolean
 
+      @Prop({
+         type: Boolean,
+         default: false
+      })
+      bordered: boolean
+
       mounted() {
          this.$on(ButtonEvents.over, this.buttonOver)
          this.$on(ButtonEvents.leave, this.buttonLeave)
@@ -145,6 +152,10 @@
          display: flex;
          flex-direction: row;
          justify-content: center;
+      }
+
+      &.horizontal.bordered &--content {
+         border-bottom: 1px solid $divider-line-color;
       }
 
       &--item {

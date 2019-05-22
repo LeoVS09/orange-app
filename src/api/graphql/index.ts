@@ -16,6 +16,9 @@ export const currentUser = mapRequester(queries.currentUser);
 
 export const searchCountries = mapRequester(queries.searchCountries);
 export const countries = mapRequester(queries.countries);
+export const cities = mapRequester(queries.cities);
+export const country = mapRequester(queries.country);
+export const city = mapRequester(queries.city);
 
 export const problems = mapRequester(queries.problems)
 export const partialProblems = mapRequester(queries.partialProblems)

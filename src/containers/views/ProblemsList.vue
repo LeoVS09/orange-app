@@ -1,24 +1,30 @@
 <template>
    <div class="problems">
-      <PageHeader class="problems--header">Problems</PageHeader>
+      <PageHeader class="problems--header">
+         <template #text>Problems</template>
+         <template #actions>
+            <Button
+               v-if="isTeacher"
+               icon="add"
+               @click="addProblem"
+               class="problems--add-button"
+               :gradient-highlight="false"
+               :circle="true"
+               :contrast="true"
+               :textOnHover="true"
+            >Add problem</Button>
+         </template>
+      </PageHeader>
       <Tags
          :values="allTags"
          @choose="chooseTag"
          :activeTags="activeTags"
       />
 
-      <div class="problems--content">
+      <Section>
 
          <div class="problems--actions">
-            <Button
-               v-if="isTeacher"
-               icon="add"
-               @click="addProblem"
-               class="problems--add-button"
-               :primary="true"
-               :circle="true"
-               :gradient-highlight="false"
-            >Add problem</Button>
+
             <ButtonGroup
                v-slot="group"
                :hoverAnimation="false"
@@ -40,16 +46,17 @@
 
          <list
             :headers="[
-               {key: 'name', label: 'Name'},
-               {key: 'author', label: 'Author'},
-               {key: 'date', label: 'Date'},
+               {'name': 'Name'},
+               {'author': 'Author'},
+               {'date': 'Date'},
             ]"
             :items="filtered"
             :formatData="formatItem"
             :isCanAdd="isTeacher"
             @chooseItem="chooseProblem"
          />
-      </div>
+
+      </Section>
    </div>
 </template>
 
@@ -59,21 +66,20 @@
    import {Getter, Action, State} from 'vuex-class'
    import {FullProblem, PartialProblem} from "@/models"
    import * as actions from '@/store/actionTypes';
-   import {PageHeader, ProblemListItem, Button, ButtonGroup, List} from '@/components';
+   import {PageHeader, Button, ButtonGroup, List, Tags, Section} from '@/components';
    import {ROUTES} from '@/router'
    import {RootState} from "@/store/state";
    import {ProblemFilter} from "@/store/modules";
-   import {Tag} from "@/models/problem";
-   import Tags from '../content/Tags.vue'
+   import {Tag} from "@/models/problems";
 
    @Component({
       components: {
          PageHeader,
-         ListItem: ProblemListItem,
          Button,
          ButtonGroup,
          List,
-         Tags
+         Tags,
+         Section
       }
    })
    export default class ProblemsList extends Vue {
@@ -100,11 +106,11 @@
          return this.filteredProblems
       }
 
-      onFilterClick(value: ProblemFilter){
+      onFilterClick(value: ProblemFilter) {
          this.setProblemsFilter(value)
       }
 
-      formatItem(item: FullProblem){
+      formatItem(item: FullProblem) {
          return {
             ...item,
             date: item.updatedAt ? item.updatedAt : item.createdAt,
@@ -147,18 +153,6 @@
       &--tags {
          width: 100%;
          height: 3rem;
-         margin-bottom: 3rem;
-      }
-
-      &--content {
-         display: flex;
-         flex-direction: column;
-         justify-content: center;
-         width: 100%;
-         margin: 0 auto;
-         padding: 0 $content-padding-sides;
-         box-sizing: border-box;
-         max-width: $max-content-width;
       }
 
       &--actions {
@@ -179,13 +173,6 @@
          }
       }
 
-      &--add-button {
-         margin-right: auto;
-         display: flex;
-         flex-direction: row;
-         justify-content: flex-end;
-
-      }
 
    }
 </style>

@@ -6,5 +6,7 @@ export enum ROUTES {
    PROFILE = 'profile',
    AUTHORISATION = 'authorisation',
    SIGNIN = 'signin',
-   SIGNUP = 'signup'
+   SIGNUP = 'signup',
+   COUNTRIES = 'countries',
+   COUNTRY = 'country'
 }

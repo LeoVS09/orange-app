@@ -1,5 +1,9 @@
 <template>
-   <div :class="{'select': true, error}" @click="handleClick" v-click-outside="onBlur">
+   <div
+      :class="{'select': true, error}"
+      @click="handleClick"
+      v-click-outside="onBlur"
+   >
 
       <div :class="{
          'select--input-container': true,
@@ -18,10 +22,14 @@
       </div>
 
       <transition name="fade-items">
-         <div v-if="focused" class="select--options-container">
+         <div v-if="focused" :class="{
+            'select--options-container': true,
+            'empty': !visibleItems.length
+         }">
             <div v-for="item in visibleItems" @mousedown="chooseItem(item)" class="select--option">
                <span class="select--option-text">{{item.text}}</span>
             </div>
+            <div v-if="!visibleItems.length" class="select--options-loading skeleton-loading"></div>
          </div>
       </transition>
    </div>
@@ -29,7 +37,7 @@
 
 <script lang="ts">
    import Vue from 'vue'
-   import {Component, Prop, Watch, Mixins} from 'vue-property-decorator'
+   import {Component, Prop, Watch, Mixins, Emit} from 'vue-property-decorator'
    import {toStringWhenDefined} from "@/components/utils";
    import Focusable from "./mixins/inputs/focusable";
 
@@ -103,13 +111,16 @@
          })
       }
 
+      @Emit('click')
       handleClick() {
          this.focused = !this.focused
+         return this.focused
       }
 
+      @Emit('input')
       chooseItem(item: SelectItem) {
          this.currentValue = item.text;
-         this.$emit('input', item.value)
+         return item.value
       }
 
       @Watch('value')
@@ -143,6 +154,7 @@
 
 <style scoped lang="scss">
    @import "../styles/config.scss";
+   @import "../styles/skeleton.scss";
    @import "../styles/mixins/inputBottomHighlight.scss";
    @import "../styles/mixins/inputLabelAnimation.scss";
 
@@ -150,13 +162,13 @@
    $container-padding-top: 0;
 
    .select {
+      position: relative;
       width: 100%;
       max-width: $input-width;
       display: flex;
       flex-direction: column;
       justify-content: left;
       margin-top: 1rem;
-      position: relative;
       padding-top: $container-padding-top;
 
       &--input-container {
@@ -166,6 +178,24 @@
 
          @include input-bottom-highlight();
          @include input-label-animation(false);
+
+         &.focused {
+            box-shadow: $input-shadow;
+            border-radius: 3px 3px 0 0;
+         }
+      }
+
+      &--options-loading {
+         width: 100%;
+         max-width: $input-width;
+
+         @include skeleton(10rem, $select-options-max-height, (
+               (1rem, 1rem, 10rem, 1rem),
+               (1rem, 3rem, 12rem, 1rem),
+               (1rem, 5rem, 15rem, 1rem),
+               (1rem, 7rem, 8rem, 1rem),
+               (1rem, 9rem, 13rem, 1rem)
+         ));
       }
 
       &--text-container {
@@ -192,14 +222,25 @@
          top: $font-line-height-input-primary + ($input-padding-top * 2) + $container-padding-top;
          z-index: 3;
          background: $background-color;
-         box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+         box-shadow: $input-shadow;
          width: 100%;
          display: flex;
          flex-direction: column;
+         border-radius: 0 0 3px 3px;
+
+         max-height: $select-options-max-height;
+         overflow-x: auto;
+         -webkit-overflow-scrolling: touch;
+         -ms-overflow-style: -ms-autohiding-scrollbar;
+         scroll-behavior: smooth;
+
+         &:after {
+
+         }
       }
 
       &--option {
-         padding: 0.5rem;
+         padding: 0.5rem $input-left-padding;
          transition: $input-animation-time all;
 
          &:hover {
@@ -210,10 +251,6 @@
          &:active {
             background: darken($background-color, 10%);
          }
-      }
-
-      &--options-container:hover &--option:not(:hover) {
-         opacity: 0.6;
       }
 
 

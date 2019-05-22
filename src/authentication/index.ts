@@ -2,7 +2,8 @@ import {UserProfile, UserType} from '../models';
 import {login, currentUser, register} from '../api'
 // @ts-ignore
 import crypto from 'crypto-js'
-import {ResponseDataUser, RequestRegisterInput} from "@/api/graphql/mutations/types";
+import {RequestRegisterInput} from "@/api/graphql/mutations/types";
+import {ResponseDataUser} from "@/api/graphql/fragments/types";
 
 const TOKEN_NAME = 'token';
 const TOKEN_KEY = 'key' // TODO

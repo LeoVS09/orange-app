@@ -1,10 +1,16 @@
 <template>
-   <div class="list-item"
-        :style="{ background: backgroundData}"
-        @mousemove="onMouseMove"
-        @mouseleave="onMouseLeave"
-        @mouseover="onMouseOver"
-        @click="onClick"
+   <div
+      :class="{
+         'list-item': true,
+         'gradient-background': gradientBackground,
+         bordered,
+         'hover-shadow': hoverShadow
+      }"
+      :style="{ background }"
+      @mousemove="onMouseMove"
+      @mouseleave="onMouseLeave"
+      @mouseover="onMouseOver"
+      @click="onClick"
    >
       <div class="list-item--content">
          <span class="list-item--property"
@@ -27,7 +33,7 @@
       let y = event.clientY;
 
       // @ts-ignore
-      if(!event.currentTarget || !event.currentTarget.getBoundingClientRect)
+      if (!event.currentTarget || !event.currentTarget.getBoundingClientRect)
          return defaultBackground
 
       // @ts-ignore
@@ -46,7 +52,7 @@
    export default class ListItem extends Vue {
 
       key = randomId()
-      backgroundData = defaultBackground
+      background = defaultBackground
 
       @Prop({
          type: Object,
@@ -65,47 +71,71 @@
       })
       formatData?: (a: DataItem) => DataItem
 
-      get properties(){
+      @Prop({
+         type: Boolean,
+         default: false
+      })
+      gradientBackground: boolean
+
+      @Prop({
+         type: Boolean,
+         default: true
+      })
+      bordered: boolean
+
+      @Prop({
+         type: Boolean,
+         default: true
+      })
+      hoverShadow: boolean
+
+      get properties() {
          let item = this.item
-         if(this.formatData)
+         if (this.formatData)
             item = this.formatData(item)
 
          let visibleProps = this.visibleProps
-         if(!visibleProps)
+         if (!visibleProps)
             visibleProps = Object.keys(item)
 
          return visibleProps.map(key => {
             const value = item[key]
 
-            if(isDate(value))
+            if (isDate(value))
                return formatDate(value)
 
             return value
          })
       }
 
-      onMouseMove(event: MouseEvent){
-         this.backgroundData = gradientCircleAtMouse(event, defaultBackground)
+      onMouseMove(event: MouseEvent) {
+         if (this.gradientBackground)
+            this.background = gradientCircleAtMouse(event, defaultBackground)
+         else
+            this.background = ''
 
          const itemEvent: ListItemEvent = {key: this.key}
          this.$parent.$emit(ListItemEvents.move, itemEvent)
       }
 
-      onMouseLeave(){
-         this.backgroundData = defaultBackground
+      onMouseLeave() {
+         this.background = defaultBackground
 
          const itemEvent: ListItemEvent = {key: this.key}
          this.$parent.$emit(ListItemEvents.leave, itemEvent)
       }
 
-      onMouseOver(event: MouseEvent){
-         this.backgroundData = gradientCircleAtMouse(event, defaultBackground)
+      onMouseOver(event: MouseEvent) {
+         if (this.gradientBackground)
+            this.background = gradientCircleAtMouse(event, defaultBackground)
+         else
+            this.background = ''
 
          const itemEvent: ListItemEvent = {key: this.key}
          this.$parent.$emit(ListItemEvents.over, itemEvent)
       }
 
-      onClick(event: any){
+      onClick(event: any) {
          this.$emit('click', event)
       }
    }
@@ -119,14 +149,24 @@
       width: 100%;
       padding-bottom: $problem-line-padding;
       padding-top: $problem-line-padding;
-      transition: box-shadow 0.2s cubic-bezier(.25,.8,.25,1);
-      border-bottom: 1px solid $secondary-color;
+      transition: box-shadow 0.2s cubic-bezier(.25, .8, .25, 1);
+
+      &.bordered {
+         border-bottom: 1px solid $secondary-color;
+      }
 
       &:hover {
-         box-shadow: 0 0 5px rgba(0,0,0,0.3);
          cursor: pointer;
-         color: white;
+         background: #F2F2F2;
+      }
 
+      &.gradient-background:hover {
+         color: white;
+      }
+
+      &.hover-shadow:hover {
+         box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+         background: transparent;
       }
 
       &--content {
@@ -147,8 +187,6 @@
 
 
       }
-
-
 
 
    }

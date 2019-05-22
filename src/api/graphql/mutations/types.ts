@@ -1,47 +1,10 @@
-import {ResponseDataProblem, ResponseDataTag, ResponseDataTest, ResponseDataInputOutputType} from "../fragments/types";
-
-export interface ResponseDataProfile {
-   id: string
-   firstName: string
-   lastName: string
-   familyName: string
-   phone: string
-   groupNumber: string
-   course: number
-   isTeacher: boolean
-   createdAt: Date
-   updatedAt: Date
-   city: {
-      id: string
-      name: string
-   }
-   university: {
-      id: string
-      shortName: string
-      longName: string
-   }
-}
-
-export interface ResponseDataUserEmail {
-   email: string
-   isVerified: boolean
-   createdAt: Date
-   updatedAt: Date
-}
-
-export interface ResponseDataUser {
-   id: string
-   name: string
-   isAdmin: boolean
-   avatarUrl: string
-   userEmails: {
-      nodes: Array<ResponseDataUserEmail>
-   },
-
-   profiles: {
-      nodes: Array<ResponseDataProfile>
-   }
-}
+import {
+   ResponseDataProblem,
+   ResponseDataTag,
+   ResponseDataTest,
+   ResponseDataInputOutputType,
+   ResponseDataUser
+} from "../fragments/types";
 
 export interface ResponseLogin {
    login: {

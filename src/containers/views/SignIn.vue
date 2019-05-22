@@ -1,3 +1,4 @@
+import {AuthorisationEventState} from "@/containers/eventBus";
 <template>
    <div class="signin">
       <div class="signin--registration">
@@ -29,8 +30,12 @@
 <script lang="ts">
    import Vue from 'vue'
    import {Component} from 'vue-property-decorator'
-   import {Logo, Input, Button, CheckBox, Icon} from '../../components'
-   import * as actions from '../../store/actionTypes';
+   import {Action} from 'vuex-class'
+   import {Button, CheckBox, Icon, Input, Logo} from '@/components'
+   import * as actions from '@/store/actionTypes';
+   import {ROUTES} from "@/router";
+   import {ILoginToProfilePayload} from "@/store/modules/profile/actions";
+   import eventBus, {AuthorisationEventPayload, AuthorisationEventState, BusEventTypes} from "@/containers/eventBus";
 
    @Component({
       // TODO: fix this
@@ -56,8 +61,11 @@
       isPasswordDisabled = false;
       isSubmitDisabled = false;
 
+      @Action(actions.SET_SIGN_IN_PAGE) setSignInPage: () => void
+      @Action(actions.LOGIN_TO_PROFILE) loginToProfile: (payload: ILoginToProfilePayload) => Promise<boolean>
+
       created() {
-         this.$store.dispatch(actions.SET_SIGN_IN_PAGE);
+         this.setSignInPage();
       }
 
       clickSignIn() {
@@ -88,13 +96,16 @@
          this.isPasswordDisabled = true;
          this.isSubmitDisabled = true;
 
-         this.$store.dispatch(actions.LOGIN_TO_PROFILE, {login, password, isRemember})
+         this.loginToProfile({login, password, isRemember})
             .then(result => {
                this.isLoginDisabled = false;
                this.isPasswordDisabled = false;
                this.isSubmitDisabled = false;
                if (result) {
-                  this.$router.push({name: 'home'});
+                  const payload: AuthorisationEventPayload = {
+                     state: AuthorisationEventState.Completed
+                  }
+                  eventBus.$emit(BusEventTypes.Authorisation, payload)
                }
             })
             .catch(error => {
@@ -110,7 +121,7 @@
       }
 
       clickRegister() {
-         this.$router.push({name: 'signup'});
+         this.$router.push({name: ROUTES.SIGNUP});
       }
 
    }

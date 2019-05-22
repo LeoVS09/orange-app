@@ -2,56 +2,116 @@ import * as API from "@/api";
 import {
    UserProfile
 } from "@/models";
-import {RegisterProfileData} from './types'
+import {IRegisterProfilePayload} from './types'
 import * as mutations from './mutationTypes'
 import * as actionTypes from './actionTypes'
 import {checkIsLogin, currentUserIfHave, signin, signout, signup} from "@/authentication";
-import {Country} from "@/models/country";
+import {City, Country} from "@/models/country";
 import {ProfileState} from './state'
 import {IActionContext} from '@/store/state'
+import {ResponseDataFullCity, ResponseDataFullCountry} from "@/api/graphql/fragments/types";
 
 // const DEBUG = process.env.NODE_ENV !== 'production'
 const DEBUG = false
 
+export interface ILoginToProfilePayload {
+   login: string,
+   password: string,
+   isRemember: boolean
+}
+
+function responseToCountry(result: ResponseDataFullCountry): Country {
+   return {
+      ...result,
+      cities: result.cities.nodes
+   }
+}
+
+function responseToCity(result: ResponseDataFullCity): City {
+   return {
+      ...result,
+      universities: result.universities.nodes
+   }
+}
+
 export default {
 
-   [actionTypes.SETUP_USER_PROFILE](context: IActionContext<ProfileState>, user: UserProfile) {
-      context.commit(mutations.SET_PROFILE_DATA, user)
+   [actionTypes.SETUP_USER_PROFILE]({commit}: IActionContext<ProfileState>, user: UserProfile) {
+      commit(mutations.SET_PROFILE_DATA, user)
    },
 
-   async [actionTypes.INITIALISE_PROFILE_DATA](context: IActionContext<ProfileState>){
+   async [actionTypes.INITIALISE_PROFILE_DATA]({commit}: IActionContext<ProfileState>) {
+      // TODO
+   },
+
+   async [actionTypes.LOAD_ALL_COUNTRIES]({commit}: IActionContext<ProfileState>): Promise<boolean> {
       const countries = await API.countries()
-      if(!countries || !countries.length)
-         return console.error("Cannot load countries") // TODO: handle error
+      if (!countries) {
+         console.error("Cannot load countries") // TODO: handle error
+         return false
+      }
 
-      context.commit(mutations.SET_COUNTRIES, countries as Array<Country>)
+      commit(mutations.SET_COUNTRIES, countries as Array<Country>)
+      return true
+   },
+   
+   async [actionTypes.LOAD_ALL_CITIES]({commit}: IActionContext<ProfileState>): Promise<boolean> {
+      const cities = await API.cities()
+      if(!cities){
+         console.error('Cannot load cities')
+         return false
+      }
+      
+      commit(mutations.SET_COUNTRIES, cities as Array<City>)
+      return true
+   },
+   
+   async [actionTypes.LOAD_COUNTRY]({commit}: IActionContext<ProfileState>, id: string): Promise<Country | undefined> {
+      const result = await API.country(id)
+      if(!result){
+         console.error('Cannot load country', id)
+         return
+      }
+      
+      const country = responseToCountry(result)
+      commit(mutations.SET_COUNTRY, country)
+      return country
    },
 
-   [actionTypes.LOGIN_TO_PROFILE](context: IActionContext<ProfileState>, {login, password, isRemember}: { login: string, password: string, isRemember: boolean }): Promise<boolean> {
+   async [actionTypes.LOAD_CITY]({commit}: IActionContext<ProfileState>, id: string): Promise<City | undefined> {
+     const result = await API.city(id)
+      if(!result){
+         console.error('Cannot load city', id)
+         return
+      }
 
-      return signin(login, password, isRemember)
-         .then(result => {
-
-            if (!result) {
-               return Promise.reject(false)
-            }
-            context.commit(mutations.SET_PROFILE_DATA, result);
-            return Promise.resolve(true)
-         })
+      const city = responseToCity(result)
+      commit(mutations.SET_CITY, city)
+      return city
    },
 
-   [actionTypes.LOGOUT_FROM_PROFILE](context: IActionContext<ProfileState>) {
+   async [actionTypes.LOGIN_TO_PROFILE]({commit}: IActionContext<ProfileState>, {login, password, isRemember}: ILoginToProfilePayload): Promise<boolean> {
+      const result = await signin(login, password, isRemember)
+
+      if (!result)
+         return false
+
+      commit(mutations.SET_PROFILE_DATA, result);
+      return true
+   },
+
+   [actionTypes.LOGOUT_FROM_PROFILE]({commit}: IActionContext<ProfileState>) {
       signout();
-      context.commit(mutations.LOGOUT_FROM_PROFILE);
+      commit(mutations.LOGOUT_FROM_PROFILE);
    },
 
-   [actionTypes.SEARCH_COUNTRIES](context: IActionContext<ProfileState>, name: string) {
+   [actionTypes.SEARCH_COUNTRIES]({commit}: IActionContext<ProfileState>, name: string) {
       return API.searchCountries(name)
    },
 
-   [actionTypes.REGISTER_PROFILE](context: IActionContext<ProfileState>, user: RegisterProfileData): Promise<boolean> {
+   async [actionTypes.REGISTER_PROFILE]({commit}: IActionContext<ProfileState>, user: IRegisterProfilePayload): Promise<boolean> {
       // TODO: add login
-      return signup({
+      const result = await signup({
          username: user.username,
          email: user.email,
          password: user.password,
@@ -61,33 +121,28 @@ export default {
          lastName: user.lastName,
          avatarUrl: user.avatarUrl
       })
-         .then(result => {
+      if (!result)
+         return false
 
-            if (!result) {
-               return Promise.reject(false)
-            }
-
-            context.commit(mutations.SET_PROFILE_DATA, {...result, ...user});
-            return Promise.resolve(true)
-         })
+      commit(mutations.SET_PROFILE_DATA, {...result, ...user});
+      return true
    },
-   async [actionTypes.INIT_PROFILE](context: IActionContext<ProfileState>) {
+   async [actionTypes.INIT_PROFILE]({commit}: IActionContext<ProfileState>): Promise<boolean> {
       console.log('App start, check is login')
       const checkResult = checkIsLogin();
       console.log('check is login result', checkResult)
       if (!checkResult.ok) {
-         return;
+         return false
       }
 
       const current = await currentUserIfHave()
-      console.log('Current user result', current)
       if (!current.ok)
-         return
+         return false
 
       if (current.user.id !== checkResult.userId)
-         return
+         return false
 
-      context.commit(mutations.SET_PROFILE_DATA, current.user);
-      console.log("cookie", document.cookie);
+      commit(mutations.SET_PROFILE_DATA, current.user);
+      return true
    }
 }

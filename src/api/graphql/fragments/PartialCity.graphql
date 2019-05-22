@@ -1,0 +1,7 @@
+fragment PartialCity on City {
+   id
+   name
+   countryId
+   createdAt
+   updatedAt
+}

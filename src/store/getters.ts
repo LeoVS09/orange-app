@@ -3,7 +3,7 @@ import {GetterTree} from "vuex";
 import {FullProblem, PartialProblem, UserType} from '@/models'
 import {randomItem, shuffleProblem} from "@/store/utils";
 import {ProblemsState, ProblemFilter} from "@/store/modules";
-import {Tag} from "@/models/problem";
+import {Tag} from "@/models/problems";
 
 const getters: GetterTree<RootState, any> = {
    platform: state => state.ui.currentPlatform,
@@ -25,6 +25,9 @@ const getters: GetterTree<RootState, any> = {
    problemErrorById: state => (id: string) => state.problems.errorHistory.find(e => e.problemId === id),
 
    allCountries: state => state.profile.countries,
+   countryById: state => (id: string) => state.profile.countries.find(c => c.id === id),
+   allCities: state => state.profile.cities,
+
    allTags: state => state.problems.tags
 };
 

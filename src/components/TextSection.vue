@@ -16,7 +16,7 @@
 
 <script lang="ts">
    import Vue from 'vue'
-   import {Component, Prop} from 'vue-property-decorator'
+   import {Component, Prop, Emit} from 'vue-property-decorator'
    import TextareaAutoresize from './TextareaAutoresize.vue'
 
    // TODO: add markdown editor
@@ -26,7 +26,7 @@
          TextareaAutoresize
       }
    })
-   export default class PageSection extends Vue {
+   export default class TextSection extends Vue {
 
       @Prop({
          type: Boolean,
@@ -51,8 +51,9 @@
          default: true
       }) textWidth?: boolean
 
-      updateValue(event: any) {
-         this.$emit('input', event)
+      @Emit('input')
+      updateValue(value: string) {
+         return value
       }
    }
 </script>

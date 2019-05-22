@@ -2,16 +2,24 @@
 
 @mixin input-bottom-highlight() {
    position: relative;
-   border-bottom: 1px solid $border-line-color;
 
-   &:after {
+   &:before, &:after {
       content: '';
       position: absolute;
       width: 100%;
-      transform: scaleX(0);
       height: 1px;
       bottom: -1px;
       left: 0;
+      z-index: 1;
+   }
+
+   &:before {
+      background-color: $border-line-color;
+   }
+
+   &:after {
+      z-index: 2;
+      transform: scaleX(0);
       background-color: $input-color;
       transform-origin: bottom right;
       transition: transform $input-animation-time cubic-bezier(0.86, 0, 0.07, 1);

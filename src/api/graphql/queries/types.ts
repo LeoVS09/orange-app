@@ -2,49 +2,16 @@ import {
    ResponseDataPartialProblem,
    ResponseDataProblem,
    ResponseDataTag,
-   ResponseDataInputOutputType
+   ResponseDataInputOutputType,
+   ResponseDataPartialCountry,
+   ResponseDataPartialCity,
+   ResponseDataFullCountry,
+   ResponseDataFullCity,
+   ResponseDataUser
 } from "../fragments/types";
 
 export interface ResponseCurrentUser {
-   currentUser: {
-      id: string
-      nodeId: string
-      name: string
-      isAdmin: boolean
-      avatarUrl: string
-      userEmails: {
-         nodes: Array<{
-            email: string
-            isVerified: boolean
-            createdAt: Date
-            updatedAt: Date
-         }>
-      },
-
-      profiles: {
-         nodes: Array<{
-            id: string,
-            firstName: string,
-            lastName: string,
-            familyName: string,
-            phone: string,
-            groupNumber: string,
-            course: number,
-            isTeacher: boolean,
-            createdAt: Date,
-            updatedAt: Date,
-            city: {
-               id: string,
-               name: string
-            },
-            university: {
-               id: string,
-               shortName: string,
-               longName: string
-            }
-         }>
-      }
-   }
+   currentUser: ResponseDataUser
 }
 
 export interface ResponseSearchCountries {
@@ -57,17 +24,26 @@ export interface ResponseSearchCountries {
    }
 }
 
+
 export interface ResponseCountries {
    countries: {
-      nodes: Array<{
-         id: string
-         name: string
-         createdAt: Date
-         updatedAt: Date
-      }>
+      nodes: Array<ResponseDataPartialCountry>
    }
 }
 
+export interface ResponseCountry {
+   country: ResponseDataFullCountry
+}
+
+export interface ResponseCities {
+   cities: {
+      nodes: Array<ResponseDataPartialCity>
+   }
+}
+
+export interface ResponseCity {
+   city: ResponseDataFullCity
+}
 
 export interface ResponseProblemsList {
    problems: {

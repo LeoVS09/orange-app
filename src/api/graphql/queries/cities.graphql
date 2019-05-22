@@ -1,0 +1,12 @@
+#import "../fragments/PartialCity.graphql"
+
+
+query Cities {
+   cities {
+      nodes {
+         nodeId
+
+         ...PartialCity
+      }
+   }
+}

@@ -2,11 +2,12 @@
 
 $button-text-left-animation-time: 0.4s;
 
+
 @mixin gradient-text-inside-hover($content-class, $text-color: $button-text-color) {
    .#{$content-class} {
       position: relative;
       color: transparent;
-      transition: all 0.3s ease-in-out;
+      transition: all $default-animation-time ease-in-out;
       background: $gradient-text-hover-color $text-color;
       -webkit-background-clip: text;
       background-clip: text;
@@ -14,7 +15,7 @@ $button-text-left-animation-time: 0.4s;
 
    &:hover {
       .#{$content-class} {
-         background-position: 0 0;
+         background-position: -1% 0;
       }
    }
 }
@@ -27,7 +28,7 @@ $button-text-left-animation-time: 0.4s;
       bottom: 0;
       width: 100%;
       height: 100%;
-      transform: translateX(-100%);
+      transform: translateX(-120%);
       background: $button-active-color;
       transition: transform .25s ease-in;
    }
@@ -40,11 +41,32 @@ $button-text-left-animation-time: 0.4s;
 
    &:hover {
       .#{$content-class} {
-         animation: animButtonSpan $button-text-left-animation-time;
+         animation: left-text-aniimation $button-text-left-animation-time;
          color: $text-color;
       }
       &::before {
          transform: translateX(0);
       }
    }
+}
+
+@keyframes left-text-aniimation {
+   0% {
+      transform: translateX(0);
+      opacity: 1;
+   }
+
+   35% {
+      transform: translateX(20px);
+      opacity: 0;
+   }
+
+   50.001% {
+      transform: translateX(-20px);
+   }
+
+   60% {
+      transform: translateX(0px);
+   }
+
 }

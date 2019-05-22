@@ -5,18 +5,7 @@
             <Button
                @click="onClick"
                class="floating-button--action"
-               :disabled="disabled"
-               :icon="icon"
-               :shadow="shadow"
-               :simple="simple"
-               :active="active"
-               :primary="primary"
-               :maxWidth="maxWidth"
-               :gradientHighlight="gradientHighlight"
-               :hovered="hovered"
-               :fadeText="fadeText"
-               :textCanFade="textCanFade"
-               :circle="circle"
+               v-bind="$props"
             ><slot></slot></Button>
          </div>
       </transition>

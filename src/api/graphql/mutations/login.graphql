@@ -1,47 +1,11 @@
+#import "../fragments/FullUser.graphql"
+
 mutation Login($username: String!, $password: String!) {
    login(input: { username: $username, password: $password }) {
       user {
-         id
          nodeId
-         name
-         isAdmin
-         avatarUrl
-         userEmails {
-            nodes {
-               nodeId
-               email
-               isVerified
-               createdAt
-               updatedAt
-            }
-         }
 
-         profiles {
-            nodes {
-               id
-               nodeId
-               firstName
-               middleName
-               lastName
-               phone
-               groupNumber
-               course
-               isTeacher
-               createdAt
-               updatedAt
-               city {
-                  id
-                  nodeId
-                  name
-               }
-               university {
-                  id
-                  nodeId
-                  shortName
-                  longName
-               }
-            }
-         }
+         ...FullUser
       }
    }
 }

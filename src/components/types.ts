@@ -26,6 +26,10 @@ export interface Header {
    expand?: boolean
 }
 
+export interface SimpleHeader {
+   [key: string]: string
+}
+
 export interface ListMeta {
    headers?: Array<Header | string>,
    exceptions?: Array<string>

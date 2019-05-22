@@ -1,0 +1,9 @@
+#import "../fragments/FullCity.graphql"
+
+query City($id: UUID!) {
+   city(id: $id) {
+      nodeId
+
+      ...FullCity
+   }
+}

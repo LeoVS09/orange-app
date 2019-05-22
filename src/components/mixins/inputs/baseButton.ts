@@ -95,4 +95,29 @@ export default class BaseButton extends Vue {
       default: false
    })
    simpleActive: boolean
+
+   @Prop({
+      type: Boolean,
+      default: true
+   })
+   iconLeft: boolean
+
+   @Prop({
+      type: Boolean,
+      default: false
+   })
+   contrast: boolean
+
+   @Prop({
+      type: Boolean,
+      default: false
+   })
+   textOnHover: boolean
+
+   @Prop({
+      type: Boolean,
+      default: false
+   })
+   staticSize: boolean
+
 }

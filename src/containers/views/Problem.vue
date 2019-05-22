@@ -34,14 +34,14 @@
 
 <!--      <tags :values="problemData.tags"></tags>-->
 
-      <page-section
+      <text-section
          :editable="isTeacher"
          :value="problemData.description"
-         :input="updateText"
+         @input="updateText"
          placeholder="Problem description..."
-      >{{problemData.description}}</page-section>
+      >{{problemData.description}}</text-section>
 
-      <page-section highlight :textWidth="false">
+      <text-section highlight :textWidth="false">
          <div class="problem--limits">
             <h4 class="problem--limits-header">Limits per test</h4>
 
@@ -59,7 +59,7 @@
                }"
             />
          </div>
-      </page-section>
+      </text-section>
 
       <h4 v-if="!isTeacher" class="problem--example-header">Examples</h4>
 
@@ -71,7 +71,20 @@
          :testData="example"
       />
 
-      <div class="problem--code-upload" v-if="!isTeacher">
+      <div class="problem--tests" v-if="isTeacher && problemData.tests">
+         <h2>Tests</h2>
+
+         <template v-for="test in problemData.tests">
+            <div class="problem--new-test" v-if="!test.id">
+               <div class="line"></div>
+               <p class="text">New test</p>
+            </div>
+            <TestView class="problem--test" :testData="test" :editable="true" :problemId="problemData.id"/>
+         </template>
+
+      </div>
+
+      <div class="problem--code-upload">
          <textarea-autoresize
             class="problem--code-text"
             placeholder="Paste you code here..."
@@ -101,19 +114,6 @@
                <span v-if="statusLabel">{{statusLabel}}</span>
             </p>
          </div>
-      </div>
-
-      <div class="problem--tests" v-if="isTeacher && problemData.tests">
-         <h2>Tests</h2>
-
-         <template v-for="test in problemData.tests">
-            <div class="problem--new-test" v-if="!test.id">
-               <div class="line"></div>
-               <p class="text">New test</p>
-            </div>
-            <TestView class="problem--test" :testData="test" :editable="true" :problemId="problemData.id"/>
-         </template>
-
       </div>
 
       <div class="problem--data">
@@ -156,8 +156,8 @@
 
 <script lang="ts">
    import Vue from 'vue'
-   import {Component} from 'vue-property-decorator'
-   import {Getter} from 'vuex-class'
+   import {Component, Prop} from 'vue-property-decorator'
+   import {Getter, Action} from 'vuex-class'
    import {FullProblem, ResultRunProgram} from "@/models"
    import * as actions from '@/store/actionTypes';
    import {
@@ -166,10 +166,10 @@
       FloatingButton,
       Icon,
       PageHeader,
-      PageSection,
+      TextSection,
       TextareaAutoresize
    } from '@/components';
-   import Tags from '../content/Tags.vue'
+   import Tags from '../../components/Tags.vue'
    import LdrLove from '@/components/icons/LdrLove.vue'
    import LdrX from '@/components/icons/LdrX.vue'
    import LdrRobot from '@/components/icons/LdrRobot.vue'
@@ -182,7 +182,8 @@
       ProblemReadState,
       ProblemStatus,
       ProblemTestingStatus
-   } from "@/models/problem"
+   } from "@/models/problems"
+   import {IUploadCodePayload} from "@/store/modules/problems/actions";
 
    // TODO: examples and description on one screen
 
@@ -198,7 +199,7 @@
          TextareaAutoresize,
          PageHeader,
          Tags,
-         PageSection,
+         TextSection,
          DataView,
          FloatingButton,
          LdrLove,
@@ -208,11 +209,21 @@
    })
    export default class ProblemView extends Vue {
 
+      @Prop({
+         type: String,
+         required: true
+      })
+      id: string
+
       @Getter problemById: (id: string) => FullProblem | undefined;
 
       @Getter problemErrorById: (id: string) => ProblemError | undefined;
 
       @Getter isTeacher?: boolean;
+
+      @Action(actions.EDIT_PROBLEM) editProblem: (problem: FullProblem) => void;
+      @Action(actions.UPDATE_PROBLEM) updateProblem: (id: string) => Promise<boolean>;
+      @Action(actions.UPLOAD_CODE) uploadCode: (payload: IUploadCodePayload) => Promise<void>;
 
       solutionCode = "";
 
@@ -221,14 +232,14 @@
       ProblemReadState = ProblemReadState
 
       get problemData() {
-         return this.problemById(this.$route.params.id)
+         return this.problemById(this.id)
       }
 
       get isReadingError() {
          if (this.problemData)
             return this.problemData.status === ProblemStatus.ErrorReading;
 
-         const error = this.problemErrorById(this.$route.params.id)
+         const error = this.problemErrorById(this.id)
          if(!error)
             return false
 
@@ -300,7 +311,17 @@
       }
 
       handleUpload() {
-         this.$store.dispatch(actions.UPLOAD_CODE, {id: this.$route.params.id, text: this.solutionCode})
+         // TODO: Upload error handle
+         if(!this.problemData)
+            return console.error('Cannot upload code without problem data')
+
+         if(!this.solutionCode)
+            return console.error('Not have code for uplaoad')
+
+         this.uploadCode({
+            problemId: this.problemData.id,
+            text: this.solutionCode
+         })
       }
 
       get statusLabel(): string | undefined {
@@ -329,16 +350,19 @@
          }
       }
 
-      addTest() {
-         this.$store.dispatch(actions.ADD_FOR_CREATE_TEST);
+      updateName(name: string) {
+         // TODO: handle edit errors
+         if(!this.problemData)
+            return console.error("Cannot edit not existed problem")
+
+         this.editProblem({...this.problemData, name })
       }
 
-      updateName(event: any) {
-         this.$store.dispatch(actions.EDIT_PROBLEM, {...this.problemData, name: event.target.value})
-      }
+      updateText(description: string) {
+         if(!this.problemData)
+            return console.error("Cannot edit not existed problem")
 
-      updateText(event: any) {
-         this.$store.dispatch(actions.EDIT_PROBLEM, {...this.problemData, text: event.target.value})
+         this.editProblem({...this.problemData, description })
       }
 
       syncProblem() {
@@ -407,7 +431,7 @@
       margin-left: auto;
       margin-right: auto;
 
-      @include skeleton(60rem, 80rem, (
+      @include skeleton(10rem, 80rem, (
             (1rem, 2rem, 10rem, 2rem),
             (40rem, 5rem, 15rem, 1rem),
             (1rem, 9rem, 20rem, 1rem),

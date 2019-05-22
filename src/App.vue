@@ -7,12 +7,26 @@
 <script lang="ts">
    import Vue from 'vue'
    import {Component} from 'vue-property-decorator'
+   import {Action} from 'vuex-class'
    import * as actions from './store/actionTypes';
+   import eventBus, {AuthorisationEventPayload, AuthorisationEventState, BusEventTypes} from "@/containers/eventBus";
 
    @Component
    export default class App extends Vue {
+
+      @Action(actions.INIT_PROFILE) initProfile: () => Promise<boolean>
+
       created() {
-         this.$store.dispatch(actions.INIT_PROFILE);
+         this.initProfile()
+            .then(result => {
+               if (!result)
+                  return
+
+               const payload: AuthorisationEventPayload = {
+                  state: AuthorisationEventState.Completed
+               }
+               eventBus.$emit(BusEventTypes.Authorisation, payload)
+            })
       }
    }
 </script>
@@ -23,11 +37,14 @@
    @import url('https://fonts.googleapis.com/css?family=Source+Code+Pro');
    @import url('https://fonts.googleapis.com/icon?family=Material+Icons');
    @import url('https://fonts.googleapis.com/css?family=IBM+Plex+Mono');
-
+   @import "./styles/config.scss";
    @import "./styles/default.scss";
+
 
    #app {
       width: 100%;
       height: 100%;
    }
+
+
 </style>

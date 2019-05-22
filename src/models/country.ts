@@ -1,3 +1,5 @@
+import {University} from "@/models/university";
+
 export interface Country {
    id: string
    name: string
@@ -9,4 +11,8 @@ export interface Country {
 export interface City {
    id: string
    name: string
+   createdAt: Date
+   updatedAt: Date
+   countryId: string
+   universities?: Array<University>
 }

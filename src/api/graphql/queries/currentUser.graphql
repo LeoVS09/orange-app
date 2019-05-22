@@ -1,44 +1,9 @@
+#import "../fragments/FullUser.graphql"
+
 query CurrentUser {
    currentUser {
       nodeId
-      id
-      name
-      isAdmin
-      avatarUrl
-      userEmails {
-         nodes {
-            email
-            isVerified
-            createdAt
-            updatedAt
-         }
-      }
 
-      profiles {
-         nodes {
-            id
-            nodeId
-            firstName
-            middleName
-            lastName
-            phone
-            groupNumber
-            course
-            isTeacher
-            createdAt
-            updatedAt
-            city {
-               id
-               nodeId
-               name
-            }
-            university {
-               id
-               nodeId
-               shortName
-               longName
-            }
-         }
-      }
+      ...FullUser
    }
 }
