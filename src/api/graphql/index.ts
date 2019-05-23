@@ -2,6 +2,16 @@ import * as mutations from './mutations'
 import * as queries from './queries'
 import {mapRequester} from "./utils";
 
+import * as globalTypes from './global-types'
+import * as queriesTypes from './queries/types'
+import * as mutationsTypes from './mutations/types'
+
+export const types = {
+   globalTypes,
+   queriesTypes,
+   mutationsTypes
+}
+
 // TODO: add pre-compiling queries when build project
 
 export const login = mapRequester(mutations.login);

@@ -30,7 +30,7 @@ export function toUpdateProblem(problem: FullProblem) {
          limitTime: problem.limits.time,
          limitMemory: problem.limits.memory,
          publicationDate: problem.publicationDate,
-         testerId: problem.tester.id
+         testerId: problem.tester && problem.tester.id
       }
    }
 }

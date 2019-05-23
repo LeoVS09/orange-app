@@ -1,7 +1,23 @@
 #import "../fragments/PartialProblem.graphql"
 
-query PartialProblems {
-   problems {
+query PartialProblems(
+   $first: Int,
+   $last: Int,
+   $offset: Int,
+   $before: Cursor,
+   $after: Cursor,
+   $orderBy: [ProblemsOrderBy!],
+   $condition: ProblemCondition
+) {
+   problems(
+      first: $first,
+      last: $last,
+      offset: $offset,
+      before: $before,
+      after: $after,
+      orderBy: $orderBy,
+      condition: $condition
+   ) {
       totalCount
       nodes {
          nodeId

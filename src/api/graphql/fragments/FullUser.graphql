@@ -3,6 +3,7 @@
 fragment FullUser on User {
    id
    name
+   username
    isAdmin
    avatarUrl
    createdAt

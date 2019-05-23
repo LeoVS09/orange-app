@@ -11,11 +11,11 @@ const DEBUG = false
 export default {
 
    async [actionTypes.READ_TAGS]({commit}: IActionContext<ProblemsState>) {
-      const tags = await API.tags()
+      const tags = await API.tags({})
       if(!tags)
          return console.error('Cannot load tags')
 
-      commit(mutations.SET_TAGS, tags)
+      commit(mutations.SET_TAGS, tags.nodes as Array<Tag>)
    },
 
    [actionTypes.TOGGLE_FILER_TAG]({commit}: IActionContext<ProblemsState>, tag: Tag) {

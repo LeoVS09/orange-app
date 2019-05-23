@@ -12,17 +12,17 @@ export enum UserType {
 
 export interface UserProfile extends PartialUserProfile{
    isAdmin: boolean
-   avatarUrl?: string
+   avatarUrl: string | null
    emails: Array<Email>
-   familyName?: string
-   groupNumber?: string
-   course?: number
-   university?: University
-   city?: City
-   phone?: string
-   languages?: Array<Language>
-   codeEditors?: Array<CodeEditor>
-   travel?: Array<Travel>
+   middleName: string | null
+   groupNumber: string | null
+   course: number | null
+   university: University | null
+   city: City | null
+   phone: string | null
+   languages: Array<Language>
+   codeEditors: Array<CodeEditor>
+   travels: Array<Travel>
 }
 
 export interface PartialUserProfile {

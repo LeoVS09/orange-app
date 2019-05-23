@@ -1,7 +1,33 @@
 #import "../fragments/PartialCountry.graphql"
 
-query Countries {
-   countries {
+query Countries(
+   $first: Int,
+   $last: Int,
+   $offset: Int,
+   $before: Cursor,
+   $after: Cursor,
+   $orderBy: [CountriesOrderBy!],
+   $condition: CountryCondition
+) {
+   countries(
+      first: $first,
+      last: $last,
+      offset: $offset,
+      before: $before,
+      after: $after,
+      orderBy: $orderBy,
+      condition: $condition
+   ) {
+      totalCount
+
+      # TODO
+      pageInfo {
+         hasNextPage
+         hasPreviousPage
+         startCursor
+         endCursor
+      }
+
       nodes {
          nodeId
 

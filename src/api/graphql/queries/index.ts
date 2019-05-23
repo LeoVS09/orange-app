@@ -11,163 +11,139 @@ import cityGql from './city.graphql'
 import tagsGql from './tags.graphql'
 import gql from 'graphql-tag'
 import {APIClient} from "../apollo";
-import {
-   ResponseCities,
-   ResponseCity,
-   ResponseCountries,
-   ResponseCountry,
-   ResponseCurrentUser,
-   ResponseInputOutputTypes,
-   ResponsePartialProblemsList,
-   ResponseProblem,
-   ResponseProblemsList,
-   ResponseSearchCountries,
-   ResponseTags
-} from "./types";
-import {mockTags} from "@/models/problems";
 import {mockCountries, mockCities, mockCountry} from "@/models/mock/countries";
-import {ResponseDataFullCountry, ResponseDataPartialCountry} from "@/api/graphql/fragments/types";
+
+import * as types from './types'
+import {mockTags} from "@/models/mock/mock";
 
 // const DEBUG = process.env.NODE_ENV !== 'production'
 const DEBUG = false
 
-export const currentUser = (client: APIClient) => () =>
-   client.query<ResponseCurrentUser>({
-      query: gql(currentUserGql)
-   })
-      .then(result => result.data && result.data.currentUser)
+export const currentUser = generateSimpleQuery<types.CurrentUser, types.CurrentUser_currentUser>(
+   currentUserGql,
+   data => data.currentUser
+)
 
+export const searchCountries = generateQuery<types.SearchCountriesVariables, types.SearchCountries, types.SearchCountries_searchCountries>(
+   searchCountriesGql,
+   data => data.searchCountries
+)
 
-export const searchCountries = (client: APIClient) => (name: string) =>
-   client.query<ResponseSearchCountries>({
-      query: gql(searchCountriesGql),
-      variables: {
-         name
-      }
-   })
-      .then(result => result.data && result.data.searchCountries.nodes)
+export const countries = generateQuery<types.CountriesVariables, types.Countries, types.Countries_countries>(
+   countriesGql,
+   data => data.countries,
+   () => new Promise<types.Countries_countries>(resolve =>
 
-export const countries = (client: APIClient) => () => {
-   if(DEBUG)
-      return new Promise<Array<ResponseDataPartialCountry>>(resolve =>
-         // @ts-ignore
-         setTimeout(() => resolve(mockCountries()
+      setTimeout(() => {
+            const nodes = mockCountries()
                .map(c => ({
-               ...c,
-               createdAt: c.createdAt.toDateString(),
-               updatedAt: c.updatedAt.toDateString()
-            }))),
-            1000
-         )
+                  ...c,
+                  createdAt: c.createdAt.toDateString(),
+                  updatedAt: c.updatedAt.toDateString()
+               }))
+
+            // @ts-ignore
+            resolve({
+               totalCount: nodes.length,
+               nodes
+            })
+         },
+         1000
       )
+   )
+)
 
-   return client.query<ResponseCountries>({
-      query: gql(countriesGql)
-   })
-      .then(result => result.data && result.data.countries.nodes)
-}
-
-export const country = (client: APIClient) => (id: string) => {
-   if(DEBUG)
-      return new Promise<ResponseDataFullCountry>(resolve =>
-         // @ts-ignore
+export const country = generateQuery<types.CountryVariables, types.Country, types.Country_country>(
+   countryGql,
+   data => data.country,
+   id => new Promise<types.Country_country>(resolve =>
+      // @ts-ignore
       setTimeout(() => resolve({
-         ...mockCountry(),
-         id,
-         createdAt: new Date().toDateString(),
-         updatedAt: new Date().toDateString(),
-         cities: {
-            nodes: mockCities().map(c => ({
-               ...c,
-               createdAt: c.createdAt.toDateString(),
-               updatedAt: c.updatedAt.toDateString(),
-               countryId: id
-            }))
-         }
-      }),
-      1000
-         ))
+            ...mockCountry(),
+            id,
+            createdAt: new Date().toDateString(),
+            updatedAt: new Date().toDateString(),
+            cities: {
+               nodes: mockCities().map(c => ({
+                  ...c,
+                  createdAt: c.createdAt.toDateString(),
+                  updatedAt: c.updatedAt.toDateString(),
+                  countryId: id
+               }))
+            }
+         }),
+         1000
+      ))
+)
 
-   return client.query<ResponseCountry>({
-      query: gql(countryGql),
-      variables: {
-         id
+export const cities = generateQuery<types.CitiesVariables, types.Cities, types.Cities_cities>(
+   citiesGql,
+   data => data.cities
+)
+
+
+export const city = generateQuery<types.CityVariables, types.City, types.City_city>(
+   cityGql,
+   data => data.city
+)
+
+export const partialProblems = generateQuery<types.PartialProblemsVariables, types.PartialProblems, types.PartialProblems_problems>(
+   partialProblemsGql,
+   data => data.problems
+)
+
+export const problems = generateQuery<types.ProblemsVariables, types.Problems, types.Problems_problems>(
+   problemsGql,
+   data => data.problems
+)
+
+// TODO: mock problem
+export const problem = generateQuery<types.ProblemVariables, types.Problem, types.Problem_problem>(
+   problemGql,
+   data => data.problem
+)
+
+export const inputOutputTypes = generateQuery<types.InputOutputTypesVariables, types.InputOutputTypes, {inputs: types.InputOutputTypes_programInputTypes | null, outputs: types.InputOutputTypes_programOutputTypes | null}>(
+   inputOutputTypesGql,
+   data => ({
+      inputs: data.programInputTypes,
+      outputs: data.programOutputTypes
+   })
+)
+
+export const tags = generateQuery<types.TagsVariables, types.Tags, types.Tags_tags>(
+   tagsGql,
+   data => data.tags,
+   () => new Promise(resolve => setTimeout(() => {
+      const nodes = mockTags()
+      return {
+         totalCount: nodes.length,
+         nodes
       }
-   })
-      .then(result => result.data && result.data.country)
-}
-
-export const cities = (client: APIClient) => () => {
-   return client.query<ResponseCities>({
-      query: gql(citiesGql)
-   })
-      .then(result => result.data && result.data.cities.nodes)
-}
-
-export const city = (client: APIClient) => (id: string) => {
-   return client.query<ResponseCity>({
-      query: gql(cityGql)
-   })
-      .then(result => result.data && result.data.city)
-}
-
-export const partialProblems = (client: APIClient) => () =>
-   client.query<ResponsePartialProblemsList>({
-      query: gql(partialProblemsGql)
-   })
-      .then(result => result.data && result.data.problems)
-      .then(result => {
-         return result && result.nodes
-      })
-
-export const problems = (client: APIClient) => () =>
-   client.query<ResponseProblemsList>({
-      query: gql(problemsGql)
-   })
-      .then(result => result.data && result.data.problems)
-      .then(result => {
-         return result && result.nodes
-      })
-
-export const problem = (client: APIClient) => (id: string) => {
-   // TODO: mock problem
-   // if(DEBUG)
-   //    return new Promise<ResponseDataProblem>((resolve) => {})
-
-   return client.query<ResponseProblem>({
-      query: gql(problemGql),
-      variables: {
-         id
-      }
-   })
-      .then(result => result.data && result.data.problem)
-}
-
-export const inputOutputTypes = (client: APIClient) => () =>
-   client.query<ResponseInputOutputTypes>({
-      query: gql(inputOutputTypesGql)
-   })
-   .then(result => result.data && {
-      inputs: result.data.programInputTypes.nodes,
-      outputs: result.data.programOutputTypes.nodes
-   })
-
-export const tags = (client: APIClient) => () => {
-   if(DEBUG)
-      return mockTags()
-
-   return client.query<ResponseTags>({
-      query: gql(tagsGql)
-   })
-      .then(result => result.data && result.data.tags.nodes)
-}
+      },
+      1000))
+)
 
 // TODO: complete typesation for non parametred queries
-function generateQuery<V, T, R>(graphql: any, formatter: (result: T) => R) {
+function generateQuery<V, T, R>(graphql: any, formatter: (result: T) => R | null, mock?: (variables: V) => Promise<R>) {
+   if (DEBUG && mock)
+      return (client: APIClient) => (variables: V) => mock(variables)
+
    return (client: APIClient) => (variables: V) =>
       client.query<T>({
          query: gql(graphql),
          variables
+      })
+         .then(result => result.data && formatter(result.data))
+}
+
+function generateSimpleQuery<T, R>(graphql: any, formatter: (result: T) => R | null, mock?: () => Promise<R>) {
+   if (DEBUG && mock)
+      return (client: APIClient) => () => mock()
+
+   return (client: APIClient) => () =>
+      client.query<T>({
+         query: gql(graphql)
       })
          .then(result => result.data && formatter(result.data))
 }

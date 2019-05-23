@@ -118,7 +118,7 @@
          this.email = this.userData.emails && this.userData.emails.length && this.userData.emails[0] || null;
          this.login = this.userData.login || "";
          this.firstName = this.userData.firstName;
-         this.familyName = this.userData.familyName || "";
+         this.familyName = this.userData.middleName || "";
          this.lastName = this.userData.lastName;
 
          this.city = this.userData.city || null;
@@ -140,8 +140,8 @@
       get name(): string {
          let result = capitalise(this.userData.firstName);
 
-         if (this.userData.familyName) {
-            result += " " + capitalise(this.userData.familyName);
+         if (this.userData.middleName) {
+            result += " " + capitalise(this.userData.middleName);
          }
 
          result += " " + capitalise(this.userData.lastName);

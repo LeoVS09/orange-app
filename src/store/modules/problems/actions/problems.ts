@@ -84,11 +84,14 @@ export default {
          return
       }
 
-      const problems = await API.partialProblems()
+      const problems = await API.partialProblems({})
       if (!problems)
          return console.error('Not found problems')
 
-      problems.forEach(p => {
+      problems.nodes.forEach(p => {
+         if(!p)
+            return
+
          const wasHave = state.data.find(inState => inState.id === p.id)
 
          if (!wasHave)
@@ -145,7 +148,7 @@ export default {
    async [actionTypes.READ_PROBLEM]({commit, rootGetters}: IActionContext<ProblemsState>, problemId: string): Promise<FullProblem | undefined> {
       setProblemStatus(commit, problemId, ProblemStatus.Reading)
 
-      const result = await API.problem(problemId)
+      const result = await API.problem({id: problemId})
 
       if (!result) {
          console.error('Cannot load problem', problemId)

@@ -2,8 +2,9 @@ import {UserProfile, UserType} from '../models';
 import {login, currentUser, register} from '../api'
 // @ts-ignore
 import crypto from 'crypto-js'
-import {RequestRegisterInput} from "@/api/graphql/mutations/types";
-import {ResponseDataUser} from "@/api/graphql/fragments/types";
+import * as mutationTypes from "@/api/graphql/mutations/types";
+import * as fragmentsTypes from "@/api/graphql/fragments/types";
+import {Email} from "@/models/email";
 
 const TOKEN_NAME = 'token';
 const TOKEN_KEY = 'key' // TODO
@@ -17,61 +18,66 @@ function decryptId(token: string): string {
 }
 
 
-export function signin(username: string, password: string, isRemember: boolean): Promise<UserProfile | null> {
-   if (!username.length || !password.length)
-      return Promise.reject('Not have login or password');
+export async function signin(username: string, password: string, isRemember: boolean): Promise<UserProfile | null> {
+   if (!username.length || !password.length) {
+      console.error('Not have login or password')
+      return null
+   }
 
-   return login({
+   const result = await login({
       username,
       password
    })
-      .then(handleLoginResult(isRemember))
+    return handleLoginResult(isRemember, result)
 }
 
-export function signup(input: RequestRegisterInput) {
+export async function signup(input: mutationTypes.RegisterVariables) {
    const {username, password, email, firstName} = input
-   if (!username.length || !password.length || !email.length || !firstName.length)
-      return Promise.reject('Not have login or password');
-
-   return register(input)
-      .then(handleLoginResult(false))
-
-}
-
-function handleLoginResult(isRemember: boolean) {
-   return (userData?: ResponseDataUser) => {
-      console.log('login result', userData)
-      if (!userData)
-         throw new Error('Cannot login')
-      let user = toUser(userData);
-
-      const token = encryptId(user);
-
-      if (isRemember) {
-         window.localStorage.setItem(TOKEN_NAME, token);
-      } else {
-         window.sessionStorage.setItem(TOKEN_NAME, token);
-      }
-
-      return user;
+   if (!username.length || !password.length || !email.length || !firstName.length) {
+      console.error('Not have login or password')
+      return null;
    }
+
+   const result = await register(input)
+   return handleLoginResult(false, result)
 }
 
-function toUser(userData: ResponseDataUser): UserProfile {
+function handleLoginResult(isRemember: boolean, userData?: mutationTypes.Login_login_user | null) {
+   console.log('login result', userData)
+
+   if (!userData)
+      throw new Error('Cannot login')
+   let user = toUser(userData);
+
+   const token = encryptId(user);
+
+   if (isRemember) {
+      window.localStorage.setItem(TOKEN_NAME, token);
+   } else {
+      window.sessionStorage.setItem(TOKEN_NAME, token);
+   }
+
+   return user;
+}
+
+function toUser(userData: mutationTypes.Login_login_user): UserProfile {
    if (!userData.profiles.nodes.length)
       throw new Error('UserProfile not have profile')
 
    const profile = userData.profiles.nodes[0]
+   if(!profile)
+      throw new Error('User not have profiles')
+
    return {
       id: profile.id,
       userId: userData.id,
-      login: userData.name,
+      login: userData.username,
       isAdmin: userData.isAdmin,
       avatarUrl: userData.avatarUrl,
-      emails: userData.userEmails.nodes,
-      firstName: profile.firstName,
-      lastName: profile.lastName,
-      familyName: profile.familyName,
+      emails: userData.userEmails.nodes as Array<Email>,
+      firstName: profile.firstName || '',
+      middleName: profile.middleName,
+      lastName: profile.lastName || '',
       type: profile.isTeacher ? UserType.TEACHER : UserType.CONTESTANT,
       course: profile.course,
       groupNumber: profile.groupNumber,
@@ -80,7 +86,7 @@ function toUser(userData: ResponseDataUser): UserProfile {
       phone: profile.phone,
       languages: [],
       codeEditors: [],
-      travel: []
+      travels: []
    }
 }
 

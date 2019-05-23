@@ -49,7 +49,7 @@ interface BaseProblem {
    difficulty: number
 
    author: PartialUserProfile
-   tester: PartialUserProfile
+   tester: PartialUserProfile | null
 
    status: ProblemStatus
    testingStatus: ProblemTestingStatus
@@ -62,7 +62,7 @@ export interface PartialProblem extends BaseProblem {
 
 export interface FullProblem extends BaseProblem {
    description: string
-   note?: string
+   note: string | null
 
    limits: {
       time: number // ms

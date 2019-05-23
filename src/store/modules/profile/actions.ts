@@ -1,4 +1,5 @@
 import * as API from "@/api";
+import * as queryTypes from '@/api/graphql/queries/types'
 import {
    UserProfile
 } from "@/models";
@@ -9,7 +10,7 @@ import {checkIsLogin, currentUserIfHave, signin, signout, signup} from "@/authen
 import {City, Country} from "@/models/country";
 import {ProfileState} from './state'
 import {IActionContext} from '@/store/state'
-import {ResponseDataFullCity, ResponseDataFullCountry} from "@/api/graphql/fragments/types";
+import * as fragmentsTypes from "@/api/graphql/fragments/types";
 
 // const DEBUG = process.env.NODE_ENV !== 'production'
 const DEBUG = false
@@ -20,17 +21,17 @@ export interface ILoginToProfilePayload {
    isRemember: boolean
 }
 
-function responseToCountry(result: ResponseDataFullCountry): Country {
+function responseToCountry(result: fragmentsTypes.FullCountry): Country {
    return {
       ...result,
-      cities: result.cities.nodes
+      cities: result.cities.nodes as Array<fragmentsTypes.FullCountry_cities_nodes>
    }
 }
 
-function responseToCity(result: ResponseDataFullCity): City {
+function responseToCity(result: fragmentsTypes.FullCity): City {
    return {
       ...result,
-      universities: result.universities.nodes
+      universities: result.universities.nodes as Array<fragmentsTypes.FullCity_universities_nodes>
    }
 }
 
@@ -45,29 +46,29 @@ export default {
    },
 
    async [actionTypes.LOAD_ALL_COUNTRIES]({commit}: IActionContext<ProfileState>): Promise<boolean> {
-      const countries = await API.countries()
+      const countries = await API.countries({})
       if (!countries) {
          console.error("Cannot load countries") // TODO: handle error
          return false
       }
 
-      commit(mutations.SET_COUNTRIES, countries as Array<Country>)
+      commit(mutations.SET_COUNTRIES, countries.nodes as Array<Country>)
       return true
    },
    
    async [actionTypes.LOAD_ALL_CITIES]({commit}: IActionContext<ProfileState>): Promise<boolean> {
-      const cities = await API.cities()
+      const cities = await API.cities({})
       if(!cities){
          console.error('Cannot load cities')
          return false
       }
       
-      commit(mutations.SET_COUNTRIES, cities as Array<City>)
+      commit(mutations.SET_COUNTRIES, cities.nodes as Array<City>)
       return true
    },
    
    async [actionTypes.LOAD_COUNTRY]({commit}: IActionContext<ProfileState>, id: string): Promise<Country | undefined> {
-      const result = await API.country(id)
+      const result = await API.country({id})
       if(!result){
          console.error('Cannot load country', id)
          return
@@ -79,7 +80,7 @@ export default {
    },
 
    async [actionTypes.LOAD_CITY]({commit}: IActionContext<ProfileState>, id: string): Promise<City | undefined> {
-     const result = await API.city(id)
+     const result = await API.city({id})
       if(!result){
          console.error('Cannot load city', id)
          return
@@ -105,8 +106,14 @@ export default {
       commit(mutations.LOGOUT_FROM_PROFILE);
    },
 
-   [actionTypes.SEARCH_COUNTRIES]({commit}: IActionContext<ProfileState>, name: string) {
-      return API.searchCountries(name)
+   async [actionTypes.SEARCH_COUNTRIES]({commit}: IActionContext<ProfileState>, search: string): Promise<Array<Country>>  {
+      const result = await API.searchCountries({search})
+      if(!result){
+         console.log('Cannot find countries', search)
+         return []
+      }
+
+      return result.nodes as Array<Country>
    },
 
    async [actionTypes.REGISTER_PROFILE]({commit}: IActionContext<ProfileState>, user: IRegisterProfilePayload): Promise<boolean> {

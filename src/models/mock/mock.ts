@@ -27,6 +27,7 @@ export function defaultProblem(): FullProblem {
       name: '',
       description: '',
       difficulty: 0,
+      note: '',
 
       createdAt: new Date(),
       updatedAt: new Date(),

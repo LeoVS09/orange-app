@@ -1,8 +1,25 @@
 #import "../fragments/PartialCity.graphql"
 
+query Cities(
+   $first: Int,
+   $last: Int,
+   $offset: Int,
+   $before: Cursor,
+   $after: Cursor,
+   $orderBy: [CitiesOrderBy!],
+   $condition: CityCondition
+) {
+   cities(
+      first: $first,
+      last: $last,
+      offset: $offset,
+      before: $before,
+      after: $after,
+      orderBy: $orderBy,
+      condition: $condition
+   ) {
+      totalCount
 
-query Cities {
-   cities {
       nodes {
          nodeId
 
