@@ -22,7 +22,7 @@
 
 <script lang="ts">
    import Vue from 'vue'
-   import {Component, Prop} from 'vue-property-decorator'
+   import {Component, Prop, Emit} from 'vue-property-decorator'
    import {randomId, formatDate} from './utils'
    import {ListItemEvent, ListItemEvents, DataItem} from './types'
 
@@ -108,6 +108,7 @@
          })
       }
 
+      @Emit(ListItemEvents.move)
       onMouseMove(event: MouseEvent) {
          if (this.gradientBackground)
             this.background = gradientCircleAtMouse(event, defaultBackground)
@@ -115,16 +116,18 @@
             this.background = ''
 
          const itemEvent: ListItemEvent = {key: this.key}
-         this.$parent.$emit(ListItemEvents.move, itemEvent)
+         return itemEvent
       }
 
+      @Emit(ListItemEvents.leave)
       onMouseLeave() {
          this.background = defaultBackground
 
          const itemEvent: ListItemEvent = {key: this.key}
-         this.$parent.$emit(ListItemEvents.leave, itemEvent)
+         return itemEvent
       }
 
+      @Emit(ListItemEvents.over)
       onMouseOver(event: MouseEvent) {
          if (this.gradientBackground)
             this.background = gradientCircleAtMouse(event, defaultBackground)
@@ -132,11 +135,12 @@
             this.background = ''
 
          const itemEvent: ListItemEvent = {key: this.key}
-         this.$parent.$emit(ListItemEvents.over, itemEvent)
+         return itemEvent
       }
 
+      @Emit(ListItemEvents.click)
       onClick(event: any) {
-         this.$emit('click', event)
+         return event
       }
    }
 

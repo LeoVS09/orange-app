@@ -1,5 +1,6 @@
 export enum ROUTES {
    HOME = 'home',
+   PROBLEMS = 'home',
    COMPETITIONS = 'competitions',
    CREATE_PROBLEM = 'create problem',
    PROBLEM = 'problem',

@@ -9,7 +9,7 @@
                {'createdAt': 'Date'}
             ]"
             :items="countries"
-            @chooseItem="chooseCountry"
+            @choose-item="chooseCountry"
          />
       </Section>
    </div>

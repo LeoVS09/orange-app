@@ -7,9 +7,17 @@
          <div class="list--header">
             <div
                class="list--header-item"
-               v-for="headerItem in visibleHeaders"
-               @click="onClickHeader(headerItem)"
-            >{{headerItem.label}}
+               v-for="header in visibleHeaders"
+               @click="onClickHeader(header)"
+            >
+               <span class="list--header-text">{{header.label}}</span>
+               <div
+                  :class="{
+                     'list--header-sort-arrow': true,
+                     'up': sortHeader && sortHeader.ascending
+                  }">
+                  <span v-if="sortHeader && sortHeader.by === header.key">&#9662;</span>
+               </div>
             </div>
          </div>
 
@@ -22,66 +30,72 @@
                :key="hash(item)"
                :item="item"
                :formatData="formatData"
+               @list-item-over="onItemOver(item)"
+               @list-item-leave="onItemLeave(item)"
+               @list-item-move="onItemMove(item)"
             />
 
          </transition-group>
       </div>
 
-<!--      <transition name="pagination-down">-->
-         <div
-            v-if="pagesCount"
-            class="list--pagination"
-         >
-            <Button
-               @click="previousPage"
-               icon="navigate_before"
-               :simple="true"
-               :textOnHover="true"
-               :gradient-highlight="false"
-               :static-size="true"
-            >Previous</Button>
-            <div class="list--pages">
-               <template
-                  v-if="page = pageNumbers.left"
-               >
-                  <Button
-                     @click="goToPage(page.n)"
-                     :simple="true"
-                     :active="page.n === currentPage"
-                     :gradient-highlight="false"
-                  >{{page.n}}</Button>
-                  <span v-if="page.points">...</span>
-               </template>
+      <div
+         v-if="pagesCount"
+         class="list--pagination"
+      >
+         <Button
+            @click="previousPage"
+            icon="navigate_before"
+            :simple="true"
+            :textOnHover="true"
+            :gradient-highlight="false"
+            :static-size="true"
+         >Previous
+         </Button>
+         <div class="list--pages">
+            <template
+               v-if="page = pageNumbers.left"
+            >
                <Button
-                  v-for="page in pageNumbers.center"
-                  @click="goToPage(page)"
+                  @click="goToPage(page.n)"
                   :simple="true"
-                  :active="page === currentPage"
+                  :active="page.n === currentPage"
                   :gradient-highlight="false"
-               >{{page}}</Button>
-               <template
-                  v-if="page = pageNumbers.right"
-               >
-                  <span v-if="page.points">...</span>
-                  <Button
-                     @click="goToPage(page.n)"
-                     :simple="true"
-                     :active="page.n === currentPage"
-                     :gradient-highlight="false"
-                  >{{page.n}}</Button>
-               </template>
-            </div>
+               >{{page.n}}
+               </Button>
+               <span v-if="page.points">...</span>
+            </template>
             <Button
-               @click="nextPage"
-               icon="navigate_next"
+               v-for="page in pageNumbers.center"
+               @click="goToPage(page)"
                :simple="true"
-               :icon-left="false"
-               :textOnHover="true"
+               :active="page === currentPage"
                :gradient-highlight="false"
-               :static-size="true"
-            >Next</Button>
+            >{{page}}
+            </Button>
+            <template
+               v-if="page = pageNumbers.right"
+            >
+               <span v-if="page.points">...</span>
+               <Button
+                  @click="goToPage(page.n)"
+                  :simple="true"
+                  :active="page.n === currentPage"
+                  :gradient-highlight="false"
+               >{{page.n}}
+               </Button>
+            </template>
          </div>
-<!--      </transition>-->
+         <Button
+            @click="nextPage"
+            icon="navigate_next"
+            :simple="true"
+            :icon-left="false"
+            :textOnHover="true"
+            :gradient-highlight="false"
+            :static-size="true"
+         >Next
+         </Button>
+      </div>
    </div>
 </template>
 
@@ -89,10 +103,15 @@
    import Vue from 'vue'
    import ListItem from './ListItem.vue';
    import Button from './Button.vue';
-   import {Component, Prop} from 'vue-property-decorator'
-   import {ListEvents, DataItem, Header, ListMeta, SimpleHeader} from './types'
+   import {Component, Prop, Emit} from 'vue-property-decorator'
+   import {ListEvents, DataItem, Header, ListMeta, SimpleHeader, ListSortEvent} from './types'
    // @ts-ignore
    import crypto from 'crypto-js'
+
+   export interface ListSortHeader {
+      by: string
+      ascending: boolean
+   }
 
    function toHeaders(headers: Array<any>): Array<Header> {
       return headers.map(header => {
@@ -194,6 +213,8 @@
 
       isHovered = false;
 
+      sortHeader: ListSortHeader | null = null;
+
       // TODO: make consistently items animation
       listTransitionName = listTransitionDown
 
@@ -208,15 +229,34 @@
          return []
       }
 
-      get visibleItems() {
+      get visibleItems(): Array<DataItem> {
+         let result = this.items
+
          if (this.filter)
-            return this.filter(this.items)
+            result = result.filter(this.filter)
+
+         if (this.sortHeader) {
+            const {by, ascending} = this.sortHeader
+
+            result = result.slice().sort((a, b) => {
+               const aValue = a[by]
+               const bValue = b[by]
+
+               if (aValue === bValue)
+                  return 0
+
+               if (!ascending)
+                  return aValue < bValue ? 1 : -1
+
+               return aValue > bValue ? 1 : -1
+            })
+         }
 
          if (!this.pagination)
-            return this.items
+            return result
 
          const start = (this.currentPage - 1) * this.itemsOnPage
-         return this.items.slice(start, start + this.itemsOnPage)
+         return result.slice(start, start + this.itemsOnPage)
       }
 
       get pagesCount() {
@@ -235,9 +275,9 @@
          const allPages = new Array(count).fill(0).map((v, i) => i + 1)
 
          const firstPage = allPages[0]
-         const lastPage = allPages[allPages.length - 1 ]
+         const lastPage = allPages[allPages.length - 1]
 
-         if(current < middle)
+         if (current < middle)
             return {
                center: allPages.slice(0, max),
                right: {
@@ -246,7 +286,7 @@
                }
             }
 
-         if(count - current < middle)
+         if (count - current < middle)
             return {
                left: {
                   n: firstPage,
@@ -260,7 +300,7 @@
 
          let left
 
-         if(firstPage !== start) {
+         if (firstPage !== start) {
             left = {
                n: firstPage,
                points: false
@@ -272,7 +312,7 @@
 
          let right
 
-         if(lastPage !== end) {
+         if (lastPage !== end) {
             right = {
                n: lastPage,
                points: false
@@ -284,7 +324,7 @@
 
          return {
             left,
-            center: allPages.slice(start - 1, end ),
+            center: allPages.slice(start - 1, end),
             right
          }
       }
@@ -292,10 +332,13 @@
       nextPage() {
          this.listTransitionName = listTransitionFade
 
-         if(this.currentPage + 1 > this.pagesCount)
+         if (this.currentPage + 1 > this.pagesCount)
             return
 
-         this.currentPage++
+         const page = this.currentPage + 1
+         this.$emit(ListEvents.nextPage, page)
+
+         this.goToPage(page)
 
          // TODO: refactor, need use js animation in this case
          setTimeout(() => this.listTransitionName = listTransitionDown, 1000)
@@ -304,32 +347,63 @@
       previousPage() {
          this.listTransitionName = listTransitionFade
 
-         if(this.currentPage <= 1)
+         if (this.currentPage <= 1)
             return
 
-         this.currentPage--
+         const page = this.currentPage - 1
+         this.$emit(ListEvents.previousPage, page)
+
+         this.goToPage(page)
 
          setTimeout(() => this.listTransitionName = listTransitionDown, 1000)
       }
 
-      goToPage(n: number) {
-         this.currentPage = n
+      @Emit(ListEvents.toPage)
+      goToPage(next: number) {
+         const old = this.currentPage
+         this.currentPage = next
+
+         return {
+            old,
+            next
+         }
       }
 
       hash(item: Object): string {
          return crypto.MD5(JSON.stringify(item)).toString()
       }
 
+
       onClickHeader(header: Header) {
-         this.$emit(ListEvents.chooseHeader, header)
+         this.$emit(ListEvents.clickHeader, header)
+
+         this.sort(header)
       }
 
+      @Emit(ListEvents.sort)
+      sort(header: Header) {
+
+         if (this.sortHeader && this.sortHeader.by === header.key)
+            return this.sortHeader = {
+               ...this.sortHeader,
+               ascending: !this.sortHeader.ascending
+            } as ListSortEvent
+
+         return this.sortHeader = {
+            by: header.key,
+            ascending: false
+         } as ListSortEvent
+
+      }
+
+      @Emit(ListEvents.chooseItem)
       onClickItem(item: DataItem) {
-         this.$emit(ListEvents.chooseItem, item)
+         return item
       }
 
+      @Emit(ListEvents.add)
       onClickAdd() {
-         this.$emit(ListEvents.add)
+         return
       }
 
       onMouseOver() {
@@ -338,6 +412,21 @@
 
       onMouseLeave() {
          this.isHovered = false
+      }
+
+      @Emit(ListEvents.onItemOver)
+      onItemOver(item: DataItem) {
+         return item
+      }
+
+      @Emit(ListEvents.onItemLeave)
+      onItemLeave(item: DataItem) {
+         return item
+      }
+
+      @Emit(ListEvents.onItemMove)
+      onItemMove(item: DataItem) {
+         return item
       }
    }
 </script>
@@ -373,15 +462,40 @@
             color: $main-text-color;
          }
 
+         &-text {
+            user-select: none;
+         }
+
          &-item {
             flex: 1;
-            text-align: center;
+            display: flex;
+            flex-direction: row;
+            cursor: pointer;
+            justify-content: center;
 
             &:first-child {
                flex: 3;
-               text-align: left;
+               justify-content: flex-start;
                padding-left: 1rem;
                text-underline: $main-text-color;
+            }
+         }
+
+         &-sort-arrow {
+            transition: $input-animation-time all;
+            min-height: 1.35rem;
+            min-width: 1rem;
+
+            span {
+               position: relative;
+            }
+
+            &.up {
+               transform: rotate(180deg);
+
+               span {
+                  top: 0.15rem
+               }
             }
          }
 

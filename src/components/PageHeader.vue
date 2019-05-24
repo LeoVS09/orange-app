@@ -4,8 +4,24 @@
       highlight,
       success: colorLine === ColorLineType.success,
       error: colorLine === ColorLineType.error,
-      'text-width': textWidth
+      'text-width': textWidth,
+      breadcrumbs
    }">
+      <div class="page-header--breadcrumbs" v-if="breadcrumbs">
+         <template v-for="step in visibleBreadcrumbs">
+            <router-link
+               v-if="step.link"
+               class="page-header--breadcrumb-step link"
+               :to="step.link"
+            >{{step.name}}</router-link>
+            <span
+               v-else
+               class="page-header--breadcrumb-step"
+            >{{step.name}}</span>
+
+            <span class="page-header--breadcrumb-separator">/</span>
+         </template>
+      </div>
       <input
          v-if="editable"
          class="page-header--input"
@@ -34,6 +50,15 @@
    import ColorLine from '@/components/ColorLine.vue'
    import {ColorLineType} from '@/components/types'
 
+   export interface IPropsBreadcrumb {
+      [name: string]: any
+   }
+
+   export interface IVisibleBreadcrumbs {
+      name: string
+      link?: object
+   }
+
    @Component({
       components:{
          ColorLine
@@ -43,32 +68,64 @@
       @Prop({
          type: Boolean,
          default: true
-      }) highlight?: boolean
+      })
+      highlight?: boolean
 
       @Prop({
          type: Boolean,
          default: false
-      }) editable?: boolean
+      })
+      editable?: boolean
 
       @Prop({
          type: String,
          default: ''
-      }) value?: string
+      })
+      value?: string
 
       @Prop({
          type: [String, Boolean]
-      }) colorLine?: ColorLineType
+      })
+      colorLine?: ColorLineType
 
       @Prop({
          type: Boolean,
          default: false
-      }) textWidth?: boolean
+      })
+      textWidth?: boolean
 
       @Prop({
          type: String
-      }) placeholder?: string
+      })
+      placeholder?: string
+
+      @Prop({
+         type: Array
+      })
+      breadcrumbs?: Array<string | IPropsBreadcrumb>
 
       ColorLineType = ColorLineType
+
+      get visibleBreadcrumbs(): Array<IVisibleBreadcrumbs> {
+         if(!this.breadcrumbs)
+            return []
+
+         return this.breadcrumbs.map(b => {
+            if(typeof b === 'string')
+               return {
+                  name: b
+               }
+
+            const name = Object.keys(b)[0]
+            let link = b[name]
+            if(typeof link === 'string')
+               link = {path: link}
+            return {
+               name,
+               link
+            }
+         })
+      }
 
       @Emit('input')
       updateValue(event: any) {
@@ -85,7 +142,40 @@
       margin-bottom: 0;
       margin-top: 2rem;
       display: flex;
-      flex-direction: row;
+      flex-direction: column;
+      min-height: 5rem;
+
+      &--breadcrumbs {
+         width: 100%;
+         display: flex;
+         flex-direction: row;
+         justify-content: flex-start;
+         padding: 0;
+         color: $secondary-text-color;
+         font-size: 0.9rem;
+         font-weight: 400;
+         margin: 0 auto;
+         max-width: $max-content-width;
+         box-sizing: border-box;
+
+         z-index: 1;
+      }
+
+      &--breadcrumb-separator {
+         padding: 0 0.4rem;
+         font-weight: bold;
+      }
+
+      &--breadcrumb-step.link {
+         text-decoration: none;
+         color: $secondary-text-color;
+         font-size: 0.9rem;
+         font-weight: 400;
+
+         &:hover {
+            text-decoration: underline;
+         }
+      }
 
       &--content {
          display: flex;
@@ -129,6 +219,10 @@
             max-width: $max-text-width;
          }
 
+         .page-header--breadcrumbs {
+            max-width: $max-text-width;
+         }
+
          .page-header--input {
             padding: 0;
             max-width: $max-text-width;
@@ -146,7 +240,21 @@
          }
 
          .page-header--content {
-            padding: $highlight-header-padding;
+            padding: 1rem $highlight-header-padding-sides;
+         }
+
+         &.breadcrumbs .page-header--content {
+            padding-top: 0;
+         }
+
+         .page-header--breadcrumbs {
+            padding: 0.3rem $highlight-header-padding-sides 0;
+            color: $breadcrumbs-highlight-color;
+            margin-bottom: -0.4rem;
+         }
+
+         .page-header--breadcrumb-step.link {
+            color: $breadcrumbs-highlight-color;
          }
       }
 

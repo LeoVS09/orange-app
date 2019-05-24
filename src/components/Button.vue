@@ -132,6 +132,7 @@
          font-size: $button-font-size;
          position: relative;
          overflow: hidden;
+         user-select: none;
 
          &.bold {
             font-weight: bold;

@@ -38,11 +38,24 @@ export interface ListMeta {
 export enum ListItemEvents {
    over = 'list-item-over',
    leave = 'list-item-leave',
-   move = 'list-item-move'
+   move = 'list-item-move',
+   click = 'click'
+}
+
+export interface ListSortEvent {
+   by: string
+   ascending: boolean
 }
 
 export enum ListEvents {
-   chooseItem = 'chooseItem',
-   chooseHeader = 'chooseHeader',
-   add = 'add'
+   chooseItem = 'choose-item',
+   clickHeader = 'click-header',
+   add = 'add',
+   nextPage = 'next-page',
+   previousPage = 'previous-page',
+   toPage = 'to-page',
+   onItemOver = 'on-item-over',
+   onItemLeave = 'on-item-leave',
+   onItemMove = 'on-item-move',
+   sort = 'sort'
 }

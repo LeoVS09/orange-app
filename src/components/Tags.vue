@@ -2,7 +2,7 @@
    <div
       :class="{tags: true, 'scrollable-horizontal': scrollable}"
    >
-      <span class="tags--separator" v-if="values && values.length"> </span>
+      <div class="tags--separator" v-if="values && values.length"><span> </span></div>
       <span class="tags--left-gradient" v-if="scrollable && values && values.length"> </span>
       <div :id="id" class="tags--content-wrapper" >
          <ButtonGroup
@@ -168,9 +168,19 @@
 
       &--separator {
          position: absolute;
-         width: 100%;
-         border-bottom: 1px solid $divider-line-color;
          bottom: 0;
+         display: flex;
+         flex-direction: column;
+         align-items: center;
+         width: 100%;
+
+         span {
+            width: 100%;
+            max-width: 60rem;
+            margin: 0 auto;
+            height: 1px;
+            background: linear-gradient(to right, transparent 0%, $divider-line-color 15%, $divider-line-color 85%, transparent 100%);
+         }
       }
       
       &--placeholder {

@@ -21,6 +21,7 @@ $highlight-header-text-color: white;
 $highlight-text-color: #F57C00;
 $placeholder-color: #999; // rgba(0, 0, 0, 0.65);
 $secondary-background-color: #F2F2F2;
+$breadcrumbs-highlight-color: #eeebeb;
 
 $thumb-color: #d6d1d1;
 
@@ -63,7 +64,7 @@ $max-content-width: 1280px;
 $max-text-width: 900px;
 $footer-height: 10rem;
 $input-width: 30rem;
-$highlight-header-padding: 0.7rem $content-padding-sides;
+$highlight-header-padding-sides: $content-padding-sides;
 $problem-line-padding: 0.7rem;
 
 $button-padding-top: 0.3rem;

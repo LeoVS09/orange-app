@@ -30,6 +30,7 @@
          :colorLine="done && 'success'"
          :highlight="false"
          :textWidth="true"
+         :breadcrumbs="[{'Problems': {name: ROUTES.PROBLEMS}}]"
       >{{problemData.name}}</page-header>
 
 <!--      <tags :values="problemData.tags"></tags>-->
@@ -184,6 +185,7 @@
       ProblemTestingStatus
    } from "@/models/problems"
    import {IUploadCodePayload} from "@/store/modules/problems/actions";
+   import {ROUTES} from '@/router'
 
    // TODO: examples and description on one screen
 
@@ -226,6 +228,8 @@
       @Action(actions.UPLOAD_CODE) uploadCode: (payload: IUploadCodePayload) => Promise<void>;
 
       solutionCode = "";
+
+      ROUTES = ROUTES
 
       ProblemStatus = ProblemStatus
       ProblemTestingStatus = ProblemTestingStatus

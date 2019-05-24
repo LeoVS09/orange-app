@@ -53,7 +53,7 @@
             :items="filtered"
             :formatData="formatItem"
             :isCanAdd="isTeacher"
-            @chooseItem="chooseProblem"
+            @choose-item="chooseProblem"
          />
 
       </Section>

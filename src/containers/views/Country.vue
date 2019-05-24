@@ -1,6 +1,9 @@
 <template>
    <div class="country">
-      <PageHeader class="country--header">Country {{country && country.name}}</PageHeader>
+      <PageHeader
+         class="country--header"
+         :breadcrumbs="[{'Countries': {name: ROUTES.COUNTRIES}}]"
+      >{{country && country.name}}</PageHeader>
 
       <Section>
          <list
@@ -21,6 +24,7 @@
    import {List, PageHeader, Section} from '@/components'
    import * as actions from '@/store/actionTypes';
    import {Country} from "@/models";
+   import {ROUTES} from '@/router'
 
    @Component({
       components: {
@@ -40,6 +44,8 @@
       @Getter countryById: (id: string) => Country
 
       @Action(actions.LOAD_COUNTRY) loadCountry: (id: string) => Promise<Country | undefined>
+
+      ROUTES = ROUTES
 
       get country() {
          return this.countryById(this.id)
