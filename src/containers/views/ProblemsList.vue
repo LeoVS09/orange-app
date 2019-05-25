@@ -92,7 +92,7 @@
       @Action(actions.READ_TAGS) readTags: () => void
       @Action(actions.TOGGLE_FILER_TAG) toggleFilterTag: (tag: Tag) => void
 
-      @Action(actions.SET_PROBLEMS_FILTER) setProblemsFilter: (filter: ProblemFilter) => void
+      @Action(actions.SET_PROBLEMS_FILTER) onFilterClick: (filter: ProblemFilter) => void
 
       @State((state: RootState) => state.problems.filter)
       filter: ProblemFilter
@@ -104,10 +104,6 @@
 
       get filtered() {
          return this.filteredProblems
-      }
-
-      onFilterClick(value: ProblemFilter) {
-         this.setProblemsFilter(value)
       }
 
       formatItem(item: FullProblem) {

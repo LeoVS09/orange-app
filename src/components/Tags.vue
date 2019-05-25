@@ -62,7 +62,7 @@
 
       @Prop({
          type: Array,
-         default: []
+         default: () => []
       }) values: Array<BaseTag>
 
       @Prop({
@@ -73,7 +73,7 @@
 
       @Prop({
          type: Array,
-         default: []
+         default: () => []
       })
       activeTags: Array<BaseTag>
 

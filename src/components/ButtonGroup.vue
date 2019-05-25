@@ -26,19 +26,8 @@
 <script lang="ts">
    import Vue from 'vue'
    import {Component, Prop, Emit} from 'vue-property-decorator'
-   import {ButtonEvent, ButtonEvents} from "./types";
+   import {ButtonEvent, ButtonEvents, ButtonGroupMeta} from "./types";
    import Button from './Button.vue'
-
-
-   export interface ButtonGroupMetaItem {
-      [key: string]: any
-   }
-
-   export interface ButtonGroupMeta {
-      attributes?: Object,
-      active?: any,
-      buttons?: Array<ButtonGroupMetaItem>
-   }
 
    interface ReflectedButton {
       value: any

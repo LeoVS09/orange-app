@@ -16,6 +16,8 @@ import throttle from 'lodash.throttle'
 
 import * as actionTypes from './store/actionTypes'
 
+
+
 Vue.config.productionTip = false;
 
 sync(store, router);

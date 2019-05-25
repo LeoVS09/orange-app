@@ -1,3 +1,5 @@
+import Vue from "vue";
+
 export enum ColorLineType {
    success = 'success',
    error = 'error'
@@ -59,3 +61,70 @@ export enum ListEvents {
    onItemMove = 'on-item-move',
    sort = 'sort'
 }
+
+export interface ButtonGroupMetaItem {
+   [key: string]: any
+}
+
+export interface ButtonGroupMeta {
+   attributes?: Object,
+   active?: any,
+   buttons?: Array<ButtonGroupMetaItem>
+}
+
+export interface IPropsBreadcrumb {
+   [name: string]: any
+}
+
+export interface DynamicPageAction {
+   showTrigger?: (self: Vue) => boolean,
+   icon: string
+   text: string,
+   action: (self: Vue) => void
+}
+
+export interface DynamicPageMeta {
+   header: string | {
+      breadcrumbs?: Array<IPropsBreadcrumb | string>
+      text: string | ((model?: any)=> string)
+      actions?: Array<DynamicPageAction> | {
+         showTrigger?: (self: Vue) => boolean,
+         buttons: Array<DynamicPageAction>
+      }
+   }
+   tags?: {
+      getter: (self: Vue) => Array<any>,
+      active: (self: Vue) => Array<any>,
+      choose: (self: Vue, tag: any) => void,
+      actions?: {
+         loadTrigger?: (self: Vue) => boolean
+         loadAction?: (self: Vue) => void
+      }
+   }
+   list?: {
+      headers?: Array<Header | string | SimpleHeader>
+      filters?: {
+         buttons: Array<ButtonGroupMetaItem>,
+         active: (self: Vue) => any,
+         choose: (self: Vue, filter: any) => void
+      }
+      items: Array<any> | {
+         getter?: (self: Vue) => Array<any>
+         fromModel?: (model?: any) => Array<any>
+      }
+      formatItem?: (item: any) => any
+      actions?: {
+         loadTrigger?: (items?: Array<any>) => boolean
+         loadAction?: (self: Vue) => void
+      }
+      chooseItem?: (item: any) => void
+   },
+   model?: {
+      getter?: (self: Vue) => any
+      actions?: {
+         loadTrigger?: (model?: any) => boolean
+         loadAction?: (self: Vue) => void
+      }
+   }
+}
+

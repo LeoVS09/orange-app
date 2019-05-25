@@ -11,6 +11,13 @@
    import * as actions from './store/actionTypes';
    import eventBus, {AuthorisationEventPayload, AuthorisationEventState, BusEventTypes} from "@/containers/eventBus";
 
+   // Register the router hooks with their names
+   Component.registerHooks([
+      'beforeRouteEnter',
+      'beforeRouteLeave',
+      'beforeRouteUpdate'
+   ])
+
    @Component
    export default class App extends Vue {
 

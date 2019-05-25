@@ -48,11 +48,7 @@
    import Vue from 'vue'
    import {Component, Prop, Emit} from 'vue-property-decorator'
    import ColorLine from '@/components/ColorLine.vue'
-   import {ColorLineType} from '@/components/types'
-
-   export interface IPropsBreadcrumb {
-      [name: string]: any
-   }
+   import {ColorLineType, IPropsBreadcrumb} from '@/components/types'
 
    export interface IVisibleBreadcrumbs {
       name: string
