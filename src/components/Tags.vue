@@ -28,10 +28,11 @@
 
 <script lang="ts">
    import Vue from 'vue'
-   import {Component, Prop, Emit} from 'vue-property-decorator'
+   import {Component, Prop, Emit, Mixins} from 'vue-property-decorator'
    import {ButtonGroup} from '@/components/index';
    import {onWheel, randomId} from "@/components/utils";
    import {onSideHover} from "@/components/predictive";
+   import Loadable from "@/components/mixins/loadable";
 
    export interface BaseTag {
       [key: string]: any
@@ -56,7 +57,7 @@
          ButtonGroup
       }
    })
-   export default class Tags extends Vue {
+   export default class Tags extends Mixins(Loadable) {
 
       id = 'tags-' + randomId()
 

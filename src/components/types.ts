@@ -59,7 +59,8 @@ export enum ListEvents {
    onItemOver = 'on-item-over',
    onItemLeave = 'on-item-leave',
    onItemMove = 'on-item-move',
-   sort = 'sort'
+   sort = 'sort',
+   loaded = 'loaded'
 }
 
 export interface ButtonGroupMetaItem {

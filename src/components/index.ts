@@ -1,5 +1,5 @@
 import Footer from './Footer.vue'
-import Icon from './Icon.vue'
+import MaterialIcon from './icons/MaterialIcon.vue'
 import SourceView from './SourceView.vue'
 import Logo from './Logo.vue'
 import Input from './Input.vue'
@@ -17,10 +17,13 @@ import DataView from './DataView.vue';
 import ButtonGroup from './ButtonGroup.vue';
 import List from './List.vue'
 import Tags from './Tags.vue'
+import PageHeaderAction from './PageHeaderAction.vue'
+import Filters from './Filters.vue'
+import ModelInfo from './ModelInfo.vue'
 
 export {
    Footer,
-   Icon,
+   MaterialIcon,
    Logo,
    SourceView,
    Input,
@@ -37,5 +40,8 @@ export {
    DataView,
    ButtonGroup,
    List,
-   Tags
+   Tags,
+   PageHeaderAction,
+   Filters,
+   ModelInfo
 }

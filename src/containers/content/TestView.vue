@@ -17,7 +17,7 @@ import {TestStatus} from "@/models";
    import Vue from 'vue'
    import {Component, Prop} from 'vue-property-decorator'
    import {Action} from 'vuex-class'
-   import {Icon, SourceView} from '@/components';
+   import {MaterialIcon, SourceView} from '@/components';
    import * as actions from '@/store/actionTypes';
    import {Test, TestStatus} from "@/models";
    import {IEditTestPayload} from "@/store/modules/problems/mutations";
@@ -28,7 +28,7 @@ import {TestStatus} from "@/models";
    @Component({
       components: {
          SourceView,
-         Icon
+         Icon: MaterialIcon
       }
    })
    export default class TestView extends Vue {

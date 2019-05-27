@@ -29,6 +29,12 @@ export default class BaseButton extends Vue {
       type: Boolean,
       default: false
    })
+   biggerFont: boolean
+
+   @Prop({
+      type: Boolean,
+      default: false
+   })
    active: boolean;
 
    @Prop({
@@ -45,9 +51,21 @@ export default class BaseButton extends Vue {
 
    @Prop({
       type: Boolean,
+      default: false
+   })
+   maxHeight: boolean
+
+   @Prop({
+      type: Boolean,
       default: true
    })
    gradientHighlight: boolean
+
+   @Prop({
+      type: Boolean,
+      default: false
+   })
+   borderHighlight: boolean
 
    @Prop({
       type: String
@@ -119,5 +137,23 @@ export default class BaseButton extends Vue {
       default: false
    })
    staticSize: boolean
+
+   @Prop({
+      type: Boolean,
+      default: false
+   })
+   onlyIcon: boolean
+
+   @Prop({
+      type: Boolean,
+      default: false
+   })
+   ghost: boolean
+
+   @Prop({
+      type: Boolean,
+      default: false
+   })
+   leftAlign: boolean
 
 }

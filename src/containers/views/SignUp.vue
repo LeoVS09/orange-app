@@ -46,7 +46,7 @@
    import Vue from 'vue'
    import {Component, Watch} from 'vue-property-decorator'
    import {Action} from 'vuex-class'
-   import {Logo, Input, Button, CheckBox, Icon} from '../../components'
+   import {Logo, Input, Button, CheckBox, MaterialIcon} from '../../components'
    import * as actions from '../../store/actionTypes';
    import {ROUTES} from "@/router";
    import {IRegisterProfilePayload} from "@/store/modules/profile/types";
@@ -58,7 +58,7 @@
          Input,
          Button,
          CheckBox,
-         Icon
+         Icon: MaterialIcon
       }
    })
    export default class SignUp extends Vue {

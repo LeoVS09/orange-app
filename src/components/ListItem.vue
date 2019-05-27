@@ -23,7 +23,7 @@
 <script lang="ts">
    import Vue from 'vue'
    import {Component, Prop, Emit} from 'vue-property-decorator'
-   import {randomId, formatDate} from './utils'
+   import {randomId, formatDate, isDate} from './utils'
    import {ListItemEvent, ListItemEvents, DataItem} from './types'
 
    const defaultBackground = 'transparent'
@@ -42,10 +42,6 @@
       let positionX = x - box.left;
       let positionY = y - box.top;
       return `radial-gradient(circle at ${positionX}px ${positionY}px, rgb(255, 75, 117) 0%, #FD7501 40%, #FD9624 100%)`
-   }
-
-   function isDate(date: any) {
-      return Object.prototype.toString.call(date) === '[object Date]'
    }
 
    @Component

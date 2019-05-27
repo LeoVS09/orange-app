@@ -35,6 +35,7 @@ export interface Country_country {
   nodeId: string;
   id: any;
   name: string;
+  code: string;
   createdAt: any;
   updatedAt: any;
   /**

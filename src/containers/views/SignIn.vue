@@ -31,7 +31,7 @@ import {AuthorisationEventState} from "@/containers/eventBus";
    import Vue from 'vue'
    import {Component} from 'vue-property-decorator'
    import {Action} from 'vuex-class'
-   import {Button, CheckBox, Icon, Input, Logo} from '@/components'
+   import {Button, CheckBox, MaterialIcon, Input, Logo} from '@/components'
    import * as actions from '@/store/actionTypes';
    import {ROUTES} from "@/router";
    import {ILoginToProfilePayload} from "@/store/modules/profile/actions";
@@ -45,7 +45,7 @@ import {AuthorisationEventState} from "@/containers/eventBus";
          Input,
          Button,
          CheckBox,
-         Icon
+         Icon: MaterialIcon
       }
    })
    export default class SignIn extends Vue {

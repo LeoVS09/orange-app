@@ -21,6 +21,20 @@
             </div>
          </div>
 
+         <div class="list--add" v-if="isCanAdd">
+            <Button
+               class="list--add-button"
+               icon="add"
+               @click="onClickAdd"
+               simple
+               ghost
+               :gradientHighlight="false"
+               maxWidth
+               maxHeight
+               leftAlign
+            >Add</Button>
+         </div>
+
          <transition-group :name="listTransitionName" tag="div" mode="out-in">
 
             <list-item
@@ -103,10 +117,11 @@
    import Vue from 'vue'
    import ListItem from './ListItem.vue';
    import Button from './Button.vue';
-   import {Component, Prop, Emit} from 'vue-property-decorator'
+   import {Component, Prop, Emit, Mixins} from 'vue-property-decorator'
    import {ListEvents, DataItem, Header, ListMeta, SimpleHeader, ListSortEvent} from './types'
    // @ts-ignore
    import crypto from 'crypto-js'
+   import Loadable from "@/components/mixins/loadable";
 
    export interface ListSortHeader {
       by: string
@@ -153,7 +168,7 @@
          Button
       }
    })
-   export default class List extends Vue {
+   export default class List extends Mixins(Loadable) {
 
       @Prop({
          type: Array,
@@ -438,11 +453,32 @@
       width: 100%;
       margin: 0;
       padding: 0;
+      position: relative;
 
       &--container {
          width: 100%;
          margin: 0;
          padding: 0;
+      }
+
+      &--add, &--add-button {
+         width: 100%;
+      }
+
+      &--add {
+         border-bottom: 1px dashed $secondary-color;
+         transition: height $default-animation-time;
+         height: 1.2rem;
+
+         &:hover {
+            height: 1.8rem;
+            border-bottom-style: solid;
+         }
+      }
+
+      &--add-button {
+         height: 100%;
+         padding-left: 0.3rem;
       }
 
       &--header {

@@ -10,6 +10,7 @@ export interface PartialCountry {
   __typename: "Country";
   id: any;
   name: string;
+  code: string;
   createdAt: any;
   updatedAt: any;
 }

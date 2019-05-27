@@ -3,6 +3,7 @@ import {University} from "@/models/university";
 export interface Country {
    id: string
    name: string
+   code: string
    cities?: Array<City>
    createdAt: Date
    updatedAt: Date

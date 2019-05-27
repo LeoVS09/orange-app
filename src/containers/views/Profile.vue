@@ -44,7 +44,7 @@
    import {UserProfile, UserType} from "../../models"
    import * as actions from '../../store/actionTypes';
    import {checkIsLogin} from '../../authentication'
-   import {Icon, Input, PageHeader, SourceView, Button, Select} from '../../components';
+   import {MaterialIcon, Input, PageHeader, SourceView, Button, Select} from '../../components';
    import {City, Country} from "@/models/country";
    import {Email} from "@/models/email";
 
@@ -59,7 +59,7 @@
    @Component({
       components: {
          SourceView,
-         Icon,
+         Icon: MaterialIcon,
          Input,
          PageHeader,
          Button,
@@ -200,8 +200,10 @@
       width: 100%;
       height: 100%;
       display: grid;
-      grid: "header header" "sidebar content" 1fr
-      / 1fr 3fr;
+      grid:
+         "header header"
+         "sidebar content"
+         1fr / 1fr 3fr;
 
       &--header {
          grid-area: header;

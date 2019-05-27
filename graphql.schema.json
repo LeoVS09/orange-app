@@ -5514,6 +5514,22 @@
             "deprecationReason": null
           },
           {
+            "name": "code",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "createdAt",
             "description": null,
             "args": [],
@@ -17519,6 +17535,18 @@
             "deprecationReason": null
           },
           {
+            "name": "CODE_ASC",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "CODE_DESC",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "CREATED_AT_ASC",
             "description": null,
             "isDeprecated": false,
@@ -17576,6 +17604,16 @@
           {
             "name": "name",
             "description": "Checks for equality with the object’s `name` field.",
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "code",
+            "description": "Checks for equality with the object’s `code` field.",
             "type": {
               "kind": "SCALAR",
               "name": "String",
@@ -25506,6 +25544,20 @@
               }
             },
             "defaultValue": null
+          },
+          {
+            "name": "code",
+            "description": null,
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "defaultValue": null
           }
         ],
         "interfaces": null,
@@ -30387,6 +30439,16 @@
         "inputFields": [
           {
             "name": "name",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "code",
             "description": null,
             "type": {
               "kind": "SCALAR",

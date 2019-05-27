@@ -36,6 +36,7 @@ export interface Countries_countries_nodes {
   nodeId: string;
   id: any;
   name: string;
+  code: string;
   createdAt: any;
   updatedAt: any;
 }

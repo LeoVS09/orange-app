@@ -4,18 +4,43 @@
          <div v-if="!scrollTop || isScroll" :class="{'top-bar': true, 'scrolled': scrollTop ? isScroll : false }">
             <Logo :click="clickHome" class="top-bar--logo"/>
             <div class="top-bar--menu">
-               <span @click="clickProblems">Problems</span>
-               <span @click="clickContests">Contests</span>
+               <Button
+                  class="top-bar--item"
+                  @click="clickProblems"
+                  simple
+                  borderHighlight
+                  bold
+                  maxHeight
+                  biggerFont
+                  :active="isProblemsRoute"
+               >Problems</Button>
+               <Button
+                  class="top-bar--item"
+                  @click="clickContests"
+                  simple
+                  simpleActive
+                  borderHighlight
+                  bold
+                  maxHeight
+                  biggerFont
+                  :active="isContestsRoute"
+               >Contests</Button>
             </div>
-            <div class="top-bar--profile" @click="clickProfile">
-               <span class="top-bar--profile-text">{{profileText}}</span>
-               <Icon type="menu" class="top-bar--profile-icon"/>
+            <div class="top-bar--profile">
+               <span class="top-bar--profile-text" @click="clickProfile">{{profileText}}</span>
+               <Button
+                  icon="menu"
+                  class="top-bar--menu-icon"
+                  @click="onMenuIconClick"
+                  simple
+                  onlyIcon
+               />
             </div>
          </div>
       </transition>
       <transition name="fade-down">
          <div
-            v-if="calcShowProfileActions"
+            v-if="isMenuVisible"
             class="top-bar--profile-actions-back">
             <div class="top-bar--profile-actions">
                <ul>
@@ -32,7 +57,7 @@
 <script lang="ts">
    import Vue from 'vue'
    import {Component, Prop} from 'vue-property-decorator'
-   import {Logo, Icon} from '../../components'
+   import {Logo, MaterialIcon, Button} from '@/components'
    import {Getter} from 'vuex-class'
    import {UserProfile} from "@/models"
    import * as actions from '@/store/actionTypes';
@@ -45,8 +70,9 @@
 
    @Component({
       components: {
-         Icon,
-         Logo
+         Icon: MaterialIcon,
+         Logo,
+         Button
       }
    })
    export default class TopBar extends Vue {
@@ -93,8 +119,16 @@
          return name;
       }
 
-      get calcShowProfileActions() {
-         return this.isProfileActionsHover && !this.isActionCompleted && !!this.userData && (this.isScroll || !this.scrollTop)
+      get isMenuVisible() {
+         return this.isProfileActionsHover &&
+            !this.isActionCompleted &&
+            !!this.userData &&
+            (this.isScroll || !this.scrollTop)
+      }
+
+      onMenuIconClick(){
+         console.log('click')
+         // TODO
       }
 
       startHoverProfile(): boolean {
@@ -102,8 +136,8 @@
             return this.isProfileActionsHover
 
          this.isProfileActionsHover = true;
-         const showProfileActions = this.calcShowProfileActions;
-         this.$emit("update:showProfileActions", showProfileActions);
+         const showProfileActions = this.isMenuVisible;
+         this.$emit("update:is-menu-visible", showProfileActions);
 
          return this.isProfileActionsHover
       }
@@ -111,8 +145,8 @@
       endHoverProfile() {
          this.isProfileActionsHover = false;
          this.isActionCompleted = false;
-         const showProfileActions = this.calcShowProfileActions;
-         this.$emit("update:showProfileActions", showProfileActions);
+         const showProfileActions = this.isMenuVisible;
+         this.$emit("update:is-menu-visible", showProfileActions);
 
          return this.isProfileActionsHover
       }
@@ -131,8 +165,17 @@
          this.$router.push({name: ROUTES.HOME});
       }
 
+      get isProblemsRoute(){
+         return this.$route.name === ROUTES.PROBLEMS
+      }
+
+      get isContestsRoute(){
+         // return this.$route.name === ROUTES.CONTESTS
+         return false
+      }
+
       clickProblems() {
-         this.$router.push({name: ROUTES.HOME});
+         this.$router.push({name: ROUTES.PROBLEMS});
       }
 
       clickContests() {
@@ -207,17 +250,25 @@
          }
       }
 
+      &--item {
+         font-size: 1.1rem;
+      }
+
       &--profile {
          margin-right: 1rem;
          margin-top: 0.3rem;
-         cursor: pointer;
+         display: flex;
+         flex-direction: row;
          font-size: 1.7rem;
+         align-items: baseline;
 
          &-text {
             color: $secondary-text-color;
             font-size: 0.8rem;
+            padding: 0 0.3rem;
+            cursor: pointer;
             position: relative;
-            top: -0.3em;
+            top: -0.2rem;
 
             &:hover {
                color: $active-color

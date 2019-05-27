@@ -1,5 +1,9 @@
 <template>
-   <div class="button"
+   <div :class="{
+      'button': true,
+      'max-width': maxWidth,
+      'max-height': maxHeight,
+   }"
         @click="onClick"
         @mouseover="onMouseOver"
         @mouseleave="onMouseLeave"
@@ -14,26 +18,33 @@
             active,
             circle,
             'max-width': maxWidth,
+            'max-height': maxHeight,
             'another-hover': isAnotherButtonHovered,
-            'gradient-highlight': gradientHighlight,
+            'border-highlight': borderHighlight,
+            'gradient-highlight': borderHighlight ? false : gradientHighlight,
             'text-can-fade': textCanFade,
             'text-not-faded': !fadeText,
             secondary,
+            ghost,
             bold,
+            'bigger-font': biggerFont,
             'no-active-bold': noActiveBold,
             'simple-active': simpleActive,
             contrast,
             'text-on-hover': textOnHover,
             'static-size': staticSize,
             'icon-left': !!icon && iconLeft,
-            'icon-right': !!icon && !iconLeft
+            'icon-right': !!icon && !iconLeft,
+            'only-icon': onlyIcon,
+            'left-align': leftAlign,
+
          }">
          <div class="button--content">
             <span v-if="!!icon && iconLeft">
               <Icon :type="icon" class="button--icon button--icon-left"/>
             </span>
             <transition name="text-fade">
-               <span v-if="!fadeText" class="button--text"><slot>Submit</slot></span>
+               <span v-if="!fadeText" class="button--text"><slot></slot></span>
             </transition>
             <span v-if="!!icon && !iconLeft">
               <Icon :type="icon" class="button--icon button--icon-right"/>
@@ -47,7 +58,7 @@
    import Vue from 'vue'
    import {Component, Prop, Mixins} from 'vue-property-decorator'
    import Spinner from './Spinner.vue'
-   import Icon from './Icon.vue'
+   import Icon from './icons/MaterialIcon.vue'
    import {randomId} from './utils'
    import {ButtonEvent, ButtonEvents} from './types'
    import ButtonBase from './mixins/inputs/baseButton'
@@ -113,6 +124,14 @@
 
    .button {
 
+      &.max-width {
+         width: 100%;
+      }
+
+      &.max-height {
+         height: 100%;
+      }
+
       &--icon {
          font-size: 1rem;
          color: $button-text-color;
@@ -134,8 +153,18 @@
          overflow: hidden;
          user-select: none;
 
+         &.bigger-font {
+            font-size: $button-bigger-size;
+         }
+
          &.bold {
             font-weight: bold;
+         }
+
+         &.left-align {
+            .button--content {
+               text-align: left;
+            }
          }
 
          &.gradient-highlight {
@@ -152,6 +181,10 @@
 
          &.max-width {
             width: 100%;
+         }
+
+         &.max-height {
+            height: 100%;
          }
 
          &.another-hover {
@@ -251,6 +284,47 @@
                .button--icon {
                   color: $gradient-start-color;
                }
+
+               &.border-highlight {
+
+                  .button--content, .button--icon {
+                     color: $highlight-text-color;
+                     background: none;
+                  }
+               }
+            }
+         }
+
+         &.border-highlight {
+            border-bottom: 3px solid transparent;
+
+            .button--content, .button--icon {
+               color: $secondary-text-color;
+               background: none;
+            }
+
+            &:hover {
+               border-bottom: 1px solid $highlight-text-color;
+            }
+         }
+
+         &.active.border-highlight {
+
+            &, &.simple, &:hover, &.simple:hover {
+               border-bottom: 2px solid $secondary-text-color;
+
+               .button--content, .button--icon {
+                  color: $secondary-text-color;
+                  background: none;
+               }
+            }
+         }
+
+         &.only-icon {
+            padding: 0.1rem;
+
+            .button--icon {
+               font-size: 1.5rem;
             }
          }
 
@@ -264,6 +338,24 @@
 
                &.no-active-bold {
                   font-weight: 400;
+               }
+            }
+         }
+
+         &.ghost {
+            color: $placeholder-color;
+            font-size: 1rem;
+            padding: 0 0.5rem;
+
+            .button--content, .button--icon {
+               transition: color $default-animation-time;
+               color: $placeholder-color;
+            }
+
+            &:hover {
+
+               .button--content, .button--icon {
+                  color: $secondary-text-color;
                }
             }
          }

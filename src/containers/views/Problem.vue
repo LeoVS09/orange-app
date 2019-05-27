@@ -165,7 +165,7 @@
       Button,
       DataView,
       FloatingButton,
-      Icon,
+      MaterialIcon,
       PageHeader,
       TextSection,
       TextareaAutoresize
@@ -196,7 +196,7 @@
    @Component({
       components: {
          TestView,
-         Icon,
+         Icon: MaterialIcon,
          Button,
          TextareaAutoresize,
          PageHeader,
@@ -484,10 +484,12 @@
 
       &--limits {
          width: 100%;
-         max-width: 20rem;
          box-sizing: border-box;
          margin-left: auto;
          margin-right: auto;
+         display: flex;
+         flex-direction: column;
+         align-items: center;
 
          &-header {
             margin-top: 0;

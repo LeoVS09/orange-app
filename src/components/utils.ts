@@ -9,6 +9,10 @@ export function toStringWhenDefined(value: any): string {
    return '' + value
 }
 
+export function isDate(date: any) {
+   return Object.prototype.toString.call(date) === '[object Date]'
+}
+
 export function formatDate(date: Date) {
    if(!date)
       return ''

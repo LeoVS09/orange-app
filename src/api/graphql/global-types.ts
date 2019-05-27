@@ -29,6 +29,8 @@ export enum CitiesOrderBy {
  * Methods to use when ordering `Country`.
  */
 export enum CountriesOrderBy {
+  CODE_ASC = "CODE_ASC",
+  CODE_DESC = "CODE_DESC",
   CREATED_AT_ASC = "CREATED_AT_ASC",
   CREATED_AT_DESC = "CREATED_AT_DESC",
   ID_ASC = "ID_ASC",
@@ -155,6 +157,7 @@ export interface CityCondition {
 export interface CountryCondition {
   id?: any | null;
   name?: string | null;
+  code?: string | null;
   createdAt?: any | null;
   updatedAt?: any | null;
 }

@@ -14,6 +14,7 @@ export interface SearchCountries_searchCountries_nodes {
   nodeId: string;
   id: any;
   name: string;
+  code: string;
   createdAt: any;
   updatedAt: any;
 }

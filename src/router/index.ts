@@ -10,13 +10,14 @@ import {Component} from "vue-router/types/router"
 import Home from '@/containers/pages/Home.vue'
 import Authorisation from '@/containers/pages/Authorisation.vue'
 import Competitions from '@/containers/views/Competitions.vue'
-import Problems from '@/containers/views/Problems'
+import Problems from '@/containers/views/Problems.vue'
+import ProblemsList from '@/containers/views/Problems.vue'
 import Profile from '@/containers/views/Profile.vue'
 
 import Problem from '@/containers/views/Problem.vue'
 import * as actions from '@/store/actionTypes';
-import Countries from '@/containers/views/Countries'
-import Country from '@/containers/views/Country'
+import Countries from '@/containers/views/Countries.vue'
+import Country from '@/containers/views/Country.vue'
 import SignIn from '@/containers/views/SignIn.vue'
 import SignUp from '@/containers/views/SignUp.vue'
 
@@ -36,7 +37,7 @@ const router = new Router({
             {
                name: ROUTES.HOME,
                path: '',
-               component: Problems as Component
+               component: ProblemsList as Component
             },
             {
                name: ROUTES.COMPETITIONS,
