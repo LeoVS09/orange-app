@@ -2,7 +2,10 @@ import * as fragmentTypes from "@/api/graphql/fragments/types";
 import { UserType} from "@/models";
 import {PartialUserProfile} from "@/models/user";
 
-export function responseToPartialUserProfile(p: fragmentTypes.PartialProfile): PartialUserProfile {
+export function responseToPartialUserProfile(p: fragmentTypes.PartialProfile | undefined | null): PartialUserProfile | undefined | null {
+   if(!p)
+      return p
+
    if(!p.user || !p.user.name)
       throw new Error('Profile not have user')
 

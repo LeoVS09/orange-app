@@ -1,7 +1,7 @@
 <template>
    <div class="country">
       <PageHeader
-         :breadcrumbs="[{[$t('Countries')]: {name: ROUTES.COUNTRIES}}]"
+         :breadcrumbs="[{[$t('Contests')]: {name: ROUTES.CONTESTS}}]"
          :created="model && model.createdAt"
          :modified="model && model.updatedAt"
          v-model="model && model.name"
@@ -10,58 +10,52 @@
       <ModelInfo
          v-if="model"
          v-model="model"
+         :exclude="['creatorId']"
       />
 
-      <Section>
-         <list
-            :headers="[
-               {'name': $t('Name')},
-               {'updatedAt': $t('Updated')}
-            ]"
-            :items="items"
-            :isCanAdd="isTeacher"
-            inlineAdd
-            :validateAdd="validate"
-            @add="add"
-            @choose-item="chooseItem"
-         />
-      </Section>
+      <ProblemsList
+         :problems="items"
+         :tags="allTags"
+         :loadTags="loadTags"
+         :isTeacher="isTeacher"
+         @add="add"
+         @choose-item="chooseItem"
+      />
    </div>
 </template>
 
 <script lang="ts">
    import {Component, Prop, Mixins} from 'vue-property-decorator'
    import {Getter, Action, State} from 'vuex-class'
-   import {Country} from "@/models"
+   import {Country, PartialProblem, Tag} from "@/models"
    import * as actions from '@/store/actionTypes';
    import {PageHeader, Button, List, Tags, Input, ModelInfo, Section, TextSection, PageHeaderAction, Filters, DataView} from '@/components';
    import {ROUTES} from '@/router'
    import ModelById from "@/components/mixins/ModelById";
-   import {City} from "@/models/country";
    import {RouterPush} from "@/components/decorators";
    import {actionName, MODULES} from '@/store/actionTypes';
+   import {FullContest} from "@/models/contest";
+   import ProblemsList from '@/containers/ProblemsList.vue'
 
    @Component({
       components: {
          PageHeader,
          Button,
-         Filters,
-         List,
-         Tags,
-         Section,
-         TextSection,
+         ProblemsList,
          Action: PageHeaderAction,
          DataView,
          ModelInfo
       }
    })
-   export default class CountryView extends Mixins(ModelById) {
+   export default class ContestView extends Mixins(ModelById) {
 
-      @Getter('countryById') modelById: (id: string) => Country;
+      @Getter('contestById') modelById: (id: string) => FullContest;
 
       @Getter isTeacher: boolean;
+      @Getter allTags: Array<Tag>;
 
-      @Action(actionName(MODULES.COUNTRIES, actions.READ)) loadModel: (id: string) => Promise<boolean>
+      @Action(actionName(MODULES.CONTESTS, actions.READ)) loadModel: (id: string) => Promise<boolean>
+      @Action(actionName(MODULES.TAGS, actions.READ_LIST)) loadTags: () => void
 
       ROUTES = ROUTES
 
@@ -78,11 +72,11 @@
          if (!this.model)
             return []
 
-         return this.model.cities || []
+         return (this.model as FullContest).problems || []
       }
 
-      @RouterPush(ROUTES.CITY)
-      chooseItem: (city: City) => void
+      @RouterPush(ROUTES.PROBLEM)
+      chooseItem: (problem: PartialProblem) => void
 
    }
 </script>

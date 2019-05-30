@@ -4,6 +4,7 @@ import {PartialProblem_problemsTags_nodes} from "@/api/graphql/fragments/types";
 import {responseToPartialUserProfile} from "@/store/modules/problems/utils";
 import {PartialProblem_problemsTags_nodes_tag} from "@/api/graphql/fragments/types";
 import {FullProblem_tests_nodes} from "@/api/graphql/fragments/types";
+import {PartialUserProfile} from "@/models/user";
 
 export function responseToPartialProblem(p: fragmentTypes.PartialProblem | null | undefined): PartialProblem | null | undefined {
    if(!p)
@@ -21,8 +22,8 @@ export function responseToPartialProblem(p: fragmentTypes.PartialProblem | null 
       createdAt: p.createdAt,
       updatedAt: p.updatedAt,
       publicationDate: p.publicationDate,
-      author: responseToPartialUserProfile(p.author),
-      tester: p.tester && responseToPartialUserProfile(p.tester),
+      author: responseToPartialUserProfile(p.author) as PartialUserProfile,
+      tester: p.tester && responseToPartialUserProfile(p.tester) as PartialUserProfile,
       tags: tags.map(t => ({ ...t.tag })) as Array<PartialProblem_problemsTags_nodes_tag>,
       testingStatus: ProblemTestingStatus.NotTested // TODO: make testing in database
    }

@@ -412,6 +412,32 @@ export interface ContestCondition {
 }
 
 /**
+ * An input for mutations affecting `Contest`
+ */
+export interface ContestInput {
+  name: string;
+  text?: string | null;
+  creatorId: any;
+  startDate?: any | null;
+  endDate?: any | null;
+  startPublicationDate?: any | null;
+  endPublicationDate?: any | null;
+}
+
+/**
+ * Represents an update to a `Contest`. Fields that are set will be updated.
+ */
+export interface ContestPatch {
+  name?: string | null;
+  text?: string | null;
+  creatorId?: any | null;
+  startDate?: any | null;
+  endDate?: any | null;
+  startPublicationDate?: any | null;
+  endPublicationDate?: any | null;
+}
+
+/**
  * A condition to be used against `Country` object types. All fields are tested for equality and combined with a logical ‘and.’
  */
 export interface CountryCondition {
@@ -444,6 +470,14 @@ export interface CountryPatch {
 export interface CreateCityInput {
   clientMutationId?: string | null;
   city: CityInput;
+}
+
+/**
+ * All input for the create `Contest` mutation.
+ */
+export interface CreateContestInput {
+  clientMutationId?: string | null;
+  contest: ContestInput;
 }
 
 /**
@@ -506,6 +540,14 @@ export interface CreateUniversityInput {
  * All input for the `deleteCity` mutation.
  */
 export interface DeleteCityInput {
+  clientMutationId?: string | null;
+  id: any;
+}
+
+/**
+ * All input for the `deleteContest` mutation.
+ */
+export interface DeleteContestInput {
   clientMutationId?: string | null;
   id: any;
 }
@@ -814,6 +856,15 @@ export interface UniversityPatch {
 export interface UpdateCityInput {
   clientMutationId?: string | null;
   patch: CityPatch;
+  id: any;
+}
+
+/**
+ * All input for the `updateContest` mutation.
+ */
+export interface UpdateContestInput {
+  clientMutationId?: string | null;
+  patch: ContestPatch;
   id: any;
 }
 

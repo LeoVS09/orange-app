@@ -11,6 +11,7 @@
          <template v-if="reflectedButtons">
             <Button
                v-for="item in reflectedButtons"
+               :key="item.label"
                class="button-group--item"
                :hovered="hovered"
                :secondary="secondary"

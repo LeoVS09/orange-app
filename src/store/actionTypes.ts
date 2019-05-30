@@ -7,16 +7,14 @@ export * from './modules/profile/actionTypes'
 // PROBLEMS
 export * from './modules/problems/actionTypes'
 
-// TAGS
-export * from './modules/tags/actionTypes'
-
-// COUNTRIES, CITIES, PROBLEMS, TAGS, UNIVERSITIES
+// COUNTRIES, CITIES, PROBLEMS, TAGS, UNIVERSITIES, CONTESTS, TAGS
 export * from './CrudModule/actionTypes'
 
 export enum MODULES {
    COUNTRIES = 'countries',
    CITIES = 'cities',
    PROBLEMS = 'problems',
+   CONTESTS = 'contests',
    TAGS = 'tags',
    UNIVERSITIES = 'universities'
 }

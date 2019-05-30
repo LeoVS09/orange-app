@@ -2,8 +2,8 @@
    <div class="city">
       <PageHeader
          :breadcrumbs="[
-            {'Countries': {name: ROUTES.COUNTRIES}},
-            { [parent ? parent.name : 'Country']: {name: ROUTES.COUNTRY, params: {id: model && model.countryId}}}
+            {[$t('Countries')]: {name: ROUTES.COUNTRIES}},
+            { [parent ? parent.name : $t('Country')]: {name: ROUTES.COUNTRY, params: {id: model && model.countryId}}}
          ]"
          :created="model && model.createdAt"
          :modified="model && model.updatedAt"
@@ -13,9 +13,9 @@
       <Section>
          <list
             :headers="[
-               {'longName': 'Name'},
-               {'shortName': 'Short'},
-               {'updatedAt': 'Date'}
+               {'longName': $t('Name')},
+               {'shortName': $t('Short')},
+               {'updatedAt': $t('Updated')}
             ]"
             :items="items"
             :isCanAdd="isTeacher"

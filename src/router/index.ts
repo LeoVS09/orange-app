@@ -5,7 +5,8 @@ import Router from 'vue-router'
 import {Component} from "vue-router/types/router"
 import Home from '@/layouts/Home.vue'
 import Authorisation from '@/layouts/Authorisation.vue'
-import Competitions from '@/pages/Competitions.vue'
+import Contests from '@/pages/Contests.vue'
+import Contest from '@/pages/Contest.vue'
 import Problems from '@/pages/Problems.vue'
 import Profile from '@/pages/Profile.vue'
 import City from '@/pages/City.vue'
@@ -16,7 +17,7 @@ import University from '@/pages/University.vue'
 import SignIn from '@/pages/SignIn.vue'
 import SignUp from '@/pages/SignUp.vue'
 
-import guard, {problemMiddleware} from "./middlewares";
+import guard, {contestMiddleware, problemMiddleware} from "./middlewares";
 
 export {
    ROUTES
@@ -39,15 +40,29 @@ const router = new Router({
                component: Problems as Component
             },
             {
-               name: ROUTES.COMPETITIONS,
-               path: '/competitions',
-               component: Competitions as Component
+               name: ROUTES.CONTESTS,
+               path: '/contests',
+               component: Contests as Component
+            },
+            {
+               name: ROUTES.CONTEST,
+               path: '/contest/:id',
+               component: Contest as Component,
+               props: true
+            },
+            {
+               name: ROUTES.CREATE_CONTEST,
+               path: '/contest/create',
+               component: Contest as Component,
+               beforeEnter: contestMiddleware,
+               props: true
             },
             {
                path: '/problem/create',
                name: ROUTES.CREATE_PROBLEM,
                component: Problem as Component,
-               beforeEnter: problemMiddleware
+               beforeEnter: problemMiddleware,
+               props: true
             },
             {
                path: '/problem/:id',

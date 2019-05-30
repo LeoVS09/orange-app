@@ -71,9 +71,5 @@ export default {
 
    [mutationTypes.ADD_PROBLEM_ERROR](state: ProblemsState, error: ProblemError) {
       state.errorHistory.push(error)
-   },
-
-   [mutationTypes.SET_PROBLEMS_FILTER](state: ProblemsState, filter: ProblemFilter) {
-      state.filter = filter
    }
 }

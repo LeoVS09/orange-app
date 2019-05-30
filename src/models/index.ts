@@ -15,7 +15,7 @@ export {
    ResultOfTest,
    defaultTest
 } from "./tests"
-export {Contest, Requirements} from "./contest";
+export {PartialContest, Requirements} from "./contest";
 export {Country, City} from "./country";
 export {University} from './university'
 

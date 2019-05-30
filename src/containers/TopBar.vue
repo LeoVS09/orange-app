@@ -13,7 +13,7 @@
                   maxHeight
                   biggerFont
                   :active="isProblemsRoute"
-               >Problems</Button>
+               >{{'Problems' | translate}}</Button>
                <Button
                   class="top-bar--item"
                   @click="clickContests"
@@ -24,10 +24,16 @@
                   maxHeight
                   biggerFont
                   :active="isContestsRoute"
-               >Contests</Button>
+               >{{'Contests' | translate}}</Button>
             </div>
             <div class="top-bar--profile">
                <span class="top-bar--profile-text" @click="clickProfile">{{profileText}}</span>
+               <Button
+                  simple
+                  icon="public"
+                  class="top-bar--locale"
+                  @click="toggleLocale"
+               >{{locale === Translation.RU ? Translation.EN : Translation.RU}}</Button>
                <Button
                   icon="menu"
                   class="top-bar--menu-icon"
@@ -44,9 +50,9 @@
             class="top-bar--profile-actions-back">
             <div class="top-bar--profile-actions">
                <ul>
-                  <li @click="clickProfile">Profile</li>
-                  <li @click="clickCountries">Countries</li>
-                  <li @click="clickSignOut">Sign Out</li>
+                  <li @click="clickProfile">{{'Profile' | translate}}</li>
+                  <li @click="clickCountries">{{'Countries' | translate}}</li>
+                  <li @click="clickSignOut">{{'Sign Out' | translate}}</li>
                </ul>
             </div>
          </div>
@@ -57,12 +63,14 @@
 <script lang="ts">
    import Vue from 'vue'
    import {Component, Prop} from 'vue-property-decorator'
-   import {Logo, MaterialIcon, Button} from '@/components'
-   import {Getter} from 'vuex-class'
+   import {Button, Logo, MaterialIcon} from '@/components'
+   import {Action, Getter} from 'vuex-class'
    import {UserProfile} from "@/models"
-   import * as actions from '@/store/actionTypes';
    import {ROUTES} from '@/router'
-   import {IListener, isPredictiveHover, onMouseOutOfWindow, onPredictiveHover, onScroll} from "@/components/predictive";
+   import {IListener, onPredictiveHover, onScroll} from "@/components/predictive";
+   import {Translation} from "@/store/modules/ui/state";
+   import * as actions from '@/store/actionTypes'
+   import {RouterPush} from "@/components/decorators";
 
    // TODO: use router links
 
@@ -77,13 +85,17 @@
    })
    export default class TopBar extends Vue {
 
-      @Getter('profile') userData?: UserProfile;
-
       @Prop({
          type: Boolean,
          default: false
       })
       showProfileActions: boolean;
+
+      @Getter('profile') userData?: UserProfile;
+
+      @Getter locale: Translation
+
+      @Action(actions.SET_LOCALE) setLocale: (locale: Translation) => void
 
       isProfileActionsHover = this.showProfileActions;
       isScroll = false;
@@ -91,6 +103,7 @@
       isActionCompleted = false;
 
       ROUTES = ROUTES
+      Translation = Translation
 
       created() {
          mousemoveListener = onPredictiveHover(
@@ -110,7 +123,7 @@
 
       get profileText() {
          if (!this.userData) {
-            return 'Sign In'
+            return this.$t('Sign In')
          }
 
          let name = this.userData.firstName;
@@ -170,17 +183,14 @@
       }
 
       get isContestsRoute(){
-         // return this.$route.name === ROUTES.CONTESTS
-         return false
+         return this.$route.name === ROUTES.CONTESTS
       }
 
-      clickProblems() {
-         this.$router.push({name: ROUTES.PROBLEMS});
-      }
+      @RouterPush(ROUTES.PROBLEMS)
+      clickProblems: () => void
 
-      clickContests() {
-         console.log("clickContests")
-      }
+      @RouterPush(ROUTES.CONTESTS)
+      clickContests: () => void
 
       clickProfile() {
          if (this.userData) {
@@ -191,13 +201,19 @@
          this.isActionCompleted = true;
       }
 
-      clickCountries(){
-         this.$router.push({name: ROUTES.COUNTRIES})
-      }
+      @RouterPush(ROUTES.COUNTRIES)
+      clickCountries: () => void
 
       clickSignOut() {
          this.$store.dispatch(actions.LOGOUT_FROM_PROFILE);
          this.isActionCompleted = true;
+      }
+
+      toggleLocale(){
+         if(this.locale === Translation.RU)
+            this.setLocale(Translation.EN)
+         else
+            this.setLocale(Translation.RU)
       }
    }
 </script>
@@ -252,6 +268,11 @@
 
       &--item {
          font-size: 1.1rem;
+      }
+
+      &--locale {
+         position: relative;
+         top: -0.15rem;
       }
 
       &--profile {

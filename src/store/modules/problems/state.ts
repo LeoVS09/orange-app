@@ -11,6 +11,5 @@ export enum ProblemFilter {
 
 
 export class ProblemsState extends CrudState<FullProblem | PartialProblem> {
-   filter: ProblemFilter = ProblemFilter.All
    errorHistory: Array<ProblemError> = []
 }

@@ -1,1 +1,0 @@
-export const TOGGLE_FILER_TAG = 'TOGGLE_FILER_TAG'

@@ -1,15 +1,15 @@
 <template>
    <div class="countries">
       <PageHeader>
-         <template #text>Countries</template>
+         <template #text>{{'Countries' | translate}}</template>
       </PageHeader>
 
       <Section>
          <list
             :headers="[
-               {'name': 'Name'},
-               {'code': 'Code'},
-               {'updatedAt': 'Date'}
+               {'name': $t('Name')},
+               {'code': $t('Code')},
+               {'updatedAt': $t('Updated')}
             ]"
             :items="items"
             :isCanAdd="isTeacher"

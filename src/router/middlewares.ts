@@ -9,6 +9,7 @@ import {FullProblem, PartialProblem} from "@/models";
 import {ModelReadState} from "@/store/modules/statuses/types";
 import {GET_READ_STATE} from "@/store/modules/statuses/getters";
 import {STATUS_SCOPES} from "@/store/statusScopes";
+import {FullContest} from "@/models/contest";
 
 const guard = (useAuthComponent: boolean): Router.NavigationGuard =>
    (to: Router.Route, from: Router.Route, next: Function) => {
@@ -57,6 +58,17 @@ const guard = (useAuthComponent: boolean): Router.NavigationGuard =>
 }
 
 export default guard
+
+export function contestMiddleware(to: Router.Route, from: Router.Route, next: Function) {
+   switch (to.name) {
+      case ROUTES.CREATE_CONTEST:
+         store.dispatch(actionName(MODULES.CONTESTS, actions.ADD_MODEL_FOR_CREATE))
+            .then((contest: FullContest) => {
+               to.params.id = contest.id
+               next()
+            })
+   }
+}
 
 export function problemMiddleware(to: Router.Route, from: Router.Route, next: Function){
 

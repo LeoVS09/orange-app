@@ -3,42 +3,19 @@
       <PageHeader>
          <template #text>{{'Problems' | translate}}</template>
          <template #actions>
-            <Action v-if="isTeacher" icon="add" @click="add">Add problem</Action>
+            <Action v-if="isTeacher" icon="add" @click="add">{{'Add problem' | translate}}</Action>
          </template>
       </PageHeader>
 
-      <Tags
-         :values="allTags"
-         @choose="toggleFilterTag"
-         :activeTags="filterTags"
-         :load="loadTags"
+      <ProblemsList
+         :problems="items"
+         :tags="allTags"
+         :loadProblems="loadItems"
+         :loadTags="loadTags"
+         :isTeacher="isTeacher"
+         @add="add"
+         @choose-item="chooseItem"
       />
-
-      <Section>
-         <Filters
-            :active="activeFilter"
-            :buttons="[
-                  { 'All': ProblemFilter.All },
-                  { 'Public': ProblemFilter.Public },
-                  { 'Not public': ProblemFilter.NotPublic },
-                  { 'Resolved': ProblemFilter.Resolved }
-               ]"
-            @click="setFilter"
-         />
-         <list
-            :headers="[
-               {'name': 'Name'},
-               {'author': 'Author'},
-               {'date': 'Date'},
-            ]"
-            :items="items"
-            :formatData="formatItem"
-            :isCanAdd="isTeacher"
-            @add="add"
-            @choose-item="chooseItem"
-            :load="loadItems"
-         />
-      </Section>
    </div>
 </template>
 
@@ -48,27 +25,23 @@
    import {Getter, Action, State} from 'vuex-class'
    import {FullProblem, PartialProblem} from "@/models"
    import * as actions from '@/store/actionTypes';
-   import {PageHeader, Button, List, Tags, Section, PageHeaderAction, Filters} from '@/components';
+   import {PageHeader, PageHeaderAction} from '@/components';
    import {ROUTES} from '@/router'
-   import {RootState} from "@/store/state";
-   import {ProblemFilter} from "@/store/modules";
    import {Tag} from "@/models/problems";
    import {MODULES, actionName} from "@/store/actionTypes";
+   import {RouterPush} from "@/components/decorators";
+   import ProblemsList from '@/containers/ProblemsList.vue'
 
    @Component({
       components: {
          PageHeader,
-         Button,
-         Filters,
-         List,
-         Tags,
-         Section,
+         ProblemsList,
          Action: PageHeaderAction
       }
    })
-   export default class ProblemsList extends Vue {
+   export default class Problems extends Vue {
 
-      @Getter('filteredProblems') items: Array<FullProblem | PartialProblem>;
+      @Getter('problems') items: Array<FullProblem | PartialProblem>;
       @Getter isTeacher: boolean;
       @Getter allTags: Array<Tag>;
 
@@ -77,40 +50,12 @@
 
       @Action(actionName(MODULES.TAGS, actions.READ_LIST)) loadTags: () => void
 
-      @Action(actionName(MODULES.TAGS, actions.TOGGLE_FILER_TAG))
-      toggleFilterTag: (tag: Tag) => void
 
-      @Action(actionName(MODULES.PROBLEMS, actions.SET_PROBLEMS_FILTER))
-      setFilter: (filter: ProblemFilter) => void
+      @RouterPush(ROUTES.CREATE_PROBLEM)
+      add: () => void
 
-      @Getter
-      activeFilter: ProblemFilter
-
-      @Getter
-      filterTags: Array<Tag>
-
-      ProblemFilter = ProblemFilter
-
-      formatItem(item: FullProblem) {
-         return {
-            ...item,
-            date: item.updatedAt ? item.updatedAt : item.createdAt,
-            author: item.author.login
-         }
-      }
-
-      add() {
-         this.$router.push({name: ROUTES.CREATE_PROBLEM});
-      }
-
-      chooseItem(problem: FullProblem) {
-         this.$router.push({
-            name: ROUTES.PROBLEM,
-            params: {
-               id: problem.id
-            }
-         })
-      }
+      @RouterPush(ROUTES.PROBLEM)
+      chooseItem: (item: PartialProblem) => void
 
    }
 </script>

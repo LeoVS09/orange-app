@@ -75,7 +75,7 @@
 
       get breadcrumbs(){
          let result: {[key: string]: any} = [
-            {'Country': {name: ROUTES.COUNTRIES}},
+            {[this.$t('Country') as string]: {name: ROUTES.COUNTRIES}},
          ]
 
          const country = this.country
@@ -96,7 +96,7 @@
             return result
 
          result.push({
-            'City': {name: ROUTES.CITY, params: {id: model.cityId}}
+            [this.$t('City') as string]: {name: ROUTES.CITY, params: {id: model.cityId}}
          })
 
          return result

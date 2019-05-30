@@ -6,6 +6,7 @@ import countries from './countries'
 import cities from './cities'
 import tags from './tags'
 import universities from './universities'
+import contests from './contests'
 
 export default {
    ui,
@@ -15,7 +16,8 @@ export default {
    countries,
    cities,
    tags,
-   universities
+   universities,
+   contests
 }
 
 export {

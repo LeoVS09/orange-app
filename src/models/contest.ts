@@ -7,7 +7,7 @@ export interface Requirements {
    course?: number
 }
 
-export interface Contest {
+export interface PartialContest {
    id: string,
    name: string
    // TODO: rename to description
@@ -15,6 +15,17 @@ export interface Contest {
    creatorId: string,
    creator: PartialUserProfile,
 
+   startDate: Date | null,
+   endDate: Date | null,
+   startPublicationDate: Date | null,
+   endPublicationDate: Date | null,
+
+   createdAt: Date,
+   updatedAt: Date,
+
+}
+
+export interface FullContest extends PartialContest{
    problems: Array<PartialProblem> | null,
    // TODO: rename to contestants
    profiles: Array<PartialUserProfile> | null,
@@ -25,13 +36,6 @@ export interface Contest {
       team?: Requirements
    },
 
-   startDate: Date | null,
-   endDate: Date | null,
-   startPublicationDate: Date | null,
-   endPublicationDate: Date | null,
-
-   createdAt: Date,
-   updatedAt: Date,
    place?: string,
    rules?: Array<string>,
    comments?: Array<string>,

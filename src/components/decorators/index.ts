@@ -18,11 +18,12 @@ export const RouterPush = (decoratorOptions: RouterPushOptions | string) => crea
    if (!options.methods)
       options.methods = {}
 
-   options.methods[key] = function (value: { [key: string]: any }) {
+   options.methods[key] = function (value?: { [key: string]: any }) {
       let resultParams: { [key: string]: any } = {}
 
-      for (const key of params)
-         resultParams[key] = value[key]
+      if (value)
+         for (const key of params)
+            resultParams[key] = value[key]
 
       return this.$router.push({
          name,

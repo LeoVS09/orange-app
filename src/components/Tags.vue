@@ -177,7 +177,8 @@
 
          span {
             width: 100%;
-            max-width: 60rem;
+            max-width: calc(#{$max-content-width} - #{2*$content-padding-sides});
+            box-sizing: border-box;
             margin: 0 auto;
             height: 1px;
             background: linear-gradient(to right, transparent 0%, $divider-line-color 15%, $divider-line-color 85%, transparent 100%);

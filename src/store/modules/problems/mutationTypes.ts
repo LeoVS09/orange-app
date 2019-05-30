@@ -7,4 +7,3 @@ export const DELETE_TEST = 'DELETE_TEST';
 export const SET_BY_ID_TEST = 'SET_BY_ID_TEST';
 
 export const ADD_PROBLEM_ERROR = 'ADD_PROBLEM_ERROR'
-export const SET_PROBLEMS_FILTER = 'SET_PROBLEMS_FILTER';

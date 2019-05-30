@@ -33,6 +33,10 @@ import createUniversityGql from './createUniversity.graphql'
 import updateUniversityGql from './updateUniversity.graphql'
 import deleteUniversityGql from './deleteUniversity.graphql'
 
+import createContestGql from './createContest.graphql'
+import updateContestGql from './updateContest.graphql'
+import deleteContestGql from './deleteContest.graphql'
+
 import * as types from "./types";
 import {generateMutation} from "@/api/graphql/utils";
 
@@ -182,4 +186,21 @@ export const updateUniversity = generateMutation<types.updateUniversityVariables
 export const deleteUnviersity = generateMutation<types.deleteUniversityVariables, types.deleteUniversity, types.deleteUniversity_deleteUniversity_university>(
    deleteUniversityGql,
    result => result.deleteUniversity && result.deleteUniversity.university
+)
+
+// ------------------------------------------------- Contest -----------------------------------------------------------
+
+export const createContest = generateMutation<types.createContestVariables, types.createContest, types.createContest_createContest_contest>(
+   createContestGql,
+   result => result.createContest && result.createContest.contest
+)
+
+export const updateContest = generateMutation<types.updateContestVariables, types.updateContest, types.updateContest_updateContest_contest>(
+   updateContestGql,
+   result => result.updateContest && result.updateContest.contest
+)
+
+export const deleteContest = generateMutation<types.deleteContestVariables, types.deleteContest, types.deleteContest_deleteContest_contest>(
+   deleteContestGql,
+   result => result.deleteContest && result.deleteContest.contest
 )

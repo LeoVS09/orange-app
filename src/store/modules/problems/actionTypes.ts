@@ -1,5 +1,3 @@
-export const SET_PROBLEMS_FILTER = 'SET_PROBLEMS_FILTER';
-
 export const UPLOAD_CODE = 'UPLOAD_CODE';
 
 export const ADD_FOR_CREATE_TEST = 'ADD_FOR_CREATE_TEST';

@@ -1,17 +1,12 @@
 import * as API from "@/api";
-import {defaultProblem, defaultTest, FullProblem, PartialProblem, ResultRunProgram, Test} from "@/models";
-import {IActionContext, RootGetters} from '@/store/state'
+import {defaultProblem, FullProblem, PartialProblem, ResultRunProgram} from "@/models";
+import {IActionContext} from '@/store/state'
 import {ProblemFilter, ProblemsState} from '../state'
 import * as mutations from '../mutationTypes'
 import * as actionTypes from '../actionTypes'
 import {IStartTestingSolutionPayload} from "../mutations";
 import {
-   addModelForCreateAction,
-   createAction,
-   crudActions,
-   deleteAction,
-   editAction,
-   updateAction
+   crudActions
 } from "@/store/CrudModule";
 import {ProblemInput, ProblemsOrderBy} from "@/api/graphql/global-types";
 import {responseToFullProblem, responseToPartialProblem} from "@/store/modules/problems/actions/responseFormat";
@@ -93,11 +88,7 @@ export default {
             status: 0
          } as ResultRunProgram)
       }
-   },
-
-   [actionTypes.SET_PROBLEMS_FILTER]({commit}: IActionContext<ProblemsState>, filter: ProblemFilter) {
-      commit(mutations.SET_PROBLEMS_FILTER, filter)
-   },
+   }
 
 
 }

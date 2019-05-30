@@ -32,7 +32,7 @@
                maxWidth
                maxHeight
                leftAlign
-            >Add</Button>
+            ><slot name="add">Add</slot></Button>
          </div>
 
          <transition-group :name="listTransitionName" tag="div" mode="out-in">
@@ -63,7 +63,7 @@
             :textOnHover="true"
             :gradient-highlight="false"
             :static-size="true"
-         >Previous
+         ><slot name="previous">Previous</slot>
          </Button>
          <div class="list--pages">
             <template
@@ -80,6 +80,7 @@
             </template>
             <Button
                v-for="page in pageNumbers.center"
+               :key="page"
                @click="goToPage(page)"
                :simple="true"
                :active="page === currentPage"
@@ -107,7 +108,7 @@
             :textOnHover="true"
             :gradient-highlight="false"
             :static-size="true"
-         >Next
+         ><slot name="next">Next</slot>
          </Button>
       </div>
    </div>
