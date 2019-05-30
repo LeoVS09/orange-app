@@ -1,0 +1,10 @@
+#import "../fragments/FullProfile.graphql"
+
+query Profile($id: UUID!) {
+   profile(id: $id) {
+      nodeId
+
+      ...FullProfile
+   }
+
+}

@@ -19,6 +19,7 @@ export interface deleteTest_deleteTest_test {
   input: string;
   output: string;
   isPublic: boolean | null;
+  problemId: any;
   createdAt: any;
   updatedAt: any;
 }

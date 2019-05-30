@@ -28,6 +28,19 @@ export interface City_city_universities {
   nodes: (City_city_universities_nodes | null)[];
 }
 
+export interface City_city_country {
+  __typename: "Country";
+  /**
+   * A globally unique identifier. Can be used in various places throughout the system to identify this single value.
+   */
+  nodeId: string;
+  id: any;
+  name: string;
+  code: string;
+  createdAt: any;
+  updatedAt: any;
+}
+
 export interface City_city {
   __typename: "City";
   /**
@@ -43,6 +56,10 @@ export interface City_city {
    * Reads and enables pagination through a set of `University`.
    */
   universities: City_city_universities;
+  /**
+   * Reads a single `Country` that is related to this `City`.
+   */
+  country: City_city_country | null;
 }
 
 export interface City {

@@ -3,22 +3,28 @@
 import Vue from 'vue'
 import App from './App.vue'
 import { sync } from 'vuex-router-sync'
-import store from './store/index'
+import store from './store'
+import setTranslations from './translations'
 import router from './router'
 import { UIEventEmitter, UIEvents } from './utils/UIEventEmitter'
 // @ts-ignore
 import vClickOutside from 'v-click-outside'
+import Filters from '@/components/filter'
 
 Vue.use(vClickOutside)
+
+setTranslations()
+
 // TODO lodash types
 // @ts-ignore
 import throttle from 'lodash.throttle'
 
 import * as actionTypes from './store/actionTypes'
-
-
+import {formatDate, isDate} from "@/components/utils";
 
 Vue.config.productionTip = false;
+
+Vue.use(Filters)
 
 sync(store, router);
 

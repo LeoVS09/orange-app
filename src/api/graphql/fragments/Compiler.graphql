@@ -1,0 +1,20 @@
+fragment Compiler on Compiler {
+   id
+   name
+   alias
+   code
+   version
+   comment
+   isInterpreter
+   createdAt
+   updatedAt
+   language {
+      id
+      nodeId
+      name
+      alias
+      version
+      createdAt
+      updatedAt
+   }
+}

@@ -1,0 +1,11 @@
+#import "../fragments/Compiler.graphql"
+#import "../fragments/Compiler.graphql"
+
+query Compiler($id: UUID!) {
+   compiler(id: $id) {
+      nodeId
+
+      ...Compiler
+   }
+
+}

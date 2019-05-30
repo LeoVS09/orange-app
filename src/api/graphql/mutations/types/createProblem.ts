@@ -80,6 +80,8 @@ export interface createProblem_createProblem_problem_problemsTags_nodes_tag {
   nodeId: string;
   id: any;
   name: string;
+  createdAt: any;
+  updatedAt: any;
 }
 
 export interface createProblem_createProblem_problem_problemsTags_nodes {
@@ -131,6 +133,7 @@ export interface createProblem_createProblem_problem_tests_nodes {
   input: string;
   output: string;
   isPublic: boolean | null;
+  problemId: any;
   createdAt: any;
   updatedAt: any;
 }

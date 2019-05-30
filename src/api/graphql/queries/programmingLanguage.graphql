@@ -1,0 +1,20 @@
+#import "../fragments/ProgrammingLanguage.graphql"
+#import "../fragments/Compiler.graphql"
+
+query ProgrammingLanguage($id: UUID!) {
+   programmingLanguage(id: $id) {
+      nodeId
+
+      ...ProgrammingLanguage
+
+      compilersByLanguageId {
+         totalCount
+         nodes {
+            nodeId
+
+            ...Compiler
+         }
+      }
+   }
+
+}

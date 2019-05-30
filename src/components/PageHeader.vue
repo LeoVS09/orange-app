@@ -30,15 +30,32 @@
          @input="updateValue"
          :placeholder="placeholder"
       />
+
       <div v-else class="page-header--content">
          <h1>
-            <slot></slot>
-            <slot name="text"></slot>
+            <slot><slot name="text">{{value}}</slot></slot>
          </h1>
          <div class="page-header--actions">
             <slot name="actions"></slot>
          </div>
          <color-line v-if="colorLine" :type="colorLine" />
+      </div>
+
+      <div class="page-header--data" v-if="dataValues">
+         <div class="page-header--data-content">
+            <data-view
+               in-row
+               contrast
+               small
+               :compact="false"
+               :values="dataValues"
+               :order="['Created', 'Modified']"
+               :icons="{
+                  Created: 'publish',
+                  Modified: 'edit'
+               }"
+            />
+         </div>
       </div>
 
    </div>
@@ -48,7 +65,9 @@
    import Vue from 'vue'
    import {Component, Prop, Emit} from 'vue-property-decorator'
    import ColorLine from '@/components/ColorLine.vue'
+   import {formatDate} from "./utils";
    import {ColorLineType, IPropsBreadcrumb} from '@/components/types'
+   import DataView from './DataView.vue'
 
    export interface IVisibleBreadcrumbs {
       name: string
@@ -57,7 +76,8 @@
 
    @Component({
       components:{
-         ColorLine
+         ColorLine,
+         DataView
       }
    })
    export default class PageHeader extends Vue {
@@ -100,6 +120,12 @@
       })
       breadcrumbs?: Array<string | IPropsBreadcrumb>
 
+      @Prop(Date)
+      created?: Date
+
+      @Prop(Date)
+      modified?: Date
+
       ColorLineType = ColorLineType
 
       get visibleBreadcrumbs(): Array<IVisibleBreadcrumbs> {
@@ -127,6 +153,24 @@
       updateValue(event: any) {
          return event.target.value
       }
+
+      get dataValues(){
+         if(!this.created && !this.modified)
+            return
+
+         const created = this.created && formatDate(this.created)
+         const modified = this.modified && formatDate(this.modified)
+
+         let result: {[key: string]: string} = {}
+
+         if(modified)
+            result['Modified'] = modified
+
+         if(created)
+            result['Created'] = created
+
+         return result
+      }
    }
 </script>
 
@@ -140,6 +184,7 @@
       display: flex;
       flex-direction: column;
       min-height: 5rem;
+      position: relative;
 
       &--breadcrumbs {
          width: 100%;
@@ -181,6 +226,25 @@
          padding: 0 2rem;
          box-sizing: border-box;
          max-width: $max-content-width;
+      }
+
+      &--data {
+         position: absolute;
+         bottom: 0.2rem;
+         right: 0;
+         left: 0;
+         width: 100%;
+         display: flex;
+         flex-direction: row;
+
+         &-content {
+            width: 100%;
+            max-width: $max-content-width;
+            padding: 0 2rem;
+            box-sizing: border-box;
+            margin-left: auto;
+            margin-right: auto;
+         }
       }
 
       h1, &--input {

@@ -275,7 +275,7 @@
       }
 
       get pagesCount() {
-         if (this.items.length < this.itemsOnPage)
+         if (this.items.length <= this.itemsOnPage)
             return 0
 
          return Math.ceil(this.items.length / this.itemsOnPage)
@@ -295,18 +295,18 @@
          if (current < middle)
             return {
                center: allPages.slice(0, max),
-               right: {
+               right: count > max ? {
                   n: lastPage,
                   points: true
-               }
+               } : undefined
             }
 
          if (count - current < middle)
             return {
-               left: {
+               left: count > max ? {
                   n: firstPage,
                   points: true
-               },
+               } : undefined,
                center: allPages.slice(allPages.length - max)
             }
 

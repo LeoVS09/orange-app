@@ -3,16 +3,18 @@
       'data-view': true,
       compact,
       'in-row': inRow,
-      'model-info': modelInfo
+      'model-info': modelInfo,
+      contrast,
+      small
    }">
       <div
          class="data-view--item"
          v-for="prop in visibleValues"
          @click="choseItem(prop)"
       >
-         <Icon v-if="prop.icon">{{prop.icon}}</Icon>
+         <Icon v-if="prop.icon" class="data-view--icon">{{prop.icon}}</Icon>
          <span v-else class="data-view--label">{{prop.label}}</span>
-         <span class="data-view--value">{{valueToText(prop.value)}}</span>
+         <span class="data-view--value">{{valueToText(prop.value) | formatDate}}</span>
       </div>
    </div>
 </template>
@@ -22,6 +24,7 @@
    import {Component, Prop, Emit} from 'vue-property-decorator'
    import {formatDate, isDate} from "./utils";
    import Icon from './icons/MaterialIcon.vue'
+   import {Filter} from "./decorators";
 
    export interface DataViewValues {
       [label: string]: any
@@ -74,17 +77,31 @@
 
       @Prop({
          type: Object,
-         default: {}
+         default: () => ({})
       })
       icons: {[key: string]: string}
+
+      @Prop({
+         type: Boolean,
+         default: false
+      })
+      contrast: boolean
+
+      @Prop({
+         type: Boolean,
+         default: false
+      })
+      small: boolean
 
       get visibleValues(){
          let keys = Object.keys(this.values)
 
          if(this.order) {
-            let notOrdered = keys.filter(k => this.order.indexOf(k) === -1)
+            const notOrdered = keys.filter(k => this.order.indexOf(k) === -1)
+            const have = this.order.filter(k => keys.indexOf(k) !== -1)
+
             keys = [
-               ...this.order,
+               ...have,
                ...notOrdered
             ]
          }
@@ -105,9 +122,6 @@
       valueToText(value: any) {
          if(this.formatValue)
             return this.formatValue(value)
-
-         if (isDate(value))
-            return formatDate(value)
 
          return value
       }
@@ -133,6 +147,10 @@
          max-width: 20rem;
       }
 
+      &.small {
+         font-size: 0.9rem;
+      }
+
       &--item {
          width: 100%;
          display: flex;
@@ -146,12 +164,17 @@
          flex-direction: row;
          justify-content: flex-end;
          margin-top: 1rem;
-         padding-bottom: 0.5rem;
+         padding-bottom: 0;
 
          .data-view--item {
             max-width: 10rem;
-            margin-right: 1rem;
+            margin-right: 0.5rem;
+            margin-bottom: 0;
          }
+      }
+
+      &.small &--item {
+         width: auto;
       }
 
       &--label {
@@ -159,9 +182,32 @@
          font-weight: bold;
       }
 
+      &--icon {
+         color: $main-text-color;
+         margin-top: -0.5rem;
+         margin-left: auto;
+         margin-right: 1rem;
+      }
+
       &--value {
          color: $secondary-text-color;
          font-weight: normal;
+      }
+
+
+      &.small &--icon {
+         margin-right: 0.5rem;
+         font-size: 1rem;
+         margin-top: -0.1rem;
+      }
+
+
+      &.contrast &--label, &.contrast &--icon {
+         color: $highlight-header-text-color;
+      }
+
+      &.contrast &--value {
+         color: $breadcrumbs-highlight-color;
       }
 
       &.model-info {

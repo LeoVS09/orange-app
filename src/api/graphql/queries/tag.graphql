@@ -1,0 +1,9 @@
+#import "../fragments/FullTag.graphql"
+
+query Tag($id: UUID!) {
+   tag(id: $id) {
+      nodeId
+
+      ...FullTag
+   }
+}

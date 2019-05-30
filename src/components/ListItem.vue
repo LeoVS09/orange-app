@@ -15,7 +15,7 @@
       <div class="list-item--content">
          <span class="list-item--property"
                v-for="property in properties"
-         >{{property}}</span>
+         >{{property | formatDate}}</span>
       </div>
    </div>
 </template>
@@ -94,14 +94,7 @@
          if (!visibleProps)
             visibleProps = Object.keys(item)
 
-         return visibleProps.map(key => {
-            const value = item[key]
-
-            if (isDate(value))
-               return formatDate(value)
-
-            return value
-         })
+         return visibleProps.map(key => item[key])
       }
 
       @Emit(ListItemEvents.move)

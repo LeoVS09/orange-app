@@ -1,13 +1,12 @@
-import {UserProfile} from "./user";
+import {PartialUserProfile, UserProfile} from "./user";
 
 export interface Team {
-  id: string,
-  users: Array<UserProfile>,
-  name: string,
-  group?: string,
-  course?: number,
-  universityShortName?: string,
-  universityLongName?: string,
-  city?: string,
-  country?: string,
+   id: string,
+   profiles: Array<PartialUserProfile> | null,
+   count: number,
+   name: string,
+   group?: string,
+   course?: number,
+   createdAt: Date,
+   updatedAt: Date
 }

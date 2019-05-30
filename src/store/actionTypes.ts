@@ -7,5 +7,18 @@ export * from './modules/profile/actionTypes'
 // PROBLEMS
 export * from './modules/problems/actionTypes'
 
-// API
-export const SET_CLIENT = 'SET_CLIENT';
+// TAGS
+export * from './modules/tags/actionTypes'
+
+// COUNTRIES, CITIES, PROBLEMS, TAGS, UNIVERSITIES
+export * from './CrudModule/actionTypes'
+
+export enum MODULES {
+   COUNTRIES = 'countries',
+   CITIES = 'cities',
+   PROBLEMS = 'problems',
+   TAGS = 'tags',
+   UNIVERSITIES = 'universities'
+}
+
+export const actionName = (module: MODULES, action: string) => `${module}/${action}`

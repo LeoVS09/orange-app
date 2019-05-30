@@ -16,6 +16,8 @@ export interface updateTag_updateTag_tag {
   nodeId: string;
   id: any;
   name: string;
+  createdAt: any;
+  updatedAt: any;
 }
 
 export interface updateTag_updateTag {

@@ -16,6 +16,8 @@ export interface Tags_tags_nodes {
   nodeId: string;
   id: any;
   name: string;
+  createdAt: any;
+  updatedAt: any;
 }
 
 export interface Tags_tags {

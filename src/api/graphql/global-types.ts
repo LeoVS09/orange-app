@@ -26,6 +26,85 @@ export enum CitiesOrderBy {
 }
 
 /**
+ * Methods to use when ordering `CodeEditor`.
+ */
+export enum CodeEditorsOrderBy {
+  ALIAS_ASC = "ALIAS_ASC",
+  ALIAS_DESC = "ALIAS_DESC",
+  CREATED_AT_ASC = "CREATED_AT_ASC",
+  CREATED_AT_DESC = "CREATED_AT_DESC",
+  ID_ASC = "ID_ASC",
+  ID_DESC = "ID_DESC",
+  NAME_ASC = "NAME_ASC",
+  NAME_DESC = "NAME_DESC",
+  NATURAL = "NATURAL",
+  PRIMARY_KEY_ASC = "PRIMARY_KEY_ASC",
+  PRIMARY_KEY_DESC = "PRIMARY_KEY_DESC",
+  UPDATED_AT_ASC = "UPDATED_AT_ASC",
+  UPDATED_AT_DESC = "UPDATED_AT_DESC",
+  VERSION_ASC = "VERSION_ASC",
+  VERSION_DESC = "VERSION_DESC",
+}
+
+/**
+ * Methods to use when ordering `Compiler`.
+ */
+export enum CompilersOrderBy {
+  ALIAS_ASC = "ALIAS_ASC",
+  ALIAS_DESC = "ALIAS_DESC",
+  CODE_ASC = "CODE_ASC",
+  CODE_DESC = "CODE_DESC",
+  COMMENT_ASC = "COMMENT_ASC",
+  COMMENT_DESC = "COMMENT_DESC",
+  CREATED_AT_ASC = "CREATED_AT_ASC",
+  CREATED_AT_DESC = "CREATED_AT_DESC",
+  ID_ASC = "ID_ASC",
+  ID_DESC = "ID_DESC",
+  IS_INTERPRETER_ASC = "IS_INTERPRETER_ASC",
+  IS_INTERPRETER_DESC = "IS_INTERPRETER_DESC",
+  LANGUAGE_ID_ASC = "LANGUAGE_ID_ASC",
+  LANGUAGE_ID_DESC = "LANGUAGE_ID_DESC",
+  NAME_ASC = "NAME_ASC",
+  NAME_DESC = "NAME_DESC",
+  NATURAL = "NATURAL",
+  PRIMARY_KEY_ASC = "PRIMARY_KEY_ASC",
+  PRIMARY_KEY_DESC = "PRIMARY_KEY_DESC",
+  UPDATED_AT_ASC = "UPDATED_AT_ASC",
+  UPDATED_AT_DESC = "UPDATED_AT_DESC",
+  VERSION_ASC = "VERSION_ASC",
+  VERSION_DESC = "VERSION_DESC",
+}
+
+/**
+ * Methods to use when ordering `Contest`.
+ */
+export enum ContestsOrderBy {
+  CREATED_AT_ASC = "CREATED_AT_ASC",
+  CREATED_AT_DESC = "CREATED_AT_DESC",
+  CREATOR_ID_ASC = "CREATOR_ID_ASC",
+  CREATOR_ID_DESC = "CREATOR_ID_DESC",
+  END_DATE_ASC = "END_DATE_ASC",
+  END_DATE_DESC = "END_DATE_DESC",
+  END_PUBLICATION_DATE_ASC = "END_PUBLICATION_DATE_ASC",
+  END_PUBLICATION_DATE_DESC = "END_PUBLICATION_DATE_DESC",
+  ID_ASC = "ID_ASC",
+  ID_DESC = "ID_DESC",
+  NAME_ASC = "NAME_ASC",
+  NAME_DESC = "NAME_DESC",
+  NATURAL = "NATURAL",
+  PRIMARY_KEY_ASC = "PRIMARY_KEY_ASC",
+  PRIMARY_KEY_DESC = "PRIMARY_KEY_DESC",
+  START_DATE_ASC = "START_DATE_ASC",
+  START_DATE_DESC = "START_DATE_DESC",
+  START_PUBLICATION_DATE_ASC = "START_PUBLICATION_DATE_ASC",
+  START_PUBLICATION_DATE_DESC = "START_PUBLICATION_DATE_DESC",
+  TEXT_ASC = "TEXT_ASC",
+  TEXT_DESC = "TEXT_DESC",
+  UPDATED_AT_ASC = "UPDATED_AT_ASC",
+  UPDATED_AT_DESC = "UPDATED_AT_DESC",
+}
+
+/**
  * Methods to use when ordering `Country`.
  */
 export enum CountriesOrderBy {
@@ -86,6 +165,41 @@ export enum ProblemsOrderBy {
 }
 
 /**
+ * Methods to use when ordering `Profile`.
+ */
+export enum ProfilesOrderBy {
+  CITY_ID_ASC = "CITY_ID_ASC",
+  CITY_ID_DESC = "CITY_ID_DESC",
+  COURSE_ASC = "COURSE_ASC",
+  COURSE_DESC = "COURSE_DESC",
+  CREATED_AT_ASC = "CREATED_AT_ASC",
+  CREATED_AT_DESC = "CREATED_AT_DESC",
+  FIRST_NAME_ASC = "FIRST_NAME_ASC",
+  FIRST_NAME_DESC = "FIRST_NAME_DESC",
+  GROUP_NUMBER_ASC = "GROUP_NUMBER_ASC",
+  GROUP_NUMBER_DESC = "GROUP_NUMBER_DESC",
+  ID_ASC = "ID_ASC",
+  ID_DESC = "ID_DESC",
+  IS_TEACHER_ASC = "IS_TEACHER_ASC",
+  IS_TEACHER_DESC = "IS_TEACHER_DESC",
+  LAST_NAME_ASC = "LAST_NAME_ASC",
+  LAST_NAME_DESC = "LAST_NAME_DESC",
+  MIDDLE_NAME_ASC = "MIDDLE_NAME_ASC",
+  MIDDLE_NAME_DESC = "MIDDLE_NAME_DESC",
+  NATURAL = "NATURAL",
+  PHONE_ASC = "PHONE_ASC",
+  PHONE_DESC = "PHONE_DESC",
+  PRIMARY_KEY_ASC = "PRIMARY_KEY_ASC",
+  PRIMARY_KEY_DESC = "PRIMARY_KEY_DESC",
+  UNIVERSITY_ID_ASC = "UNIVERSITY_ID_ASC",
+  UNIVERSITY_ID_DESC = "UNIVERSITY_ID_DESC",
+  UPDATED_AT_ASC = "UPDATED_AT_ASC",
+  UPDATED_AT_DESC = "UPDATED_AT_DESC",
+  USER_ID_ASC = "USER_ID_ASC",
+  USER_ID_DESC = "USER_ID_DESC",
+}
+
+/**
  * Methods to use when ordering `ProgramInputType`.
  */
 export enum ProgramInputTypesOrderBy {
@@ -124,6 +238,27 @@ export enum ProgramOutputTypesOrderBy {
 }
 
 /**
+ * Methods to use when ordering `ProgrammingLanguage`.
+ */
+export enum ProgrammingLanguagesOrderBy {
+  ALIAS_ASC = "ALIAS_ASC",
+  ALIAS_DESC = "ALIAS_DESC",
+  CREATED_AT_ASC = "CREATED_AT_ASC",
+  CREATED_AT_DESC = "CREATED_AT_DESC",
+  ID_ASC = "ID_ASC",
+  ID_DESC = "ID_DESC",
+  NAME_ASC = "NAME_ASC",
+  NAME_DESC = "NAME_DESC",
+  NATURAL = "NATURAL",
+  PRIMARY_KEY_ASC = "PRIMARY_KEY_ASC",
+  PRIMARY_KEY_DESC = "PRIMARY_KEY_DESC",
+  UPDATED_AT_ASC = "UPDATED_AT_ASC",
+  UPDATED_AT_DESC = "UPDATED_AT_DESC",
+  VERSION_ASC = "VERSION_ASC",
+  VERSION_DESC = "VERSION_DESC",
+}
+
+/**
  * Methods to use when ordering `Tag`.
  */
 export enum TagsOrderBy {
@@ -141,12 +276,137 @@ export enum TagsOrderBy {
 }
 
 /**
+ * Methods to use when ordering `Team`.
+ */
+export enum TeamsOrderBy {
+  CREATED_AT_ASC = "CREATED_AT_ASC",
+  CREATED_AT_DESC = "CREATED_AT_DESC",
+  ID_ASC = "ID_ASC",
+  ID_DESC = "ID_DESC",
+  NAME_ASC = "NAME_ASC",
+  NAME_DESC = "NAME_DESC",
+  NATURAL = "NATURAL",
+  PRIMARY_KEY_ASC = "PRIMARY_KEY_ASC",
+  PRIMARY_KEY_DESC = "PRIMARY_KEY_DESC",
+  UPDATED_AT_ASC = "UPDATED_AT_ASC",
+  UPDATED_AT_DESC = "UPDATED_AT_DESC",
+}
+
+/**
+ * Methods to use when ordering `Test`.
+ */
+export enum TestsOrderBy {
+  CREATED_AT_ASC = "CREATED_AT_ASC",
+  CREATED_AT_DESC = "CREATED_AT_DESC",
+  ID_ASC = "ID_ASC",
+  ID_DESC = "ID_DESC",
+  INDEX_ASC = "INDEX_ASC",
+  INDEX_DESC = "INDEX_DESC",
+  INPUT_ASC = "INPUT_ASC",
+  INPUT_DESC = "INPUT_DESC",
+  IS_PUBLIC_ASC = "IS_PUBLIC_ASC",
+  IS_PUBLIC_DESC = "IS_PUBLIC_DESC",
+  NATURAL = "NATURAL",
+  OUTPUT_ASC = "OUTPUT_ASC",
+  OUTPUT_DESC = "OUTPUT_DESC",
+  PRIMARY_KEY_ASC = "PRIMARY_KEY_ASC",
+  PRIMARY_KEY_DESC = "PRIMARY_KEY_DESC",
+  PROBLEM_ID_ASC = "PROBLEM_ID_ASC",
+  PROBLEM_ID_DESC = "PROBLEM_ID_DESC",
+  UPDATED_AT_ASC = "UPDATED_AT_ASC",
+  UPDATED_AT_DESC = "UPDATED_AT_DESC",
+}
+
+/**
+ * Methods to use when ordering `University`.
+ */
+export enum UniversitiesOrderBy {
+  CITY_ID_ASC = "CITY_ID_ASC",
+  CITY_ID_DESC = "CITY_ID_DESC",
+  CREATED_AT_ASC = "CREATED_AT_ASC",
+  CREATED_AT_DESC = "CREATED_AT_DESC",
+  ID_ASC = "ID_ASC",
+  ID_DESC = "ID_DESC",
+  LONG_NAME_ASC = "LONG_NAME_ASC",
+  LONG_NAME_DESC = "LONG_NAME_DESC",
+  NATURAL = "NATURAL",
+  PRIMARY_KEY_ASC = "PRIMARY_KEY_ASC",
+  PRIMARY_KEY_DESC = "PRIMARY_KEY_DESC",
+  SHORT_NAME_ASC = "SHORT_NAME_ASC",
+  SHORT_NAME_DESC = "SHORT_NAME_DESC",
+  UPDATED_AT_ASC = "UPDATED_AT_ASC",
+  UPDATED_AT_DESC = "UPDATED_AT_DESC",
+}
+
+/**
  * A condition to be used against `City` object types. All fields are tested for equality and combined with a logical ‘and.’
  */
 export interface CityCondition {
   id?: any | null;
   name?: string | null;
   countryId?: any | null;
+  createdAt?: any | null;
+  updatedAt?: any | null;
+}
+
+/**
+ * An input for mutations affecting `City`
+ */
+export interface CityInput {
+  name: string;
+  countryId: any;
+}
+
+/**
+ * Represents an update to a `City`. Fields that are set will be updated.
+ */
+export interface CityPatch {
+  name?: string | null;
+  countryId?: any | null;
+}
+
+/**
+ * A condition to be used against `CodeEditor` object types. All fields are tested
+ * for equality and combined with a logical ‘and.’
+ */
+export interface CodeEditorCondition {
+  id?: any | null;
+  name?: string | null;
+  alias?: string | null;
+  version?: string | null;
+  createdAt?: any | null;
+  updatedAt?: any | null;
+}
+
+/**
+ * A condition to be used against `Compiler` object types. All fields are tested
+ * for equality and combined with a logical ‘and.’
+ */
+export interface CompilerCondition {
+  id?: any | null;
+  name?: string | null;
+  alias?: string | null;
+  code?: string | null;
+  version?: string | null;
+  languageId?: any | null;
+  comment?: string | null;
+  isInterpreter?: boolean | null;
+  createdAt?: any | null;
+  updatedAt?: any | null;
+}
+
+/**
+ * A condition to be used against `Contest` object types. All fields are tested for equality and combined with a logical ‘and.’
+ */
+export interface ContestCondition {
+  id?: any | null;
+  name?: string | null;
+  text?: string | null;
+  creatorId?: any | null;
+  startDate?: any | null;
+  endDate?: any | null;
+  startPublicationDate?: any | null;
+  endPublicationDate?: any | null;
   createdAt?: any | null;
   updatedAt?: any | null;
 }
@@ -160,6 +420,38 @@ export interface CountryCondition {
   code?: string | null;
   createdAt?: any | null;
   updatedAt?: any | null;
+}
+
+/**
+ * An input for mutations affecting `Country`
+ */
+export interface CountryInput {
+  name: string;
+  code: string;
+}
+
+/**
+ * Represents an update to a `Country`. Fields that are set will be updated.
+ */
+export interface CountryPatch {
+  name?: string | null;
+  code?: string | null;
+}
+
+/**
+ * All input for the create `City` mutation.
+ */
+export interface CreateCityInput {
+  clientMutationId?: string | null;
+  city: CityInput;
+}
+
+/**
+ * All input for the create `Country` mutation.
+ */
+export interface CreateCountryInput {
+  clientMutationId?: string | null;
+  country: CountryInput;
 }
 
 /**
@@ -203,6 +495,30 @@ export interface CreateTestInput {
 }
 
 /**
+ * All input for the create `University` mutation.
+ */
+export interface CreateUniversityInput {
+  clientMutationId?: string | null;
+  university: UniversityInput;
+}
+
+/**
+ * All input for the `deleteCity` mutation.
+ */
+export interface DeleteCityInput {
+  clientMutationId?: string | null;
+  id: any;
+}
+
+/**
+ * All input for the `deleteCountry` mutation.
+ */
+export interface DeleteCountryInput {
+  clientMutationId?: string | null;
+  id: any;
+}
+
+/**
  * All input for the `deleteProblem` mutation.
  */
 export interface DeleteProblemInput {
@@ -238,6 +554,14 @@ export interface DeleteTagInput {
  * All input for the `deleteTest` mutation.
  */
 export interface DeleteTestInput {
+  clientMutationId?: string | null;
+  id: any;
+}
+
+/**
+ * All input for the `deleteUniversity` mutation.
+ */
+export interface DeleteUniversityInput {
   clientMutationId?: string | null;
   id: any;
 }
@@ -297,6 +621,25 @@ export interface ProblemPatch {
 }
 
 /**
+ * A condition to be used against `Profile` object types. All fields are tested for equality and combined with a logical ‘and.’
+ */
+export interface ProfileCondition {
+  id?: any | null;
+  userId?: any | null;
+  firstName?: string | null;
+  middleName?: string | null;
+  lastName?: string | null;
+  phone?: string | null;
+  groupNumber?: string | null;
+  course?: number | null;
+  cityId?: any | null;
+  universityId?: any | null;
+  isTeacher?: boolean | null;
+  createdAt?: any | null;
+  updatedAt?: any | null;
+}
+
+/**
  * A condition to be used against `ProgramInputType` object types. All fields are
  * tested for equality and combined with a logical ‘and.’
  */
@@ -353,6 +696,19 @@ export interface ProgramOutputTypePatch {
 }
 
 /**
+ * A condition to be used against `ProgrammingLanguage` object types. All fields
+ * are tested for equality and combined with a logical ‘and.’
+ */
+export interface ProgrammingLanguageCondition {
+  id?: any | null;
+  name?: string | null;
+  alias?: string | null;
+  version?: string | null;
+  createdAt?: any | null;
+  updatedAt?: any | null;
+}
+
+/**
  * A condition to be used against `Tag` object types. All fields are tested for equality and combined with a logical ‘and.’
  */
 export interface TagCondition {
@@ -377,6 +733,30 @@ export interface TagPatch {
 }
 
 /**
+ * A condition to be used against `Team` object types. All fields are tested for equality and combined with a logical ‘and.’
+ */
+export interface TeamCondition {
+  id?: any | null;
+  name?: string | null;
+  createdAt?: any | null;
+  updatedAt?: any | null;
+}
+
+/**
+ * A condition to be used against `Test` object types. All fields are tested for equality and combined with a logical ‘and.’
+ */
+export interface TestCondition {
+  id?: any | null;
+  index?: number | null;
+  input?: string | null;
+  output?: string | null;
+  isPublic?: boolean | null;
+  problemId?: any | null;
+  createdAt?: any | null;
+  updatedAt?: any | null;
+}
+
+/**
  * An input for mutations affecting `Test`
  */
 export interface TestInput {
@@ -384,6 +764,7 @@ export interface TestInput {
   input: string;
   output: string;
   isPublic?: boolean | null;
+  problemId: any;
 }
 
 /**
@@ -394,6 +775,55 @@ export interface TestPatch {
   input?: string | null;
   output?: string | null;
   isPublic?: boolean | null;
+}
+
+/**
+ * A condition to be used against `University` object types. All fields are tested
+ * for equality and combined with a logical ‘and.’
+ */
+export interface UniversityCondition {
+  id?: any | null;
+  cityId?: any | null;
+  shortName?: string | null;
+  longName?: string | null;
+  createdAt?: any | null;
+  updatedAt?: any | null;
+}
+
+/**
+ * An input for mutations affecting `University`
+ */
+export interface UniversityInput {
+  cityId: any;
+  shortName: string;
+  longName?: string | null;
+}
+
+/**
+ * Represents an update to a `University`. Fields that are set will be updated.
+ */
+export interface UniversityPatch {
+  cityId?: any | null;
+  shortName?: string | null;
+  longName?: string | null;
+}
+
+/**
+ * All input for the `updateCity` mutation.
+ */
+export interface UpdateCityInput {
+  clientMutationId?: string | null;
+  patch: CityPatch;
+  id: any;
+}
+
+/**
+ * All input for the `updateCountry` mutation.
+ */
+export interface UpdateCountryInput {
+  clientMutationId?: string | null;
+  patch: CountryPatch;
+  id: any;
 }
 
 /**
@@ -438,6 +868,15 @@ export interface UpdateTagInput {
 export interface UpdateTestInput {
   clientMutationId?: string | null;
   patch: TestPatch;
+  id: any;
+}
+
+/**
+ * All input for the `updateUniversity` mutation.
+ */
+export interface UpdateUniversityInput {
+  clientMutationId?: string | null;
+  patch: UniversityPatch;
   id: any;
 }
 

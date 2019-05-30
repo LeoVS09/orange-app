@@ -1,0 +1,8 @@
+fragment CodeEditor on CodeEditor {
+   id
+   name
+   alias
+   version
+   createdAt
+   updatedAt
+}

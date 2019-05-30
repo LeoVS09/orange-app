@@ -1,0 +1,48 @@
+#import "../fragments/PartialContest.graphql"
+#import "../fragments/PartialProblem.graphql"
+#import "../fragments/PartialProfile.graphql"
+#import "../fragments/PartialTeam.graphql"
+
+fragment FullContest on Contest {
+   ...PartialContest
+
+   contestsProblems {
+      totalCount
+      nodes {
+         nodeId
+
+         problem {
+            nodeId
+
+            ...PartialProblem
+         }
+      }
+   }
+
+   contestsProfiles {
+      totalCount
+      nodes {
+         nodeId
+
+         profile {
+            nodeId
+
+            ...PartialProfile
+         }
+      }
+   }
+
+   contestsTeams {
+      totalCount
+
+      nodes {
+         nodeId
+
+         team {
+            nodeId
+
+            ...PartialTeam
+         }
+      }
+   }
+}

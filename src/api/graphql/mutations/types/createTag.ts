@@ -16,6 +16,8 @@ export interface createTag_createTag_tag {
   nodeId: string;
   id: any;
   name: string;
+  createdAt: any;
+  updatedAt: any;
 }
 
 export interface createTag_createTag {

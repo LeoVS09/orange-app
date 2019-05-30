@@ -1,11 +1,11 @@
-#import "../fragments/Tag.graphql"
+#import "../fragments/PartialTag.graphql"
 
 mutation deleteTag($input: DeleteTagInput!) {
    deleteTag(input: $input){
       tag {
          nodeId
 
-         ...Tag
+         ...PartialTag
       }
    }
 }

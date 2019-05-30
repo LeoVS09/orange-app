@@ -1,0 +1,10 @@
+#import "../fragments/CodeEditor.graphql"
+
+query CodeEditor($id: UUID!) {
+   codeEditor(id: $id) {
+      nodeId
+
+      ...CodeEditor
+   }
+
+}

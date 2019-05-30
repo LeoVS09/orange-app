@@ -276,6 +276,14 @@
   resolved "https://registry.yarnpkg.com/@types/node/-/node-8.10.45.tgz#4c49ba34106bc7dced77ff6bae8eb6543cde8351"
   integrity sha512-tGVTbA+i3qfXsLbq9rEq/hezaHY55QxQLeXQL2ejNgFAxxrgu8eMmYIOsRcl7hN1uTLVsKOOYacV/rcJM3sfgQ==
 
+"@types/vuex-i18n@^1.10.1":
+  version "1.10.1"
+  resolved "https://registry.yarnpkg.com/@types/vuex-i18n/-/vuex-i18n-1.10.1.tgz#bc3f2b8259c8fea8ccb29198f64e389e63235562"
+  integrity sha512-4yzDgVpu/uxwxW75EWlR2fuWFnblNW4k0IgFBeOaNcX5qaIzKR4AbJ+N+pqyMLjD0rp0KoBE92NE8DLp7sv5ng==
+  dependencies:
+    vue ">=2.0.0"
+    vuex ">=2.0.0"
+
 "@types/zen-observable@^0.8.0":
   version "0.8.0"
   resolved "https://registry.yarnpkg.com/@types/zen-observable/-/zen-observable-0.8.0.tgz#8b63ab7f1aa5321248aad5ac890a485656dcea4d"
@@ -10158,7 +10166,7 @@ vue-template-es2015-compiler@^1.9.0:
   resolved "https://registry.yarnpkg.com/vue-template-es2015-compiler/-/vue-template-es2015-compiler-1.9.1.tgz#1ee3bc9a16ecbf5118be334bb15f9c46f82f5825"
   integrity sha512-4gDntzrifFnCEvyoO8PqyJDmguXgVPxKiIxrBKjIowvL9l+N66196+72XVYR8BBf1Uv1Fgt3bGevJ+sEmxfZzw==
 
-vue@^2.5.17:
+vue@>=2.0.0, vue@^2.5.17:
   version "2.6.10"
   resolved "https://registry.yarnpkg.com/vue/-/vue-2.6.10.tgz#a72b1a42a4d82a721ea438d1b6bf55e66195c637"
   integrity sha512-ImThpeNU9HbdZL3utgMCq0oiMzAkt1mcgy3/E6zWC/G6AaQoeuFdsl9nDhTDU3X1R6FK7nsIUuRACVcjI+A2GQ==
@@ -10167,6 +10175,11 @@ vuex-class@^0.3.1:
   version "0.3.2"
   resolved "https://registry.yarnpkg.com/vuex-class/-/vuex-class-0.3.2.tgz#c7e96a076c1682137d4d23a8dcfdc63f220e17a8"
   integrity sha512-m0w7/FMsNcwJgunJeM+wcNaHzK2KX1K1rw2WUQf7Q16ndXHo7pflRyOV/E8795JO/7fstyjH3EgqBI4h4n4qXQ==
+
+vuex-i18n@^1.11.0:
+  version "1.11.0"
+  resolved "https://registry.yarnpkg.com/vuex-i18n/-/vuex-i18n-1.11.0.tgz#e6cdc95080c445ab2c211cc6b64a907d217639d3"
+  integrity sha512-+Eme0C7FS3VFLIWpAwisohC3KcRDw+YcXFANssUZZq16P2C4z8V2VGbEtFHFw0DzkvZcdM2CAkUj6rdMl9wYmg==
 
 vuex-module-decorators@^0.3.1:
   version "0.3.1"
@@ -10177,6 +10190,11 @@ vuex-router-sync@^4.1.3:
   version "4.3.2"
   resolved "https://registry.yarnpkg.com/vuex-router-sync/-/vuex-router-sync-4.3.2.tgz#604b61a377daaa68b2ef6e8e0326b2cad26f359e"
   integrity sha512-Uwi1aPM1U9IOzEqJl8r3aCQm8l2H+IMm0lMQtznY7ENv8XK0w+6e+le6r06k0W9ud7qBJ4fDjbCcNpXBdnO3Xg==
+
+vuex@>=2.0.0:
+  version "3.1.1"
+  resolved "https://registry.yarnpkg.com/vuex/-/vuex-3.1.1.tgz#0c264bfe30cdbccf96ab9db3177d211828a5910e"
+  integrity sha512-ER5moSbLZuNSMBFnEBVGhQ1uCBNJslH9W/Dw2W7GZN23UQA69uapP5GTT9Vm8Trc0PzBSVt6LzF3hGjmv41xcg==
 
 vuex@^2.3.1:
   version "2.5.0"

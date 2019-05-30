@@ -3,26 +3,40 @@ import searchCountriesGql from './searchCountries.graphql'
 import countriesGql from './Countries.graphql'
 import countryGql from './Country.graphql'
 import problemsGql from './problems.graphql'
-import partialProblemsGql from './partialProblems.graphql'
 import problemGql from './Problem.graphql'
 import inputOutputTypesGql from './inputOutputTypes.graphql'
 import citiesGql from './cities.graphql'
 import cityGql from './city.graphql'
 import tagsGql from './tags.graphql'
-import gql from 'graphql-tag'
-import {APIClient} from "../apollo";
+import tagGql from './tag.graphql'
+import universityGql from './university.graphql'
+import universitiesGql from './universities.graphql'
+import codeEditorGql from './codeEditor.graphql'
+import codeEditorsGql from './codeEditors.graphql'
+import compilerGql from './compiler.graphql'
+import compilersGql from './compilers.graphql'
+import contestGql from './contest.graphql'
+import contestsGql from './contests.graphql'
+import profileGql from './profile.graphql'
+import profilesGql from './profiles.graphql'
+import programmingLanguageGql from './programmingLanguage.graphql'
+import programmingLanguagesGql from './programmingLanguages.graphql'
+import teamGql from './team.graphql'
+import teamsGql from './teams.graphql'
+import testsGql from './tests.graphql'
+
 import {mockCountries, mockCities, mockCountry} from "@/models/mock/countries";
 
 import * as types from './types'
 import {mockTags} from "@/models/mock/mock";
-
-// const DEBUG = process.env.NODE_ENV !== 'production'
-const DEBUG = false
+import {generateQuery, generateSimpleQuery} from "@/api/graphql/utils";
 
 export const currentUser = generateSimpleQuery<types.CurrentUser, types.CurrentUser_currentUser>(
    currentUserGql,
    data => data.currentUser
 )
+
+// ------------------------------------------------ Country ------------------------------------------------------------
 
 export const searchCountries = generateQuery<types.SearchCountriesVariables, types.SearchCountries, types.SearchCountries_searchCountries>(
    searchCountriesGql,
@@ -76,6 +90,8 @@ export const country = generateQuery<types.CountryVariables, types.Country, type
       ))
 )
 
+// -------------------------------------------------- City -------------------------------------------------------------
+
 export const cities = generateQuery<types.CitiesVariables, types.Cities, types.Cities_cities>(
    citiesGql,
    data => data.cities
@@ -87,10 +103,19 @@ export const city = generateQuery<types.CityVariables, types.City, types.City_ci
    data => data.city
 )
 
-export const partialProblems = generateQuery<types.PartialProblemsVariables, types.PartialProblems, types.PartialProblems_problems>(
-   partialProblemsGql,
-   data => data.problems
+// ----------------------------------------------- University ----------------------------------------------------------
+
+export const universities = generateQuery<types.UniversitiesVariables, types.Universities, types.Universities_universities>(
+   universitiesGql,
+   data => data.universities
 )
+
+export const university = generateQuery<types.UniversityVariables, types.University, types.University_university>(
+   universityGql,
+   data => data.university
+)
+
+// ----------------------------------------------- Problem -------------------------------------------------------------
 
 export const problems = generateQuery<types.ProblemsVariables, types.Problems, types.Problems_problems>(
    problemsGql,
@@ -103,6 +128,8 @@ export const problem = generateQuery<types.ProblemVariables, types.Problem, type
    data => data.problem
 )
 
+// -------------------------------------------- inputOutputType --------------------------------------------------------
+
 export const inputOutputTypes = generateQuery<types.InputOutputTypesVariables, types.InputOutputTypes, {inputs: types.InputOutputTypes_programInputTypes | null, outputs: types.InputOutputTypes_programOutputTypes | null}>(
    inputOutputTypesGql,
    data => ({
@@ -110,6 +137,8 @@ export const inputOutputTypes = generateQuery<types.InputOutputTypesVariables, t
       outputs: data.programOutputTypes
    })
 )
+
+// ------------------------------------------------ Tag ----------------------------------------------------------------
 
 export const tags = generateQuery<types.TagsVariables, types.Tags, types.Tags_tags>(
    tagsGql,
@@ -124,26 +153,79 @@ export const tags = generateQuery<types.TagsVariables, types.Tags, types.Tags_ta
       1000))
 )
 
-// TODO: complete typesation for non parametred queries
-function generateQuery<V, T, R>(graphql: any, formatter: (result: T) => R | null, mock?: (variables: V) => Promise<R>) {
-   if (DEBUG && mock)
-      return (client: APIClient) => (variables: V) => mock(variables)
+export const tag = generateQuery<types.TagVariables, types.Tag, types.Tag_tag>(
+   tagGql,
+   data => data.tag
+)
 
-   return (client: APIClient) => (variables: V) =>
-      client.query<T>({
-         query: gql(graphql),
-         variables
-      })
-         .then(result => result.data && formatter(result.data))
-}
+// ------------------------------------------------ CodeEditor ---------------------------------------------------------
 
-function generateSimpleQuery<T, R>(graphql: any, formatter: (result: T) => R | null, mock?: () => Promise<R>) {
-   if (DEBUG && mock)
-      return (client: APIClient) => () => mock()
+export const codeEditor = generateQuery<types.CodeEditorVariables, types.CodeEditor, types.CodeEditor_codeEditor>(
+   codeEditorGql,
+   data => data.codeEditor
+)
 
-   return (client: APIClient) => () =>
-      client.query<T>({
-         query: gql(graphql)
-      })
-         .then(result => result.data && formatter(result.data))
-}
+export const codeEditors = generateQuery<types.CodeEditorsVariables, types.CodeEditors, types.CodeEditors_codeEditors>(
+   codeEditorsGql,
+   data => data.codeEditors
+)
+
+// ------------------------------------------------ Compiler -----------------------------------------------------------
+
+export const compiler = generateQuery<types.CompilerVariables, types.Compiler, types.Compiler_compiler>(
+   compilerGql,
+   data => data.compiler
+)
+
+export const compilers = generateQuery<types.CompilersVariables, types.Compilers, types.Compilers_compilers>(
+   compilersGql,
+   data => data.compilers
+)
+
+// ------------------------------------------------ Profile ------------------------------------------------------------
+
+export const profile = generateQuery<types.ProfileVariables, types.Profile, types.Profile_profile>(
+   profileGql,
+   data => data.profile
+)
+
+export const profiles = generateQuery<types.ProfilesVariables, types.Profiles, types.Profiles_profiles>(
+   profilesGql,
+   data => data.profiles
+)
+
+// ------------------------------------------ ProgrammingLanguage ------------------------------------------------------
+
+export const programmingLanguage = generateQuery<types.ProgrammingLanguageVariables, types.ProgrammingLanguage, types.ProgrammingLanguage_programmingLanguage>(
+   programmingLanguageGql,
+   data => data.programmingLanguage
+)
+
+export const programmingLanguages = generateQuery<types.ProgrammingLanguagesVariables, types.ProgrammingLanguages, types.ProgrammingLanguages_programmingLanguages>(
+   programmingLanguagesGql,
+   data => data.programmingLanguages
+)
+
+// --------------------------------------------------- Team ------------------------------------------------------------
+
+export const team = generateQuery<types.TeamVariables, types.Team, types.Team_team>(
+   teamGql,
+   data => data.team
+)
+
+export const teams = generateQuery<types.TeamsVariables, types.Teams, types.Teams_teams>(
+   teamsGql,
+   data => data.teams
+)
+
+// ------------------------------------------------- Contest -----------------------------------------------------------
+
+export const contest = generateQuery<types.ContestVariables, types.Contest, types.Contest_contest>(
+   contestGql,
+   data => data.contest
+)
+
+export const contests = generateQuery<types.ContestsVariables, types.Contests, types.Contests_contests>(
+   contestsGql,
+   data => data.contests
+)

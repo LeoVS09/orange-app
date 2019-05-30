@@ -21,9 +21,20 @@ import createOutputTypeGql from './createOutputType.graphql'
 import updateOutputTypeGql from './updateOutputType.graphql'
 import deleteOutputTypeGql from './deleteOutputType.graphql'
 
-import gql from 'graphql-tag'
-import {APIClient} from "../apollo";
+import createCountryGql from './createCountry.graphql'
+import updateCountryGql from './updateCountry.graphql'
+import deleteCountryGql from './deleteCountry.graphql'
+
+import createCityGql from './createCity.graphql'
+import updateCityGql from './updateCity.graphql'
+import deleteCityGql from './deleteCity.graphql'
+
+import createUniversityGql from './createUniversity.graphql'
+import updateUniversityGql from './updateUniversity.graphql'
+import deleteUniversityGql from './deleteUniversity.graphql'
+
 import * as types from "./types";
+import {generateMutation} from "@/api/graphql/utils";
 
 // ------------------------------------------------ Auth ---------------------------------------------------------------
 
@@ -105,7 +116,7 @@ export const deleteInputType = generateMutation<types.deleteInputTypeVariables, 
    result => result.deleteProgramInputType && result.deleteProgramInputType.programInputType
 )
 
-// --------------------------------------------- OutputType -------------------------------------------------------------
+// --------------------------------------------- OutputType ------------------------------------------------------------
 
 export const createOutputType = generateMutation<types.createOutputTypeVariables, types.createOutputType, types.createOutputType_createProgramOutputType_programOutputType>(
    createOutputTypeGql,
@@ -122,12 +133,53 @@ export const deleteOutputType = generateMutation<types.deleteOutputTypeVariables
    result => result.deleteProgramOutputType && result.deleteProgramOutputType.programOutputType
 )
 
+// ------------------------------------------------ Country ------------------------------------------------------------
 
-function generateMutation<V, T, R>(graphql: any, formatter: (result: T) => R | null) {
-   return (client: APIClient) => (variables: V) =>
-      client.mutate<T>({
-         mutation: gql(graphql),
-         variables
-      })
-         .then(result => result.data && formatter(result.data))
-}
+export const createCountry = generateMutation<types.createCountryVariables, types.createCountry, types.createCountry_createCountry_country>(
+   createCountryGql,
+   result => result.createCountry && result.createCountry.country
+)
+
+export const updateCountry = generateMutation<types.updateCountryVariables, types.updateCountry, types.updateCountry_updateCountry_country>(
+   updateCountryGql,
+   result => result.updateCountry && result.updateCountry.country
+)
+
+export const deleteCountry = generateMutation<types.deleteCountryVariables, types.deleteCountry, types.deleteCountry_deleteCountry_country>(
+   deleteCountryGql,
+   result =>  result.deleteCountry && result.deleteCountry.country
+)
+
+// -------------------------------------------------- City -------------------------------------------------------------
+
+export const createCity = generateMutation<types.createCityVariables, types.createCity, types.createCity_createCity_city>(
+   createCityGql,
+   result => result.createCity && result.createCity.city
+)
+
+export const updateCity = generateMutation<types.updateCityVariables, types.updateCity, types.updateCity_updateCity_city>(
+   updateCityGql,
+   result => result.updateCity && result.updateCity.city
+)
+
+export const deleteCity = generateMutation<types.deleteCityVariables, types.deleteCity, types.deleteCity_deleteCity_city>(
+   deleteCityGql,
+   result => result.deleteCity && result.deleteCity.city
+)
+
+// ----------------------------------------------- University ----------------------------------------------------------
+
+export const createUniversity = generateMutation<types.createUniversityVariables, types.createUniversity, types.createUniversity_createUniversity_university>(
+   createUniversityGql,
+   result => result.createUniversity && result.createUniversity.university
+)
+
+export const updateUniversity = generateMutation<types.updateUniversityVariables, types.updateUniversity, types.updateUniversity_updateUniversity_university>(
+   updateUniversityGql,
+   result => result.updateUniversity && result.updateUniversity.university
+)
+
+export const deleteUnviersity = generateMutation<types.deleteUniversityVariables, types.deleteUniversity, types.deleteUniversity_deleteUniversity_university>(
+   deleteUniversityGql,
+   result => result.deleteUniversity && result.deleteUniversity.university
+)

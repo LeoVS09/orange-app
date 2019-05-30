@@ -4,21 +4,20 @@ export {
    FullProblem,
    ResultRunProgram,
    defaultProblem,
-   defaultTest,
-   ProblemStatus,
    ProblemTestingStatus,
    PartialProblem,
-   ProblemError
+   ProblemError,
+   Tag
 } from "./problems";
 export {
-   TestStatus,
    Test,
    ResultOfProblem,
-   ResultOfTest
+   ResultOfTest,
+   defaultTest
 } from "./tests"
 export {Contest, Requirements} from "./contest";
-export {Country} from "./country";
-
+export {Country, City} from "./country";
+export {University} from './university'
 
 
 

@@ -4,16 +4,6 @@
       without-margin
       border-bottom
    >
-      <div class="model-info--top-data">
-         <data-view
-            in-row
-            :compact="false"
-            :values="topDataValues"
-            :icons="topDataIcons"
-            :order="topDataOrder"
-         />
-      </div>
-
       <div class="model-info--main">
          <h4 class="model-info--header">Information</h4>
          <data-view
@@ -38,6 +28,15 @@
       }
    }
 
+   function normaliseName(key: string): string {
+      return key.slice(0,1).toUpperCase() + (key.slice(1).split('').map(c => {
+         if(c.match(/[A-Z]/))
+            return ' ' + c.toLowerCase()
+
+         return c
+      }).join(''))
+   }
+
    @Component({
       components: {
          Section,
@@ -50,7 +49,7 @@
          type: Object,
          required: true
       })
-      model: {[key: string]: any}
+      value: {[key: string]: any}
 
       @Prop({
          type: Boolean,
@@ -58,84 +57,42 @@
       })
       editable: boolean
 
-      @Prop({
-         type: Array,
-         default: () => [
-            { 'createdAt': 'Created'},
-            { 'updatedAt': 'Modified'}
-         ]
-      })
-      topData: Array<IModelInfoTopData>
 
       @Prop({
          type: Array,
          default: () => [
             'id',
             'nodeId',
-            'name'
+            'name',
+            'createdAt',
+            'updatedAt'
          ]
       })
-      excludeMainData: Array<string>
+      excludeDefaults: Array<string>
 
-      get topDataValues(){
-         let result: {[key: string]: any} = {}
-
-         this.topData.forEach(prop => {
-            const key = Object.keys(prop)[0]
-            const value = prop[key]
-            if(typeof value === 'string')
-               return result[value] = this.model[key]
-
-            return result[value.text] = this.model[key]
-         })
-
-         return result
-      }
-
-      get topDataOrder(){
-         return this.topData.map(prop => {
-            return prop[Object.keys(prop)[0]]
-         })
-      }
-
-      get topDataIcons(){
-         let result: {[key: string]: string} = {}
-
-         this.topData.forEach(prop => {
-            const key = Object.keys(prop)[0]
-            const value = prop[key]
-            if(typeof value === 'string')
-               return
-
-            result[value.text] = value.icon
-         })
-
-         return result
-      }
-
-      get topDataKeys(){
-         return this.topData.map(prop =>
-            Object.keys(prop)[0]
-         )
-      }
+      @Prop({
+         type: Array,
+         default: () => []
+      })
+      exclude: Array<string>
 
       get mainData() {
-         let keys = Object.keys(this.model)
-         const topDataKeys = this.topDataKeys
+         let keys = Object.keys(this.value)
+         const exclude = [...this.excludeDefaults, ...this.exclude]
+
          keys = keys.filter(k =>
             k[0] !== '_' &&
-            this.excludeMainData.indexOf(k) === -1 &&
-            topDataKeys.indexOf(k) === -1
+            exclude.indexOf(k) === -1
          )
 
          let result: {[key: string]: any} = {}
 
          for(const key of keys) {
-            const value = this.model[key]
+            const value = this.value[key]
             if(typeof value === 'object')
                continue
 
-            const label = key.slice(0,1).toUpperCase() + key.slice(1)
+            const label = normaliseName(key)
 
             result[label] = value
          }

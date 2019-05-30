@@ -1,9 +1,16 @@
 #import "../fragments/FullCity.graphql"
+#import "../fragments/PartialCountry.graphql"
 
 query City($id: UUID!) {
    city(id: $id) {
       nodeId
 
       ...FullCity
+
+      country {
+         nodeId
+
+         ...PartialCountry
+      }
    }
 }

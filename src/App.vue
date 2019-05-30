@@ -9,7 +9,7 @@
    import {Component} from 'vue-property-decorator'
    import {Action} from 'vuex-class'
    import * as actions from './store/actionTypes';
-   import eventBus, {AuthorisationEventPayload, AuthorisationEventState, BusEventTypes} from "@/containers/eventBus";
+   import eventBus, {AuthorisationEventPayload, AuthorisationEventState, BusEventTypes} from "@/pages/eventBus";
 
    // Register the router hooks with their names
    Component.registerHooks([

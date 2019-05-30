@@ -1,13 +1,10 @@
 import {
-   FullProblem,
    PartialProgramInput,
-   PartialProgramOutput, ProblemReadState,
-   ProblemStatus, ProblemTestingStatus,
+   PartialProgramOutput,
    Tag,
 } from "@/models/problems";
 import {PartialUserProfile, UserType} from "@/models/user";
 import {randomId} from "@/components/utils";
-import {Test, TestStatus} from "@/models/tests";
 
 
 export function defaultPartialProfile(): PartialUserProfile {
@@ -21,67 +18,14 @@ export function defaultPartialProfile(): PartialUserProfile {
    }
 }
 
-export function defaultProblem(): FullProblem {
-   return {
-      id: '',
-      name: '',
-      description: '',
-      difficulty: 0,
-      note: '',
 
-      createdAt: new Date(),
-      updatedAt: new Date(),
-      publicationDate: new Date(),
-
-      author: {
-         ...defaultPartialProfile(),
-         login: 'Author',
-         type: UserType.TEACHER
-      },
-
-      tester: {
-         ...defaultPartialProfile(),
-         login: 'Tester',
-         type: UserType.TEACHER
-      },
-
-      tags: [mockTag('some'), mockTag('tags')],
-
-      limits: {
-         time: 30000,
-         memory: 2048
-      },
-
-      io: {
-         input: mockInput('stdin'),
-         output: mockOutput('stdout'),
-      },
-
-      status: ProblemStatus.Synced,
-      readState: ProblemReadState.Full,
-      testingStatus: ProblemTestingStatus.NotTested,
-
-      tests: []
-   }
-}
-
-export function defaultTest(): Test {
-   return {
-      id: "",
-      index: 0,
-      input: "",
-      output: "",
-      status: TestStatus.ForCreate,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-      isPublic: false
-   }
-}
 
 export function mockTag(name: string): Tag {
    return {
       id: 'test-' + name,
-      name
+      name,
+      createdAt: new Date(),
+      updatedAt: new Date()
    }
 }
 

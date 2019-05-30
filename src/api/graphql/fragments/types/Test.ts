@@ -13,6 +13,7 @@ export interface Test {
   input: string;
   output: string;
   isPublic: boolean | null;
+  problemId: any;
   createdAt: any;
   updatedAt: any;
 }

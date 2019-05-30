@@ -1,27 +1,26 @@
 import {ROUTES} from "@/router/rotues";
-export {
-   ROUTES
-}
-
 import Vue from 'vue'
 // @ts-ignore
 import Router from 'vue-router'
 import {Component} from "vue-router/types/router"
-import Home from '@/containers/pages/Home.vue'
-import Authorisation from '@/containers/pages/Authorisation.vue'
-import Competitions from '@/containers/views/Competitions.vue'
-import Problems from '@/containers/views/Problems.vue'
-import ProblemsList from '@/containers/views/Problems.vue'
-import Profile from '@/containers/views/Profile.vue'
-
-import Problem from '@/containers/views/Problem.vue'
-import * as actions from '@/store/actionTypes';
-import Countries from '@/containers/views/Countries.vue'
-import Country from '@/containers/views/Country.vue'
-import SignIn from '@/containers/views/SignIn.vue'
-import SignUp from '@/containers/views/SignUp.vue'
+import Home from '@/layouts/Home.vue'
+import Authorisation from '@/layouts/Authorisation.vue'
+import Competitions from '@/pages/Competitions.vue'
+import Problems from '@/pages/Problems.vue'
+import Profile from '@/pages/Profile.vue'
+import City from '@/pages/City.vue'
+import Problem from '@/pages/Problem.vue'
+import Countries from '@/pages/Countries.vue'
+import Country from '@/pages/Country.vue'
+import University from '@/pages/University.vue'
+import SignIn from '@/pages/SignIn.vue'
+import SignUp from '@/pages/SignUp.vue'
 
 import guard, {problemMiddleware} from "./middlewares";
+
+export {
+   ROUTES
+}
 
 const authPath = '/signin';
 const USE_AUTH_COMPONENT = true;
@@ -37,7 +36,7 @@ const router = new Router({
             {
                name: ROUTES.HOME,
                path: '',
-               component: ProblemsList as Component
+               component: Problems as Component
             },
             {
                name: ROUTES.COMPETITIONS,
@@ -71,6 +70,18 @@ const router = new Router({
                path: '/country/:id',
                name: ROUTES.COUNTRY,
                component: Country as Component,
+               props: true
+            },
+            {
+               path: '/city/:id',
+               name: ROUTES.CITY,
+               component: City as Component,
+               props: true
+            },
+            {
+               path: '/university/:id',
+               name: ROUTES.UNIVERSITY,
+               component: University as Component,
                props: true
             }
          ]

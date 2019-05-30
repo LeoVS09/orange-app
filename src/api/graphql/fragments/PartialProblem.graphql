@@ -1,5 +1,5 @@
 #import "./PartialProfile.graphql"
-#import "./Tag.graphql"
+#import "./PartialTag.graphql"
 
 fragment PartialProblem on Problem {
    id
@@ -21,7 +21,7 @@ fragment PartialProblem on Problem {
          tag {
             nodeId
 
-            ...Tag
+            ...PartialTag
          }
       }
    }

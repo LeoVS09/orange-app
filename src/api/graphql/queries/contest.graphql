@@ -1,0 +1,10 @@
+#import "../fragments/FullContest.graphql"
+
+query Contest($id: UUID!) {
+   contest(id: $id) {
+      nodeId
+
+      ...FullContest
+   }
+
+}

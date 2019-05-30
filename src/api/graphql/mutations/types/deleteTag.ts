@@ -16,6 +16,8 @@ export interface deleteTag_deleteTag_tag {
   nodeId: string;
   id: any;
   name: string;
+  createdAt: any;
+  updatedAt: any;
 }
 
 export interface deleteTag_deleteTag {

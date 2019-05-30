@@ -10,5 +10,6 @@ export enum ROUTES {
    SIGNUP = 'signup',
    COUNTRIES = 'countries',
    COUNTRY = 'country',
-   CITY = 'city'
+   CITY = 'city',
+   UNIVERSITY = 'university'
 }

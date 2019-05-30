@@ -1,0 +1,22 @@
+#import "./PartialTag.graphql"
+#import "./PartialProblem.graphql"
+
+fragment FullTag on Tag {
+   ...PartialTag
+
+   problemsTags {
+      totalCount
+
+      nodes {
+         nodeId
+         createdAt
+         updatedAt
+
+         problem {
+            nodeId
+
+            ...PartialProblem
+         }
+      }
+   }
+}

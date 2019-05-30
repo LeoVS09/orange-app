@@ -4,6 +4,7 @@ fragment Test on Test {
    input
    output
    isPublic
+   problemId
    createdAt
    updatedAt
 }

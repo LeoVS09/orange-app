@@ -1,21 +1,9 @@
-export enum TestStatus {
-   ForCreate = 'ForCreate',
-   Creating = 'Creating',
-   Changed = 'Changed',
-   Updating = 'Updating',
-   Synced = 'Synced',
-   Deleting = 'Deleting',
-   ErrorCreating = 'ErrorCreating',
-   ErrorUpdating = 'ErrorUpdating',
-   ErrorDeleting = 'ErrorDeleting'
-}
-
 export interface Test {
    id: string
    index: number
    input: string
    output: string
-   status: TestStatus
+   problemId: string
    isPublic: boolean
    createdAt: Date
    updatedAt: Date
@@ -32,4 +20,17 @@ export interface ResultOfProblem {
    id: string,
    member: string,
    testsResults: Array<ResultOfTest>
+}
+
+export function defaultTest(): Test {
+   return {
+      id: "",
+      index: 0,
+      input: "",
+      output: "",
+      problemId: "",
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      isPublic: false
+   }
 }

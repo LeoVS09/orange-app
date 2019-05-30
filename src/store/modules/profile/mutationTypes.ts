@@ -1,6 +1,2 @@
 export const SET_PROFILE_DATA = 'SET_PROFILE_DATA';
 export const LOGOUT_FROM_PROFILE = 'LOGOUT_FROM_PROFILE';
-export const SET_COUNTRIES = 'SET_COUNTRIES';
-export const SET_CITIES = 'SET_CITIES';
-export const SET_COUNTRY = 'SET_COUNTRY';
-export const SET_CITY = 'SET_CITY';

@@ -78,6 +78,8 @@ export interface PartialProblem_problemsTags_nodes_tag {
   nodeId: string;
   id: any;
   name: string;
+  createdAt: any;
+  updatedAt: any;
 }
 
 export interface PartialProblem_problemsTags_nodes {

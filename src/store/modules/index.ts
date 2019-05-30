@@ -1,11 +1,21 @@
 import ui, {UIState, Platform} from './ui'
 import profile, {ProfileState} from './profile'
 import problems, {ProblemsState, ProblemFilter} from './problems'
+import statuses, {StatusState, StatusScopes, StatusScope, ModelStatus, ISetStatusPayload} from './statuses'
+import countries from './countries'
+import cities from './cities'
+import tags from './tags'
+import universities from './universities'
 
 export default {
    ui,
    profile,
-   problems
+   problems,
+   statuses,
+   countries,
+   cities,
+   tags,
+   universities
 }
 
 export {
@@ -13,5 +23,10 @@ export {
    ProblemsState,
    ProfileState,
    Platform,
-   ProblemFilter
+   ProblemFilter,
+   StatusState,
+   StatusScopes,
+   StatusScope,
+   ModelStatus,
+   ISetStatusPayload
 }

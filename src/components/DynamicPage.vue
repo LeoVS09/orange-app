@@ -5,9 +5,9 @@
          :breadcrumbs="meta.header.breadcrumbs"
       >
          <template #text>{{headerText}}</template>
-         <template v-if="meta.header.actions && meta.header.actions.length" #actions>
+         <template v-if="meta.header.index && meta.header.index.length" #actions>
             <Button
-               v-for="action in meta.header.actions"
+               v-for="action in meta.header.index"
                v-if="showButton(action)"
                @click="onClickAction(action)"
                :icon="action.icon"

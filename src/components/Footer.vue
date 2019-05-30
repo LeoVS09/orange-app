@@ -8,7 +8,7 @@
   import Vue from 'vue'
   import {Component} from 'vue-property-decorator'
   // @ts-ignore
-  import heartImage from '../img/heart.svg'
+  import heartImage from '../static/heart.svg'
 
   @Component
   export default class Footer extends Vue {

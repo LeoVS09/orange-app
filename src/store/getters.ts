@@ -2,8 +2,9 @@ import {RootState, } from "./state";
 import {GetterTree} from "vuex";
 import {FullProblem, PartialProblem, UserType} from '@/models'
 import {randomItem, shuffleProblem} from "@/store/utils";
-import {ProblemsState, ProblemFilter} from "@/store/modules";
+import { ProblemFilter} from "@/store/modules";
 import {Tag} from "@/models/problems";
+import {GET_READ_STATE, GET_STATUS} from "@/store/modules/statuses/getters";
 
 const getters: GetterTree<RootState, any> = {
    platform: state => state.ui.currentPlatform,
@@ -16,7 +17,8 @@ const getters: GetterTree<RootState, any> = {
    openProblems: state => state.problems.data.filter(p => p.publicationDate <= new Date()),
    closedProblems: state => state.problems.data.filter(p => p.publicationDate > new Date()),
    problems: state => state.problems.data,
-   filteredProblems: state => filterProblems(state.problems),
+   filteredProblems: state => filterProblems(state),
+   activeFilter: state => state.problems.filter,
 
    problemById: state => (id: string) => state.problems.data.find(p => p.id == id),
    randomProblem: state => randomItem(state.problems.data),
@@ -24,11 +26,18 @@ const getters: GetterTree<RootState, any> = {
 
    problemErrorById: state => (id: string) => state.problems.errorHistory.find(e => e.problemId === id),
 
-   allCountries: state => state.profile.countries,
-   countryById: state => (id: string) => state.profile.countries.find(c => c.id === id),
-   allCities: state => state.profile.cities,
+   allCountries: state => state.countries.data,
+   countryById: state => (id: string) => state.countries.data.find(c => c.id === id),
 
-   allTags: state => state.problems.tags
+   allCities: state => state.cities.data,
+   cityById: state => (id: string) => state.cities.data.find(c => c.id === id),
+
+   allUniversities: state => state.universities.data,
+   universityById: state => (id: string) => state.universities.data.find(u => u.id === id),
+
+   allTags: state => state.tags.data,
+   tagById: state => (id: string) => state.tags.data.find(t => t.id === id),
+   filterTags: state => state.tags.filterTags,
 };
 
 export default getters;
@@ -41,12 +50,12 @@ function findSimilarProblems(problems: Array<PartialProblem | FullProblem>, id: 
    return shuffleProblem(anotherProblems)
 }
 
-function filterProblems(state: ProblemsState): Array<PartialProblem | FullProblem> {
-   const {filter, data, filterTags} = state
+function filterProblems(state: RootState): Array<PartialProblem | FullProblem> {
+   const {tags, problems} = state
 
-   const publicated = filterProblemsByPublication(filter, data)
+   const publicated = filterProblemsByPublication(problems.filter, problems.data)
 
-   return filterProblemsByTags(filterTags, publicated)
+   return filterProblemsByTags(tags.filterTags, publicated)
 }
 
 function filterProblemsByPublication(filter: ProblemFilter, data: Array<PartialProblem | FullProblem>) {

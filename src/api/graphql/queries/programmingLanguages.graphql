@@ -1,0 +1,28 @@
+#import "../fragments/ProgrammingLanguage.graphql"
+
+query ProgrammingLanguages (
+$first: Int,
+$last: Int,
+$offset: Int,
+$before: Cursor,
+$after: Cursor,
+$orderBy: [ProgrammingLanguagesOrderBy!],
+$condition: ProgrammingLanguageCondition
+) {
+   programmingLanguages(
+      first: $first,
+      last: $last,
+      offset: $offset,
+      before: $before,
+      after: $after,
+      orderBy: $orderBy,
+      condition: $condition
+   ) {
+      totalCount
+      nodes {
+         nodeId
+
+         ...ProgrammingLanguage
+      }
+   }
+}

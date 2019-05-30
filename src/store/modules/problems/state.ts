@@ -1,5 +1,6 @@
-import {FullProblem, PartialProblem, ProblemStatus, ProblemTestingStatus} from "@/models";
-import {ProblemError, Tag} from "@/models/problems";
+import {FullProblem, PartialProblem} from "@/models";
+import {ProblemError} from "@/models/problems";
+import {CrudState} from "@/store/CrudModule";
 
 export enum ProblemFilter {
    All = "All",
@@ -9,10 +10,7 @@ export enum ProblemFilter {
 }
 
 
-export class ProblemsState {
-   data: Array<FullProblem | PartialProblem> = []
+export class ProblemsState extends CrudState<FullProblem | PartialProblem> {
    filter: ProblemFilter = ProblemFilter.All
-   filterTags: Array<Tag> = []
-   tags: Array<Tag> = []
    errorHistory: Array<ProblemError> = []
 }

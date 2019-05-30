@@ -1,0 +1,6 @@
+fragment PartialTag on Tag {
+   id
+   name
+   createdAt
+   updatedAt
+}

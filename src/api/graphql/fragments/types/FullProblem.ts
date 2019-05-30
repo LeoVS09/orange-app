@@ -78,6 +78,8 @@ export interface FullProblem_problemsTags_nodes_tag {
   nodeId: string;
   id: any;
   name: string;
+  createdAt: any;
+  updatedAt: any;
 }
 
 export interface FullProblem_problemsTags_nodes {
@@ -129,6 +131,7 @@ export interface FullProblem_tests_nodes {
   input: string;
   output: string;
   isPublic: boolean | null;
+  problemId: any;
   createdAt: any;
   updatedAt: any;
 }

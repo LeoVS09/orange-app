@@ -437,6 +437,97 @@
             "deprecationReason": null
           },
           {
+            "name": "contestsProblems",
+            "description": "Reads and enables pagination through a set of `ContestsProblem`.",
+            "args": [
+              {
+                "name": "first",
+                "description": "Only read the first `n` values of the set.",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Int",
+                  "ofType": null
+                },
+                "defaultValue": null
+              },
+              {
+                "name": "last",
+                "description": "Only read the last `n` values of the set.",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Int",
+                  "ofType": null
+                },
+                "defaultValue": null
+              },
+              {
+                "name": "offset",
+                "description": "Skip the first `n` values from our `after` cursor, an alternative to cursor based pagination. May not be used with `last`.",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Int",
+                  "ofType": null
+                },
+                "defaultValue": null
+              },
+              {
+                "name": "before",
+                "description": "Read all values in the set before (above) this cursor.",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Cursor",
+                  "ofType": null
+                },
+                "defaultValue": null
+              },
+              {
+                "name": "after",
+                "description": "Read all values in the set after (below) this cursor.",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Cursor",
+                  "ofType": null
+                },
+                "defaultValue": null
+              },
+              {
+                "name": "orderBy",
+                "description": "The method to use when ordering `ContestsProblem`.",
+                "type": {
+                  "kind": "LIST",
+                  "name": null,
+                  "ofType": {
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "ENUM",
+                      "name": "ContestsProblemsOrderBy",
+                      "ofType": null
+                    }
+                  }
+                },
+                "defaultValue": "[PRIMARY_KEY_ASC]"
+              },
+              {
+                "name": "condition",
+                "description": "A condition to be used in determining which values should be returned by the collection.",
+                "type": {
+                  "kind": "INPUT_OBJECT",
+                  "name": "ContestsProblemCondition",
+                  "ofType": null
+                },
+                "defaultValue": null
+              }
+            ],
+            "type": {
+              "kind": "OBJECT",
+              "name": "ContestsProblemsConnection",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "contestsProfiles",
             "description": "Reads and enables pagination through a set of `ContestsProfile`.",
             "args": [
@@ -2683,6 +2774,47 @@
             "deprecationReason": null
           },
           {
+            "name": "contestsProblem",
+            "description": null,
+            "args": [
+              {
+                "name": "contestId",
+                "description": null,
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "UUID",
+                    "ofType": null
+                  }
+                },
+                "defaultValue": null
+              },
+              {
+                "name": "problemId",
+                "description": null,
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "UUID",
+                    "ofType": null
+                  }
+                },
+                "defaultValue": null
+              }
+            ],
+            "type": {
+              "kind": "OBJECT",
+              "name": "ContestsProblem",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "contestsProfile",
             "description": null,
             "args": [
@@ -3988,6 +4120,33 @@
             "deprecationReason": null
           },
           {
+            "name": "contestsProblemByNodeId",
+            "description": "Reads a single `ContestsProblem` using its globally unique `ID`.",
+            "args": [
+              {
+                "name": "nodeId",
+                "description": "The globally unique `ID` to be used in selecting a single `ContestsProblem`.",
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "ID",
+                    "ofType": null
+                  }
+                },
+                "defaultValue": null
+              }
+            ],
+            "type": {
+              "kind": "OBJECT",
+              "name": "ContestsProblem",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "contestsProfileByNodeId",
             "description": "Reads a single `ContestsProfile` using its globally unique `ID`.",
             "args": [
@@ -4737,31 +4896,6 @@
           },
           {
             "kind": "OBJECT",
-            "name": "Contest",
-            "ofType": null
-          },
-          {
-            "kind": "OBJECT",
-            "name": "ContestsTeam",
-            "ofType": null
-          },
-          {
-            "kind": "OBJECT",
-            "name": "Team",
-            "ofType": null
-          },
-          {
-            "kind": "OBJECT",
-            "name": "TeamsProfile",
-            "ofType": null
-          },
-          {
-            "kind": "OBJECT",
-            "name": "ContestsProfile",
-            "ofType": null
-          },
-          {
-            "kind": "OBJECT",
             "name": "ProfilesTravel",
             "ofType": null
           },
@@ -4828,6 +4962,36 @@
           {
             "kind": "OBJECT",
             "name": "FailType",
+            "ofType": null
+          },
+          {
+            "kind": "OBJECT",
+            "name": "ContestsProblem",
+            "ofType": null
+          },
+          {
+            "kind": "OBJECT",
+            "name": "Contest",
+            "ofType": null
+          },
+          {
+            "kind": "OBJECT",
+            "name": "ContestsTeam",
+            "ofType": null
+          },
+          {
+            "kind": "OBJECT",
+            "name": "Team",
+            "ofType": null
+          },
+          {
+            "kind": "OBJECT",
+            "name": "TeamsProfile",
+            "ofType": null
+          },
+          {
+            "kind": "OBJECT",
+            "name": "ContestsProfile",
             "ofType": null
           },
           {
@@ -7374,6 +7538,101 @@
             "deprecationReason": null
           },
           {
+            "name": "contestsByCreatorId",
+            "description": "Reads and enables pagination through a set of `Contest`.",
+            "args": [
+              {
+                "name": "first",
+                "description": "Only read the first `n` values of the set.",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Int",
+                  "ofType": null
+                },
+                "defaultValue": null
+              },
+              {
+                "name": "last",
+                "description": "Only read the last `n` values of the set.",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Int",
+                  "ofType": null
+                },
+                "defaultValue": null
+              },
+              {
+                "name": "offset",
+                "description": "Skip the first `n` values from our `after` cursor, an alternative to cursor based pagination. May not be used with `last`.",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Int",
+                  "ofType": null
+                },
+                "defaultValue": null
+              },
+              {
+                "name": "before",
+                "description": "Read all values in the set before (above) this cursor.",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Cursor",
+                  "ofType": null
+                },
+                "defaultValue": null
+              },
+              {
+                "name": "after",
+                "description": "Read all values in the set after (below) this cursor.",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Cursor",
+                  "ofType": null
+                },
+                "defaultValue": null
+              },
+              {
+                "name": "orderBy",
+                "description": "The method to use when ordering `Contest`.",
+                "type": {
+                  "kind": "LIST",
+                  "name": null,
+                  "ofType": {
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "ENUM",
+                      "name": "ContestsOrderBy",
+                      "ofType": null
+                    }
+                  }
+                },
+                "defaultValue": "[PRIMARY_KEY_ASC]"
+              },
+              {
+                "name": "condition",
+                "description": "A condition to be used in determining which values should be returned by the collection.",
+                "type": {
+                  "kind": "INPUT_OBJECT",
+                  "name": "ContestCondition",
+                  "ofType": null
+                },
+                "defaultValue": null
+              }
+            ],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "ContestsConnection",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "contestsProfiles",
             "description": "Reads and enables pagination through a set of `ContestsProfile`.",
             "args": [
@@ -7801,101 +8060,6 @@
               "ofType": {
                 "kind": "OBJECT",
                 "name": "ProfilesConnection",
-                "ofType": null
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "contestsByCreatorId",
-            "description": "Reads and enables pagination through a set of `Contest`.",
-            "args": [
-              {
-                "name": "first",
-                "description": "Only read the first `n` values of the set.",
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "Int",
-                  "ofType": null
-                },
-                "defaultValue": null
-              },
-              {
-                "name": "last",
-                "description": "Only read the last `n` values of the set.",
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "Int",
-                  "ofType": null
-                },
-                "defaultValue": null
-              },
-              {
-                "name": "offset",
-                "description": "Skip the first `n` values from our `after` cursor, an alternative to cursor based pagination. May not be used with `last`.",
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "Int",
-                  "ofType": null
-                },
-                "defaultValue": null
-              },
-              {
-                "name": "before",
-                "description": "Read all values in the set before (above) this cursor.",
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "Cursor",
-                  "ofType": null
-                },
-                "defaultValue": null
-              },
-              {
-                "name": "after",
-                "description": "Read all values in the set after (below) this cursor.",
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "Cursor",
-                  "ofType": null
-                },
-                "defaultValue": null
-              },
-              {
-                "name": "orderBy",
-                "description": "The method to use when ordering `Contest`.",
-                "type": {
-                  "kind": "LIST",
-                  "name": null,
-                  "ofType": {
-                    "kind": "NON_NULL",
-                    "name": null,
-                    "ofType": {
-                      "kind": "ENUM",
-                      "name": "ContestsOrderBy",
-                      "ofType": null
-                    }
-                  }
-                },
-                "defaultValue": "[PRIMARY_KEY_ASC]"
-              },
-              {
-                "name": "condition",
-                "description": "A condition to be used in determining which values should be returned by the collection.",
-                "type": {
-                  "kind": "INPUT_OBJECT",
-                  "name": "ContestCondition",
-                  "ofType": null
-                },
-                "defaultValue": null
-              }
-            ],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "OBJECT",
-                "name": "ContestsConnection",
                 "ofType": null
               }
             },
@@ -8401,2147 +8565,6 @@
             "type": {
               "kind": "SCALAR",
               "name": "Cursor",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          }
-        ],
-        "inputFields": null,
-        "interfaces": [],
-        "enumValues": null,
-        "possibleTypes": null
-      },
-      {
-        "kind": "ENUM",
-        "name": "ContestsOrderBy",
-        "description": "Methods to use when ordering `Contest`.",
-        "fields": null,
-        "inputFields": null,
-        "interfaces": null,
-        "enumValues": [
-          {
-            "name": "NATURAL",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "ID_ASC",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "ID_DESC",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "NAME_ASC",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "NAME_DESC",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "TEXT_ASC",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "TEXT_DESC",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "CREATOR_ID_ASC",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "CREATOR_ID_DESC",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "START_DATE_ASC",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "START_DATE_DESC",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "END_DATE_ASC",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "END_DATE_DESC",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "START_PUBLICATION_DATE_ASC",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "START_PUBLICATION_DATE_DESC",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "END_PUBLICATION_DATE_ASC",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "END_PUBLICATION_DATE_DESC",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "CREATED_AT_ASC",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "CREATED_AT_DESC",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "UPDATED_AT_ASC",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "UPDATED_AT_DESC",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "PRIMARY_KEY_ASC",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "PRIMARY_KEY_DESC",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          }
-        ],
-        "possibleTypes": null
-      },
-      {
-        "kind": "INPUT_OBJECT",
-        "name": "ContestCondition",
-        "description": "A condition to be used against `Contest` object types. All fields are tested for equality and combined with a logical ‘and.’",
-        "fields": null,
-        "inputFields": [
-          {
-            "name": "id",
-            "description": "Checks for equality with the object’s `id` field.",
-            "type": {
-              "kind": "SCALAR",
-              "name": "UUID",
-              "ofType": null
-            },
-            "defaultValue": null
-          },
-          {
-            "name": "name",
-            "description": "Checks for equality with the object’s `name` field.",
-            "type": {
-              "kind": "SCALAR",
-              "name": "String",
-              "ofType": null
-            },
-            "defaultValue": null
-          },
-          {
-            "name": "text",
-            "description": "Checks for equality with the object’s `text` field.",
-            "type": {
-              "kind": "SCALAR",
-              "name": "String",
-              "ofType": null
-            },
-            "defaultValue": null
-          },
-          {
-            "name": "creatorId",
-            "description": "Checks for equality with the object’s `creatorId` field.",
-            "type": {
-              "kind": "SCALAR",
-              "name": "UUID",
-              "ofType": null
-            },
-            "defaultValue": null
-          },
-          {
-            "name": "startDate",
-            "description": "Checks for equality with the object’s `startDate` field.",
-            "type": {
-              "kind": "SCALAR",
-              "name": "Datetime",
-              "ofType": null
-            },
-            "defaultValue": null
-          },
-          {
-            "name": "endDate",
-            "description": "Checks for equality with the object’s `endDate` field.",
-            "type": {
-              "kind": "SCALAR",
-              "name": "Datetime",
-              "ofType": null
-            },
-            "defaultValue": null
-          },
-          {
-            "name": "startPublicationDate",
-            "description": "Checks for equality with the object’s `startPublicationDate` field.",
-            "type": {
-              "kind": "SCALAR",
-              "name": "Datetime",
-              "ofType": null
-            },
-            "defaultValue": null
-          },
-          {
-            "name": "endPublicationDate",
-            "description": "Checks for equality with the object’s `endPublicationDate` field.",
-            "type": {
-              "kind": "SCALAR",
-              "name": "Datetime",
-              "ofType": null
-            },
-            "defaultValue": null
-          },
-          {
-            "name": "createdAt",
-            "description": "Checks for equality with the object’s `createdAt` field.",
-            "type": {
-              "kind": "SCALAR",
-              "name": "Datetime",
-              "ofType": null
-            },
-            "defaultValue": null
-          },
-          {
-            "name": "updatedAt",
-            "description": "Checks for equality with the object’s `updatedAt` field.",
-            "type": {
-              "kind": "SCALAR",
-              "name": "Datetime",
-              "ofType": null
-            },
-            "defaultValue": null
-          }
-        ],
-        "interfaces": null,
-        "enumValues": null,
-        "possibleTypes": null
-      },
-      {
-        "kind": "OBJECT",
-        "name": "ContestsConnection",
-        "description": "A connection to a list of `Contest` values.",
-        "fields": [
-          {
-            "name": "nodes",
-            "description": "A list of `Contest` objects.",
-            "args": [],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "LIST",
-                "name": null,
-                "ofType": {
-                  "kind": "OBJECT",
-                  "name": "Contest",
-                  "ofType": null
-                }
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "edges",
-            "description": "A list of edges which contains the `Contest` and cursor to aid in pagination.",
-            "args": [],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "LIST",
-                "name": null,
-                "ofType": {
-                  "kind": "NON_NULL",
-                  "name": null,
-                  "ofType": {
-                    "kind": "OBJECT",
-                    "name": "ContestsEdge",
-                    "ofType": null
-                  }
-                }
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "pageInfo",
-            "description": "Information to aid in pagination.",
-            "args": [],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "OBJECT",
-                "name": "PageInfo",
-                "ofType": null
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "totalCount",
-            "description": "The count of *all* `Contest` you could get from the connection.",
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "Int",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          }
-        ],
-        "inputFields": null,
-        "interfaces": [],
-        "enumValues": null,
-        "possibleTypes": null
-      },
-      {
-        "kind": "OBJECT",
-        "name": "Contest",
-        "description": null,
-        "fields": [
-          {
-            "name": "nodeId",
-            "description": "A globally unique identifier. Can be used in various places throughout the system to identify this single value.",
-            "args": [],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "ID",
-                "ofType": null
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "id",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "UUID",
-                "ofType": null
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "name",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "text",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "String",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "creatorId",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "UUID",
-                "ofType": null
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "startDate",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "Datetime",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "endDate",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "Datetime",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "startPublicationDate",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "Datetime",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "endPublicationDate",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "Datetime",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "createdAt",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "Datetime",
-                "ofType": null
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "updatedAt",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "Datetime",
-                "ofType": null
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "creator",
-            "description": "Reads a single `User` that is related to this `Contest`.",
-            "args": [],
-            "type": {
-              "kind": "OBJECT",
-              "name": "User",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "contestsTeams",
-            "description": "Reads and enables pagination through a set of `ContestsTeam`.",
-            "args": [
-              {
-                "name": "first",
-                "description": "Only read the first `n` values of the set.",
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "Int",
-                  "ofType": null
-                },
-                "defaultValue": null
-              },
-              {
-                "name": "last",
-                "description": "Only read the last `n` values of the set.",
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "Int",
-                  "ofType": null
-                },
-                "defaultValue": null
-              },
-              {
-                "name": "offset",
-                "description": "Skip the first `n` values from our `after` cursor, an alternative to cursor based pagination. May not be used with `last`.",
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "Int",
-                  "ofType": null
-                },
-                "defaultValue": null
-              },
-              {
-                "name": "before",
-                "description": "Read all values in the set before (above) this cursor.",
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "Cursor",
-                  "ofType": null
-                },
-                "defaultValue": null
-              },
-              {
-                "name": "after",
-                "description": "Read all values in the set after (below) this cursor.",
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "Cursor",
-                  "ofType": null
-                },
-                "defaultValue": null
-              },
-              {
-                "name": "orderBy",
-                "description": "The method to use when ordering `ContestsTeam`.",
-                "type": {
-                  "kind": "LIST",
-                  "name": null,
-                  "ofType": {
-                    "kind": "NON_NULL",
-                    "name": null,
-                    "ofType": {
-                      "kind": "ENUM",
-                      "name": "ContestsTeamsOrderBy",
-                      "ofType": null
-                    }
-                  }
-                },
-                "defaultValue": "[PRIMARY_KEY_ASC]"
-              },
-              {
-                "name": "condition",
-                "description": "A condition to be used in determining which values should be returned by the collection.",
-                "type": {
-                  "kind": "INPUT_OBJECT",
-                  "name": "ContestsTeamCondition",
-                  "ofType": null
-                },
-                "defaultValue": null
-              }
-            ],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "OBJECT",
-                "name": "ContestsTeamsConnection",
-                "ofType": null
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "contestsProfiles",
-            "description": "Reads and enables pagination through a set of `ContestsProfile`.",
-            "args": [
-              {
-                "name": "first",
-                "description": "Only read the first `n` values of the set.",
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "Int",
-                  "ofType": null
-                },
-                "defaultValue": null
-              },
-              {
-                "name": "last",
-                "description": "Only read the last `n` values of the set.",
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "Int",
-                  "ofType": null
-                },
-                "defaultValue": null
-              },
-              {
-                "name": "offset",
-                "description": "Skip the first `n` values from our `after` cursor, an alternative to cursor based pagination. May not be used with `last`.",
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "Int",
-                  "ofType": null
-                },
-                "defaultValue": null
-              },
-              {
-                "name": "before",
-                "description": "Read all values in the set before (above) this cursor.",
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "Cursor",
-                  "ofType": null
-                },
-                "defaultValue": null
-              },
-              {
-                "name": "after",
-                "description": "Read all values in the set after (below) this cursor.",
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "Cursor",
-                  "ofType": null
-                },
-                "defaultValue": null
-              },
-              {
-                "name": "orderBy",
-                "description": "The method to use when ordering `ContestsProfile`.",
-                "type": {
-                  "kind": "LIST",
-                  "name": null,
-                  "ofType": {
-                    "kind": "NON_NULL",
-                    "name": null,
-                    "ofType": {
-                      "kind": "ENUM",
-                      "name": "ContestsProfilesOrderBy",
-                      "ofType": null
-                    }
-                  }
-                },
-                "defaultValue": "[PRIMARY_KEY_ASC]"
-              },
-              {
-                "name": "condition",
-                "description": "A condition to be used in determining which values should be returned by the collection.",
-                "type": {
-                  "kind": "INPUT_OBJECT",
-                  "name": "ContestsProfileCondition",
-                  "ofType": null
-                },
-                "defaultValue": null
-              }
-            ],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "OBJECT",
-                "name": "ContestsProfilesConnection",
-                "ofType": null
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          }
-        ],
-        "inputFields": null,
-        "interfaces": [
-          {
-            "kind": "INTERFACE",
-            "name": "Node",
-            "ofType": null
-          }
-        ],
-        "enumValues": null,
-        "possibleTypes": null
-      },
-      {
-        "kind": "ENUM",
-        "name": "ContestsTeamsOrderBy",
-        "description": "Methods to use when ordering `ContestsTeam`.",
-        "fields": null,
-        "inputFields": null,
-        "interfaces": null,
-        "enumValues": [
-          {
-            "name": "NATURAL",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "CONTEST_ID_ASC",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "CONTEST_ID_DESC",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "TEAM_ID_ASC",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "TEAM_ID_DESC",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "CREATED_AT_ASC",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "CREATED_AT_DESC",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "UPDATED_AT_ASC",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "UPDATED_AT_DESC",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "PRIMARY_KEY_ASC",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "PRIMARY_KEY_DESC",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          }
-        ],
-        "possibleTypes": null
-      },
-      {
-        "kind": "INPUT_OBJECT",
-        "name": "ContestsTeamCondition",
-        "description": "A condition to be used against `ContestsTeam` object types. All fields are tested for equality and combined with a logical ‘and.’",
-        "fields": null,
-        "inputFields": [
-          {
-            "name": "contestId",
-            "description": "Checks for equality with the object’s `contestId` field.",
-            "type": {
-              "kind": "SCALAR",
-              "name": "UUID",
-              "ofType": null
-            },
-            "defaultValue": null
-          },
-          {
-            "name": "teamId",
-            "description": "Checks for equality with the object’s `teamId` field.",
-            "type": {
-              "kind": "SCALAR",
-              "name": "UUID",
-              "ofType": null
-            },
-            "defaultValue": null
-          },
-          {
-            "name": "createdAt",
-            "description": "Checks for equality with the object’s `createdAt` field.",
-            "type": {
-              "kind": "SCALAR",
-              "name": "Datetime",
-              "ofType": null
-            },
-            "defaultValue": null
-          },
-          {
-            "name": "updatedAt",
-            "description": "Checks for equality with the object’s `updatedAt` field.",
-            "type": {
-              "kind": "SCALAR",
-              "name": "Datetime",
-              "ofType": null
-            },
-            "defaultValue": null
-          }
-        ],
-        "interfaces": null,
-        "enumValues": null,
-        "possibleTypes": null
-      },
-      {
-        "kind": "OBJECT",
-        "name": "ContestsTeamsConnection",
-        "description": "A connection to a list of `ContestsTeam` values.",
-        "fields": [
-          {
-            "name": "nodes",
-            "description": "A list of `ContestsTeam` objects.",
-            "args": [],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "LIST",
-                "name": null,
-                "ofType": {
-                  "kind": "OBJECT",
-                  "name": "ContestsTeam",
-                  "ofType": null
-                }
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "edges",
-            "description": "A list of edges which contains the `ContestsTeam` and cursor to aid in pagination.",
-            "args": [],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "LIST",
-                "name": null,
-                "ofType": {
-                  "kind": "NON_NULL",
-                  "name": null,
-                  "ofType": {
-                    "kind": "OBJECT",
-                    "name": "ContestsTeamsEdge",
-                    "ofType": null
-                  }
-                }
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "pageInfo",
-            "description": "Information to aid in pagination.",
-            "args": [],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "OBJECT",
-                "name": "PageInfo",
-                "ofType": null
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "totalCount",
-            "description": "The count of *all* `ContestsTeam` you could get from the connection.",
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "Int",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          }
-        ],
-        "inputFields": null,
-        "interfaces": [],
-        "enumValues": null,
-        "possibleTypes": null
-      },
-      {
-        "kind": "OBJECT",
-        "name": "ContestsTeam",
-        "description": null,
-        "fields": [
-          {
-            "name": "nodeId",
-            "description": "A globally unique identifier. Can be used in various places throughout the system to identify this single value.",
-            "args": [],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "ID",
-                "ofType": null
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "contestId",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "UUID",
-                "ofType": null
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "teamId",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "UUID",
-                "ofType": null
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "createdAt",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "Datetime",
-                "ofType": null
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "updatedAt",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "Datetime",
-                "ofType": null
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "contest",
-            "description": "Reads a single `Contest` that is related to this `ContestsTeam`.",
-            "args": [],
-            "type": {
-              "kind": "OBJECT",
-              "name": "Contest",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "team",
-            "description": "Reads a single `Team` that is related to this `ContestsTeam`.",
-            "args": [],
-            "type": {
-              "kind": "OBJECT",
-              "name": "Team",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          }
-        ],
-        "inputFields": null,
-        "interfaces": [
-          {
-            "kind": "INTERFACE",
-            "name": "Node",
-            "ofType": null
-          }
-        ],
-        "enumValues": null,
-        "possibleTypes": null
-      },
-      {
-        "kind": "OBJECT",
-        "name": "Team",
-        "description": null,
-        "fields": [
-          {
-            "name": "nodeId",
-            "description": "A globally unique identifier. Can be used in various places throughout the system to identify this single value.",
-            "args": [],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "ID",
-                "ofType": null
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "id",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "UUID",
-                "ofType": null
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "name",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "createdAt",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "Datetime",
-                "ofType": null
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "updatedAt",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "Datetime",
-                "ofType": null
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "teamsProfiles",
-            "description": "Reads and enables pagination through a set of `TeamsProfile`.",
-            "args": [
-              {
-                "name": "first",
-                "description": "Only read the first `n` values of the set.",
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "Int",
-                  "ofType": null
-                },
-                "defaultValue": null
-              },
-              {
-                "name": "last",
-                "description": "Only read the last `n` values of the set.",
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "Int",
-                  "ofType": null
-                },
-                "defaultValue": null
-              },
-              {
-                "name": "offset",
-                "description": "Skip the first `n` values from our `after` cursor, an alternative to cursor based pagination. May not be used with `last`.",
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "Int",
-                  "ofType": null
-                },
-                "defaultValue": null
-              },
-              {
-                "name": "before",
-                "description": "Read all values in the set before (above) this cursor.",
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "Cursor",
-                  "ofType": null
-                },
-                "defaultValue": null
-              },
-              {
-                "name": "after",
-                "description": "Read all values in the set after (below) this cursor.",
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "Cursor",
-                  "ofType": null
-                },
-                "defaultValue": null
-              },
-              {
-                "name": "orderBy",
-                "description": "The method to use when ordering `TeamsProfile`.",
-                "type": {
-                  "kind": "LIST",
-                  "name": null,
-                  "ofType": {
-                    "kind": "NON_NULL",
-                    "name": null,
-                    "ofType": {
-                      "kind": "ENUM",
-                      "name": "TeamsProfilesOrderBy",
-                      "ofType": null
-                    }
-                  }
-                },
-                "defaultValue": "[PRIMARY_KEY_ASC]"
-              },
-              {
-                "name": "condition",
-                "description": "A condition to be used in determining which values should be returned by the collection.",
-                "type": {
-                  "kind": "INPUT_OBJECT",
-                  "name": "TeamsProfileCondition",
-                  "ofType": null
-                },
-                "defaultValue": null
-              }
-            ],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "OBJECT",
-                "name": "TeamsProfilesConnection",
-                "ofType": null
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "contestsTeams",
-            "description": "Reads and enables pagination through a set of `ContestsTeam`.",
-            "args": [
-              {
-                "name": "first",
-                "description": "Only read the first `n` values of the set.",
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "Int",
-                  "ofType": null
-                },
-                "defaultValue": null
-              },
-              {
-                "name": "last",
-                "description": "Only read the last `n` values of the set.",
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "Int",
-                  "ofType": null
-                },
-                "defaultValue": null
-              },
-              {
-                "name": "offset",
-                "description": "Skip the first `n` values from our `after` cursor, an alternative to cursor based pagination. May not be used with `last`.",
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "Int",
-                  "ofType": null
-                },
-                "defaultValue": null
-              },
-              {
-                "name": "before",
-                "description": "Read all values in the set before (above) this cursor.",
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "Cursor",
-                  "ofType": null
-                },
-                "defaultValue": null
-              },
-              {
-                "name": "after",
-                "description": "Read all values in the set after (below) this cursor.",
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "Cursor",
-                  "ofType": null
-                },
-                "defaultValue": null
-              },
-              {
-                "name": "orderBy",
-                "description": "The method to use when ordering `ContestsTeam`.",
-                "type": {
-                  "kind": "LIST",
-                  "name": null,
-                  "ofType": {
-                    "kind": "NON_NULL",
-                    "name": null,
-                    "ofType": {
-                      "kind": "ENUM",
-                      "name": "ContestsTeamsOrderBy",
-                      "ofType": null
-                    }
-                  }
-                },
-                "defaultValue": "[PRIMARY_KEY_ASC]"
-              },
-              {
-                "name": "condition",
-                "description": "A condition to be used in determining which values should be returned by the collection.",
-                "type": {
-                  "kind": "INPUT_OBJECT",
-                  "name": "ContestsTeamCondition",
-                  "ofType": null
-                },
-                "defaultValue": null
-              }
-            ],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "OBJECT",
-                "name": "ContestsTeamsConnection",
-                "ofType": null
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          }
-        ],
-        "inputFields": null,
-        "interfaces": [
-          {
-            "kind": "INTERFACE",
-            "name": "Node",
-            "ofType": null
-          }
-        ],
-        "enumValues": null,
-        "possibleTypes": null
-      },
-      {
-        "kind": "ENUM",
-        "name": "TeamsProfilesOrderBy",
-        "description": "Methods to use when ordering `TeamsProfile`.",
-        "fields": null,
-        "inputFields": null,
-        "interfaces": null,
-        "enumValues": [
-          {
-            "name": "NATURAL",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "TEAM_ID_ASC",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "TEAM_ID_DESC",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "PROFILE_ID_ASC",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "PROFILE_ID_DESC",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "CREATED_AT_ASC",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "CREATED_AT_DESC",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "UPDATED_AT_ASC",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "UPDATED_AT_DESC",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "PRIMARY_KEY_ASC",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "PRIMARY_KEY_DESC",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          }
-        ],
-        "possibleTypes": null
-      },
-      {
-        "kind": "INPUT_OBJECT",
-        "name": "TeamsProfileCondition",
-        "description": "A condition to be used against `TeamsProfile` object types. All fields are tested for equality and combined with a logical ‘and.’",
-        "fields": null,
-        "inputFields": [
-          {
-            "name": "teamId",
-            "description": "Checks for equality with the object’s `teamId` field.",
-            "type": {
-              "kind": "SCALAR",
-              "name": "UUID",
-              "ofType": null
-            },
-            "defaultValue": null
-          },
-          {
-            "name": "profileId",
-            "description": "Checks for equality with the object’s `profileId` field.",
-            "type": {
-              "kind": "SCALAR",
-              "name": "UUID",
-              "ofType": null
-            },
-            "defaultValue": null
-          },
-          {
-            "name": "createdAt",
-            "description": "Checks for equality with the object’s `createdAt` field.",
-            "type": {
-              "kind": "SCALAR",
-              "name": "Datetime",
-              "ofType": null
-            },
-            "defaultValue": null
-          },
-          {
-            "name": "updatedAt",
-            "description": "Checks for equality with the object’s `updatedAt` field.",
-            "type": {
-              "kind": "SCALAR",
-              "name": "Datetime",
-              "ofType": null
-            },
-            "defaultValue": null
-          }
-        ],
-        "interfaces": null,
-        "enumValues": null,
-        "possibleTypes": null
-      },
-      {
-        "kind": "OBJECT",
-        "name": "TeamsProfilesConnection",
-        "description": "A connection to a list of `TeamsProfile` values.",
-        "fields": [
-          {
-            "name": "nodes",
-            "description": "A list of `TeamsProfile` objects.",
-            "args": [],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "LIST",
-                "name": null,
-                "ofType": {
-                  "kind": "OBJECT",
-                  "name": "TeamsProfile",
-                  "ofType": null
-                }
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "edges",
-            "description": "A list of edges which contains the `TeamsProfile` and cursor to aid in pagination.",
-            "args": [],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "LIST",
-                "name": null,
-                "ofType": {
-                  "kind": "NON_NULL",
-                  "name": null,
-                  "ofType": {
-                    "kind": "OBJECT",
-                    "name": "TeamsProfilesEdge",
-                    "ofType": null
-                  }
-                }
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "pageInfo",
-            "description": "Information to aid in pagination.",
-            "args": [],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "OBJECT",
-                "name": "PageInfo",
-                "ofType": null
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "totalCount",
-            "description": "The count of *all* `TeamsProfile` you could get from the connection.",
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "Int",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          }
-        ],
-        "inputFields": null,
-        "interfaces": [],
-        "enumValues": null,
-        "possibleTypes": null
-      },
-      {
-        "kind": "OBJECT",
-        "name": "TeamsProfile",
-        "description": null,
-        "fields": [
-          {
-            "name": "nodeId",
-            "description": "A globally unique identifier. Can be used in various places throughout the system to identify this single value.",
-            "args": [],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "ID",
-                "ofType": null
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "teamId",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "UUID",
-                "ofType": null
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "profileId",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "UUID",
-                "ofType": null
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "createdAt",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "Datetime",
-                "ofType": null
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "updatedAt",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "Datetime",
-                "ofType": null
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "team",
-            "description": "Reads a single `Team` that is related to this `TeamsProfile`.",
-            "args": [],
-            "type": {
-              "kind": "OBJECT",
-              "name": "Team",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "profile",
-            "description": "Reads a single `Profile` that is related to this `TeamsProfile`.",
-            "args": [],
-            "type": {
-              "kind": "OBJECT",
-              "name": "Profile",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          }
-        ],
-        "inputFields": null,
-        "interfaces": [
-          {
-            "kind": "INTERFACE",
-            "name": "Node",
-            "ofType": null
-          }
-        ],
-        "enumValues": null,
-        "possibleTypes": null
-      },
-      {
-        "kind": "OBJECT",
-        "name": "TeamsProfilesEdge",
-        "description": "A `TeamsProfile` edge in the connection.",
-        "fields": [
-          {
-            "name": "cursor",
-            "description": "A cursor for use in pagination.",
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "Cursor",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "node",
-            "description": "The `TeamsProfile` at the end of the edge.",
-            "args": [],
-            "type": {
-              "kind": "OBJECT",
-              "name": "TeamsProfile",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          }
-        ],
-        "inputFields": null,
-        "interfaces": [],
-        "enumValues": null,
-        "possibleTypes": null
-      },
-      {
-        "kind": "OBJECT",
-        "name": "ContestsTeamsEdge",
-        "description": "A `ContestsTeam` edge in the connection.",
-        "fields": [
-          {
-            "name": "cursor",
-            "description": "A cursor for use in pagination.",
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "Cursor",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "node",
-            "description": "The `ContestsTeam` at the end of the edge.",
-            "args": [],
-            "type": {
-              "kind": "OBJECT",
-              "name": "ContestsTeam",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          }
-        ],
-        "inputFields": null,
-        "interfaces": [],
-        "enumValues": null,
-        "possibleTypes": null
-      },
-      {
-        "kind": "ENUM",
-        "name": "ContestsProfilesOrderBy",
-        "description": "Methods to use when ordering `ContestsProfile`.",
-        "fields": null,
-        "inputFields": null,
-        "interfaces": null,
-        "enumValues": [
-          {
-            "name": "NATURAL",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "CONTEST_ID_ASC",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "CONTEST_ID_DESC",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "PROFILE_ID_ASC",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "PROFILE_ID_DESC",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "CREATED_AT_ASC",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "CREATED_AT_DESC",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "UPDATED_AT_ASC",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "UPDATED_AT_DESC",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "PRIMARY_KEY_ASC",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "PRIMARY_KEY_DESC",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          }
-        ],
-        "possibleTypes": null
-      },
-      {
-        "kind": "INPUT_OBJECT",
-        "name": "ContestsProfileCondition",
-        "description": "A condition to be used against `ContestsProfile` object types. All fields are tested for equality and combined with a logical ‘and.’",
-        "fields": null,
-        "inputFields": [
-          {
-            "name": "contestId",
-            "description": "Checks for equality with the object’s `contestId` field.",
-            "type": {
-              "kind": "SCALAR",
-              "name": "UUID",
-              "ofType": null
-            },
-            "defaultValue": null
-          },
-          {
-            "name": "profileId",
-            "description": "Checks for equality with the object’s `profileId` field.",
-            "type": {
-              "kind": "SCALAR",
-              "name": "UUID",
-              "ofType": null
-            },
-            "defaultValue": null
-          },
-          {
-            "name": "createdAt",
-            "description": "Checks for equality with the object’s `createdAt` field.",
-            "type": {
-              "kind": "SCALAR",
-              "name": "Datetime",
-              "ofType": null
-            },
-            "defaultValue": null
-          },
-          {
-            "name": "updatedAt",
-            "description": "Checks for equality with the object’s `updatedAt` field.",
-            "type": {
-              "kind": "SCALAR",
-              "name": "Datetime",
-              "ofType": null
-            },
-            "defaultValue": null
-          }
-        ],
-        "interfaces": null,
-        "enumValues": null,
-        "possibleTypes": null
-      },
-      {
-        "kind": "OBJECT",
-        "name": "ContestsProfilesConnection",
-        "description": "A connection to a list of `ContestsProfile` values.",
-        "fields": [
-          {
-            "name": "nodes",
-            "description": "A list of `ContestsProfile` objects.",
-            "args": [],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "LIST",
-                "name": null,
-                "ofType": {
-                  "kind": "OBJECT",
-                  "name": "ContestsProfile",
-                  "ofType": null
-                }
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "edges",
-            "description": "A list of edges which contains the `ContestsProfile` and cursor to aid in pagination.",
-            "args": [],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "LIST",
-                "name": null,
-                "ofType": {
-                  "kind": "NON_NULL",
-                  "name": null,
-                  "ofType": {
-                    "kind": "OBJECT",
-                    "name": "ContestsProfilesEdge",
-                    "ofType": null
-                  }
-                }
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "pageInfo",
-            "description": "Information to aid in pagination.",
-            "args": [],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "OBJECT",
-                "name": "PageInfo",
-                "ofType": null
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "totalCount",
-            "description": "The count of *all* `ContestsProfile` you could get from the connection.",
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "Int",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          }
-        ],
-        "inputFields": null,
-        "interfaces": [],
-        "enumValues": null,
-        "possibleTypes": null
-      },
-      {
-        "kind": "OBJECT",
-        "name": "ContestsProfile",
-        "description": null,
-        "fields": [
-          {
-            "name": "nodeId",
-            "description": "A globally unique identifier. Can be used in various places throughout the system to identify this single value.",
-            "args": [],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "ID",
-                "ofType": null
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "contestId",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "UUID",
-                "ofType": null
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "profileId",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "UUID",
-                "ofType": null
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "createdAt",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "Datetime",
-                "ofType": null
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "updatedAt",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "Datetime",
-                "ofType": null
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "contest",
-            "description": "Reads a single `Contest` that is related to this `ContestsProfile`.",
-            "args": [],
-            "type": {
-              "kind": "OBJECT",
-              "name": "Contest",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "profile",
-            "description": "Reads a single `Profile` that is related to this `ContestsProfile`.",
-            "args": [],
-            "type": {
-              "kind": "OBJECT",
-              "name": "Profile",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          }
-        ],
-        "inputFields": null,
-        "interfaces": [
-          {
-            "kind": "INTERFACE",
-            "name": "Node",
-            "ofType": null
-          }
-        ],
-        "enumValues": null,
-        "possibleTypes": null
-      },
-      {
-        "kind": "OBJECT",
-        "name": "ContestsProfilesEdge",
-        "description": "A `ContestsProfile` edge in the connection.",
-        "fields": [
-          {
-            "name": "cursor",
-            "description": "A cursor for use in pagination.",
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "Cursor",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "node",
-            "description": "The `ContestsProfile` at the end of the edge.",
-            "args": [],
-            "type": {
-              "kind": "OBJECT",
-              "name": "ContestsProfile",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          }
-        ],
-        "inputFields": null,
-        "interfaces": [],
-        "enumValues": null,
-        "possibleTypes": null
-      },
-      {
-        "kind": "OBJECT",
-        "name": "ContestsEdge",
-        "description": "A `Contest` edge in the connection.",
-        "fields": [
-          {
-            "name": "cursor",
-            "description": "A cursor for use in pagination.",
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "Cursor",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "node",
-            "description": "The `Contest` at the end of the edge.",
-            "args": [],
-            "type": {
-              "kind": "OBJECT",
-              "name": "Contest",
               "ofType": null
             },
             "isDeprecated": false,
@@ -13546,6 +11569,101 @@
             },
             "isDeprecated": false,
             "deprecationReason": null
+          },
+          {
+            "name": "contestsProblems",
+            "description": "Reads and enables pagination through a set of `ContestsProblem`.",
+            "args": [
+              {
+                "name": "first",
+                "description": "Only read the first `n` values of the set.",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Int",
+                  "ofType": null
+                },
+                "defaultValue": null
+              },
+              {
+                "name": "last",
+                "description": "Only read the last `n` values of the set.",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Int",
+                  "ofType": null
+                },
+                "defaultValue": null
+              },
+              {
+                "name": "offset",
+                "description": "Skip the first `n` values from our `after` cursor, an alternative to cursor based pagination. May not be used with `last`.",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Int",
+                  "ofType": null
+                },
+                "defaultValue": null
+              },
+              {
+                "name": "before",
+                "description": "Read all values in the set before (above) this cursor.",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Cursor",
+                  "ofType": null
+                },
+                "defaultValue": null
+              },
+              {
+                "name": "after",
+                "description": "Read all values in the set after (below) this cursor.",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Cursor",
+                  "ofType": null
+                },
+                "defaultValue": null
+              },
+              {
+                "name": "orderBy",
+                "description": "The method to use when ordering `ContestsProblem`.",
+                "type": {
+                  "kind": "LIST",
+                  "name": null,
+                  "ofType": {
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "ENUM",
+                      "name": "ContestsProblemsOrderBy",
+                      "ofType": null
+                    }
+                  }
+                },
+                "defaultValue": "[PRIMARY_KEY_ASC]"
+              },
+              {
+                "name": "condition",
+                "description": "A condition to be used in determining which values should be returned by the collection.",
+                "type": {
+                  "kind": "INPUT_OBJECT",
+                  "name": "ContestsProblemCondition",
+                  "ofType": null
+                },
+                "defaultValue": null
+              }
+            ],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "ContestsProblemsConnection",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
           }
         ],
         "inputFields": null,
@@ -16410,6 +14528,2231 @@
         "possibleTypes": null
       },
       {
+        "kind": "ENUM",
+        "name": "ContestsProblemsOrderBy",
+        "description": "Methods to use when ordering `ContestsProblem`.",
+        "fields": null,
+        "inputFields": null,
+        "interfaces": null,
+        "enumValues": [
+          {
+            "name": "NATURAL",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "CONTEST_ID_ASC",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "CONTEST_ID_DESC",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "PROBLEM_ID_ASC",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "PROBLEM_ID_DESC",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "CREATED_AT_ASC",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "CREATED_AT_DESC",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "UPDATED_AT_ASC",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "UPDATED_AT_DESC",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "PRIMARY_KEY_ASC",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "PRIMARY_KEY_DESC",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "possibleTypes": null
+      },
+      {
+        "kind": "INPUT_OBJECT",
+        "name": "ContestsProblemCondition",
+        "description": "A condition to be used against `ContestsProblem` object types. All fields are tested for equality and combined with a logical ‘and.’",
+        "fields": null,
+        "inputFields": [
+          {
+            "name": "contestId",
+            "description": "Checks for equality with the object’s `contestId` field.",
+            "type": {
+              "kind": "SCALAR",
+              "name": "UUID",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "problemId",
+            "description": "Checks for equality with the object’s `problemId` field.",
+            "type": {
+              "kind": "SCALAR",
+              "name": "UUID",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "createdAt",
+            "description": "Checks for equality with the object’s `createdAt` field.",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Datetime",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "updatedAt",
+            "description": "Checks for equality with the object’s `updatedAt` field.",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Datetime",
+              "ofType": null
+            },
+            "defaultValue": null
+          }
+        ],
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "OBJECT",
+        "name": "ContestsProblemsConnection",
+        "description": "A connection to a list of `ContestsProblem` values.",
+        "fields": [
+          {
+            "name": "nodes",
+            "description": "A list of `ContestsProblem` objects.",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "OBJECT",
+                  "name": "ContestsProblem",
+                  "ofType": null
+                }
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "edges",
+            "description": "A list of edges which contains the `ContestsProblem` and cursor to aid in pagination.",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "OBJECT",
+                    "name": "ContestsProblemsEdge",
+                    "ofType": null
+                  }
+                }
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "pageInfo",
+            "description": "Information to aid in pagination.",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "PageInfo",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "totalCount",
+            "description": "The count of *all* `ContestsProblem` you could get from the connection.",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Int",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "inputFields": null,
+        "interfaces": [],
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "OBJECT",
+        "name": "ContestsProblem",
+        "description": null,
+        "fields": [
+          {
+            "name": "nodeId",
+            "description": "A globally unique identifier. Can be used in various places throughout the system to identify this single value.",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "ID",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "contestId",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "UUID",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "problemId",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "UUID",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "createdAt",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Datetime",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "updatedAt",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Datetime",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "contest",
+            "description": "Reads a single `Contest` that is related to this `ContestsProblem`.",
+            "args": [],
+            "type": {
+              "kind": "OBJECT",
+              "name": "Contest",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "problem",
+            "description": "Reads a single `Problem` that is related to this `ContestsProblem`.",
+            "args": [],
+            "type": {
+              "kind": "OBJECT",
+              "name": "Problem",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "inputFields": null,
+        "interfaces": [
+          {
+            "kind": "INTERFACE",
+            "name": "Node",
+            "ofType": null
+          }
+        ],
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "OBJECT",
+        "name": "Contest",
+        "description": null,
+        "fields": [
+          {
+            "name": "nodeId",
+            "description": "A globally unique identifier. Can be used in various places throughout the system to identify this single value.",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "ID",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "id",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "UUID",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "name",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "text",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "creatorId",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "UUID",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "startDate",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Datetime",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "endDate",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Datetime",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "startPublicationDate",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Datetime",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "endPublicationDate",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Datetime",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "createdAt",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Datetime",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "updatedAt",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Datetime",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "creator",
+            "description": "Reads a single `Profile` that is related to this `Contest`.",
+            "args": [],
+            "type": {
+              "kind": "OBJECT",
+              "name": "Profile",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "contestsTeams",
+            "description": "Reads and enables pagination through a set of `ContestsTeam`.",
+            "args": [
+              {
+                "name": "first",
+                "description": "Only read the first `n` values of the set.",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Int",
+                  "ofType": null
+                },
+                "defaultValue": null
+              },
+              {
+                "name": "last",
+                "description": "Only read the last `n` values of the set.",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Int",
+                  "ofType": null
+                },
+                "defaultValue": null
+              },
+              {
+                "name": "offset",
+                "description": "Skip the first `n` values from our `after` cursor, an alternative to cursor based pagination. May not be used with `last`.",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Int",
+                  "ofType": null
+                },
+                "defaultValue": null
+              },
+              {
+                "name": "before",
+                "description": "Read all values in the set before (above) this cursor.",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Cursor",
+                  "ofType": null
+                },
+                "defaultValue": null
+              },
+              {
+                "name": "after",
+                "description": "Read all values in the set after (below) this cursor.",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Cursor",
+                  "ofType": null
+                },
+                "defaultValue": null
+              },
+              {
+                "name": "orderBy",
+                "description": "The method to use when ordering `ContestsTeam`.",
+                "type": {
+                  "kind": "LIST",
+                  "name": null,
+                  "ofType": {
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "ENUM",
+                      "name": "ContestsTeamsOrderBy",
+                      "ofType": null
+                    }
+                  }
+                },
+                "defaultValue": "[PRIMARY_KEY_ASC]"
+              },
+              {
+                "name": "condition",
+                "description": "A condition to be used in determining which values should be returned by the collection.",
+                "type": {
+                  "kind": "INPUT_OBJECT",
+                  "name": "ContestsTeamCondition",
+                  "ofType": null
+                },
+                "defaultValue": null
+              }
+            ],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "ContestsTeamsConnection",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "contestsProfiles",
+            "description": "Reads and enables pagination through a set of `ContestsProfile`.",
+            "args": [
+              {
+                "name": "first",
+                "description": "Only read the first `n` values of the set.",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Int",
+                  "ofType": null
+                },
+                "defaultValue": null
+              },
+              {
+                "name": "last",
+                "description": "Only read the last `n` values of the set.",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Int",
+                  "ofType": null
+                },
+                "defaultValue": null
+              },
+              {
+                "name": "offset",
+                "description": "Skip the first `n` values from our `after` cursor, an alternative to cursor based pagination. May not be used with `last`.",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Int",
+                  "ofType": null
+                },
+                "defaultValue": null
+              },
+              {
+                "name": "before",
+                "description": "Read all values in the set before (above) this cursor.",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Cursor",
+                  "ofType": null
+                },
+                "defaultValue": null
+              },
+              {
+                "name": "after",
+                "description": "Read all values in the set after (below) this cursor.",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Cursor",
+                  "ofType": null
+                },
+                "defaultValue": null
+              },
+              {
+                "name": "orderBy",
+                "description": "The method to use when ordering `ContestsProfile`.",
+                "type": {
+                  "kind": "LIST",
+                  "name": null,
+                  "ofType": {
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "ENUM",
+                      "name": "ContestsProfilesOrderBy",
+                      "ofType": null
+                    }
+                  }
+                },
+                "defaultValue": "[PRIMARY_KEY_ASC]"
+              },
+              {
+                "name": "condition",
+                "description": "A condition to be used in determining which values should be returned by the collection.",
+                "type": {
+                  "kind": "INPUT_OBJECT",
+                  "name": "ContestsProfileCondition",
+                  "ofType": null
+                },
+                "defaultValue": null
+              }
+            ],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "ContestsProfilesConnection",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "contestsProblems",
+            "description": "Reads and enables pagination through a set of `ContestsProblem`.",
+            "args": [
+              {
+                "name": "first",
+                "description": "Only read the first `n` values of the set.",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Int",
+                  "ofType": null
+                },
+                "defaultValue": null
+              },
+              {
+                "name": "last",
+                "description": "Only read the last `n` values of the set.",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Int",
+                  "ofType": null
+                },
+                "defaultValue": null
+              },
+              {
+                "name": "offset",
+                "description": "Skip the first `n` values from our `after` cursor, an alternative to cursor based pagination. May not be used with `last`.",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Int",
+                  "ofType": null
+                },
+                "defaultValue": null
+              },
+              {
+                "name": "before",
+                "description": "Read all values in the set before (above) this cursor.",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Cursor",
+                  "ofType": null
+                },
+                "defaultValue": null
+              },
+              {
+                "name": "after",
+                "description": "Read all values in the set after (below) this cursor.",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Cursor",
+                  "ofType": null
+                },
+                "defaultValue": null
+              },
+              {
+                "name": "orderBy",
+                "description": "The method to use when ordering `ContestsProblem`.",
+                "type": {
+                  "kind": "LIST",
+                  "name": null,
+                  "ofType": {
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "ENUM",
+                      "name": "ContestsProblemsOrderBy",
+                      "ofType": null
+                    }
+                  }
+                },
+                "defaultValue": "[PRIMARY_KEY_ASC]"
+              },
+              {
+                "name": "condition",
+                "description": "A condition to be used in determining which values should be returned by the collection.",
+                "type": {
+                  "kind": "INPUT_OBJECT",
+                  "name": "ContestsProblemCondition",
+                  "ofType": null
+                },
+                "defaultValue": null
+              }
+            ],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "ContestsProblemsConnection",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "inputFields": null,
+        "interfaces": [
+          {
+            "kind": "INTERFACE",
+            "name": "Node",
+            "ofType": null
+          }
+        ],
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "ENUM",
+        "name": "ContestsTeamsOrderBy",
+        "description": "Methods to use when ordering `ContestsTeam`.",
+        "fields": null,
+        "inputFields": null,
+        "interfaces": null,
+        "enumValues": [
+          {
+            "name": "NATURAL",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "CONTEST_ID_ASC",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "CONTEST_ID_DESC",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "TEAM_ID_ASC",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "TEAM_ID_DESC",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "CREATED_AT_ASC",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "CREATED_AT_DESC",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "UPDATED_AT_ASC",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "UPDATED_AT_DESC",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "PRIMARY_KEY_ASC",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "PRIMARY_KEY_DESC",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "possibleTypes": null
+      },
+      {
+        "kind": "INPUT_OBJECT",
+        "name": "ContestsTeamCondition",
+        "description": "A condition to be used against `ContestsTeam` object types. All fields are tested for equality and combined with a logical ‘and.’",
+        "fields": null,
+        "inputFields": [
+          {
+            "name": "contestId",
+            "description": "Checks for equality with the object’s `contestId` field.",
+            "type": {
+              "kind": "SCALAR",
+              "name": "UUID",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "teamId",
+            "description": "Checks for equality with the object’s `teamId` field.",
+            "type": {
+              "kind": "SCALAR",
+              "name": "UUID",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "createdAt",
+            "description": "Checks for equality with the object’s `createdAt` field.",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Datetime",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "updatedAt",
+            "description": "Checks for equality with the object’s `updatedAt` field.",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Datetime",
+              "ofType": null
+            },
+            "defaultValue": null
+          }
+        ],
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "OBJECT",
+        "name": "ContestsTeamsConnection",
+        "description": "A connection to a list of `ContestsTeam` values.",
+        "fields": [
+          {
+            "name": "nodes",
+            "description": "A list of `ContestsTeam` objects.",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "OBJECT",
+                  "name": "ContestsTeam",
+                  "ofType": null
+                }
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "edges",
+            "description": "A list of edges which contains the `ContestsTeam` and cursor to aid in pagination.",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "OBJECT",
+                    "name": "ContestsTeamsEdge",
+                    "ofType": null
+                  }
+                }
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "pageInfo",
+            "description": "Information to aid in pagination.",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "PageInfo",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "totalCount",
+            "description": "The count of *all* `ContestsTeam` you could get from the connection.",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Int",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "inputFields": null,
+        "interfaces": [],
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "OBJECT",
+        "name": "ContestsTeam",
+        "description": null,
+        "fields": [
+          {
+            "name": "nodeId",
+            "description": "A globally unique identifier. Can be used in various places throughout the system to identify this single value.",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "ID",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "contestId",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "UUID",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "teamId",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "UUID",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "createdAt",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Datetime",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "updatedAt",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Datetime",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "contest",
+            "description": "Reads a single `Contest` that is related to this `ContestsTeam`.",
+            "args": [],
+            "type": {
+              "kind": "OBJECT",
+              "name": "Contest",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "team",
+            "description": "Reads a single `Team` that is related to this `ContestsTeam`.",
+            "args": [],
+            "type": {
+              "kind": "OBJECT",
+              "name": "Team",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "inputFields": null,
+        "interfaces": [
+          {
+            "kind": "INTERFACE",
+            "name": "Node",
+            "ofType": null
+          }
+        ],
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "OBJECT",
+        "name": "Team",
+        "description": null,
+        "fields": [
+          {
+            "name": "nodeId",
+            "description": "A globally unique identifier. Can be used in various places throughout the system to identify this single value.",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "ID",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "id",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "UUID",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "name",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "createdAt",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Datetime",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "updatedAt",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Datetime",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "teamsProfiles",
+            "description": "Reads and enables pagination through a set of `TeamsProfile`.",
+            "args": [
+              {
+                "name": "first",
+                "description": "Only read the first `n` values of the set.",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Int",
+                  "ofType": null
+                },
+                "defaultValue": null
+              },
+              {
+                "name": "last",
+                "description": "Only read the last `n` values of the set.",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Int",
+                  "ofType": null
+                },
+                "defaultValue": null
+              },
+              {
+                "name": "offset",
+                "description": "Skip the first `n` values from our `after` cursor, an alternative to cursor based pagination. May not be used with `last`.",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Int",
+                  "ofType": null
+                },
+                "defaultValue": null
+              },
+              {
+                "name": "before",
+                "description": "Read all values in the set before (above) this cursor.",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Cursor",
+                  "ofType": null
+                },
+                "defaultValue": null
+              },
+              {
+                "name": "after",
+                "description": "Read all values in the set after (below) this cursor.",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Cursor",
+                  "ofType": null
+                },
+                "defaultValue": null
+              },
+              {
+                "name": "orderBy",
+                "description": "The method to use when ordering `TeamsProfile`.",
+                "type": {
+                  "kind": "LIST",
+                  "name": null,
+                  "ofType": {
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "ENUM",
+                      "name": "TeamsProfilesOrderBy",
+                      "ofType": null
+                    }
+                  }
+                },
+                "defaultValue": "[PRIMARY_KEY_ASC]"
+              },
+              {
+                "name": "condition",
+                "description": "A condition to be used in determining which values should be returned by the collection.",
+                "type": {
+                  "kind": "INPUT_OBJECT",
+                  "name": "TeamsProfileCondition",
+                  "ofType": null
+                },
+                "defaultValue": null
+              }
+            ],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "TeamsProfilesConnection",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "contestsTeams",
+            "description": "Reads and enables pagination through a set of `ContestsTeam`.",
+            "args": [
+              {
+                "name": "first",
+                "description": "Only read the first `n` values of the set.",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Int",
+                  "ofType": null
+                },
+                "defaultValue": null
+              },
+              {
+                "name": "last",
+                "description": "Only read the last `n` values of the set.",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Int",
+                  "ofType": null
+                },
+                "defaultValue": null
+              },
+              {
+                "name": "offset",
+                "description": "Skip the first `n` values from our `after` cursor, an alternative to cursor based pagination. May not be used with `last`.",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Int",
+                  "ofType": null
+                },
+                "defaultValue": null
+              },
+              {
+                "name": "before",
+                "description": "Read all values in the set before (above) this cursor.",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Cursor",
+                  "ofType": null
+                },
+                "defaultValue": null
+              },
+              {
+                "name": "after",
+                "description": "Read all values in the set after (below) this cursor.",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Cursor",
+                  "ofType": null
+                },
+                "defaultValue": null
+              },
+              {
+                "name": "orderBy",
+                "description": "The method to use when ordering `ContestsTeam`.",
+                "type": {
+                  "kind": "LIST",
+                  "name": null,
+                  "ofType": {
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "ENUM",
+                      "name": "ContestsTeamsOrderBy",
+                      "ofType": null
+                    }
+                  }
+                },
+                "defaultValue": "[PRIMARY_KEY_ASC]"
+              },
+              {
+                "name": "condition",
+                "description": "A condition to be used in determining which values should be returned by the collection.",
+                "type": {
+                  "kind": "INPUT_OBJECT",
+                  "name": "ContestsTeamCondition",
+                  "ofType": null
+                },
+                "defaultValue": null
+              }
+            ],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "ContestsTeamsConnection",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "inputFields": null,
+        "interfaces": [
+          {
+            "kind": "INTERFACE",
+            "name": "Node",
+            "ofType": null
+          }
+        ],
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "ENUM",
+        "name": "TeamsProfilesOrderBy",
+        "description": "Methods to use when ordering `TeamsProfile`.",
+        "fields": null,
+        "inputFields": null,
+        "interfaces": null,
+        "enumValues": [
+          {
+            "name": "NATURAL",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "TEAM_ID_ASC",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "TEAM_ID_DESC",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "PROFILE_ID_ASC",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "PROFILE_ID_DESC",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "CREATED_AT_ASC",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "CREATED_AT_DESC",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "UPDATED_AT_ASC",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "UPDATED_AT_DESC",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "PRIMARY_KEY_ASC",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "PRIMARY_KEY_DESC",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "possibleTypes": null
+      },
+      {
+        "kind": "INPUT_OBJECT",
+        "name": "TeamsProfileCondition",
+        "description": "A condition to be used against `TeamsProfile` object types. All fields are tested for equality and combined with a logical ‘and.’",
+        "fields": null,
+        "inputFields": [
+          {
+            "name": "teamId",
+            "description": "Checks for equality with the object’s `teamId` field.",
+            "type": {
+              "kind": "SCALAR",
+              "name": "UUID",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "profileId",
+            "description": "Checks for equality with the object’s `profileId` field.",
+            "type": {
+              "kind": "SCALAR",
+              "name": "UUID",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "createdAt",
+            "description": "Checks for equality with the object’s `createdAt` field.",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Datetime",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "updatedAt",
+            "description": "Checks for equality with the object’s `updatedAt` field.",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Datetime",
+              "ofType": null
+            },
+            "defaultValue": null
+          }
+        ],
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "OBJECT",
+        "name": "TeamsProfilesConnection",
+        "description": "A connection to a list of `TeamsProfile` values.",
+        "fields": [
+          {
+            "name": "nodes",
+            "description": "A list of `TeamsProfile` objects.",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "OBJECT",
+                  "name": "TeamsProfile",
+                  "ofType": null
+                }
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "edges",
+            "description": "A list of edges which contains the `TeamsProfile` and cursor to aid in pagination.",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "OBJECT",
+                    "name": "TeamsProfilesEdge",
+                    "ofType": null
+                  }
+                }
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "pageInfo",
+            "description": "Information to aid in pagination.",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "PageInfo",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "totalCount",
+            "description": "The count of *all* `TeamsProfile` you could get from the connection.",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Int",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "inputFields": null,
+        "interfaces": [],
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "OBJECT",
+        "name": "TeamsProfile",
+        "description": null,
+        "fields": [
+          {
+            "name": "nodeId",
+            "description": "A globally unique identifier. Can be used in various places throughout the system to identify this single value.",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "ID",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "teamId",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "UUID",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "profileId",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "UUID",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "createdAt",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Datetime",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "updatedAt",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Datetime",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "team",
+            "description": "Reads a single `Team` that is related to this `TeamsProfile`.",
+            "args": [],
+            "type": {
+              "kind": "OBJECT",
+              "name": "Team",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "profile",
+            "description": "Reads a single `Profile` that is related to this `TeamsProfile`.",
+            "args": [],
+            "type": {
+              "kind": "OBJECT",
+              "name": "Profile",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "inputFields": null,
+        "interfaces": [
+          {
+            "kind": "INTERFACE",
+            "name": "Node",
+            "ofType": null
+          }
+        ],
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "OBJECT",
+        "name": "TeamsProfilesEdge",
+        "description": "A `TeamsProfile` edge in the connection.",
+        "fields": [
+          {
+            "name": "cursor",
+            "description": "A cursor for use in pagination.",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Cursor",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "node",
+            "description": "The `TeamsProfile` at the end of the edge.",
+            "args": [],
+            "type": {
+              "kind": "OBJECT",
+              "name": "TeamsProfile",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "inputFields": null,
+        "interfaces": [],
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "OBJECT",
+        "name": "ContestsTeamsEdge",
+        "description": "A `ContestsTeam` edge in the connection.",
+        "fields": [
+          {
+            "name": "cursor",
+            "description": "A cursor for use in pagination.",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Cursor",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "node",
+            "description": "The `ContestsTeam` at the end of the edge.",
+            "args": [],
+            "type": {
+              "kind": "OBJECT",
+              "name": "ContestsTeam",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "inputFields": null,
+        "interfaces": [],
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "ENUM",
+        "name": "ContestsProfilesOrderBy",
+        "description": "Methods to use when ordering `ContestsProfile`.",
+        "fields": null,
+        "inputFields": null,
+        "interfaces": null,
+        "enumValues": [
+          {
+            "name": "NATURAL",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "CONTEST_ID_ASC",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "CONTEST_ID_DESC",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "PROFILE_ID_ASC",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "PROFILE_ID_DESC",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "CREATED_AT_ASC",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "CREATED_AT_DESC",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "UPDATED_AT_ASC",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "UPDATED_AT_DESC",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "PRIMARY_KEY_ASC",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "PRIMARY_KEY_DESC",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "possibleTypes": null
+      },
+      {
+        "kind": "INPUT_OBJECT",
+        "name": "ContestsProfileCondition",
+        "description": "A condition to be used against `ContestsProfile` object types. All fields are tested for equality and combined with a logical ‘and.’",
+        "fields": null,
+        "inputFields": [
+          {
+            "name": "contestId",
+            "description": "Checks for equality with the object’s `contestId` field.",
+            "type": {
+              "kind": "SCALAR",
+              "name": "UUID",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "profileId",
+            "description": "Checks for equality with the object’s `profileId` field.",
+            "type": {
+              "kind": "SCALAR",
+              "name": "UUID",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "createdAt",
+            "description": "Checks for equality with the object’s `createdAt` field.",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Datetime",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "updatedAt",
+            "description": "Checks for equality with the object’s `updatedAt` field.",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Datetime",
+              "ofType": null
+            },
+            "defaultValue": null
+          }
+        ],
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "OBJECT",
+        "name": "ContestsProfilesConnection",
+        "description": "A connection to a list of `ContestsProfile` values.",
+        "fields": [
+          {
+            "name": "nodes",
+            "description": "A list of `ContestsProfile` objects.",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "OBJECT",
+                  "name": "ContestsProfile",
+                  "ofType": null
+                }
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "edges",
+            "description": "A list of edges which contains the `ContestsProfile` and cursor to aid in pagination.",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "OBJECT",
+                    "name": "ContestsProfilesEdge",
+                    "ofType": null
+                  }
+                }
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "pageInfo",
+            "description": "Information to aid in pagination.",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "PageInfo",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "totalCount",
+            "description": "The count of *all* `ContestsProfile` you could get from the connection.",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Int",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "inputFields": null,
+        "interfaces": [],
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "OBJECT",
+        "name": "ContestsProfile",
+        "description": null,
+        "fields": [
+          {
+            "name": "nodeId",
+            "description": "A globally unique identifier. Can be used in various places throughout the system to identify this single value.",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "ID",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "contestId",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "UUID",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "profileId",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "UUID",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "createdAt",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Datetime",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "updatedAt",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Datetime",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "contest",
+            "description": "Reads a single `Contest` that is related to this `ContestsProfile`.",
+            "args": [],
+            "type": {
+              "kind": "OBJECT",
+              "name": "Contest",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "profile",
+            "description": "Reads a single `Profile` that is related to this `ContestsProfile`.",
+            "args": [],
+            "type": {
+              "kind": "OBJECT",
+              "name": "Profile",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "inputFields": null,
+        "interfaces": [
+          {
+            "kind": "INTERFACE",
+            "name": "Node",
+            "ofType": null
+          }
+        ],
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "OBJECT",
+        "name": "ContestsProfilesEdge",
+        "description": "A `ContestsProfile` edge in the connection.",
+        "fields": [
+          {
+            "name": "cursor",
+            "description": "A cursor for use in pagination.",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Cursor",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "node",
+            "description": "The `ContestsProfile` at the end of the edge.",
+            "args": [],
+            "type": {
+              "kind": "OBJECT",
+              "name": "ContestsProfile",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "inputFields": null,
+        "interfaces": [],
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "OBJECT",
+        "name": "ContestsProblemsEdge",
+        "description": "A `ContestsProblem` edge in the connection.",
+        "fields": [
+          {
+            "name": "cursor",
+            "description": "A cursor for use in pagination.",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Cursor",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "node",
+            "description": "The `ContestsProblem` at the end of the edge.",
+            "args": [],
+            "type": {
+              "kind": "OBJECT",
+              "name": "ContestsProblem",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "inputFields": null,
+        "interfaces": [],
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
         "kind": "OBJECT",
         "name": "SolutionsEdge",
         "description": "A `Solution` edge in the connection.",
@@ -17090,6 +17433,384 @@
             "type": {
               "kind": "OBJECT",
               "name": "ProfilesCodeEditor",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "inputFields": null,
+        "interfaces": [],
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "ENUM",
+        "name": "ContestsOrderBy",
+        "description": "Methods to use when ordering `Contest`.",
+        "fields": null,
+        "inputFields": null,
+        "interfaces": null,
+        "enumValues": [
+          {
+            "name": "NATURAL",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "ID_ASC",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "ID_DESC",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "NAME_ASC",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "NAME_DESC",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "TEXT_ASC",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "TEXT_DESC",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "CREATOR_ID_ASC",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "CREATOR_ID_DESC",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "START_DATE_ASC",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "START_DATE_DESC",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "END_DATE_ASC",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "END_DATE_DESC",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "START_PUBLICATION_DATE_ASC",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "START_PUBLICATION_DATE_DESC",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "END_PUBLICATION_DATE_ASC",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "END_PUBLICATION_DATE_DESC",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "CREATED_AT_ASC",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "CREATED_AT_DESC",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "UPDATED_AT_ASC",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "UPDATED_AT_DESC",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "PRIMARY_KEY_ASC",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "PRIMARY_KEY_DESC",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "possibleTypes": null
+      },
+      {
+        "kind": "INPUT_OBJECT",
+        "name": "ContestCondition",
+        "description": "A condition to be used against `Contest` object types. All fields are tested for equality and combined with a logical ‘and.’",
+        "fields": null,
+        "inputFields": [
+          {
+            "name": "id",
+            "description": "Checks for equality with the object’s `id` field.",
+            "type": {
+              "kind": "SCALAR",
+              "name": "UUID",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "name",
+            "description": "Checks for equality with the object’s `name` field.",
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "text",
+            "description": "Checks for equality with the object’s `text` field.",
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "creatorId",
+            "description": "Checks for equality with the object’s `creatorId` field.",
+            "type": {
+              "kind": "SCALAR",
+              "name": "UUID",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "startDate",
+            "description": "Checks for equality with the object’s `startDate` field.",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Datetime",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "endDate",
+            "description": "Checks for equality with the object’s `endDate` field.",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Datetime",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "startPublicationDate",
+            "description": "Checks for equality with the object’s `startPublicationDate` field.",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Datetime",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "endPublicationDate",
+            "description": "Checks for equality with the object’s `endPublicationDate` field.",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Datetime",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "createdAt",
+            "description": "Checks for equality with the object’s `createdAt` field.",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Datetime",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "updatedAt",
+            "description": "Checks for equality with the object’s `updatedAt` field.",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Datetime",
+              "ofType": null
+            },
+            "defaultValue": null
+          }
+        ],
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "OBJECT",
+        "name": "ContestsConnection",
+        "description": "A connection to a list of `Contest` values.",
+        "fields": [
+          {
+            "name": "nodes",
+            "description": "A list of `Contest` objects.",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "OBJECT",
+                  "name": "Contest",
+                  "ofType": null
+                }
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "edges",
+            "description": "A list of edges which contains the `Contest` and cursor to aid in pagination.",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "OBJECT",
+                    "name": "ContestsEdge",
+                    "ofType": null
+                  }
+                }
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "pageInfo",
+            "description": "Information to aid in pagination.",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "PageInfo",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "totalCount",
+            "description": "The count of *all* `Contest` you could get from the connection.",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Int",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "inputFields": null,
+        "interfaces": [],
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "OBJECT",
+        "name": "ContestsEdge",
+        "description": "A `Contest` edge in the connection.",
+        "fields": [
+          {
+            "name": "cursor",
+            "description": "A cursor for use in pagination.",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Cursor",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "node",
+            "description": "The `Contest` at the end of the edge.",
+            "args": [],
+            "type": {
+              "kind": "OBJECT",
+              "name": "Contest",
               "ofType": null
             },
             "isDeprecated": false,
@@ -20314,6 +21035,33 @@
             "deprecationReason": null
           },
           {
+            "name": "createContestsProblem",
+            "description": "Creates a single `ContestsProblem`.",
+            "args": [
+              {
+                "name": "input",
+                "description": "The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.",
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "INPUT_OBJECT",
+                    "name": "CreateContestsProblemInput",
+                    "ofType": null
+                  }
+                },
+                "defaultValue": null
+              }
+            ],
+            "type": {
+              "kind": "OBJECT",
+              "name": "CreateContestsProblemPayload",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "createContestsProfile",
             "description": "Creates a single `ContestsProfile`.",
             "args": [
@@ -22657,6 +23405,60 @@
             "type": {
               "kind": "OBJECT",
               "name": "DeleteContestPayload",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "deleteContestsProblemByNodeId",
+            "description": "Deletes a single `ContestsProblem` using its globally unique id.",
+            "args": [
+              {
+                "name": "input",
+                "description": "The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.",
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "INPUT_OBJECT",
+                    "name": "DeleteContestsProblemByNodeIdInput",
+                    "ofType": null
+                  }
+                },
+                "defaultValue": null
+              }
+            ],
+            "type": {
+              "kind": "OBJECT",
+              "name": "DeleteContestsProblemPayload",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "deleteContestsProblem",
+            "description": "Deletes a single `ContestsProblem` using a unique key.",
+            "args": [
+              {
+                "name": "input",
+                "description": "The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.",
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "INPUT_OBJECT",
+                    "name": "DeleteContestsProblemInput",
+                    "ofType": null
+                  }
+                },
+                "defaultValue": null
+              }
+            ],
+            "type": {
+              "kind": "OBJECT",
+              "name": "DeleteContestsProblemPayload",
               "ofType": null
             },
             "isDeprecated": false,
@@ -25091,11 +25893,11 @@
           },
           {
             "name": "creator",
-            "description": "Reads a single `User` that is related to this `Contest`.",
+            "description": "Reads a single `Profile` that is related to this `Contest`.",
             "args": [],
             "type": {
               "kind": "OBJECT",
-              "name": "User",
+              "name": "Profile",
               "ofType": null
             },
             "isDeprecated": false,
@@ -25127,6 +25929,182 @@
             "type": {
               "kind": "OBJECT",
               "name": "ContestsEdge",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "inputFields": null,
+        "interfaces": [],
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "INPUT_OBJECT",
+        "name": "CreateContestsProblemInput",
+        "description": "All input for the create `ContestsProblem` mutation.",
+        "fields": null,
+        "inputFields": [
+          {
+            "name": "clientMutationId",
+            "description": "An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client.",
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "contestsProblem",
+            "description": "The `ContestsProblem` to be created by this mutation.",
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "INPUT_OBJECT",
+                "name": "ContestsProblemInput",
+                "ofType": null
+              }
+            },
+            "defaultValue": null
+          }
+        ],
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "INPUT_OBJECT",
+        "name": "ContestsProblemInput",
+        "description": "An input for mutations affecting `ContestsProblem`",
+        "fields": null,
+        "inputFields": [
+          {
+            "name": "contestId",
+            "description": null,
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "UUID",
+                "ofType": null
+              }
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "problemId",
+            "description": null,
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "UUID",
+                "ofType": null
+              }
+            },
+            "defaultValue": null
+          }
+        ],
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "OBJECT",
+        "name": "CreateContestsProblemPayload",
+        "description": "The output of our create `ContestsProblem` mutation.",
+        "fields": [
+          {
+            "name": "clientMutationId",
+            "description": "The exact same `clientMutationId` that was provided in the mutation input, unchanged and unused. May be used by a client to track mutations.",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "contestsProblem",
+            "description": "The `ContestsProblem` that was created by this mutation.",
+            "args": [],
+            "type": {
+              "kind": "OBJECT",
+              "name": "ContestsProblem",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "query",
+            "description": "Our root query field type. Allows us to run any query from our mutation payload.",
+            "args": [],
+            "type": {
+              "kind": "OBJECT",
+              "name": "Query",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "contest",
+            "description": "Reads a single `Contest` that is related to this `ContestsProblem`.",
+            "args": [],
+            "type": {
+              "kind": "OBJECT",
+              "name": "Contest",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "problem",
+            "description": "Reads a single `Problem` that is related to this `ContestsProblem`.",
+            "args": [],
+            "type": {
+              "kind": "OBJECT",
+              "name": "Problem",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "contestsProblemEdge",
+            "description": "An edge for our `ContestsProblem`. May be used by Relay 1.",
+            "args": [
+              {
+                "name": "orderBy",
+                "description": "The method to use when ordering `ContestsProblem`.",
+                "type": {
+                  "kind": "LIST",
+                  "name": null,
+                  "ofType": {
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "ENUM",
+                      "name": "ContestsProblemsOrderBy",
+                      "ofType": null
+                    }
+                  }
+                },
+                "defaultValue": "[PRIMARY_KEY_ASC]"
+              }
+            ],
+            "type": {
+              "kind": "OBJECT",
+              "name": "ContestsProblemsEdge",
               "ofType": null
             },
             "isDeprecated": false,
@@ -28600,6 +29578,20 @@
               "ofType": null
             },
             "defaultValue": null
+          },
+          {
+            "name": "problemId",
+            "description": null,
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "UUID",
+                "ofType": null
+              }
+            },
+            "defaultValue": null
           }
         ],
         "interfaces": null,
@@ -30286,11 +31278,11 @@
           },
           {
             "name": "creator",
-            "description": "Reads a single `User` that is related to this `Contest`.",
+            "description": "Reads a single `Profile` that is related to this `Contest`.",
             "args": [],
             "type": {
               "kind": "OBJECT",
-              "name": "User",
+              "name": "Profile",
               "ofType": null
             },
             "isDeprecated": false,
@@ -35418,11 +36410,11 @@
           },
           {
             "name": "creator",
-            "description": "Reads a single `User` that is related to this `Contest`.",
+            "description": "Reads a single `Profile` that is related to this `Contest`.",
             "args": [],
             "type": {
               "kind": "OBJECT",
-              "name": "User",
+              "name": "Profile",
               "ofType": null
             },
             "isDeprecated": false,
@@ -35483,6 +36475,204 @@
           },
           {
             "name": "id",
+            "description": null,
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "UUID",
+                "ofType": null
+              }
+            },
+            "defaultValue": null
+          }
+        ],
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "INPUT_OBJECT",
+        "name": "DeleteContestsProblemByNodeIdInput",
+        "description": "All input for the `deleteContestsProblemByNodeId` mutation.",
+        "fields": null,
+        "inputFields": [
+          {
+            "name": "clientMutationId",
+            "description": "An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client.",
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "nodeId",
+            "description": "The globally unique `ID` which will identify a single `ContestsProblem` to be deleted.",
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "ID",
+                "ofType": null
+              }
+            },
+            "defaultValue": null
+          }
+        ],
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "OBJECT",
+        "name": "DeleteContestsProblemPayload",
+        "description": "The output of our delete `ContestsProblem` mutation.",
+        "fields": [
+          {
+            "name": "clientMutationId",
+            "description": "The exact same `clientMutationId` that was provided in the mutation input, unchanged and unused. May be used by a client to track mutations.",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "contestsProblem",
+            "description": "The `ContestsProblem` that was deleted by this mutation.",
+            "args": [],
+            "type": {
+              "kind": "OBJECT",
+              "name": "ContestsProblem",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "deletedContestsProblemNodeId",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "ID",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "query",
+            "description": "Our root query field type. Allows us to run any query from our mutation payload.",
+            "args": [],
+            "type": {
+              "kind": "OBJECT",
+              "name": "Query",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "contest",
+            "description": "Reads a single `Contest` that is related to this `ContestsProblem`.",
+            "args": [],
+            "type": {
+              "kind": "OBJECT",
+              "name": "Contest",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "problem",
+            "description": "Reads a single `Problem` that is related to this `ContestsProblem`.",
+            "args": [],
+            "type": {
+              "kind": "OBJECT",
+              "name": "Problem",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "contestsProblemEdge",
+            "description": "An edge for our `ContestsProblem`. May be used by Relay 1.",
+            "args": [
+              {
+                "name": "orderBy",
+                "description": "The method to use when ordering `ContestsProblem`.",
+                "type": {
+                  "kind": "LIST",
+                  "name": null,
+                  "ofType": {
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "ENUM",
+                      "name": "ContestsProblemsOrderBy",
+                      "ofType": null
+                    }
+                  }
+                },
+                "defaultValue": "[PRIMARY_KEY_ASC]"
+              }
+            ],
+            "type": {
+              "kind": "OBJECT",
+              "name": "ContestsProblemsEdge",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "inputFields": null,
+        "interfaces": [],
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "INPUT_OBJECT",
+        "name": "DeleteContestsProblemInput",
+        "description": "All input for the `deleteContestsProblem` mutation.",
+        "fields": null,
+        "inputFields": [
+          {
+            "name": "clientMutationId",
+            "description": "An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client.",
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "contestId",
+            "description": null,
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "UUID",
+                "ofType": null
+              }
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "problemId",
             "description": null,
             "type": {
               "kind": "NON_NULL",
