@@ -6,7 +6,7 @@ import Input from './Input.vue'
 import Select from './Select.vue'
 import Button from './Button.vue'
 import FloatingButton from './FloatingButton.vue'
-import CheckBox from './CheckBox.vue'
+import Checkbox from './Checkbox.vue'
 import Spinner from './Spinner.vue'
 import PageHeader from './PageHeader.vue'
 import ColorLine from './ColorLine.vue'
@@ -29,7 +29,7 @@ export {
    Input,
    Button,
    FloatingButton,
-   CheckBox,
+   Checkbox,
    Spinner,
    Select,
    PageHeader,

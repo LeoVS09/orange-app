@@ -79,7 +79,7 @@ export default function crudMutations<T extends Identical, OrderBy>(
          )
       },
 
-      // Model in edit action can be partial
+      // ModelObserver in edit action can be partial
       [actionTypes.EDIT]({commit, state, rootGetters}: IActionContext<CrudState<T>>, model: T): boolean {
          return editAction(
             state.data,

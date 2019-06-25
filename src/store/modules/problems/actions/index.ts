@@ -8,7 +8,7 @@ import {IStartTestingSolutionPayload} from "../mutations";
 import {
    crudActions
 } from "@/store/CrudModule";
-import {ProblemInput, ProblemsOrderBy} from "@/api/graphql/global-types";
+import {ProblemInput, ProblemsOrderBy} from "@/api/database/global-types";
 import {responseToFullProblem, responseToPartialProblem} from "@/store/modules/problems/actions/responseFormat";
 import {STATUS_SCOPES} from "@/store/statusScopes";
 

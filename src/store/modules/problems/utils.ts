@@ -1,4 +1,4 @@
-import * as fragmentTypes from "@/api/graphql/fragments/types";
+import * as fragmentTypes from "@/api/database/fragments/types";
 import { UserType} from "@/models";
 import {PartialUserProfile} from "@/models/user";
 

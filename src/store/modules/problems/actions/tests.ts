@@ -1,17 +1,17 @@
 import {defaultTest, FullProblem, PartialProblem, Test} from "@/models";
 import {IActionContext, RootGetters} from "@/store/state";
-import {getById} from "@/store/CrudModule/actions/utils";
+import {findById} from "@/store/CrudModule/actions/utils";
 import {GET_READ_STATE} from "@/store/modules/statuses/getters";
 import {STATUS_SCOPES} from "@/store/statusScopes";
 import {ModelReadState} from "@/store/modules/statuses/types";
-import * as fragments from "@/api/graphql/fragments/types";
+import * as fragments from "@/api/database/fragments/types";
 import * as actionTypes from "@/store/modules/problems/actionTypes";
 import {ProblemsState} from "@/store/modules";
 import {generateStatusManipulation} from "@/store/modules/statuses/utils";
 import * as mutations from "@/store/modules/problems/mutationTypes";
 import {addModelForCreateAction, createAction, deleteAction, editAction, updateAction} from "@/store/CrudModule";
 import * as API from "@/api";
-import {TestInput} from "@/api/graphql/global-types";
+import {TestInput} from "@/api/database/global-types";
 
 export interface IAddForCreateTestActionPayload {
    problemId: string
@@ -152,7 +152,7 @@ export default {
 }
 
 const getProblemIfFull = (problems: Array<PartialProblem | FullProblem>, rootGetters: RootGetters, id: string): FullProblem | undefined => {
-   const problem = getById(problems, id)
+   const problem = findById(problems, id)
    if (!problem)
       return
 

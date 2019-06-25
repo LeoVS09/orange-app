@@ -1,7 +1,7 @@
 import {Identical} from "@/store/CrudModule";
 import {StatusManipulation} from "@/store/modules/statuses/utils";
 import {ModelStatus} from "@/store/modules";
-import {getById} from "@/store/CrudModule/actions/utils";
+import {findById} from "@/store/CrudModule/actions/utils";
 
 export function editAction<T extends Identical>(
    items: Array<T>,
@@ -14,7 +14,7 @@ export function editAction<T extends Identical>(
    if (status === ModelStatus.Reading)
       return false
 
-   const have = getById(items, model.id)
+   const have = findById(items, model.id)
    if (!have) {
       console.error('Cannot find model for editing', model.id)
       return false

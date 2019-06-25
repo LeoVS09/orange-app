@@ -12,7 +12,7 @@ import {AuthorisationEventState} from "@/containers/eventBus";
              :error="isLoginError" :tabindex="1" :autofocus="true" :disabled="isLoginDisabled"/>
       <Input type="password" placeholder="Password" v-model="password" @keyup.enter.native="clickSignIn"
              :error="isPasswordError" :tabindex="2" :disabled="isPasswordDisabled"/>
-      <CheckBox v-model="isRemember">Remember me</CheckBox>
+      <Checkbox v-model="isRemember">Remember me</Checkbox>
       <Button
          :tabindex="3"
          @click="clickSignIn"
@@ -31,7 +31,7 @@ import {AuthorisationEventState} from "@/containers/eventBus";
    import Vue from 'vue'
    import {Component} from 'vue-property-decorator'
    import {Action} from 'vuex-class'
-   import {Button, CheckBox, MaterialIcon, Input, Logo} from '@/components'
+   import {Button, Checkbox, MaterialIcon, Input, Logo} from '@/components'
    import * as actions from '@/store/actionTypes';
    import {ROUTES} from "@/router";
    import {ILoginToProfilePayload} from "@/store/modules/profile/actions";
@@ -44,7 +44,7 @@ import {AuthorisationEventState} from "@/containers/eventBus";
          Logo,
          Input,
          Button,
-         CheckBox,
+         Checkbox,
          Icon: MaterialIcon
       }
    })

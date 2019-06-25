@@ -1,9 +1,9 @@
-import * as fragmentTypes from "@/api/graphql/fragments/types";
+import * as fragmentTypes from "@/api/database/fragments/types";
 import {FullProblem, PartialProblem, ProblemTestingStatus, Test} from "@/models";
-import {PartialProblem_problemsTags_nodes} from "@/api/graphql/fragments/types";
+import {PartialProblem_problemsTags_nodes} from "@/api/database/fragments/types";
 import {responseToPartialUserProfile} from "@/store/modules/problems/utils";
-import {PartialProblem_problemsTags_nodes_tag} from "@/api/graphql/fragments/types";
-import {FullProblem_tests_nodes} from "@/api/graphql/fragments/types";
+import {PartialProblem_problemsTags_nodes_tag} from "@/api/database/fragments/types";
+import {FullProblem_tests_nodes} from "@/api/database/fragments/types";
 import {PartialUserProfile} from "@/models/user";
 
 export function responseToPartialProblem(p: fragmentTypes.PartialProblem | null | undefined): PartialProblem | null | undefined {

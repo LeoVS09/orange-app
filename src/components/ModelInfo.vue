@@ -37,6 +37,10 @@
       }).join(''))
    }
 
+   function isArrayOfObjects(arr: Array<any>): arr is Array<{[key: string]: string}> {
+      return typeof arr[0] === 'object'
+   }
+
    @Component({
       components: {
          Section,
@@ -57,6 +61,8 @@
       })
       editable: boolean
 
+      @Prop(Array)
+      properties: Array<string | {[key: string]: string}>
 
       @Prop({
          type: Array,
@@ -77,13 +83,35 @@
       exclude: Array<string>
 
       get mainData() {
-         let keys = Object.keys(this.value)
-         const exclude = [...this.excludeDefaults, ...this.exclude]
+         // TODO: refactor this, very bad code
+         // NOTE: code !== sleep
 
-         keys = keys.filter(k =>
-            k[0] !== '_' &&
-            exclude.indexOf(k) === -1
-         )
+         let keys: Array<string>
+         let labels: {[key: string]: string} = {}
+
+         if(!this.properties) {
+            keys = Object.keys(this.value)
+            const exclude = [...this.excludeDefaults, ...this.exclude]
+
+            keys = keys.filter(k =>
+               k[0] !== '_' &&
+               exclude.indexOf(k) === -1
+            )
+         } else if(isArrayOfObjects(this.properties)) {
+            keys = []
+
+            this.properties.forEach(property => {
+               const key = Object.keys(property)[0]
+
+               labels[key] = property[key]
+
+               keys.push(key)
+            })
+         } else
+            keys = this.properties as Array<string>
+
+         if(!this.properties || typeof this.properties[0] !== 'object')
+            keys.forEach(key => labels[key] = normaliseName(key))
 
          let result: {[key: string]: any} = {}
 
@@ -92,7 +120,7 @@
             if(typeof value === 'object')
                continue
 
-            const label = normaliseName(key)
+            const label = labels[key]
 
             result[label] = value
          }

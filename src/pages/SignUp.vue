@@ -46,7 +46,7 @@
    import Vue from 'vue'
    import {Component, Watch} from 'vue-property-decorator'
    import {Action} from 'vuex-class'
-   import {Logo, Input, Button, CheckBox, MaterialIcon} from '../components'
+   import {Logo, Input, Button, Checkbox, MaterialIcon} from '../components'
    import * as actions from '../store/actionTypes';
    import {ROUTES} from "@/router";
    import {IRegisterProfilePayload} from "@/store/modules/profile/types";
@@ -57,7 +57,7 @@
          Logo,
          Input,
          Button,
-         CheckBox,
+         Checkbox,
          Icon: MaterialIcon
       }
    })

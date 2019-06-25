@@ -73,7 +73,7 @@ export function createUser(login: string, password: string, type: UserType): Use
 
 //
 // export default function createDataGeneratorPlugin<S>() {
-//    let openProblems = new Array(random(5, 10)).fill(0).map(createProblem);
+//    let openProblems = newValue Array(random(5, 10)).fill(0).map(createProblem);
 //
 //    if (USE_STATIC_ID)
 //       openProblems[0].id = STATIC_ID;

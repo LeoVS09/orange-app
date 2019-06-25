@@ -1,6 +1,6 @@
 import {CrudActionApi, Identical} from "@/store/CrudModule";
 import {StatusManipulation} from "@/store/modules/statuses/utils";
-import {getById} from "@/store/CrudModule/actions/utils";
+import {findById} from "@/store/CrudModule/actions/utils";
 import {ModelStatus} from "@/store/modules";
 import {ModelReadState} from "@/store/modules/statuses/types";
 
@@ -13,7 +13,7 @@ export async function readAction<T extends Identical>(
 ): Promise<T | undefined> {
    console.log('read', id)
 
-   const have = getById(items, id)
+   const have = findById(items, id)
    if (have) {
       const status = getStatus(id)
       if (

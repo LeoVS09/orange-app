@@ -13,7 +13,7 @@
       "lint": "eslint --ext .js,.vue src test/unit/specs test/e2e/specs",
       "server": "node server/index.js",
       "update-schema": "yarn run apollo schema:download --endpoint=http://localhost:8765/graphql graphql.schema.json",
-      "generate-api-types": "yarn run apollo codegen:generate --localSchemaFile=graphql.schema.json --target=typescript --includes=src/**/*.graphql --tagName=gql --globalTypesFile=src/api/graphql/global-types.ts types"
+      "generate-api-types": "yarn run apollo codegen:generate --localSchemaFile=graphql.schema.json --target=typescript --includes=src/**/*.graphql --tagName=gql --globalTypesFile=src/api/database/global-types.ts types"
    },
    "repository": {
       "type": "git",
@@ -35,10 +35,14 @@
       "axios": "^0.18.0",
       "crypto-js": "^3.1.9-1",
       "deep-map": "^2.0.0",
+      "define-lazy-prop": "^2.0.0",
       "es6-weak-map": "^2.0.2",
       "graphql": "^14.0.2",
       "graphql-tag": "^2.10.1",
+      "p-debounce": "^2.1.0",
+      "p-lazy": "^3.0.0",
       "prismjs": "^1.16.0",
+      "rxjs": "^6.5.2",
       "v-click-outside": "^2.1.1",
       "vue": "^2.5.17",
       "vue-property-decorator": "^7.0.0",

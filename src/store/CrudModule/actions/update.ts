@@ -1,7 +1,7 @@
 import {CrudActionApi, Identical} from "@/store/CrudModule";
 import {StatusManipulation} from "@/store/modules/statuses/utils";
 import {ModelStatus} from "@/store/modules";
-import {getById} from "@/store/CrudModule/actions/utils";
+import {findById} from "@/store/CrudModule/actions/utils";
 import {ModelReadState} from "@/store/modules/statuses/types";
 
 export async function updateAction<T extends Identical>(
@@ -15,7 +15,7 @@ export async function updateAction<T extends Identical>(
    if (status !== ModelStatus.Changed && status !== ModelStatus.ErrorUpdating)
       return
 
-   const model = getById(items, id)
+   const model = findById(items, id)
    if (!model) {
       console.error('Cannot find model for update', id)
       return

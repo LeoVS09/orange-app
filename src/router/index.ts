@@ -29,6 +29,7 @@ const USE_AUTH_COMPONENT = true;
 Vue.use(Router);
 
 const router = new Router({
+   mode: 'history',
    routes: [
       {
          path: '/',

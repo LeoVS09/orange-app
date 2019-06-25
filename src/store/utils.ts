@@ -22,7 +22,7 @@ export function setByIdOrPush<T extends Identical>(items: Array<T>, newItem: T) 
 export function setById<T extends Identical>(items: Array<T>, id: string, newItem: T): T | undefined {
    const index = items.findIndex(item => item.id === id)
    if (index === -1) {
-      console.error('Cannot find model to set by id:', id, 'new data:', newItem)
+      console.error('Cannot find model to set by id:', id, 'newValue data:', newItem)
       return
    }
 

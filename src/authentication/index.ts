@@ -2,8 +2,8 @@ import {UserProfile, UserType} from '../models';
 import {login, currentUser, register} from '../api'
 // @ts-ignore
 import crypto from 'crypto-js'
-import * as mutationTypes from "@/api/graphql/mutations/types";
-import * as fragmentsTypes from "@/api/graphql/fragments/types";
+import * as mutationTypes from "@/api/database/mutations/types";
+import * as fragmentsTypes from "@/api/database/fragments/types";
 import {Email} from "@/models/email";
 
 const TOKEN_NAME = 'token';

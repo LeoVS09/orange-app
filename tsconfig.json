@@ -16,7 +16,8 @@
     "paths": {
       "@/*": ["./src/*"]
     },
-		"strictPropertyInitialization": false
+		"strictPropertyInitialization": false,
+     "allowSyntheticDefaultImports": true
   },
   "include": [
     "./src/**/*"

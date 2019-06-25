@@ -49,6 +49,8 @@ docker-build:
 docker-console:
 	docker-compose run -p 8080:8080 orange-app /bin/bash
 
+console: docker-console
+
 build-console: docker-build docker-console
 
 docker-build-and-push:
@@ -56,3 +58,6 @@ docker-build-and-push:
 	docker build -t orange-app .
 	docker tag orange-app $(DOCKER_IMAGE_TAG)
 	docker push $(DOCKER_IMAGE_TAG)
+
+docker-web:
+	docker-compose run -p 8080:80 web

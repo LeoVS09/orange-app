@@ -1,5 +1,5 @@
 import * as API from "@/api";
-import * as queryTypes from '@/api/graphql/queries/types'
+import * as queryTypes from '@/api/database/queries/types'
 import {
    University,
    UserProfile
@@ -11,7 +11,7 @@ import {checkIsLogin, currentUserIfHave, signin, signout, signup} from "@/authen
 import {City, Country} from "@/models/country";
 import {ProfileState} from './state'
 import {IActionContext} from '@/store/state'
-import * as fragmentsTypes from "@/api/graphql/fragments/types";
+import * as fragmentsTypes from "@/api/database/fragments/types";
 
 
 // const DEBUG = process.env.NODE_ENV !== 'production'

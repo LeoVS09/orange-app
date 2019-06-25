@@ -2,7 +2,7 @@ import {CrudActionApi, Identical, ReadListResponse, ReadListVariables} from "@/s
 import {StatusManipulation} from "@/store/modules/statuses/utils";
 import {ModelStatus} from "@/store/modules";
 import {ModelReadState} from "@/store/modules/statuses/types";
-import {getById} from "@/store/CrudModule/actions/utils";
+import {findById} from "@/store/CrudModule/actions/utils";
 
 export async function readListAction<T extends Identical, OrderBy>(
    items: Array<T>,
@@ -27,7 +27,7 @@ export async function readListAction<T extends Identical, OrderBy>(
       if (!node)
          return
 
-      const have = getById(items, node.id)
+      const have = findById(items, node.id)
       if (!have)
          return setNode(node)
 

@@ -2,7 +2,7 @@
    <div class="top-bar--container">
       <transition name="scroll-down">
          <div v-if="!scrollTop || isScroll" :class="{'top-bar': true, 'scrolled': scrollTop ? isScroll : false }">
-            <Logo :click="clickHome" class="top-bar--logo"/>
+            <Logo @click="clickHome" class="top-bar--logo"/>
             <div class="top-bar--menu">
                <Button
                   class="top-bar--item"
@@ -174,9 +174,8 @@
          this.scrollTop = top;
       }
 
-      clickHome() {
-         this.$router.push({name: ROUTES.HOME});
-      }
+      @RouterPush(ROUTES.HOME)
+      clickHome: () => void
 
       get isProblemsRoute(){
          return this.$route.name === ROUTES.PROBLEMS

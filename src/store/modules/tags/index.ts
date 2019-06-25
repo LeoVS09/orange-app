@@ -1,11 +1,11 @@
 import TagsState from "@/store/modules/tags/state";
 import {crudActions, crudMutations} from "@/store/CrudModule";
 import {PartialProblem, Tag} from "@/models";
-import {TagInput, TagsOrderBy} from "@/api/graphql/global-types";
+import {TagInput, TagsOrderBy} from "@/api/database/global-types";
 import {STATUS_SCOPES} from "@/store/statusScopes";
 import * as API from "@/api";
-import * as fragmentsTypes from "@/api/graphql/fragments/types";
-import {FullTag_problemsTags_nodes} from "@/api/graphql/fragments/types";
+import * as fragmentsTypes from "@/api/database/fragments/types";
+import {FullTag_problemsTags_nodes} from "@/api/database/fragments/types";
 import {responseToPartialProblem} from "@/store/modules/problems/actions/responseFormat";
 
 

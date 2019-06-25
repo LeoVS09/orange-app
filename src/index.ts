@@ -56,7 +56,7 @@ window.debugState = () => {
   return (() => JSON.parse(JSON.stringify(store.state)))()
 };
 
-// @ts-ignore no-new
+// @ts-ignore no-newValue
 new Vue({
   store,
   router,

@@ -1,8 +1,8 @@
 import {crudActions, crudMutations, CrudState} from '@/store/CrudModule'
 import {City, Country} from "@/models";
-import {CitiesOrderBy, CityInput, CountriesOrderBy} from "@/api/graphql/global-types";
+import {CitiesOrderBy, CityInput, CountriesOrderBy} from "@/api/database/global-types";
 import * as API from "@/api";
-import * as fragmentsTypes from "@/api/graphql/fragments/types";
+import * as fragmentsTypes from "@/api/database/fragments/types";
 import {STATUS_SCOPES} from "@/store/statusScopes";
 
 export default {

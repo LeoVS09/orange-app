@@ -2,30 +2,31 @@
    <div class="country">
       <PageHeader
          :breadcrumbs="[{[$t('Countries')]: {name: ROUTES.COUNTRIES}}]"
-         :created="model && model.createdAt"
-         :modified="model && model.updatedAt"
-         v-model="model && model.name"
+         :created="model.createdAt"
+         :modified="model.updatedAt"
+         v-model="model.name"
       />
 
       <ModelInfo
          v-if="model"
          v-model="model"
+         :properties="[{'code': $t('Code')}]"
       />
 
-      <Section>
-         <list
-            :headers="[
-               {'name': $t('Name')},
-               {'updatedAt': $t('Updated')}
-            ]"
-            :items="items"
-            :isCanAdd="isTeacher"
-            inlineAdd
-            :validateAdd="validate"
-            @add="add"
-            @choose-item="chooseItem"
-         />
-      </Section>
+<!--      <Section>-->
+<!--         <list-->
+<!--            :headers="[-->
+<!--               {'name': $t('Name')},-->
+<!--               {'updatedAt': $t('Updated')}-->
+<!--            ]"-->
+<!--            :items="items"-->
+<!--            :isCanAdd="isTeacher"-->
+<!--            inlineAdd-->
+<!--            :validateAdd="validate"-->
+<!--            @add="add"-->
+<!--            @choose-item="chooseItem"-->
+<!--         />-->
+<!--      </Section>-->
    </div>
 </template>
 
@@ -40,6 +41,10 @@
    import {City} from "@/models/country";
    import {RouterPush} from "@/components/decorators";
    import {actionName, MODULES} from '@/store/actionTypes';
+   import Vue from 'vue'
+   import DB from '@/lazyReactiveORM'
+
+   const entityName = 'country'
 
    @Component({
       components: {
@@ -55,9 +60,16 @@
          ModelInfo
       }
    })
-   export default class CountryView extends Mixins(ModelById) {
+   export default class CountryView extends Vue {
+      @Prop({
+         type: String,
+         required: true
+      })
+      id: string
 
-      @Getter('countryById') modelById: (id: string) => Country;
+      get model(){
+         return DB.find(entityName, this.id, () => this.$forceUpdate())
+      }
 
       @Getter isTeacher: boolean;
 

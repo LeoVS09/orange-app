@@ -1,13 +1,13 @@
 import {crudActions, crudMutations, CrudState} from '@/store/CrudModule'
 import {PartialContest, Country, UserType, PartialProblem, Team} from "@/models";
-import {ContestInput, ContestsOrderBy, CountryInput} from "@/api/graphql/global-types";
+import {ContestInput, ContestsOrderBy, CountryInput} from "@/api/database/global-types";
 import * as API from "@/api";
-import * as fragmentsTypes from "@/api/graphql/fragments/types";
+import * as fragmentsTypes from "@/api/database/fragments/types";
 import {STATUS_SCOPES} from "@/store/statusScopes";
 import {defaultPartialProfile} from "@/models/problems";
 import {FullContest} from "@/models/contest";
 import {responseToPartialUserProfile} from "@/store/modules/problems/utils";
-import {PartialProfile} from "@/api/graphql/fragments/types";
+import {PartialProfile} from "@/api/database/fragments/types";
 import {responseToPartialProblem} from "@/store/modules/problems/actions/responseFormat";
 import {PartialUserProfile} from "@/models/user";
 
