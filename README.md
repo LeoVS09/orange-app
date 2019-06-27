@@ -20,6 +20,3 @@ npm run build
 npm run server
 ```
 
-### TODO
-* Auto-load graphql schema and rebuild application (auto-exported schema contain all data
-in "data" field, need fix!)
