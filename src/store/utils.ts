@@ -22,7 +22,7 @@ export function setByIdOrPush<T extends Identical>(items: Array<T>, newItem: T) 
 export function setById<T extends Identical>(items: Array<T>, id: string, newItem: T): T | undefined {
    const index = items.findIndex(item => item.id === id)
    if (index === -1) {
-      console.error('Cannot find model to set by id:', id, 'newValue data:', newItem)
+      console.error('Cannot findOne model to set by id:', id, 'newValue data:', newItem)
       return
    }
 
@@ -33,7 +33,7 @@ export function setById<T extends Identical>(items: Array<T>, id: string, newIte
 export function updateById<T extends Identical>(items: Array<T>, id: string, handler: (model: T) => void) {
    const item = items.find(item => item.id === id)
    if (!item) {
-      console.error('Cannot find model to set by id:', id)
+      console.error('Cannot findOne model to set by id:', id)
       return
    }
 
@@ -43,7 +43,7 @@ export function updateById<T extends Identical>(items: Array<T>, id: string, han
 export function removeById<T extends Identical>(items: Array<T>, id: string): Array<T> {
    const index = items.findIndex(item => item.id === id)
    if(index){
-      console.error('Not find item', id)
+      console.error('Not findOne item', id)
       return items
    }
 

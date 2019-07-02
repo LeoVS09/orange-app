@@ -41,7 +41,7 @@ const getters: GetterTree<RootState, any> = {
 export default getters;
 
 function findSimilarProblems(problems: Array<PartialProblem | FullProblem>, id: string): Array<PartialProblem | FullProblem> {
-   // TODO: algorithm for find similar problem
+   // TODO: algorithm for findOne similar problem
 
    const anotherProblems = problems.filter(p => p.id !== id)
 

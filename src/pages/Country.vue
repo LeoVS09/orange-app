@@ -13,20 +13,20 @@
          :properties="[{'code': $t('Code')}]"
       />
 
-<!--      <Section>-->
-<!--         <list-->
-<!--            :headers="[-->
-<!--               {'name': $t('Name')},-->
-<!--               {'updatedAt': $t('Updated')}-->
-<!--            ]"-->
-<!--            :items="items"-->
-<!--            :isCanAdd="isTeacher"-->
-<!--            inlineAdd-->
-<!--            :validateAdd="validate"-->
-<!--            @add="add"-->
-<!--            @choose-item="chooseItem"-->
-<!--         />-->
-<!--      </Section>-->
+      <Section>
+         <list
+            :headers="[
+               {'name': $t('Name')},
+               {'updatedAt': $t('Updated')}
+            ]"
+            :items="model.cities"
+            :isCanAdd="isTeacher"
+            inlineAdd
+            :validateAdd="validate"
+            @add="add"
+            @choose-item="chooseItem"
+         />
+      </Section>
    </div>
 </template>
 
@@ -42,7 +42,7 @@
    import {RouterPush} from "@/components/decorators";
    import {actionName, MODULES} from '@/store/actionTypes';
    import Vue from 'vue'
-   import DB from '@/lazyReactiveORM'
+   import {CountryModel} from '@/models/country'
 
    const entityName = 'country'
 
@@ -68,12 +68,13 @@
       id: string
 
       get model(){
-         return DB.find(entityName, this.id, () => this.$forceUpdate())
+         return CountryModel.findOne(this.id, () => this.$forceUpdate())
       }
 
       @Getter isTeacher: boolean;
 
-      @Action(actionName(MODULES.COUNTRIES, actions.READ)) loadModel: (id: string) => Promise<boolean>
+      @Action(actionName(MODULES.COUNTRIES, actions.READ))
+      loadModel: (id: string) => Promise<boolean>
 
       ROUTES = ROUTES
 
@@ -83,14 +84,6 @@
 
       validate(){
          // TODO
-      }
-
-
-      get items() {
-         if (!this.model)
-            return []
-
-         return this.model.cities || []
       }
 
       @RouterPush(ROUTES.CITY)

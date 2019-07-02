@@ -51,7 +51,7 @@ export default {
    // async [actionTypes.SEARCH_COUNTRIES]({commit}: IActionContext<ProfileState>, search: string): Promise<Array<Country>>  {
    //    const result = await API.searchCountries({search})
    //    if(!result){
-   //       console.log('Cannot find countries', search)
+   //       console.log('Cannot findOne countries', search)
    //       return []
    //    }
    //

@@ -1,85 +1,114 @@
-import {Subject, AsyncSubject, Observable, merge} from 'rxjs'
-import {filter, debounceTime, share, tap, scan, takeWhile, throttleTime, sample, skip, skipWhile, map} from 'rxjs/operators';
-import {generateQueryEntityById} from "./queryMapper";
-import {client} from '@/api/database/utils'
-import {dateToStringFormatter} from "./utils";
-
-export enum ModelEventType {
-   GetProperty = "GetProperty",
-   Read = "Read",
-   ReadSuccess = "ReadSuccess",
-   ErrorReading = "ErrorReading",
-
-   SetProperty = "SetProperty",
-   Update = "Update",
-   UpdateSuccess = "UpdateSuccess",
-   ErrorUpdated = "ErrorUpdated",
-
-   New = "New",
-   Create = "Create",
-   CreateSuccess = "CreateSuccess",
-   ErrorCreating = "ErrorCreating",
-
-   Delete = "Delete",
-   DeleteSuccess = "DeleteSuccess",
-   ErrorDeleting = "ErrorDeleting",
-}
-
-export interface ModelEvent<T = any> {
-   type: string
-   date: number
-   payload: T
-}
-
-export interface ModelEventSetPropertyPayload {
-   name: string
-   oldValue: string | null
-   newValue: string
-}
-
-export interface ModelEventGetPropertyPayload {
-   name: string
-}
-
-export interface ModelEventReadPayload {
-   id: string
-   gets: Array<ModelEvent<ModelEventGetPropertyPayload>>
-}
+import {merge, Observable, Subject} from 'rxjs'
+import {debounceTime, filter, map, sample, share, skipWhile, takeWhile, tap, throttleTime} from 'rxjs/operators';
+import {
+   ModelEvent,
+   ModelEventGetPropertyPayload,
+   ModelEventReadPayload,
+   ModelEventSetPropertyPayload,
+   ModelEventType
+} from "./events";
+import {
+   AbstractData,
+   ChangeCallback, ILazyReactiveDatabase,
+   IModelObserver,
+   IPredefinedSchema,
+   ModelAttributeType,
+   ModelObserverReference,
+   ModelSchema
+} from "./types";
+import {actions as baseActions, IActionsInterface} from "./actions";
+import {wrapData} from "@/lazyReactiveORM/wrapData";
 
 const UPDATE_TIME = 1000
 const READ_TIME = 10
 const REDUSE_SET_TIME = 500
 
-export interface AbstractData {
-   [key: string]: any
+export interface IModelObserverOptions {
+   id?: string
+   changed?: ChangeCallback
+   predefinedSchema?: IPredefinedSchema
+   actions?: IActionsInterface
+   data?: AbstractData
+   db?: ILazyReactiveDatabase
 }
 
-export interface ChangeCallback {
-   (): void
-}
-
-export class ModelObserver {
+export class ModelObserver implements IModelObserver {
 
    entity: string
    id: string | undefined
+   predefinedSchema?: IPredefinedSchema
 
    private eventStream = new Subject<ModelEvent>()
    public events: Observable<ModelEvent>
    memory: Array<ModelEvent> = []
-   data: AbstractData = {}
-   schema = new Array<string>()
+   data: AbstractData
+   wrapped: AbstractData
+   schema: ModelSchema = {}
    changed: ChangeCallback
+   actions: IActionsInterface
+   db?: ILazyReactiveDatabase
 
-   constructor(entity: string, id?: string, changed: ChangeCallback = () => {}) {
+   constructor(entity: string, {id, changed = () => {}, predefinedSchema, actions, data = {}, db}: IModelObserverOptions) {
+      this.entity = entity
       this.id = id
       this.changed = changed
+      this.predefinedSchema = predefinedSchema
+      this.db = db
+
+      this.actions = {
+         ...baseActions,
+         ...actions
+      }
+
+      this.data = {
+         ...data,
+         [ModelObserverReference]: this
+      }
+      this.wrapped = wrapData(this)
 
       if(this.id){
          this.data.id = this.id
-         this.schema.push('id')
+         this.schema['id'] = ModelAttributeType.Simple
       }
 
-      this.entity = entity
+      // TODO: refactor this shi...
+      if(this.predefinedSchema)
+         Object.keys(this.predefinedSchema).forEach(key => {
+            const type = this.predefinedSchema![key]
+
+            if(type === ModelAttributeType.Simple) {
+               this.schema[key] = type
+               return;
+            }
+
+            this.schema[key] = {
+               type,
+               fields: {}
+            }
+
+            const [trap, stream] = makeTrap()
+
+            stream.subscribe((event: ModelEvent) => {
+               if(event.type !== ModelEventType.GetProperty)
+                  return
+
+               const payload: ModelEventGetPropertyPayload = {name: key, inner: event.payload, type}
+               this.dispatch(ModelEventType.GetProperty, payload)
+            })
+
+            if(type === ModelAttributeType.OneToMany){
+               this.data[key] = {
+                  nodes: [trap]
+               }
+               return
+            }
+
+            if(type === ModelAttributeType.OneToOne) {
+               this.data[key] = trap
+               return
+            }
+         })
+
       this.events = this.eventStream
          .pipe(
             tap(event => this.memory.push(event)),
@@ -129,11 +158,22 @@ export class ModelObserver {
 
       this.events.subscribe(event => this.handleEvent(event))
 
+
+      console.log('Model observer created', this.schema, this.data)
+   }
+
+   public updateData(data: AbstractData){
+      this.data = {
+         ...this.data,
+         ...data
+      }
+
+      // TODO: need logic process memory
    }
 
    handleEvent(event: ModelEvent){
-      // @ts-ignore
-      const handler = actions[event.type]
+
+      const handler = this.actions[event.type]
 
       console.log('event', event, 'handler', !!handler)
 
@@ -159,22 +199,30 @@ export class ModelObserver {
    }
 
    has(name: string){
-      return this.schema.indexOf(name) !== -1
+      return !!this.schema[name]
    }
 
    get(name: string): any {
-      if(this.has(name))
+      if(!this.has(name)) {
+         const payload: ModelEventGetPropertyPayload = {name, type: ModelAttributeType.Simple}
+         this.dispatch(ModelEventType.GetProperty, payload)
+
+         return null
+      }
+
+      const property = this.schema[name]
+      const type = typeof property === 'object' ? property.type : property
+
+      if(type === ModelAttributeType.Simple)
          return this.data[name]
 
-      const payload: ModelEventGetPropertyPayload = {name}
-      this.dispatch(ModelEventType.GetProperty, payload)
-
-      return null
+      if(type === ModelAttributeType.OneToMany)
+         return this.data[name].nodes
    }
 
    set(name: string, value: any): boolean {
       if(!this.has(name))
-         return false
+         this.schema[name] = ModelAttributeType.Simple
 
       const payload: ModelEventSetPropertyPayload = {
          name,
@@ -276,39 +324,38 @@ function takeWhileThenContinue<T>(stream: Observable<T>, predicate: (v: T) => bo
    )
 }
 
-const actions = {
 
-   [ModelEventType.GetProperty](model: ModelObserver, {name}: ModelEventGetPropertyPayload){
-      model.schema.push(name)
-   },
 
-   [ModelEventType.SetProperty](model: ModelObserver, {name, newValue}: ModelEventSetPropertyPayload) {
-      model.data[name] = newValue
-   },
+export function makeTrap() {
+   const subject = new Subject()
 
-   async [ModelEventType.Read](model: ModelObserver, {id, gets}: ModelEventReadPayload){
-      const query = generateQueryEntityById(model.entity, gets.map(event => event.payload.name))
-      const { data } = await client.query({
-         query,
-         variables: {id}
-      })
+   const data = new Proxy<AbstractData>({}, {
+      // TODO: duplicated code, make data as emitter
+      get(target: AbstractData, property: string | number | symbol): any {
+         if(typeof property === 'number' || typeof property === 'symbol')
+            return null
 
-      return data[model.entity]
-   },
+         if(property === 'toJSON')
+            return null
 
-   [ModelEventType.ReadSuccess](model: ModelObserver, data: {[key: string]: any}) {
-      model.data = dateToStringFormatter(data)
-   },
+         const payload: ModelEventGetPropertyPayload = {name: property, type: ModelAttributeType.Simple}
+         subject.next({type: ModelEventType.GetProperty, payload, date: Date.now()})
+         return null
+      },
 
+      // TODO: is this need?
+      set(target: AbstractData, property: string | number | symbol, value: any): boolean {
+         return false
+      },
+
+      has(target: AbstractData, p: string | number | symbol): boolean {
+         return false
+      },
+
+      ownKeys(target: AbstractData): PropertyKey[] {
+         return []
+      }
+   })
+
+   return [data, subject]
 }
-
-// function setPropertyProxy(properties: Array<string>) {
-//    properties.map(property => defineLazyAsyncProp(this, property, async () => {
-//       this.dispatch(ModelEventType.GetProperty, property)
-//
-//       return (await this.fetch())[property]
-//    }))
-//
-// }
-
-

@@ -16,7 +16,7 @@ export function editAction<T extends Identical>(
 
    const have = findById(items, model.id)
    if (!have) {
-      console.error('Cannot find model for editing', model.id)
+      console.error('Cannot findOne model for editing', model.id)
       return false
    }
 

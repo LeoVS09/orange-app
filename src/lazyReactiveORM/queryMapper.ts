@@ -1,21 +1,38 @@
 import gql from 'graphql-tag'
+import {ModelAttributeType} from "./types";
 
 export interface QueryField {
    entity: string
+   type: ModelAttributeType
    fields: Array<string | QueryField>
 }
 
 function buildFieldsQuery(fields: Array<string | QueryField>): string {
-   return `{
-      ${fields.reduce((all, field) => 
+
+   const generateField = (field: string | QueryField) => {
+      if(typeof field !== 'object')
+         return field
+
+      if(field.type === ModelAttributeType.OneToOne)
+         return `${field.entity} ${buildFieldsQuery(field.fields)}`
+
+      if(field.type === ModelAttributeType.OneToMany)
+         return  `${field.entity} {
+            totalCount
+            nodes ${buildFieldsQuery(field.fields)}
+         }`
+
+      throw new Error('Unexpected field type' + field.type)
+   }
+
+   const values = fields.reduce((all, field) =>
       `${all}
-      ${typeof field !== 'object' ? 
-         field :
-         `${field.entity} ${buildFieldsQuery(field.fields)}`
-      }`, 
+      ${generateField(field)}`,
       `nodeId
        id`
-   )}
+   )
+   return `{
+      ${values}
       }`
 }
 

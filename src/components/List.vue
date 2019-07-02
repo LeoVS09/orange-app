@@ -308,7 +308,9 @@
                   n: firstPage,
                   points: true
                } : undefined,
-               center: allPages.slice(allPages.length - max)
+               center: max >= allPages.length ?
+                  allPages.slice(0, allPages.length) :
+                  allPages.slice(allPages.length - max)
             }
 
          const start = current - Math.floor(middle)

@@ -1,4 +1,6 @@
 import {University} from "@/models/university";
+import Model from '@/lazyReactiveORM/Model'
+import {ModelAttributeType} from "@/lazyReactiveORM/types";
 
 export interface Country {
    id: string
@@ -17,3 +19,9 @@ export interface City {
    countryId: string
    universities?: Array<University>
 }
+
+export const CountryModel = new Model(
+   'country',
+   {
+      cities: ModelAttributeType.OneToMany
+})

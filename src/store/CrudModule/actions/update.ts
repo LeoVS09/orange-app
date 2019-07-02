@@ -17,7 +17,7 @@ export async function updateAction<T extends Identical>(
 
    const model = findById(items, id)
    if (!model) {
-      console.error('Cannot find model for update', id)
+      console.error('Cannot findOne model for update', id)
       return
    }
 

@@ -1,7 +1,5 @@
-import {
-   AbstractData,
-   ModelObserver
-} from "./ModelObserver";
+import {ModelObserver} from "./ModelObserver";
+import {AbstractData} from "./types";
 
 export function wrapData(model: ModelObserver) {
 
@@ -11,7 +9,9 @@ export function wrapData(model: ModelObserver) {
          if(typeof property === 'number' || typeof property === 'symbol')
             return null
 
-         return model.get(property)
+         const result = model.get(property)
+         console.log('get', property, result)
+         return result
       },
 
       set(target: AbstractData, property: string, value: any): boolean {
@@ -23,7 +23,7 @@ export function wrapData(model: ModelObserver) {
       },
 
       ownKeys(): PropertyKey[] {
-         return model.schema
+         return Object.keys(model.schema)
       }
    })
 }
