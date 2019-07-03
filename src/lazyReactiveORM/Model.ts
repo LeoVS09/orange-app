@@ -11,17 +11,33 @@ export default class Model {
    constructor(entity: string, predefinedSchema?: IPredefinedSchema) {
       this.entity = entity
       this.predefinedSchema = predefinedSchema
+
+      if(this.predefinedSchema)
+         this.db.addPredefinedSchema(this.entity, this.predefinedSchema)
    }
 
    findOne(id: string, changed?: ChangeCallback) {
-      const founded = this.db.findOne(this.entity, id)
-      if(founded)
-         return founded
+      if(!id)
+         return
 
-      const observer = new ModelObserver(this.entity, {id, changed, predefinedSchema: this   .predefinedSchema})
+      const founded = this.db.findOne(this.entity, id, false)
+      if(founded) {
+         founded.changed = changed
+         return founded.wrapped
+      }
+
+      const observer = new ModelObserver(this.entity, {id, changed, predefinedSchema: this.predefinedSchema, db: this.db, excludeProperties: db.excludeProperties})
 
       this.db.set(this.entity, id, observer)
 
       return observer.wrapped
+   }
+
+   list(changed?: ChangeCallback){
+      return {
+         totalCount: null,
+
+         nodes: []
+      }
    }
 }

@@ -3,7 +3,10 @@
       <PageHeader
          :breadcrumbs="[
             {[$t('Countries')]: {name: ROUTES.COUNTRIES}},
-            { [parent ? parent.name : $t('Country')]: {name: ROUTES.COUNTRY, params: {id: model && model.countryId}}}
+            { [parent ? parent.name : $t('Country')]: {
+               name: ROUTES.COUNTRY,
+               params: {id: model && model.countryId}
+            }}
          ]"
          :created="model && model.createdAt"
          :modified="model && model.updatedAt"
@@ -17,7 +20,7 @@
                {'shortName': $t('Short')},
                {'updatedAt': $t('Updated')}
             ]"
-            :items="items"
+            :items="model.universities.nodes"
             :isCanAdd="isTeacher"
             inlineAdd
             :validateAdd="validate"
@@ -31,13 +34,16 @@
 <script lang="ts">
    import {Component, Prop, Mixins} from 'vue-property-decorator'
    import {Getter, Action, State} from 'vuex-class'
-   import {City, Country} from "@/models"
+   import {City, Country, University} from "@/models"
    import * as actions from '@/store/actionTypes';
    import {PageHeader, List, ModelInfo, Section, PageHeaderAction} from '@/components';
    import {ROUTES} from '@/router'
    import ModelById from "@/components/mixins/ModelById";
    import {RouterPush} from "@/components/decorators";
    import {actionName, MODULES} from '@/store/actionTypes';
+   import {CountryModel, CityModel} from '@/models/country'
+   import Vue from 'vue'
+   import ReactiveUpdate, {reactiveUpdate} from "@/components/mixins/ReactiveUpdate";
 
    @Component({
       components: {
@@ -48,15 +54,23 @@
          ModelInfo
       }
    })
-   export default class CityView extends Mixins(ModelById) {
+   export default class CityView extends Mixins(ReactiveUpdate) {
 
-      @Getter('cityById') modelById: (id: string) => City;
+      @Prop({
+         type: String,
+         required: true
+      })
+      id: string
 
-      @Getter('countryById') parentById: (id: string) => Country
+      get model(){
+         return CityModel.findOne(this.id, reactiveUpdate(this))
+      }
+
+      get parent(){
+         return CountryModel.findOne(this.model && this.model.countryId, reactiveUpdate(this))
+      }
 
       @Getter isTeacher: boolean;
-
-      @Action(actionName(MODULES.CITIES, actions.READ)) loadModel: (id: string) => Promise<boolean>
 
       ROUTES = ROUTES
 
@@ -68,22 +82,8 @@
          // TODO
       }
 
-      get parent(){
-         const model = this.model as City
-         if(!model)
-            return
-         return this.parentById(model.countryId)
-      }
-
-      get items() {
-         if (!this.model)
-            return []
-
-         return this.model.universities || []
-      }
-
       @RouterPush(ROUTES.UNIVERSITY)
-      chooseItem: (city: City) => void
+      chooseItem: (university: University) => void
 
    }
 </script>

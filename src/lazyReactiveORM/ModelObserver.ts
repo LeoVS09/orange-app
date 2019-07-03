@@ -9,7 +9,8 @@ import {
 } from "./events";
 import {
    AbstractData,
-   ChangeCallback, ILazyReactiveDatabase,
+   ChangeCallback,
+   ILazyReactiveDatabase,
    IModelObserver,
    IPredefinedSchema,
    ModelAttributeType,
@@ -17,7 +18,7 @@ import {
    ModelSchema
 } from "./types";
 import {actions as baseActions, IActionsInterface} from "./actions";
-import {wrapData} from "@/lazyReactiveORM/wrapData";
+import {makeTrap, wrapData} from "@/lazyReactiveORM/wrapData";
 
 const UPDATE_TIME = 1000
 const READ_TIME = 10
@@ -30,6 +31,7 @@ export interface IModelObserverOptions {
    actions?: IActionsInterface
    data?: AbstractData
    db?: ILazyReactiveDatabase
+   excludeProperties?: Array<string>
 }
 
 export class ModelObserver implements IModelObserver {
@@ -37,6 +39,7 @@ export class ModelObserver implements IModelObserver {
    entity: string
    id: string | undefined
    predefinedSchema?: IPredefinedSchema
+   excludeProperties: Array<string>
 
    private eventStream = new Subject<ModelEvent>()
    public events: Observable<ModelEvent>
@@ -48,12 +51,13 @@ export class ModelObserver implements IModelObserver {
    actions: IActionsInterface
    db?: ILazyReactiveDatabase
 
-   constructor(entity: string, {id, changed = () => {}, predefinedSchema, actions, data = {}, db}: IModelObserverOptions) {
+   constructor(entity: string, {id, changed = () => {}, predefinedSchema, actions, data = {}, db, excludeProperties = []}: IModelObserverOptions) {
       this.entity = entity
       this.id = id
       this.changed = changed
       this.predefinedSchema = predefinedSchema
       this.db = db
+      this.excludeProperties = excludeProperties
 
       this.actions = {
          ...baseActions,
@@ -66,10 +70,12 @@ export class ModelObserver implements IModelObserver {
       }
       this.wrapped = wrapData(this)
 
-      if(this.id){
+      if(this.id)
          this.data.id = this.id
-         this.schema['id'] = ModelAttributeType.Simple
-      }
+
+      Object.keys(this.data).forEach(key =>
+         this.schema[key] = ModelAttributeType.Simple
+      )
 
       // TODO: refactor this shi...
       if(this.predefinedSchema)
@@ -126,7 +132,8 @@ export class ModelObserver implements IModelObserver {
       )
          .pipe(
             debounceTime(READ_TIME),
-            map(() => this.excludeEvents(ModelEventType.GetProperty))
+            map(() => this.excludeEvents(ModelEventType.GetProperty)),
+            filter(gets => !!gets.length)
          )
          .subscribe(gets => this.dispatch(ModelEventType.Read, {id: this.id, gets} as ModelEventReadPayload))
 
@@ -150,11 +157,6 @@ export class ModelObserver implements IModelObserver {
             map(() => this.excludeEvents(ModelEventType.SetProperty))
          )
          .subscribe(events => this.dispatch(ModelEventType.Update, events))
-
-
-      this.events
-         .pipe(filter(event => [ModelEventType.ReadSuccess].indexOf(event.type as ModelEventType) !== -1))
-         .subscribe(() => this.changed())
 
       this.events.subscribe(event => this.handleEvent(event))
 
@@ -194,8 +196,19 @@ export class ModelObserver implements IModelObserver {
          return;
       }
 
+      if(event.type === ModelEventType.GetProperty) {
+         const remember = handler(this, event.payload)
+         if(!remember)
+            this.removeEvent(event)
+      }
+
       handler(this, event.payload)
 
+      const changeEvents = [ModelEventType.ReadSuccess]
+      if(this.changed && changeEvents.some(type => type === event.type)){
+         this.changed()
+         console.log('changed!')
+      }
    }
 
    has(name: string){
@@ -204,6 +217,14 @@ export class ModelObserver implements IModelObserver {
 
    get(name: string): any {
       if(!this.has(name)) {
+
+         const inMemory = this.memory.find(event =>
+            event.type === ModelEventType.GetProperty &&
+            event.payload.name === name
+         )
+         if(inMemory)
+            return null
+
          const payload: ModelEventGetPropertyPayload = {name, type: ModelAttributeType.Simple}
          this.dispatch(ModelEventType.GetProperty, payload)
 
@@ -217,7 +238,7 @@ export class ModelObserver implements IModelObserver {
          return this.data[name]
 
       if(type === ModelAttributeType.OneToMany)
-         return this.data[name].nodes
+         return this.data[name]
    }
 
    set(name: string, value: any): boolean {
@@ -325,37 +346,3 @@ function takeWhileThenContinue<T>(stream: Observable<T>, predicate: (v: T) => bo
 }
 
 
-
-export function makeTrap() {
-   const subject = new Subject()
-
-   const data = new Proxy<AbstractData>({}, {
-      // TODO: duplicated code, make data as emitter
-      get(target: AbstractData, property: string | number | symbol): any {
-         if(typeof property === 'number' || typeof property === 'symbol')
-            return null
-
-         if(property === 'toJSON')
-            return null
-
-         const payload: ModelEventGetPropertyPayload = {name: property, type: ModelAttributeType.Simple}
-         subject.next({type: ModelEventType.GetProperty, payload, date: Date.now()})
-         return null
-      },
-
-      // TODO: is this need?
-      set(target: AbstractData, property: string | number | symbol, value: any): boolean {
-         return false
-      },
-
-      has(target: AbstractData, p: string | number | symbol): boolean {
-         return false
-      },
-
-      ownKeys(target: AbstractData): PropertyKey[] {
-         return []
-      }
-   })
-
-   return [data, subject]
-}

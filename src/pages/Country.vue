@@ -19,7 +19,7 @@
                {'name': $t('Name')},
                {'updatedAt': $t('Updated')}
             ]"
-            :items="model.cities"
+            :items="model.cities.nodes"
             :isCanAdd="isTeacher"
             inlineAdd
             :validateAdd="validate"
@@ -43,8 +43,6 @@
    import {actionName, MODULES} from '@/store/actionTypes';
    import Vue from 'vue'
    import {CountryModel} from '@/models/country'
-
-   const entityName = 'country'
 
    @Component({
       components: {
@@ -72,9 +70,6 @@
       }
 
       @Getter isTeacher: boolean;
-
-      @Action(actionName(MODULES.COUNTRIES, actions.READ))
-      loadModel: (id: string) => Promise<boolean>
 
       ROUTES = ROUTES
 
