@@ -1,3 +1,6 @@
+import Model from '@/lazyReactiveORM/Model'
+import {ModelAttributeType} from "@/lazyReactiveORM/types";
+
 export interface University {
    id: string,
    shortName: string,
@@ -6,3 +9,10 @@ export interface University {
    updatedAt: Date
    cityId: string
 }
+
+export const UniversityModel = new Model(
+   'university',
+   {
+      city: ModelAttributeType.OneToOne
+   }
+)

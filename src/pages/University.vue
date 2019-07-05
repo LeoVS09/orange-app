@@ -1,7 +1,18 @@
 <template>
-   <div class="city">
+   <div class="university">
       <PageHeader
-         :breadcrumbs="breadcrumbs"
+         :breadcrumbs="[
+            {[$t('Countries')]: {name: ROUTES.COUNTRIES}},
+            { [country && country.name || $t('Country')]: {
+               name: ROUTES.COUNTRY,
+               params: {id: country && country.id}
+            }
+            },
+            { [city && city.name || $t('City')]: {
+               name: ROUTES.CITY,
+               params: {id: city && city.id}
+            }}
+         ]"
          :created="model && model.createdAt"
          :modified="model && model.updatedAt"
          v-model="model && model.shortName"
@@ -10,7 +21,7 @@
       <ModelInfo
          v-if="model"
          v-model="model"
-         :exclude="['shortName', 'cityId']"
+         :properties="[{'longName': $t('Long name')}]"
       />
    </div>
 </template>
@@ -25,6 +36,8 @@
    import ModelById from "@/components/mixins/ModelById";
    import {RouterPush} from "@/components/decorators";
    import {actionName, MODULES} from '@/store/actionTypes';
+   import ReactiveUpdate, {reactiveUpdate} from "@/components/mixins/ReactiveUpdate";
+   import {UniversityModel} from "@/models/university";
 
    @Component({
       components: {
@@ -35,17 +48,27 @@
          ModelInfo
       }
    })
-   export default class UniversityView extends Mixins(ModelById) {
+   export default class UniversityView extends Mixins(ReactiveUpdate) {
 
-      @Getter('universityById') modelById: (id: string) => University;
+      @Prop({
+         type: String,
+         required: true
+      })
+      id: string
 
-      @Getter countryById: (id: string) => Country
+      get model(){
+         return UniversityModel.findOne(this.id, reactiveUpdate(this))
+      }
 
-      @Getter cityById: (id: string) => City
+      get city(){
+         return this.model && this.model.city
+      }
+
+      get country(){
+         return this.city && this.city.country
+      }
 
       @Getter isTeacher: boolean;
-
-      @Action(actionName(MODULES.UNIVERSITIES, actions.READ)) loadModel: (id: string) => Promise<boolean>
 
       ROUTES = ROUTES
 
@@ -57,53 +80,35 @@
          // TODO
       }
 
-      get city(){
-         const model = this.model as University
-         if(!model)
-            return
+      // get breadcrumbs(){
+      //    let result: {[key: string]: any} = [
+      //       {[this.$t('Country') as string]: {name: ROUTES.COUNTRIES}},
+      //    ]
+      //
+      //    const country = this.country
+      //    if(country)
+      //       result.push({
+      //          [country.name]: {name: ROUTES.COUNTRY, params: {id: country.id}}
+      //       })
+      //
+      //    const city = this.city
+      //    if(city) {
+      //       result.push({
+      //          [city.name]: {name: ROUTES.CITY, params: {id: city.id}}
+      //       })
+      //       return result
+      //    }
+      //    const model = this.model as University
+      //    if(!model)
+      //       return result
+      //
+      //    result.push({
+      //       [this.$t('City') as string]: {name: ROUTES.CITY, params: {id: model.cityId}}
+      //    })
+      //
+      //    return result
+      // }
 
-         return this.cityById(model.cityId)
-      }
-
-      get country(){
-         const city = this.city
-         if(!city)
-            return
-
-         return this.countryById(city.countryId)
-      }
-
-      get breadcrumbs(){
-         let result: {[key: string]: any} = [
-            {[this.$t('Country') as string]: {name: ROUTES.COUNTRIES}},
-         ]
-
-         const country = this.country
-         if(country)
-            result.push({
-               [country.name]: {name: ROUTES.COUNTRY, params: {id: country.id}}
-            })
-
-         const city = this.city
-         if(city) {
-            result.push({
-               [city.name]: {name: ROUTES.CITY, params: {id: city.id}}
-            })
-            return result
-         }
-         const model = this.model as University
-         if(!model)
-            return result
-
-         result.push({
-            [this.$t('City') as string]: {name: ROUTES.CITY, params: {id: model.cityId}}
-         })
-
-         return result
-      }
-
-      @RouterPush(ROUTES.UNIVERSITY)
-      chooseItem: (university: University) => void
 
    }
 </script>

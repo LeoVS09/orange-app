@@ -29,6 +29,7 @@ export const CountryModel = new Model(
 export const CityModel = new Model(
    'city',
    {
+      country: ModelAttributeType.OneToOne,
       universities: ModelAttributeType.OneToMany
    }
 )

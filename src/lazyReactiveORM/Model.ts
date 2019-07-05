@@ -30,6 +30,8 @@ export default class Model {
       if(!id)
          return
 
+      console.log('Have schemas to build model', Object.keys(this.db.schemas))
+
       const founded = this.db.findOne(this.entity, id, false)
       if(founded) {
          founded.changed = changed

@@ -14,7 +14,7 @@ import {
    isSchemaField,
    lastObjectPropertyName
 } from "./utils";
-import {ILazyReactiveDatabase, IModelObserver, ModelAttributeType, ModelSchema, ModelSchemaField} from "./types";
+import {IModelObserver, ModelAttributeType, ModelSchema} from "./types";
 import {ModelObserver} from "@/lazyReactiveORM/ModelObserver";
 
 
@@ -27,29 +27,15 @@ export function appendPropertyToSchema(schema: ModelSchema, {name, inner, type}:
       return true
    }
 
-   if(!schema[name])
-      schema[name] = {
+   let property = schema[name]
+
+   if(!property || !isSchemaField(property))
+      property = schema[name] = {
          type,
          fields: {}
       }
 
-   let property = schema[name]
-   if(isSchemaField(property)) {
-      if(property.fields[inner.name])
-         return false
-
-      property.fields[inner.name] = inner.type
-      return true
-   }
-
-   schema[name] = {
-      type,
-      fields: {
-         [inner.name]: inner.type
-      }
-   }
-
-   return true
+   return appendPropertyToSchema(property.fields, inner)
 }
 
 // TODO: multiple types of object schema, need better solution
@@ -119,18 +105,31 @@ export const actions = {
          if(typeof type === 'object')
             type = type.type
 
+         if(type === ModelAttributeType.Simple)
+            return;
+
+         const {db} = model
+         if(!db) {
+            console.warn('Not have database in model observer to add more entities')
+            return
+         }
+
          if(type === ModelAttributeType.OneToMany) {
             console.log('Try add nodes to db')
             const nodes = value[ONE_TO_MANY_KEY] as Array<{id: string}>
-            const {db} = model
-            if(!db) {
-               console.warn('Not have database in model observer to add more entities')
-               return
-            }
 
             const entity = extractEntityFromManyKey(key)
 
-            addOrUpdate(db, entity, nodes)
+            nodes.forEach(node => addOrUpdate(db, entity, node))
+
+            console.log('result of db', db)
+         }
+
+         if(type === ModelAttributeType.OneToOne) {
+            console.log('Try add one node')
+
+            addOrUpdate(db, key, value)
+
             console.log('result of db', db)
          }
 

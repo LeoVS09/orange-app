@@ -33,14 +33,12 @@ export function extractEntityFromManyKey(key: string) {
    return key.slice(0, -1)
 }
 
-export function addOrUpdate(db: ILazyReactiveDatabase, entity: string, nodes: Array<{id: string}>) {
-   nodes.forEach(value => {
-      const success = db.update(entity, value.id, value)
-      if(success)
-         return
+export function addOrUpdate(db: ILazyReactiveDatabase, entity: string, node: {id: string}) {
+   const success = db.update(entity, node.id, node)
+   if(success)
+      return
 
-      db.add(entity, value.id, value)
-   })
+   db.add(entity, node.id, node)
 }
 
 export function lastObjectPropertyName({name, inner}: ModelEventGetPropertyPayload): string {

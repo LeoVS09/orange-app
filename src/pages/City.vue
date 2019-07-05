@@ -3,7 +3,7 @@
       <PageHeader
          :breadcrumbs="[
             {[$t('Countries')]: {name: ROUTES.COUNTRIES}},
-            { [parent ? parent.name : $t('Country')]: {
+            { [parent && parent.name || $t('Country')]: {
                name: ROUTES.COUNTRY,
                params: {id: model && model.countryId}
             }}
@@ -67,7 +67,7 @@
       }
 
       get parent(){
-         return CountryModel.findOne(this.model && this.model.countryId, reactiveUpdate(this))
+         return this.model && this.model.country
       }
 
       @Getter isTeacher: boolean;

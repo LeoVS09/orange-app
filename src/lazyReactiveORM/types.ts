@@ -38,6 +38,7 @@ export interface IPredefinedSchema {
 }
 
 export interface ILazyReactiveDatabase {
+   schemas: {[entity: string]: IPredefinedSchema}
    findOne: (entity: string, id: string, wrapped?: boolean) => AbstractData | undefined
    set: (entity: string, id: string, observer: IModelObserver) => void
    update: (entity: string, id: string, data: AbstractData) => boolean

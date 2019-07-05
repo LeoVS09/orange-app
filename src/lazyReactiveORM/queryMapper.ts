@@ -7,6 +7,8 @@ export interface QueryField {
    fields: Array<string | QueryField>
 }
 
+const requiredFields = ['id', 'nodeId']
+
 function buildFieldsQuery(fields: Array<string | QueryField>): string {
 
    const generateField = (field: string | QueryField) => {
@@ -25,15 +27,27 @@ function buildFieldsQuery(fields: Array<string | QueryField>): string {
       throw new Error('Unexpected field type' + field.type)
    }
 
-   const values = fields.reduce((all, field) =>
+   const uniquely = removeEqual([...requiredFields, ...fields])
+
+   const values = uniquely.reduce((all, field) =>
       `${all}
       ${generateField(field)}`,
-      `nodeId
-       id`
+      ''
    )
    return `{
       ${values}
       }`
+}
+
+function removeEqual<T>(items: Array<T>): Array<T> {
+   const result: Array<T> = []
+
+   for(const item of items){
+      if(!result.some(v => v === item))
+         result.push(item)
+   }
+
+   return result
 }
 
 export function generateQueryEntityById(entity: string, fields: Array<string | QueryField>): any {

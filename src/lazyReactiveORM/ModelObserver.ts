@@ -18,7 +18,8 @@ import {
    ModelSchema
 } from "./types";
 import {actions as baseActions, IActionsInterface} from "./actions";
-import {makeTrap, wrapData} from "@/lazyReactiveORM/wrapData";
+import {makeTrapBySchemas, wrapData} from "@/lazyReactiveORM/wrapData";
+import {extractEntityFromManyKey} from "@/lazyReactiveORM/utils";
 
 const UPDATE_TIME = 1000
 const READ_TIME = 10
@@ -92,7 +93,18 @@ export class ModelObserver implements IModelObserver {
                fields: {}
             }
 
-            const [trap, stream] = makeTrap()
+            let schema = {}
+
+            if(this.db) {
+               let fieldEntity = key
+               if(type === ModelAttributeType.OneToMany){
+                  fieldEntity = extractEntityFromManyKey(key)
+               }
+
+               schema = this.db.schemas[fieldEntity] || {}
+            }
+
+            const [trap, stream] = makeTrapBySchemas(schema)
 
             stream
                .pipe(
@@ -178,14 +190,13 @@ export class ModelObserver implements IModelObserver {
 
       const handler = this.actions[event.type]
 
-      console.log('event', event, 'handler', !!handler)
+      console.log('event', event, 'handler', !!handler, 'memory', this.memory)
 
       if(!handler)
          return
 
       if(event.type === ModelEventType.Read){
-         const gets = this.excludeEvents(ModelEventType.GetProperty)
-         handler(this, event.payload, gets)
+         handler(this, event.payload)
             .then((data: any) => {
                this.removeEvent(event)
                this.dispatch(ModelEventType.ReadSuccess, data)
@@ -201,6 +212,8 @@ export class ModelObserver implements IModelObserver {
          const remember = handler(this, event.payload)
          if(!remember)
             this.removeEvent(event)
+
+         return;
       }
 
       handler(this, event.payload)
@@ -232,14 +245,7 @@ export class ModelObserver implements IModelObserver {
          return null
       }
 
-      const property = this.schema[name]
-      const type = typeof property === 'object' ? property.type : property
-
-      if(type === ModelAttributeType.Simple)
-         return this.data[name]
-
-      if(type === ModelAttributeType.OneToMany)
-         return this.data[name]
+      return this.data[name]
    }
 
    set(name: string, value: any): boolean {
