@@ -1,7 +1,7 @@
 import {ModelObserver} from "./ModelObserver";
 import {AbstractData, ModelAttributeType} from "./types";
 import {Subject} from "rxjs";
-import {ModelEventGetPropertyPayload, ModelEventType} from "@/lazyReactiveORM/events";
+import {ModelEvent, ModelEventGetPropertyPayload, ModelEventType} from "@/lazyReactiveORM/events";
 
 export function wrapData(model: ModelObserver) {
 
@@ -31,7 +31,7 @@ export function wrapData(model: ModelObserver) {
 }
 
 export function makeTrap(target = {}) {
-   const subject = new Subject()
+   const subject = new Subject<ModelEvent>()
 
    const data = new Proxy<AbstractData>(target, {
       // TODO: duplicated code, make data as emitter

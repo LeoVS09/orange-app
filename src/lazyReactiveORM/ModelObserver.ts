@@ -94,13 +94,14 @@ export class ModelObserver implements IModelObserver {
 
             const [trap, stream] = makeTrap()
 
-            stream.subscribe((event: ModelEvent) => {
-               if(event.type !== ModelEventType.GetProperty)
-                  return
-
-               const payload: ModelEventGetPropertyPayload = {name: key, inner: event.payload, type}
-               this.dispatch(ModelEventType.GetProperty, payload)
-            })
+            stream
+               .pipe(
+                  filter((event: ModelEvent) => event.type === ModelEventType.GetProperty),
+                  map((event: ModelEvent) => ({name: key, inner: event.payload, type}) as ModelEventGetPropertyPayload)
+               )
+               .subscribe((payload: ModelEventGetPropertyPayload) =>
+                  this.dispatch(ModelEventType.GetProperty, payload)
+               )
 
             if(type === ModelAttributeType.OneToMany){
                this.data[key] = {

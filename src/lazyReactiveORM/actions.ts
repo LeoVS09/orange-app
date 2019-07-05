@@ -7,12 +7,18 @@ import {
 } from "./events";
 import {generateQueryEntityById, QueryField} from "./queryMapper";
 import {client} from "@/api/database/utils";
-import {dateToStringFormatter} from "./utils";
+import {
+   addOrUpdate,
+   dateToStringFormatter,
+   extractEntityFromManyKey,
+   isSchemaField,
+   lastObjectPropertyName
+} from "./utils";
 import {ILazyReactiveDatabase, IModelObserver, ModelAttributeType, ModelSchema, ModelSchemaField} from "./types";
 import {ModelObserver} from "@/lazyReactiveORM/ModelObserver";
 
 
-function appendPropertyToSchema(schema: ModelSchema, {name, inner, type}: ModelEventGetPropertyPayload): boolean {
+export function appendPropertyToSchema(schema: ModelSchema, {name, inner, type}: ModelEventGetPropertyPayload): boolean {
    if(!inner) {
       if(schema[name])
          return false
@@ -37,7 +43,7 @@ function appendPropertyToSchema(schema: ModelSchema, {name, inner, type}: ModelE
    }
 
    schema[name] = {
-      type: type,
+      type,
       fields: {
          [inner.name]: inner.type
       }
@@ -46,12 +52,8 @@ function appendPropertyToSchema(schema: ModelSchema, {name, inner, type}: ModelE
    return true
 }
 
-function isSchemaField(field: ModelSchemaField | ModelAttributeType): field is ModelSchemaField {
-   return typeof field === 'object'
-}
-
 // TODO: multiple types of object schema, need better solution
-function schemaToQueryFields(schema: ModelSchema): Array<string | QueryField> {
+export function schemaToQueryFields(schema: ModelSchema): Array<string | QueryField> {
    const keys = Object.keys(schema)
 
    return keys.map(key => {
@@ -137,31 +139,3 @@ export const actions = {
 
 }
 
-function extractEntityFromManyKey(key: string) {
-   const last = key.slice(-1)
-   if(last !== 's')
-      return key
-
-   const lastThree = key.slice(-3)
-   if(lastThree === 'ies')
-      return key.slice(0, -3) + 'y'
-
-   return key.slice(0, -1)
-}
-
-function addOrUpdate(db: ILazyReactiveDatabase, entity: string, nodes: Array<{id: string}>) {
-   nodes.forEach(value => {
-      const success = db.update(entity, value.id, value)
-      if(success)
-         return
-
-      db.add(entity, value.id, value)
-   })
-}
-
-function lastObjectPropertyName({name, inner}: ModelEventGetPropertyPayload): string {
-   if(!inner)
-      return name
-
-   return lastObjectPropertyName(inner)
-}

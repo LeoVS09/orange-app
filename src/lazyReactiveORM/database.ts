@@ -5,7 +5,7 @@ class LazyReactiveDatabase implements ILazyReactiveDatabase {
 
    tables: {[entity: string]: {[id: string]: IModelObserver}} = {}
    // TODO: part of properties can be computed to exclude
-   excludeProperties = ['state', '_isVue', 'render', 'toJSON', 'constructor']
+   excludeProperties = ['state', '_isVue', 'render', 'toJSON', 'constructor', '__ob__', 'then']
 
    schemas: {[entity: string]: IPredefinedSchema} = {}
 

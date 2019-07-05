@@ -46,6 +46,19 @@ export function generateQueryEntityById(entity: string, fields: Array<string | Q
    `)
 }
 
+export function generateQueryList(listName: string, fields: Array<string | QueryField>): any {
+   const queryName = firstToUpperCase(listName)
+
+   return gql(`
+      query ${queryName} {
+         ${listName} {
+            totalCount
+            nodes ${buildFieldsQuery(fields)}
+         }
+      }
+   `)
+}
+
 function firstToUpperCase(str: string) {
    return str[0].toUpperCase() + str.slice(1)
 }

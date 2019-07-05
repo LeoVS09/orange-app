@@ -11,13 +11,12 @@
                {'code': $t('Code')},
                {'updatedAt': $t('Updated')}
             ]"
-            :items="items"
+            :items="list.nodes"
             :isCanAdd="isTeacher"
             inlineAdd
             :validateAdd="validate"
             @add="add"
             @choose-item="chooseItem"
-            :load="loadItems"
          />
       </Section>
    </div>
@@ -33,6 +32,7 @@
    import {ROUTES} from '@/router'
    import {RouterPush} from '@/components/decorators'
    import {actionName, MODULES} from '@/store/actionTypes';
+   import {CountryModel} from '@/models/country'
 
    @Component({
       components: {
@@ -47,10 +47,14 @@
    })
    export default class Countries extends Vue {
 
-      @Getter('allCountries') items: Array<Country>;
-      @Getter isTeacher: boolean;
+      data(){
+         return {
+            list: CountryModel.list()
+         }
+      }
 
-      @Action(actionName(MODULES.COUNTRIES, actions.READ_LIST)) loadItems: () => void
+
+      @Getter isTeacher: boolean;
 
       add() {
          // TODO
