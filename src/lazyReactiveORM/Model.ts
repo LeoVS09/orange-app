@@ -106,7 +106,9 @@ export default class Model {
             list.totalCount = result.totalCount
             list.nodes = result.nodes
 
-            addOrUpdate(this.db, this.entity, result.nodes)
+            result.nodes.forEach((node: {id: string}) =>
+               addOrUpdate(this.db, this.entity, node)
+            )
 
          })
 
