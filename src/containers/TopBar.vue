@@ -52,6 +52,7 @@
                <ul>
                   <li @click="clickProfile">{{'Profile' | translate}}</li>
                   <li @click="clickCountries">{{'Countries' | translate}}</li>
+                  <li @click="clickProgrammingLanguages">{{'Programming languages' | translate}}</li>
                   <li @click="clickSignOut">{{'Sign Out' | translate}}</li>
                </ul>
             </div>
@@ -202,6 +203,9 @@
 
       @RouterPush(ROUTES.COUNTRIES)
       clickCountries: () => void
+
+      @RouterPush(ROUTES.PROGRAMMING_LANGUAGES)
+      clickProgrammingLanguages: () => void
 
       clickSignOut() {
          this.$store.dispatch(actions.LOGOUT_FROM_PROFILE);

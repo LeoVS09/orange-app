@@ -10,7 +10,7 @@ import { UIEventEmitter, UIEvents } from './utils/UIEventEmitter'
 // @ts-ignore
 import vClickOutside from 'v-click-outside'
 import Filters from '@/components/filter'
-
+import {LazyDBFilters} from '@/lazyReactiveORM/vue'
 Vue.use(vClickOutside)
 
 setTranslations()
@@ -25,6 +25,7 @@ import {formatDate, isDate} from "@/components/utils";
 Vue.config.productionTip = false;
 
 Vue.use(Filters)
+Vue.use(LazyDBFilters)
 
 sync(store, router);
 

@@ -22,8 +22,14 @@
             <span class="page-header--breadcrumb-separator">/</span>
          </template>
       </div>
+
+      <div
+         v-if="isLoading"
+         class="header-loading"
+      ><div class="skeleton-loading"></div></div>
+
       <input
-         v-if="editable"
+         v-else-if="editable"
          class="page-header--input"
          type="text"
          :value="value"
@@ -126,6 +132,9 @@
       @Prop(Date)
       modified?: Date
 
+      @Prop(Boolean)
+      isLoading?: boolean
+
       ColorLineType = ColorLineType
 
       get visibleBreadcrumbs(): Array<IVisibleBreadcrumbs> {
@@ -176,6 +185,30 @@
 
 <style scoped lang="scss">
    @import "../styles/config.scss";
+   @import "../styles/skeleton";
+
+   .header-loading {
+      height: 1.5rem;
+      width: 10rem;
+      padding: 0 2rem;
+      overflow: hidden;
+      margin-top: 1rem;
+
+      .skeleton-loading {
+         width: 20rem;
+         height: 3rem;
+         margin-left: 0;
+         margin-right: auto;
+         margin-top: -0.5rem;
+
+         @include skeleton(10rem, 3rem, (
+               (0, 0.5rem, 12rem, 1.5rem),
+         ),
+            rgba(236, 236, 236, 0.73),
+            #FD911F
+         );
+      }
+   }
 
    .page-header {
       width: 100%;

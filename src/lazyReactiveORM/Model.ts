@@ -8,7 +8,7 @@ import {READ} from "@/store/CrudModule/actionTypes";
 import {appendPropertyToSchema, schemaToQueryFields} from "@/lazyReactiveORM/actions";
 import {generateQueryEntityById, generateQueryList} from "@/lazyReactiveORM/queryMapper";
 import {client} from "@/api/database/utils";
-import {addOrUpdate, dateToStringFormatter, isSchemaField} from "@/lazyReactiveORM/utils";
+import {addOrUpdate, dateToStringFormatter, isSchemaField, wait} from "./utils";
 
 const READ_LIST_TIME = 10
 
@@ -68,7 +68,9 @@ export default class Model {
             debounceTime(READ_LIST_TIME)
          )
          .subscribe(async (event: ModelEvent) => {
-            const gets = memory.filter(({payload}) => !this.db.excludeProperties.some(value => value === payload.name ))
+            const gets = memory.filter(({payload}) =>
+               !this.db.excludeProperties.some(value => value === payload.name )
+            )
 
             const readProperties = {}
             // Schema have information, but gets events not have
@@ -80,16 +82,16 @@ export default class Model {
                console.log('list have entity in db', this.entity)
                const itemIds = Object.keys(this.db.tables[this.entity])
 
+               const first = this.db.tables[this.entity][itemIds[0]]
+               if (isSchemaInclude(first.schema, readProperties)) {
+                  console.log('required schema have in db')
+
+                  list.nodes = itemIds.map(id => this.db.tables[this.entity][id].wrapped)
+               }
+
                if(itemIds.length >= this.itemsPerPage) {
                   console.log('list have required items size in db')
-
-                  const first = this.db.tables[this.entity][itemIds[0]]
-                  if (isSchemaInclude(first.schema, readProperties)) {
-                     console.log('required schema have in db')
-
-                     list.nodes = itemIds.map(id => this.db.tables[this.entity][id].wrapped)
-                     return
-                  }
+                  return
                }
             }
 

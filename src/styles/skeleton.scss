@@ -14,14 +14,14 @@
 
 
 // list = ($left, $top, $width, $height),...
-@mixin skeleton($maxWidth, $maxHeight, $list) {
+@mixin skeleton($maxWidth, $maxHeight, $list, $base-color: $skeleton-color, $gradient-color: $skeleton-color) {
   height: $maxHeight;
 
   $bi: "";
   $bs: "";
   $bp: "";
   @each $left, $top, $width, $height in $list {
-    $bi: $bi + ", linear-gradient(" + $skeleton-color + " " + $height + ", transparent 0)";
+    $bi: $bi + ", linear-gradient(" + $base-color + " " + $height + ", transparent 0)";
     $bs: $bs + ", " + $width + " " + $height;
     $bp: $bp + ", " + $left + " " + $top;
   }
@@ -29,9 +29,9 @@
   &:empty::after {
     background-image: linear-gradient(
         90deg,
-        rgba(lighten($skeleton-color, $skeleton-animation-lighten-color-value), 0) 0,
-        rgba(lighten($skeleton-color, $skeleton-animation-lighten-color-value), 0.8) 50%,
-        rgba(lighten($skeleton-color, $skeleton-animation-lighten-color-value), 0) 100%
+        rgba(lighten($gradient-color, $skeleton-animation-lighten-color-value), 0) 0,
+        rgba(lighten($gradient-color, $skeleton-animation-lighten-color-value), 0.8) 50%,
+        rgba(lighten($gradient-color, $skeleton-animation-lighten-color-value), 0) 100%
     )#{$bi};
 
     background-size: $maxWidth $maxHeight#{$bs};

@@ -10,8 +10,11 @@ export function wrapData(model: ModelObserver) {
    return new Proxy<AbstractData>(model.data, {
 
       get(target: AbstractData, property: string | number | symbol): any {
-         if (typeof property === 'number' || typeof property === 'symbol')
+         if (typeof property === 'number')
             return null
+
+         if(typeof property === 'symbol')
+            return model.data[property as unknown as string]
 
          const result = model.get(property)
          console.log('get', property, result)

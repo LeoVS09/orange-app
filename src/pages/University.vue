@@ -16,13 +16,15 @@
          :created="model && model.createdAt"
          :modified="model && model.updatedAt"
          v-model="model && model.shortName"
+         :is-loading="model | isReading('shortName')"
       />
 
-      <ModelInfo
-         v-if="model"
+      <LazyData
          v-model="model"
-         :properties="[{'longName': $t('Long name')}]"
-      />
+         :editable="isTeacher"
+      >
+         <LazyProperty>longName</LazyProperty>
+      </LazyData>
    </div>
 </template>
 
@@ -38,6 +40,8 @@
    import {actionName, MODULES} from '@/store/actionTypes';
    import ReactiveUpdate, {reactiveUpdate} from "@/components/mixins/ReactiveUpdate";
    import {UniversityModel} from "@/models/university";
+   import LazyData from '@/containers/LazyData.vue'
+   import LazyProperty from '@/containers/LazyProperty.vue'
 
    @Component({
       components: {
@@ -45,7 +49,8 @@
          List,
          Section,
          Action: PageHeaderAction,
-         ModelInfo
+         LazyData,
+         LazyProperty
       }
    })
    export default class UniversityView extends Mixins(ReactiveUpdate) {

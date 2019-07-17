@@ -13,7 +13,7 @@
    </div>
 
    <div
-      v-else-if="!model || status === ProblemStatus.Reading"
+      v-else-if="true"
       class="skeleton-loading problem-loading"
    ></div>
 

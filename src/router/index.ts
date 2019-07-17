@@ -14,6 +14,8 @@ import Problem from '@/pages/Problem.vue'
 import Countries from '@/pages/Countries.vue'
 import Country from '@/pages/Country.vue'
 import University from '@/pages/University.vue'
+import ProgrammingLanguages from '@/pages/ProgrammingLanguages.vue'
+import ProgrammingLanguage from '@/pages/ProgrammingLanguage.vue'
 import SignIn from '@/pages/SignIn.vue'
 import SignUp from '@/pages/SignUp.vue'
 
@@ -98,6 +100,17 @@ const router = new Router({
                path: '/university/:id',
                name: ROUTES.UNIVERSITY,
                component: University as Component,
+               props: true
+            },
+            {
+               path: '/programming-languages',
+               name: ROUTES.PROGRAMMING_LANGUAGES,
+               component: ProgrammingLanguages as Component
+            },
+            {
+               path: '/programming-language/:id',
+               name: ROUTES.PROGRAMMING_LANGUAGE,
+               component: ProgrammingLanguage as Component,
                props: true
             }
          ]

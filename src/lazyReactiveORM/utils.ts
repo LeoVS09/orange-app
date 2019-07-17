@@ -51,3 +51,9 @@ export function lastObjectPropertyName({name, inner}: ModelEventGetPropertyPaylo
 export function isSchemaField(field: ModelSchemaField | ModelAttributeType): field is ModelSchemaField {
    return typeof field === 'object'
 }
+
+export function wait(duration: number) {
+   return new Promise(resolve =>
+      setTimeout(resolve, duration)
+   )
+}

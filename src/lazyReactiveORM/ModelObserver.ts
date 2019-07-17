@@ -145,7 +145,7 @@ export class ModelObserver implements IModelObserver {
       )
          .pipe(
             debounceTime(READ_TIME),
-            map(() => this.excludeEvents(ModelEventType.GetProperty)),
+            map(() => this.filterEvents(ModelEventType.GetProperty)),
             filter(gets => !!gets.length)
          )
          .subscribe(gets => this.dispatch(ModelEventType.Read, {id: this.id, gets} as ModelEventReadPayload))
@@ -200,6 +200,9 @@ export class ModelObserver implements IModelObserver {
             .then((data: any) => {
                this.removeEvent(event)
                this.dispatch(ModelEventType.ReadSuccess, data)
+               event.payload.gets.forEach((event: ModelEvent) =>
+                  this.removeEvent(event)
+               )
             })
             .catch((error: any) => {
                this.removeEvent(event)
@@ -315,6 +318,10 @@ export class ModelObserver implements IModelObserver {
       return searching
    }
 
+   filterEvents(type: ModelEventType) {
+      return this.memory.filter(event => event.type === type)
+   }
+
    removeEvent(searchingEvent: ModelEvent){
       const [searching, other] = splitArray(this.memory, event => event === searchingEvent)
 
@@ -352,4 +359,31 @@ function takeWhileThenContinue<T>(stream: Observable<T>, predicate: (v: T) => bo
    )
 }
 
+function getObserver(data: any): ModelObserver | undefined {
+   if(typeof data !== 'object')
+      return
 
+   return data[ModelObserverReference as unknown as string] as ModelObserver
+}
+
+export function isReading(data: AbstractData, property?: string) {
+   const observer = getObserver(data)
+   console.log('is reading observer', observer)
+   if(!observer)
+      return false
+
+   if(!property)
+      return observer.isReading
+
+   const {memory, schema} = observer
+
+   if(memory.some(event => event.type === ModelEventType.GetProperty && event.payload.name === property))
+      return true
+
+   if(!schema[property]) {
+      observer.get(property)
+      return true
+   }
+
+   return false
+}

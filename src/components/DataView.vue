@@ -40,7 +40,8 @@
       @Prop({
          type: Object,
          required: true
-      }) values: DataViewValues
+      })
+      values: DataViewValues
 
       @Prop({
          type: Function

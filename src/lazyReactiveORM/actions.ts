@@ -12,7 +12,7 @@ import {
    dateToStringFormatter,
    extractEntityFromManyKey,
    isSchemaField,
-   lastObjectPropertyName
+   lastObjectPropertyName, wait
 } from "./utils";
 import {IModelObserver, ModelAttributeType, ModelSchema} from "./types";
 import {ModelObserver} from "@/lazyReactiveORM/ModelObserver";
@@ -83,6 +83,9 @@ export const actions = {
       gets.forEach(event => appendPropertyToSchema(readProperties, event.payload))
       console.log('gets', gets, 'readProperties', readProperties)
       const query = generateQueryEntityById(model.entity, schemaToQueryFields(readProperties))
+
+      await wait(1000)
+
       const { data } = await client.query({
          query,
          variables: {id}

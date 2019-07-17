@@ -11,6 +11,7 @@
          :created="model && model.createdAt"
          :modified="model && model.updatedAt"
          v-model="model && model.name"
+         :is-loading="model | isReading('name')"
       />
 
       <Section>
