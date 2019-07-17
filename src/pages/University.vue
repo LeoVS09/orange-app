@@ -39,7 +39,7 @@ import ModelById from '@/components/mixins/ModelById';
 import {RouterPush} from '@/components/decorators';
 import {actionName, MODULES} from '@/store/actionTypes';
 import ReactiveUpdate, {reactiveUpdate} from '@/components/mixins/ReactiveUpdate';
-import {UniversityModel} from '@/models/university';
+import {UniversityRepository} from '@/models/university';
 import LazyData from '@/containers/LazyData.vue';
 import LazyProperty from '@/containers/LazyProperty.vue';
 
@@ -62,7 +62,7 @@ export default class UniversityView extends Mixins(ReactiveUpdate) {
    public id!: string;
 
    get model() {
-      return UniversityModel.findOne(this.id, reactiveUpdate(this));
+      return UniversityRepository.findOne(this.id, reactiveUpdate(this));
    }
 
    get city() {

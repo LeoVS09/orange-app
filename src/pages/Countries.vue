@@ -32,7 +32,7 @@ import {PageHeader, Button, List, Tags, Section, PageHeaderAction, Filters} from
 import {ROUTES} from '@/router';
 import {RouterPush} from '@/components/decorators';
 import {actionName, MODULES} from '@/store/actionTypes';
-import {CountryModel} from '@/models/country';
+import {CountryRepository} from '@/models/country';
 
 @Component({
    components: {
@@ -55,7 +55,7 @@ export default class Countries extends Vue {
 
    public data() {
       return {
-         list: CountryModel.list(),
+         list: CountryRepository.list(),
       };
    }
 

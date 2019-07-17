@@ -42,7 +42,7 @@ import {ROUTES} from '@/router';
 import ModelById from '@/components/mixins/ModelById';
 import {RouterPush} from '@/components/decorators';
 import {actionName, MODULES} from '@/store/actionTypes';
-import {CountryModel, CityModel} from '@/models/country';
+import {CountryRepository, CityRepository} from '@/models/country';
 import Vue from 'vue';
 import ReactiveUpdate, {reactiveUpdate} from '@/components/mixins/ReactiveUpdate';
 
@@ -58,7 +58,7 @@ import ReactiveUpdate, {reactiveUpdate} from '@/components/mixins/ReactiveUpdate
 export default class CityView extends Mixins(ReactiveUpdate) {
 
    get model() {
-      return CityModel.findOne(this.id, reactiveUpdate(this));
+      return CityRepository.findOne(this.id, reactiveUpdate(this));
    }
 
    get parent() {

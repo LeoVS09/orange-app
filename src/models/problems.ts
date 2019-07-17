@@ -2,6 +2,8 @@ import {PartialUserProfile, UserType} from './user';
 import {Test} from '@/models/tests';
 import {ModelReadState, ModelStatus} from '@/store/modules/statuses/types';
 import {defaultPartialProfile, mockInput, mockOutput, mockTag} from '@/models/mock/mock';
+import {Repository} from "@/lazyReactiveORM";
+import {ModelAttributeType} from "@/lazyReactiveORM/types";
 
 export {
    defaultPartialProfile,
@@ -18,6 +20,33 @@ export enum ProblemTestingStatus {
    Solved = 'Solved',
    Error = 'Error',
 }
+
+export const TagRepository = new Repository(
+   'tag',
+   {
+      problemsTags: ModelAttributeType.OneToMany
+   }
+)
+
+export const ProblemRepository = new Repository(
+   'problem',
+   {
+      author: ModelAttributeType.OneToOne,
+      tester: ModelAttributeType.OneToOne,
+      inputType: ModelAttributeType.OneToOne,
+      outputType: ModelAttributeType.OneToOne,
+      tests: ModelAttributeType.OneToMany,
+      problemsTags: ModelAttributeType.OneToMany
+   }
+)
+
+export const ProblemsTagRepository = new Repository(
+   'problemsTag',
+   {
+      problem: ModelAttributeType.OneToOne,
+      tag: ModelAttributeType.OneToOne
+   }
+)
 
 export interface PartialProblem {
    id: string;

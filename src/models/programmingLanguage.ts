@@ -1,7 +1,7 @@
-import Model from '@/lazyReactiveORM/Model';
+import Repository from '@/lazyReactiveORM/Repository';
 import {ModelAttributeType} from '@/lazyReactiveORM/types';
 
-export const ProgrammingLanguageModel = new Model(
+export const ProgrammingLanguageRepository = new Repository(
    'programmingLanguage',
    {
    });

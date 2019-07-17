@@ -1,8 +1,8 @@
 import db from './database';
-import Model from './Model';
+import Repository from './Repository';
 
 export {
-   Model,
+   Repository,
 };
 
 export default db;

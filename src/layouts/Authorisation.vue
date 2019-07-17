@@ -28,8 +28,7 @@ import {ROUTES} from '@/router';
 })
 export default class Authorisation extends Vue {
 
-   // @ts-ignore
-   @Getter('isSignInPage') public isSignInPage: boolean;
+   @Getter('isSignInPage') public isSignInPage!: boolean;
    public isRemember = true;
    public login = '';
    public password = '';

@@ -25,7 +25,7 @@ import {Getter, Action, State} from 'vuex-class';
 import {PageHeader, Button, List, Tags, Input, ModelInfo, Section, TextSection, PageHeaderAction, Filters, DataView} from '@/components';
 import {ROUTES} from '@/router';
 import Vue from 'vue';
-import {ProgrammingLanguageModel} from '@/models/programmingLanguage';
+import {ProgrammingLanguageRepository} from '@/models/programmingLanguage';
 import LazyData from '@/containers/LazyData.vue';
 import LazyProperty from '@/containers/LazyProperty.vue';
 
@@ -53,7 +53,7 @@ export default class ProgrammingLanguageView extends Vue {
    public id!: string;
 
    get model() {
-      return ProgrammingLanguageModel.findOne(this.id, () => this.$forceUpdate());
+      return ProgrammingLanguageRepository.findOne(this.id, () => this.$forceUpdate());
    }
 
    @Getter public isTeacher!: boolean;

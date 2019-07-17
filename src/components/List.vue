@@ -227,6 +227,11 @@ export default class List extends Mixins(Loadable) {
    })
    public maxPageNumbers!: number;
 
+   @Prop({
+      type: Boolean
+   })
+   public isLoading!: boolean
+
    public currentPage: number = 1;
 
    public isHovered = false;

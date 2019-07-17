@@ -12,7 +12,7 @@ import {addOrUpdate, dateToStringFormatter, isSchemaField, wait} from './utils';
 
 const READ_LIST_TIME = 10;
 
-export default class Model {
+export default class Repository {
    public entity: string;
    public predefinedSchema?: IPredefinedSchema;
    public db = db;
@@ -62,6 +62,7 @@ export default class Model {
          event.type === ModelEventType.GetProperty &&
          event.payload.name === name;
 
+      // TODO: Move duplicated code actions
       stream
          .pipe(
             filter((event: ModelEvent) => event.type === ModelEventType.GetProperty),
@@ -100,6 +101,7 @@ export default class Model {
             const listName = entityToList(this.entity);
 
             const query = generateQueryList(listName, schemaToQueryFields(readProperties));
+
             const { data } = await client.query({
                query,
             });

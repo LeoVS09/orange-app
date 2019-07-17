@@ -1,5 +1,5 @@
 import {University} from '@/models/university';
-import Model from '@/lazyReactiveORM/Model';
+import Repository from '@/lazyReactiveORM/Repository';
 import {ModelAttributeType} from '@/lazyReactiveORM/types';
 
 export interface Country {
@@ -20,13 +20,13 @@ export interface City {
    universities?: University[];
 }
 
-export const CountryModel = new Model(
+export const CountryRepository = new Repository(
    'country',
    {
       cities: ModelAttributeType.OneToMany,
 });
 
-export const CityModel = new Model(
+export const CityRepository = new Repository(
    'city',
    {
       country: ModelAttributeType.OneToOne,

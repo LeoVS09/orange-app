@@ -1,4 +1,4 @@
-import Model from '@/lazyReactiveORM/Model';
+import Repository from '@/lazyReactiveORM/Repository';
 import {ModelAttributeType} from '@/lazyReactiveORM/types';
 
 export interface University {
@@ -10,7 +10,7 @@ export interface University {
    cityId: string;
 }
 
-export const UniversityModel = new Model(
+export const UniversityRepository = new Repository(
    'university',
    {
       city: ModelAttributeType.OneToOne,

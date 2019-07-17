@@ -33,8 +33,8 @@ import {PageHeader, Button, List, Tags, Section, PageHeaderAction, Filters} from
 import {ROUTES} from '@/router';
 import {RouterPush} from '@/components/decorators';
 import {actionName, MODULES} from '@/store/actionTypes';
-import {CountryModel} from '@/models/country';
-import {ProgrammingLanguageModel} from '@/models/programmingLanguage';
+import {CountryRepository} from '@/models/country';
+import {ProgrammingLanguageRepository} from '@/models/programmingLanguage';
 
 @Component({
    components: {
@@ -57,7 +57,7 @@ export default class ProgrammingLanguages extends Vue {
 
    public data() {
       return {
-         list: ProgrammingLanguageModel.list(),
+         list: ProgrammingLanguageRepository.list(),
       };
    }
 

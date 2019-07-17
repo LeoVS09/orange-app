@@ -44,7 +44,7 @@ import {City} from '@/models/country';
 import {RouterPush} from '@/components/decorators';
 import {actionName, MODULES} from '@/store/actionTypes';
 import Vue from 'vue';
-import {CountryModel} from '@/models/country';
+import {CountryRepository} from '@/models/country';
 import LazyData from '@/containers/LazyData.vue';
 import LazyProperty from '@/containers/LazyProperty.vue';
 
@@ -66,7 +66,7 @@ import LazyProperty from '@/containers/LazyProperty.vue';
 export default class CountryView extends Vue {
 
    get model() {
-      return CountryModel.findOne(this.id, () => this.$forceUpdate());
+      return CountryRepository.findOne(this.id, () => this.$forceUpdate());
    }
    @Prop({
       type: String,
