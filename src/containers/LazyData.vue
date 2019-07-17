@@ -29,70 +29,70 @@
 </template>
 
 <script lang="ts">
-   import Vue from 'vue'
-   import {Component, Prop} from 'vue-property-decorator'
-   import {Section} from '@/components'
-   import {randomId} from "@/components/utils";
-   import {Filter} from "@/components/decorators";
+import Vue from 'vue';
+import {Component, Prop} from 'vue-property-decorator';
+import {Section} from '@/components';
+import {randomId} from '@/components/utils';
+import {Filter} from '@/components/decorators';
 
-   export interface DataItem {
-      key: string
-      label: string
-   }
+export interface DataItem {
+   key: string;
+   label: string;
+}
 
-   export interface PropertiesStore {
-      [key: string]: string
-   }
+export interface PropertiesStore {
+   [key: string]: string;
+}
 
-   @Component({
-      components: {
-         Section
-      }
+@Component({
+   components: {
+      Section,
+   },
+})
+export default class LazyData extends Vue {
+   @Prop({
+      type: Object,
+      required: true,
    })
-   export default class LazyData extends Vue {
-      @Prop({
-         type: Object,
-         required: true
-      })
-      value: {[key: string]: any}
+   public value!: {[key: string]: any};
 
-      @Prop({
-         type: Boolean,
-         default: false
-      })
-      editable: boolean
+   @Prop({
+      type: Boolean,
+      default: false,
+   })
+   public editable!: boolean;
 
-      properties: PropertiesStore = {}
-      lazyDataId: string = 'default'
+   public properties: PropertiesStore = {};
+   public lazyDataId: string = 'default';
 
-      get dataItems(): Array<DataItem> {
-         console.log('LazyData slots', this.$slots)
+   get dataItems(): DataItem[] {
+      console.log('LazyData slots', this.$slots);
 
-         const properties = Object.keys(this.properties).map(key => ({
-            key,
-            label: this.properties[key]
-         }))
-         console.log('LazyData properties', properties)
-         return properties
-      }
-
-      created(){
-         this.lazyDataId = `lazy-data-${randomId()}`
-         this.properties = {}
-      }
-
-      @Filter
-      normaliseName(key: string): string {
-         return key.split('').map(c => {
-            if(c.match(/[A-Z]/))
-               return ' ' + c.toLowerCase()
-
-            return c
-         }).join('')
-      }
-
+      const properties = Object.keys(this.properties).map((key) => ({
+         key,
+         label: this.properties[key],
+      }));
+      console.log('LazyData properties', properties);
+      return properties;
    }
 
+   public created() {
+      this.lazyDataId = `lazy-data-${randomId()}`;
+      this.properties = {};
+   }
+
+   @Filter
+   public normaliseName(key: string): string {
+      return key.split('').map((c) => {
+         if (c.match(/[A-Z]/)) {
+            return ' ' + c.toLowerCase();
+         }
+
+         return c;
+      }).join('');
+   }
+
+}
 </script>
 
 <style lang="scss">

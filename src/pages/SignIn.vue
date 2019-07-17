@@ -28,103 +28,108 @@ import {AuthorisationEventState} from "@/containers/eventBus";
 </template>
 
 <script lang="ts">
-   import Vue from 'vue'
-   import {Component} from 'vue-property-decorator'
-   import {Action} from 'vuex-class'
-   import {Button, Checkbox, MaterialIcon, Input, Logo} from '@/components'
-   import * as actions from '@/store/actionTypes';
-   import {ROUTES} from "@/router";
-   import {ILoginToProfilePayload} from "@/store/modules/profile/actions";
-   import eventBus, {AuthorisationEventPayload, AuthorisationEventState, BusEventTypes} from "@/pages/eventBus";
+import Vue from 'vue';
+import {Component} from 'vue-property-decorator';
+import {Action} from 'vuex-class';
+import {Button, Checkbox, MaterialIcon, Input, Logo} from '@/components';
+import * as actions from '@/store/actionTypes';
+import {ROUTES} from '@/router';
+import {ILoginToProfilePayload} from '@/store/modules/profile/actions';
+import eventBus, {AuthorisationEventPayload, AuthorisationEventState, BusEventTypes} from '@/pages/eventBus';
 
-   @Component({
-      // TODO: fix this
-      // @ts-ignore
-      components: {
-         Logo,
-         Input,
-         Button,
-         Checkbox,
-         Icon: MaterialIcon
-      }
-   })
-   export default class SignIn extends Vue {
+@Component({
+   // TODO: fix this
+   // @ts-ignore
+   components: {
+      Logo,
+      Input,
+      Button,
+      Checkbox,
+      Icon: MaterialIcon,
+   },
+})
+export default class SignIn extends Vue {
 
-      isRemember = true;
-      login = "";
-      isLoginError = false;
-      password = "";
-      isPasswordError = false;
-      error = null
+   public isRemember = true;
+   public login = '';
+   public isLoginError = false;
+   public password = '';
+   public isPasswordError = false;
+   public error = null;
 
-      isLoginDisabled = false;
-      isPasswordDisabled = false;
-      isSubmitDisabled = false;
+   public isLoginDisabled = false;
+   public isPasswordDisabled = false;
+   public isSubmitDisabled = false;
 
-      @Action(actions.SET_SIGN_IN_PAGE) setSignInPage: () => void
-      @Action(actions.LOGIN_TO_PROFILE) loginToProfile: (payload: ILoginToProfilePayload) => Promise<boolean>
+   @Action(actions.SET_SIGN_IN_PAGE) public setSignInPage!: () => void;
+   @Action(actions.LOGIN_TO_PROFILE) public loginToProfile!: (payload: ILoginToProfilePayload) => Promise<boolean>;
 
-      created() {
-         this.setSignInPage();
-      }
-
-      clickSignIn() {
-         if (!this.login.length)
-            this.isLoginError = true;
-         else
-            this.isLoginError = false;
-
-         if (!this.password.length)
-            this.isPasswordError = true;
-         else
-            this.isPasswordError = false;
-
-         if (this.isLoginError || this.isPasswordError) {
-            console.log("Have some input errors");
-            // TODO: add icons for multiple types of errors input
-            return
-         }
-
-         if(this.error)
-            this.error = null
-
-         const login = this.login;
-         const password = this.password;
-         const isRemember = this.isRemember;
-
-         this.isLoginDisabled = true;
-         this.isPasswordDisabled = true;
-         this.isSubmitDisabled = true;
-
-         this.loginToProfile({login, password, isRemember})
-            .then(result => {
-               this.isLoginDisabled = false;
-               this.isPasswordDisabled = false;
-               this.isSubmitDisabled = false;
-               if (result) {
-                  const payload: AuthorisationEventPayload = {
-                     state: AuthorisationEventState.Completed
-                  }
-                  eventBus.$emit(BusEventTypes.Authorisation, payload)
-               }
-            })
-            .catch(error => {
-               this.isLoginDisabled = false;
-               this.isPasswordDisabled = false;
-               this.isSubmitDisabled = false;
-               // TODO: add checking for input errors from server
-               console.error(error)
-               this.isLoginError = true
-               this.isPasswordError = true
-               this.error = error
-            })
-      }
-
-      clickRegister() {
-         this.$router.push({name: ROUTES.SIGNUP});
-      }
-
+   public created() {
+      this.setSignInPage();
    }
+
+   public clickSignIn() {
+      if (!this.login.length) {
+         this.isLoginError = true;
+      }
+      else {
+         this.isLoginError = false;
+      }
+
+      if (!this.password.length) {
+         this.isPasswordError = true;
+      }
+      else {
+         this.isPasswordError = false;
+      }
+
+      if (this.isLoginError || this.isPasswordError) {
+         console.log('Have some input errors');
+         // TODO: add icons for multiple types of errors input
+         return;
+      }
+
+      if (this.error) {
+         this.error = null;
+      }
+
+      const login = this.login;
+      const password = this.password;
+      const isRemember = this.isRemember;
+
+      this.isLoginDisabled = true;
+      this.isPasswordDisabled = true;
+      this.isSubmitDisabled = true;
+
+      this.loginToProfile({login, password, isRemember})
+         .then((result) => {
+            this.isLoginDisabled = false;
+            this.isPasswordDisabled = false;
+            this.isSubmitDisabled = false;
+            if (result) {
+               const payload: AuthorisationEventPayload = {
+                  state: AuthorisationEventState.Completed,
+               };
+               eventBus.$emit(BusEventTypes.Authorisation, payload);
+            }
+         })
+         .catch((error) => {
+            this.isLoginDisabled = false;
+            this.isPasswordDisabled = false;
+            this.isSubmitDisabled = false;
+            // TODO: add checking for input errors from server
+            console.error(error);
+            this.isLoginError = true;
+            this.isPasswordError = true;
+            this.error = error;
+         });
+   }
+
+   public clickRegister() {
+      this.$router.push({name: ROUTES.SIGNUP});
+   }
+
+}
 </script>
 
 <style scoped lang="scss">

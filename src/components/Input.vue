@@ -15,77 +15,77 @@
 </template>
 
 <script lang="ts">
-   import Vue from 'vue'
-   import {Component, Prop, Watch, Mixins} from 'vue-property-decorator'
-   import Focusable from "./mixins/inputs/focusable";
-   import {toStringWhenDefined} from "./utils";
+import Vue from 'vue';
+import {Component, Prop, Watch, Mixins} from 'vue-property-decorator';
+import Focusable from './mixins/inputs/focusable';
+import {toStringWhenDefined} from './utils';
 
-   interface Options {
-      tabindex?: number,
-      autofocus?: boolean,
-      disabled?: boolean
+interface Options {
+   tabindex?: number;
+   autofocus?: boolean;
+   disabled?: boolean;
+}
+
+@Component
+export default class Input extends Mixins(Focusable) {
+
+   @Prop(String)
+   public type!: string;
+
+   @Prop(String)
+   public placeholder!: string;
+
+   @Prop(String)
+   public value!: string;
+
+   public currentValue = toStringWhenDefined(this.value);
+
+   @Prop(Number)
+   public tabindex!: number;
+
+   @Prop(Boolean)
+   public autofocus!: boolean;
+
+   @Prop({
+      type: [Boolean, String],
+      default: false,
+   })
+   public error!: boolean | string;
+
+   @Prop(Boolean)
+   public disabled!: boolean;
+
+   public inputValue(event: any) {
+      const value = event.target.value;
+
+      this.currentValue = value;
+
+      this.$emit('input', value);
    }
 
-   @Component
-   export default class Input extends Mixins(Focusable) {
-
-      @Prop(String)
-      type: string;
-
-      @Prop(String)
-      placeholder: string;
-
-      @Prop(String)
-      value: string;
-
-      currentValue = toStringWhenDefined(this.value);
-
-      @Prop(Number)
-      tabindex: number;
-
-      @Prop(Boolean)
-      autofocus: boolean;
-
-      @Prop({
-         type: [Boolean, String],
-         default: false
-      })
-      error: boolean | string;
-
-      @Prop(Boolean)
-      disabled: boolean;
-
-      inputValue(event: any) {
-         const value = event.target.value;
-
-         this.currentValue = value;
-
-         this.$emit('input', value)
-      }
-
-      @Watch('value')
-      updateValue(value: string) {
-         this.currentValue = value;
-      }
-
-      get options(): Options {
-         let result = {} as Options;
-
-         if (this.tabindex) {
-            result['tabindex'] = this.tabindex;
-         }
-
-         if (this.autofocus) {
-            result['autofocus'] = true;
-         }
-
-         if (this.disabled) {
-            result['disabled'] = true;
-         }
-
-         return result;
-      }
+   @Watch('value')
+   public updateValue(value: string) {
+      this.currentValue = value;
    }
+
+   get options(): Options {
+      const result = {} as Options;
+
+      if (this.tabindex) {
+         result.tabindex = this.tabindex;
+      }
+
+      if (this.autofocus) {
+         result.autofocus = true;
+      }
+
+      if (this.disabled) {
+         result.disabled = true;
+      }
+
+      return result;
+   }
+}
 </script>
 
 <style scoped lang="scss">

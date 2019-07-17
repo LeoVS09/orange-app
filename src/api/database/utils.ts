@@ -1,84 +1,90 @@
-import {APIClient, makeClient} from "./client";
-import urls from "../urls.json";
-import deepMap from "deep-map";
-import gql from 'graphql-tag'
+import {APIClient, makeClient} from './client';
+import urls from '../urls.json';
+import deepMap from 'deep-map';
 
 // const DEBUG = process.env.NODE_ENV !== 'production'
-const DEBUG = false
+const DEBUG = false;
 
 export const client = makeClient(urls.DATABASE_SERVER);
 
 
 // TODO: complete typesation for non parametred queries
-export function generateQuery<V, T, R>(graphql: any, formatter: (result: T) => R | null, mock?: (variables: V) => Promise<R>) {
-   if (DEBUG && mock)
-      return (variables: V) => mock(variables)
+export function generateQuery<V, T, R>(query: any, formatter: (result: T) => R | null, mock?: (variables: V) => Promise<R>) {
+   if (DEBUG && mock) {
+      return (variables: V) => mock(variables);
+   }
 
-   return mapRequester(client => (variables: V) =>
+   return mapRequester((client) => (variables: V) =>
       client.query<T>({
-         query: gql(graphql),
-         variables
+         query,
+         variables,
       })
-         .then(result => result.data && formatter(result.data)))
+         .then((result) => result.data && formatter(result.data)));
 }
 
-export function generateSimpleQuery<T, R>(graphql: any, formatter: (result: T) => R | null, mock?: () => Promise<R>) {
-   if (DEBUG && mock)
-      return () => mock()
+export function generateSimpleQuery<T, R>(query: any, formatter: (result: T) => R | null, mock?: () => Promise<R>) {
+   if (DEBUG && mock) {
+      return () => mock();
+   }
 
-   return mapRequester(client => () =>
+   return mapRequester((client) => () =>
       client.query<T>({
-         query: gql(graphql)
+         query,
       })
-         .then(result => result.data && formatter(result.data))
-   )
+         .then((result) => result.data && formatter(result.data)),
+   );
 }
 
-export function generateMutation<V, T, R>(graphql: any, formatter: (result: T) => R | null, mock?: (variables: V) => Promise<R>) {
-   if (DEBUG && mock)
-      return (variables: V) => mock(variables)
+export function generateMutation<V, T, R>(mutation: any, formatter: (result: T) => R | null, mock?: (variables: V) => Promise<R>) {
+   if (DEBUG && mock) {
+      return (variables: V) => mock(variables);
+   }
 
-   return mapRequester(client => (variables: V) =>
+   return mapRequester((client) => (variables: V) =>
       client.mutate<T>({
-         mutation: gql(graphql),
-         variables
+         mutation,
+         variables,
       })
-         .then(result => result.data && formatter(result.data))
-   )
+         .then((result) => result.data && formatter(result.data)),
+   );
 }
 
 // mapRequester transform date string to date objects, but currently TypeScript don't have support
 // for so advanced templates, so just know this fact when set types of request result
 
 function mapRequester<R>(requester: (client: APIClient) => R): R  {
-   const wrapped = requester(client)
+   const wrapped = requester(client);
 
    // @ts-ignore
    return async (input: any) => {
       // @ts-ignore
-      const result = await wrapped(input)
-      if(!result)
-         return result
+      const result = await wrapped(input);
+      if (!result) {
+         return result;
+      }
 
-      return dateToStringFormatter(result)
-   }
+      return dateToStringFormatter(result);
+   };
 }
 
-const keysForMapDays: Array<string> = []
-const keyMath = /.+(Date|At)$/gm
+const keysForMapDays: string[] = [];
+const keyMath = /.+(Date|At)$/gm;
 
 // Transform to date types fields with matched names
 function dateToStringFormatter <T>(t: T): T {
    return deepMap<T>(t, (value, key) => {
-      if(typeof key === "number")
-         return value
+      if (typeof key === 'number') {
+         return value;
+      }
 
-      if(keysForMapDays.indexOf(key) === -1 && !key.match(keyMath))
-         return value
+      if (keysForMapDays.indexOf(key) === -1 && !key.match(keyMath)) {
+         return value;
+      }
 
-      if(value === null || value === undefined)
-         return value
+      if (value === null || value === undefined) {
+         return value;
+      }
 
-      return new Date(value)
-   })
+      return new Date(value);
+   });
 }

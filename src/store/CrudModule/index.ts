@@ -1,4 +1,4 @@
-import CrudState from './state'
+import CrudState from './state';
 import crudActions, {
    ReadListVariables,
    ReadListResponse,
@@ -9,12 +9,12 @@ import crudActions, {
    editAction,
    readAction,
    readListAction,
-   createAction
-} from './actions'
-import crudMutations, {ISetByIdPayload} from './mutations'
-import {Identical} from './types'
-import * as action from './actionTypes'
-import * as mutation from './mutationTypes'
+   createAction,
+} from './actions';
+import crudMutations, {ISetByIdPayload} from './mutations';
+import {Identical} from './types';
+import * as action from './actionTypes';
+import * as mutation from './mutationTypes';
 
 export {
    CrudState,
@@ -33,5 +33,5 @@ export {
    editAction,
    readListAction,
    readAction,
-   createAction
-}
+   createAction,
+};

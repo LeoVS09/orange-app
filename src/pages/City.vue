@@ -33,58 +33,58 @@
 </template>
 
 <script lang="ts">
-   import {Component, Prop, Mixins} from 'vue-property-decorator'
-   import {Getter, Action, State} from 'vuex-class'
-   import {City, Country, University} from "@/models"
-   import * as actions from '@/store/actionTypes';
-   import {PageHeader, List, ModelInfo, Section, PageHeaderAction} from '@/components';
-   import {ROUTES} from '@/router'
-   import ModelById from "@/components/mixins/ModelById";
-   import {RouterPush} from "@/components/decorators";
-   import {actionName, MODULES} from '@/store/actionTypes';
-   import {CountryModel, CityModel} from '@/models/country'
-   import Vue from 'vue'
-   import ReactiveUpdate, {reactiveUpdate} from "@/components/mixins/ReactiveUpdate";
+import {Component, Prop, Mixins} from 'vue-property-decorator';
+import {Getter, Action, State} from 'vuex-class';
+import {City, Country, University} from '@/models';
+import * as actions from '@/store/actionTypes';
+import {PageHeader, List, ModelInfo, Section, PageHeaderAction} from '@/components';
+import {ROUTES} from '@/router';
+import ModelById from '@/components/mixins/ModelById';
+import {RouterPush} from '@/components/decorators';
+import {actionName, MODULES} from '@/store/actionTypes';
+import {CountryModel, CityModel} from '@/models/country';
+import Vue from 'vue';
+import ReactiveUpdate, {reactiveUpdate} from '@/components/mixins/ReactiveUpdate';
 
-   @Component({
-      components: {
-         PageHeader,
-         List,
-         Section,
-         Action: PageHeaderAction,
-         ModelInfo
-      }
-   })
-   export default class CityView extends Mixins(ReactiveUpdate) {
+@Component({
+   components: {
+      PageHeader,
+      List,
+      Section,
+      Action: PageHeaderAction,
+      ModelInfo,
+   },
+})
+export default class CityView extends Mixins(ReactiveUpdate) {
 
-      @Prop({
-         type: String,
-         required: true
-      })
-      id: string
-
-      get model(){
-         return CityModel.findOne(this.id, reactiveUpdate(this))
-      }
-
-      get parent(){
-         return this.model && this.model.country
-      }
-
-      @Getter isTeacher: boolean;
-
-      ROUTES = ROUTES
-
-      add() {
-         // TODO
-      }
-
-      validate(){
-         // TODO
-      }
-
-      @RouterPush(ROUTES.UNIVERSITY)
-      chooseItem: (university: University) => void
-
+   get model() {
+      return CityModel.findOne(this.id, reactiveUpdate(this));
    }
+
+   get parent() {
+      return this.model && this.model.country;
+   }
+
+   @Prop({
+      type: String,
+      required: true,
+   })
+   public id!: string;
+
+   @Getter public isTeacher!: boolean;
+
+   public ROUTES = ROUTES;
+
+   @RouterPush(ROUTES.UNIVERSITY)
+   public chooseItem!: (university: University) => void;
+
+   public add() {
+      // TODO
+   }
+
+   public validate() {
+      // TODO
+   }
+
+}
 </script>

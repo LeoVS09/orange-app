@@ -30,55 +30,55 @@
 </template>
 
 <script lang="ts">
-   import Vue from 'vue'
-   import {Component} from 'vue-property-decorator'
-   import {Getter, Action, State} from 'vuex-class'
-   import {FullProblem, PartialContest, PartialProblem} from "@/models"
-   import * as actions from '@/store/actionTypes';
-   import {PageHeader, Button, List, Tags, Section, PageHeaderAction, Filters} from '@/components';
-   import {ROUTES} from '@/router'
-   import {RootState} from "@/store/state";
-   import {ProblemFilter} from "@/store/modules";
-   import {Tag} from "@/models/problems";
-   import {MODULES, actionName} from "@/store/actionTypes";
-   import {FullContest} from "@/models/contest";
-   import {RouterPush} from "@/components/decorators";
+import Vue from 'vue';
+import {Component} from 'vue-property-decorator';
+import {Getter, Action, State} from 'vuex-class';
+import {FullProblem, PartialContest, PartialProblem} from '@/models';
+import * as actions from '@/store/actionTypes';
+import {PageHeader, Button, List, Tags, Section, PageHeaderAction, Filters} from '@/components';
+import {ROUTES} from '@/router';
+import {RootState} from '@/store/state';
+import {ProblemFilter} from '@/store/modules';
+import {Tag} from '@/models/problems';
+import {MODULES, actionName} from '@/store/actionTypes';
+import {FullContest} from '@/models/contest';
+import {RouterPush} from '@/components/decorators';
 
-   @Component({
-      components: {
-         PageHeader,
-         Button,
-         Filters,
-         List,
-         Tags,
-         Section,
-         Action: PageHeaderAction
-      }
-   })
-   export default class Contests extends Vue {
+@Component({
+   components: {
+      PageHeader,
+      Button,
+      Filters,
+      List,
+      Tags,
+      Section,
+      Action: PageHeaderAction,
+   },
+})
+export default class Contests extends Vue {
 
-      @Getter('contests') items: Array<PartialContest | FullContest>;
-      @Getter isTeacher: boolean;
-      @Getter allTags: Array<Tag>;
+   @Getter('contests') public items!: Array<PartialContest | FullContest>;
+   @Getter public isTeacher!: boolean;
+   @Getter public allTags!: Tag[];
 
-      @Action(actionName(MODULES.CONTESTS, actions.READ_LIST))
-      loadItems: () => void
+   @Action(actionName(MODULES.CONTESTS, actions.READ_LIST))
+   public loadItems!: () => void;
 
-      ProblemFilter = ProblemFilter
+   public ProblemFilter = ProblemFilter;
 
-      formatItem(item: PartialContest) {
-         return {
-            ...item,
-            date: item.updatedAt ? item.updatedAt : item.createdAt,
-            author: item.creator.login
-         }
-      }
+   @RouterPush(ROUTES.CREATE_CONTEST)
+   public add!: () => void;
 
-      @RouterPush(ROUTES.CREATE_CONTEST)
-      add: () => void
+   @RouterPush(ROUTES.CONTEST)
+   public chooseItem!: (item: PartialContest) => void;
 
-      @RouterPush(ROUTES.CONTEST)
-      chooseItem: (item: PartialContest) => void
-
+   public formatItem(item: PartialContest) {
+      return {
+         ...item,
+         date: item.updatedAt ? item.updatedAt : item.createdAt,
+         author: item.creator.login,
+      };
    }
+
+}
 </script>

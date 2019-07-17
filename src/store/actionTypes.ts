@@ -1,14 +1,14 @@
 // UI
-export * from './modules/ui/actionTypes'
+export * from './modules/ui/actionTypes';
 
 // PROFILE
-export * from './modules/profile/actionTypes'
+export * from './modules/profile/actionTypes';
 
 // PROBLEMS
-export * from './modules/problems/actionTypes'
+export * from './modules/problems/actionTypes';
 
 // COUNTRIES, CITIES, PROBLEMS, TAGS, UNIVERSITIES, CONTESTS, TAGS
-export * from './CrudModule/actionTypes'
+export * from './CrudModule/actionTypes';
 
 export enum MODULES {
    COUNTRIES = 'countries',
@@ -16,7 +16,7 @@ export enum MODULES {
    PROBLEMS = 'problems',
    CONTESTS = 'contests',
    TAGS = 'tags',
-   UNIVERSITIES = 'universities'
+   UNIVERSITIES = 'universities',
 }
 
-export const actionName = (module: MODULES, action: string) => `${module}/${action}`
+export const actionName = (module: MODULES, action: string) => `${module}/${action}`;

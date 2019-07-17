@@ -43,130 +43,135 @@
 </template>
 
 <script lang="ts">
-   import Vue from 'vue'
-   import {Component, Watch} from 'vue-property-decorator'
-   import {Action} from 'vuex-class'
-   import {Logo, Input, Button, Checkbox, MaterialIcon} from '../components'
-   import * as actions from '../store/actionTypes';
-   import {ROUTES} from "@/router";
-   import {IRegisterProfilePayload} from "@/store/modules/profile/types";
-   import eventBus, {AuthorisationEventPayload, AuthorisationEventState, BusEventTypes} from "@/pages/eventBus";
+import Vue from 'vue';
+import {Component, Watch} from 'vue-property-decorator';
+import {Action} from 'vuex-class';
+import {Logo, Input, Button, Checkbox, MaterialIcon} from '../components';
+import * as actions from '../store/actionTypes';
+import {ROUTES} from '@/router';
+import {IRegisterProfilePayload} from '@/store/modules/profile/types';
+import eventBus, {AuthorisationEventPayload, AuthorisationEventState, BusEventTypes} from '@/pages/eventBus';
 
-   @Component({
-      components: {
-         Logo,
-         Input,
-         Button,
-         Checkbox,
-         Icon: MaterialIcon
-      }
-   })
-   export default class SignUp extends Vue {
+@Component({
+   components: {
+      Logo,
+      Input,
+      Button,
+      Checkbox,
+      Icon: MaterialIcon,
+   },
+})
+export default class SignUp extends Vue {
 
-      @Action(actions.SET_SIGN_UP_PAGE) setSignUpPage: () => void
-      @Action(actions.REGISTER_PROFILE) registerProfile: (payload: IRegisterProfilePayload) => Promise<boolean>
+   @Action(actions.SET_SIGN_UP_PAGE) public setSignUpPage!: () => void;
+   @Action(actions.REGISTER_PROFILE) public registerProfile!: (payload: IRegisterProfilePayload) => Promise<boolean>;
 
-      email = "";
-      isEmailError: boolean | string = false;
+   public email = '';
+   public isEmailError: boolean | string = false;
 
-      username = "";
-      isUsernameError: boolean | string = false;
+   public username = '';
+   public isUsernameError: boolean | string = false;
 
-      password = "";
-      isPasswordError: boolean | string = false;
+   public password = '';
+   public isPasswordError: boolean | string = false;
 
-      confirmPassword = "";
-      isConfirmPasswordError: boolean | string = false;
+   public confirmPassword = '';
+   public isConfirmPasswordError: boolean | string = false;
 
-      firstName = "";
-      isFirstNameError: boolean | string = false;
+   public firstName = '';
+   public isFirstNameError: boolean | string = false;
 
-      lastName = "";
-      isLastNameError: boolean | string = false;
+   public lastName = '';
+   public isLastNameError: boolean | string = false;
 
-      isDisabled = false;
+   public isDisabled = false;
 
-      get login() {
-         const isLoginHaveOnlyAllowedSymbols = (login: string) => !!login.match(/^[a-zA-Z]([a-zA-Z0-9][_]?)+$/)
+   get login() {
+      const isLoginHaveOnlyAllowedSymbols = (login: string) => !!login.match(/^[a-zA-Z]([a-zA-Z0-9][_]?)+$/);
 
-         const extractLogin = () => {
-            if (this.username)
-               return this.username
-
-            return this.email.split('@')[0]
+      const extractLogin = () => {
+         if (this.username) {
+            return this.username;
          }
 
-         const login = extractLogin()
-         if (login.length < 2)
-            return login
+         return this.email.split('@')[0];
+      };
 
-         if (!isLoginHaveOnlyAllowedSymbols(login))
-            this.isUsernameError = 'Login should contain only letters, digits and "_"'
-         else
-            this.isUsernameError = false
-
-         return login
+      const login = extractLogin();
+      if (login.length < 2) {
+         return login;
       }
 
-      created() {
-         this.setSignUpPage();
+      if (!isLoginHaveOnlyAllowedSymbols(login)) {
+         this.isUsernameError = 'Login should contain only letters, digits and "_"';
+      }
+      else {
+         this.isUsernameError = false;
       }
 
-      clickLogin() {
-         this.$router.push({name: ROUTES.SIGNIN});
-      }
-
-      clickRegister() {
-         if (
-            this.isEmailError ||
-            this.isUsernameError ||
-            this.isPasswordError ||
-            this.isConfirmPasswordError ||
-            this.isFirstNameError ||
-            this.isLastNameError ||
-            this.isDisabled
-         )
-            return console.error('Have input error, or disabled')
-
-         this.isDisabled = true;
-
-         this.registerProfile({
-            firstName: this.firstName,
-            lastName: this.lastName,
-            password: this.password,
-            email: this.email,
-            username: this.login
-         }).then(result => {
-            this.isDisabled = false;
-            if (result) {
-               const payload: AuthorisationEventPayload = {
-                  state: AuthorisationEventState.Completed
-               }
-               eventBus.$emit(BusEventTypes.Authorisation, payload)
-            }
-         }).catch(error => {
-            this.isDisabled = false;
-            console.error(error)
-         });
-      }
-
-      @Watch('confirmPassword')
-      checkPassword(value: string, oldValue: string) {
-
-         if (!value.length) {
-            this.isConfirmPasswordError = false;
-            return
-         }
-
-         if (value !== this.password) {
-            this.isConfirmPasswordError = "Passwords don't match";
-            return
-         }
-
-         this.isConfirmPasswordError = false;
-      }
-
+      return login;
    }
+
+   public created() {
+      this.setSignUpPage();
+   }
+
+   public clickLogin() {
+      this.$router.push({name: ROUTES.SIGNIN});
+   }
+
+   public clickRegister() {
+      if (
+         this.isEmailError ||
+         this.isUsernameError ||
+         this.isPasswordError ||
+         this.isConfirmPasswordError ||
+         this.isFirstNameError ||
+         this.isLastNameError ||
+         this.isDisabled
+      ) {
+         return console.error('Have input error, or disabled');
+      }
+
+      this.isDisabled = true;
+
+      this.registerProfile({
+         firstName: this.firstName,
+         lastName: this.lastName,
+         password: this.password,
+         email: this.email,
+         username: this.login,
+      }).then((result) => {
+         this.isDisabled = false;
+         if (result) {
+            const payload: AuthorisationEventPayload = {
+               state: AuthorisationEventState.Completed,
+            };
+            eventBus.$emit(BusEventTypes.Authorisation, payload);
+         }
+      }).catch((error) => {
+         this.isDisabled = false;
+         console.error(error);
+      });
+   }
+
+   @Watch('confirmPassword')
+   public checkPassword(value: string, oldValue: string) {
+
+      if (!value.length) {
+         this.isConfirmPasswordError = false;
+         return;
+      }
+
+      if (value !== this.password) {
+         this.isConfirmPasswordError = 'Passwords don\'t match';
+         return;
+      }
+
+      this.isConfirmPasswordError = false;
+   }
+
+}
 </script>
 
 <style scoped lang="scss">

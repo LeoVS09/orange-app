@@ -68,119 +68,125 @@
 </template>
 
 <script lang="ts">
-   import Vue from 'vue'
-   import {Component, Prop, Emit} from 'vue-property-decorator'
-   import ColorLine from '@/components/ColorLine.vue'
-   import {formatDate} from "./utils";
-   import {ColorLineType, IPropsBreadcrumb} from '@/components/types'
-   import DataView from './DataView.vue'
+import Vue from 'vue';
+import {Component, Prop, Emit} from 'vue-property-decorator';
+import ColorLine from '@/components/ColorLine.vue';
+import {formatDate} from './utils';
+import {ColorLineType, IPropsBreadcrumb} from '@/components/types';
+import DataView from './DataView.vue';
 
-   export interface IVisibleBreadcrumbs {
-      name: string
-      link?: object
-   }
+export interface IVisibleBreadcrumbs {
+   name: string;
+   link?: object;
+}
 
-   @Component({
-      components:{
-         ColorLine,
-         DataView
-      }
+@Component({
+   components: {
+      ColorLine,
+      DataView,
+   },
+})
+export default class PageHeader extends Vue {
+   @Prop({
+      type: Boolean,
+      default: true,
    })
-   export default class PageHeader extends Vue {
-      @Prop({
-         type: Boolean,
-         default: true
-      })
-      highlight?: boolean
+   public highlight?: boolean;
 
-      @Prop({
-         type: Boolean,
-         default: false
-      })
-      editable?: boolean
+   @Prop({
+      type: Boolean,
+      default: false,
+   })
+   public editable?: boolean;
 
-      @Prop({
-         type: String,
-         default: ''
-      })
-      value?: string
+   @Prop({
+      type: String,
+      default: '',
+   })
+   public value?: string;
 
-      @Prop({
-         type: [String, Boolean]
-      })
-      colorLine?: ColorLineType
+   @Prop({
+      type: [String, Boolean],
+   })
+   public colorLine?: ColorLineType;
 
-      @Prop({
-         type: Boolean,
-         default: false
-      })
-      textWidth?: boolean
+   @Prop({
+      type: Boolean,
+      default: false,
+   })
+   public textWidth?: boolean;
 
-      @Prop({
-         type: String
-      })
-      placeholder?: string
+   @Prop({
+      type: String,
+   })
+   public placeholder?: string;
 
-      @Prop({
-         type: Array
-      })
-      breadcrumbs?: Array<string | IPropsBreadcrumb>
+   @Prop({
+      type: Array,
+   })
+   public breadcrumbs?: Array<string | IPropsBreadcrumb>;
 
-      @Prop(Date)
-      created?: Date
+   @Prop(Date)
+   public created?: Date;
 
-      @Prop(Date)
-      modified?: Date
+   @Prop(Date)
+   public modified?: Date;
 
-      @Prop(Boolean)
-      isLoading?: boolean
+   @Prop(Boolean)
+   public isLoading?: boolean;
 
-      ColorLineType = ColorLineType
+   public ColorLineType = ColorLineType;
 
-      get visibleBreadcrumbs(): Array<IVisibleBreadcrumbs> {
-         if(!this.breadcrumbs)
-            return []
+   get visibleBreadcrumbs(): IVisibleBreadcrumbs[] {
+      if (!this.breadcrumbs) {
+         return [];
+      }
 
-         return this.breadcrumbs.map(b => {
-            if(typeof b === 'string')
-               return {
-                  name: b
-               }
-
-            const name = Object.keys(b)[0]
-            let link = b[name]
-            if(typeof link === 'string')
-               link = {path: link}
+      return this.breadcrumbs.map((b) => {
+         if (typeof b === 'string') {
             return {
-               name,
-               link
-            }
-         })
-      }
+               name: b,
+            };
+         }
 
-      @Emit('input')
-      updateValue(event: any) {
-         return event.target.value
-      }
-
-      get dataValues(){
-         if(!this.created && !this.modified)
-            return
-
-         const created = this.created && formatDate(this.created)
-         const modified = this.modified && formatDate(this.modified)
-
-         let result: {[key: string]: string} = {}
-
-         if(modified)
-            result['Modified'] = modified
-
-         if(created)
-            result['Created'] = created
-
-         return result
-      }
+         const name = Object.keys(b)[0];
+         let link = b[name];
+         if (typeof link === 'string') {
+            link = {path: link};
+         }
+         return {
+            name,
+            link,
+         };
+      });
    }
+
+   @Emit('input')
+   public updateValue(event: any) {
+      return event.target.value;
+   }
+
+   get dataValues() {
+      if (!this.created && !this.modified) {
+         return;
+      }
+
+      const created = this.created && formatDate(this.created);
+      const modified = this.modified && formatDate(this.modified);
+
+      const result: {[key: string]: string} = {};
+
+      if (modified) {
+         result.Modified = modified;
+      }
+
+      if (created) {
+         result.Created = created;
+      }
+
+      return result;
+   }
+}
 </script>
 
 <style scoped lang="scss">
@@ -189,20 +195,20 @@
 
    .header-loading {
       height: 1.5rem;
-      width: 10rem;
+      width: 20rem;
       padding: 0 2rem;
       overflow: hidden;
       margin-top: 1rem;
 
       .skeleton-loading {
-         width: 20rem;
+         width: 40rem;
          height: 3rem;
-         margin-left: 0;
+         margin-left: 3rem;
          margin-right: auto;
          margin-top: -0.5rem;
 
-         @include skeleton(10rem, 3rem, (
-               (0, 0.5rem, 12rem, 1.5rem),
+         @include skeleton(20rem, 3rem, (
+               (0, 0.5rem, 22rem, 1.5rem),
          ),
             rgba(236, 236, 236, 0.73),
             #FD911F

@@ -1,12 +1,12 @@
-import {merge, Observable, Subject} from 'rxjs'
+import {merge, Observable, Subject} from 'rxjs';
 import {debounceTime, filter, map, sample, share, skipWhile, takeWhile, tap, throttleTime} from 'rxjs/operators';
 import {
    ModelEvent,
    ModelEventGetPropertyPayload,
    ModelEventReadPayload,
    ModelEventSetPropertyPayload,
-   ModelEventType
-} from "./events";
+   ModelEventType,
+} from './events';
 import {
    AbstractData,
    ChangeCallback,
@@ -15,375 +15,387 @@ import {
    IPredefinedSchema,
    ModelAttributeType,
    ModelObserverReference,
-   ModelSchema
-} from "./types";
-import {actions as baseActions, IActionsInterface} from "./actions";
-import {makeTrapBySchemas, wrapData} from "@/lazyReactiveORM/wrapData";
-import {extractEntityFromManyKey} from "@/lazyReactiveORM/utils";
+   ModelSchema,
+} from './types';
+import {actions as baseActions, IActionsInterface} from './actions';
+import {makeTrapBySchemas, wrapData} from '@/lazyReactiveORM/wrapData';
+import {extractEntityFromManyKey} from '@/lazyReactiveORM/utils';
 
-const UPDATE_TIME = 1000
-const READ_TIME = 10
-const REDUSE_SET_TIME = 500
+const UPDATE_TIME = 1000;
+const READ_TIME = 10;
+const REDUSE_SET_TIME = 500;
 
 export interface IModelObserverOptions {
-   id?: string
-   changed?: ChangeCallback
-   predefinedSchema?: IPredefinedSchema
-   actions?: IActionsInterface
-   data?: AbstractData
-   db?: ILazyReactiveDatabase
-   excludeProperties?: Array<string>
+   id?: string;
+   changed?: ChangeCallback;
+   predefinedSchema?: IPredefinedSchema;
+   actions?: IActionsInterface;
+   data?: AbstractData;
+   db?: ILazyReactiveDatabase;
+   excludeProperties?: string[];
 }
 
 export class ModelObserver implements IModelObserver {
 
-   entity: string
-   id: string | undefined
-   predefinedSchema?: IPredefinedSchema
-   excludeProperties: Array<string>
+   get isReading(): boolean {
+      return this.memory.some((event) => event.type === ModelEventType.Read);
+   }
 
-   private eventStream = new Subject<ModelEvent>()
-   public events: Observable<ModelEvent>
-   memory: Array<ModelEvent> = []
-   data: AbstractData
-   wrapped: AbstractData
-   schema: ModelSchema = {}
-   changed: ChangeCallback
-   actions: IActionsInterface
-   db?: ILazyReactiveDatabase
+   get isChanged() {
+      return this.memory.some((event) => event.type === ModelEventType.SetProperty);
+   }
+
+   get isUpdating() {
+      return this.memory.some((event) => event.type === ModelEventType.Update);
+   }
+
+   get isNew() {
+      return this.memory.some((event) => event.type === ModelEventType.New);
+   }
+
+   get isCreate() {
+      return this.memory.some((event) => event.type === ModelEventType.Create);
+   }
+
+   get isRemoved() {
+      return this.memory.some((event) => event.type === ModelEventType.DeleteSuccess);
+   }
+
+   public entity: string;
+   public id: string | undefined;
+   public predefinedSchema?: IPredefinedSchema;
+   public excludeProperties: string[];
+   public events: Observable<ModelEvent>;
+   public memory: ModelEvent[] = [];
+   public data: AbstractData;
+   public wrapped: AbstractData;
+   public schema: ModelSchema = {};
+   public changed: ChangeCallback;
+   public actions: IActionsInterface;
+   public db?: ILazyReactiveDatabase;
+
+   private eventStream = new Subject<ModelEvent>();
 
    constructor(entity: string, {id, changed = () => {}, predefinedSchema, actions, data = {}, db, excludeProperties = []}: IModelObserverOptions) {
-      this.entity = entity
-      this.id = id
-      this.changed = changed
-      this.predefinedSchema = predefinedSchema
-      this.db = db
-      this.excludeProperties = excludeProperties
+      this.entity = entity;
+      this.id = id;
+      this.changed = changed;
+      this.predefinedSchema = predefinedSchema;
+      this.db = db;
+      this.excludeProperties = excludeProperties;
 
       this.actions = {
          ...baseActions,
-         ...actions
-      }
+         ...actions,
+      };
 
       this.data = {
          ...data,
-         [ModelObserverReference]: this
+         [ModelObserverReference]: this,
+      };
+      this.wrapped = wrapData(this);
+
+      if (this.id) {
+         this.data.id = this.id;
       }
-      this.wrapped = wrapData(this)
 
-      if(this.id)
-         this.data.id = this.id
-
-      Object.keys(this.data).forEach(key =>
-         this.schema[key] = ModelAttributeType.Simple
-      )
+      Object.keys(this.data).forEach((key) =>
+         this.schema[key] = ModelAttributeType.Simple,
+      );
 
       // TODO: refactor this shi...
-      if(this.predefinedSchema)
-         Object.keys(this.predefinedSchema).forEach(key => {
-            const type = this.predefinedSchema![key]
+      if (this.predefinedSchema) {
+         Object.keys(this.predefinedSchema).forEach((key) => {
+            const type = this.predefinedSchema![key];
 
-            if(type === ModelAttributeType.Simple) {
-               this.schema[key] = type
+            if (type === ModelAttributeType.Simple) {
+               this.schema[key] = type;
                return;
             }
 
             this.schema[key] = {
                type,
-               fields: {}
-            }
+               fields: {},
+            };
 
-            let schema = {}
+            let schema = {};
 
-            if(this.db) {
-               let fieldEntity = key
-               if(type === ModelAttributeType.OneToMany){
-                  fieldEntity = extractEntityFromManyKey(key)
+            if (this.db) {
+               let fieldEntity = key;
+               if (type === ModelAttributeType.OneToMany) {
+                  fieldEntity = extractEntityFromManyKey(key);
                }
 
-               schema = this.db.schemas[fieldEntity] || {}
+               schema = this.db.schemas[fieldEntity] || {};
             }
 
-            const [trap, stream] = makeTrapBySchemas(schema)
+            const [trap, stream] = makeTrapBySchemas(schema);
 
             stream
                .pipe(
                   filter((event: ModelEvent) => event.type === ModelEventType.GetProperty),
-                  map((event: ModelEvent) => ({name: key, inner: event.payload, type}) as ModelEventGetPropertyPayload)
+                  map((event: ModelEvent) => ({name: key, inner: event.payload, type}) as ModelEventGetPropertyPayload),
                )
                .subscribe((payload: ModelEventGetPropertyPayload) =>
-                  this.dispatch(ModelEventType.GetProperty, payload)
-               )
+                  this.dispatch(ModelEventType.GetProperty, payload),
+               );
 
-            if(type === ModelAttributeType.OneToMany){
+            if (type === ModelAttributeType.OneToMany) {
                this.data[key] = {
-                  nodes: [trap]
-               }
-               return
+                  nodes: [trap],
+               };
+               return;
             }
 
-            if(type === ModelAttributeType.OneToOne) {
-               this.data[key] = trap
-               return
+            if (type === ModelAttributeType.OneToOne) {
+               this.data[key] = trap;
+               return;
             }
-         })
+         });
+      }
 
       this.events = this.eventStream
          .pipe(
-            tap(event => this.memory.push(event)),
-            share()
-         )
+            tap((event) => this.memory.push(event)),
+            share(),
+         );
 
       /*
       * Take all get events, when pause spawn read event
       * If when reading was gte events, after read success spawn another read event
       * */
       takeWhileThenContinue(
-         this.events.pipe(filter(event => event.type === ModelEventType.GetProperty)),
+         this.events.pipe(filter((event) => event.type === ModelEventType.GetProperty)),
          () => !!this.id && !this.isReading, // TODO: not use id this way
-         this.events.pipe(filter(event => event.type === ModelEventType.ReadSuccess))
+         this.events.pipe(filter((event) => event.type === ModelEventType.ReadSuccess)),
       )
          .pipe(
             debounceTime(READ_TIME),
             map(() => this.filterEvents(ModelEventType.GetProperty)),
-            filter(gets => !!gets.length)
+            filter((gets) => !!gets.length),
          )
-         .subscribe(gets => this.dispatch(ModelEventType.Read, {id: this.id, gets} as ModelEventReadPayload))
+         .subscribe((gets) => this.dispatch(ModelEventType.Read, {id: this.id, gets} as ModelEventReadPayload));
 
       const setEvents = this.events.pipe(
-         filter(event => event.type === ModelEventType.SetProperty),
-         share()
-      )
+         filter((event) => event.type === ModelEventType.SetProperty),
+         share(),
+      );
 
       setEvents
          .pipe(throttleTime(REDUSE_SET_TIME))
-         .subscribe(() => this.reduceSetEvents())
+         .subscribe(() => this.reduceSetEvents());
 
       // TODO: refactor
       takeWhileThenContinue(
          setEvents,
          () => !this.isUpdating,
-         this.events.pipe(filter(event => event.type === ModelEventType.UpdateSuccess))
+         this.events.pipe(filter((event) => event.type === ModelEventType.UpdateSuccess)),
       )
          .pipe(
             debounceTime(UPDATE_TIME),
-            map(() => this.excludeEvents(ModelEventType.SetProperty))
+            map(() => this.excludeEvents(ModelEventType.SetProperty)),
          )
-         .subscribe(events => this.dispatch(ModelEventType.Update, events))
+         .subscribe((events) => this.dispatch(ModelEventType.Update, events));
 
-      this.events.subscribe(event => this.handleEvent(event))
+      this.events.subscribe((event) => this.handleEvent(event));
 
 
-      console.log('Model observer created', this.schema, this.data)
+      console.log('Model observer created', this.schema, this.data);
    }
 
-   public updateData(data: AbstractData){
+   public updateData(data: AbstractData) {
       this.data = {
          ...this.data,
-         ...data
-      }
+         ...data,
+      };
 
       // TODO: need logic process memory
    }
 
-   handleEvent(event: ModelEvent){
+   public handleEvent(event: ModelEvent) {
 
-      const handler = this.actions[event.type]
+      const handler = this.actions[event.type];
 
-      console.log('event', event, 'handler', !!handler, 'memory', this.memory)
+      console.log('event', event, 'handler', !!handler, 'memory', this.memory);
 
-      if(!handler)
-         return
+      if (!handler) {
+         return;
+      }
 
-      if(event.type === ModelEventType.Read){
+      if (event.type === ModelEventType.Read) {
          handler(this, event.payload)
             .then((data: any) => {
-               this.removeEvent(event)
-               this.dispatch(ModelEventType.ReadSuccess, data)
+               this.removeEvent(event);
+               this.dispatch(ModelEventType.ReadSuccess, data);
                event.payload.gets.forEach((event: ModelEvent) =>
-                  this.removeEvent(event)
-               )
+                  this.removeEvent(event),
+               );
             })
             .catch((error: any) => {
-               this.removeEvent(event)
-               this.dispatch(ModelEventType.ErrorReading, error)
-            })
+               this.removeEvent(event);
+               this.dispatch(ModelEventType.ErrorReading, error);
+            });
          return;
       }
 
-      if(event.type === ModelEventType.GetProperty) {
-         const remember = handler(this, event.payload)
-         if(!remember)
-            this.removeEvent(event)
+      if (event.type === ModelEventType.GetProperty) {
+         const remember = handler(this, event.payload);
+         if (!remember) {
+            this.removeEvent(event);
+         }
 
          return;
       }
 
-      handler(this, event.payload)
+      handler(this, event.payload);
 
-      const changeEvents = [ModelEventType.ReadSuccess]
-      if(this.changed && changeEvents.some(type => type === event.type)){
-         this.changed()
-         console.log('changed!')
+      const changeEvents = [ModelEventType.ReadSuccess];
+      if (this.changed && changeEvents.some((type) => type === event.type)) {
+         this.changed();
+         console.log('changed!');
       }
    }
 
-   has(name: string){
-      return !!this.schema[name]
+   public has(name: string) {
+      return !!this.schema[name];
    }
 
-   get(name: string): any {
-      if(!this.has(name)) {
+   public get(name: string): any {
+      if (!this.has(name)) {
 
-         const inMemory = this.memory.find(event =>
+         const inMemory = this.memory.find((event) =>
             event.type === ModelEventType.GetProperty &&
-            event.payload.name === name
-         )
-         if(inMemory)
-            return null
+            event.payload.name === name,
+         );
+         if (inMemory) {
+            return null;
+         }
 
-         const payload: ModelEventGetPropertyPayload = {name, type: ModelAttributeType.Simple}
-         this.dispatch(ModelEventType.GetProperty, payload)
+         const payload: ModelEventGetPropertyPayload = {name, type: ModelAttributeType.Simple};
+         this.dispatch(ModelEventType.GetProperty, payload);
 
-         return null
+         return null;
       }
 
-      return this.data[name]
+      return this.data[name];
    }
 
-   set(name: string, value: any): boolean {
-      if(!this.has(name))
-         this.schema[name] = ModelAttributeType.Simple
+   public set(name: string, value: any): boolean {
+      if (!this.has(name)) {
+         this.schema[name] = ModelAttributeType.Simple;
+      }
 
       const payload: ModelEventSetPropertyPayload = {
          name,
          oldValue: this.data[name],
-         newValue: value
-      }
-      this.dispatch(ModelEventType.SetProperty, payload)
+         newValue: value,
+      };
+      this.dispatch(ModelEventType.SetProperty, payload);
 
-      return true
+      return true;
    }
 
-   dispatch(type: string, payload: any = null) {
-      this.eventStream.next({type, payload, date: Date.now()})
+   public dispatch(type: string, payload: any = null) {
+      this.eventStream.next({type, payload, date: Date.now()});
    }
 
-   get isReading(): boolean {
-      return this.memory.some(event => event.type === ModelEventType.Read)
+   public reduceSetEvents() {
+      const setEvents = this.excludeEvents(ModelEventType.SetProperty) as Array<ModelEvent<ModelEventSetPropertyPayload>>;
+
+      const result: Array<ModelEvent<ModelEventSetPropertyPayload>> = [];
+      setEvents.sort((a, b) => a.date - b.date).forEach((event) => {
+         const setEvent = result.find((e) => e.payload.name === event.payload.name);
+         if (!setEvent) {
+            return result.push(event);
+         }
+
+         setEvent.payload.newValue = event.payload.newValue;
+         setEvent.date = event.date;
+         return;
+      });
+
+      this.memory = [...this.memory, ...result];
+      return setEvents;
    }
 
-   get isChanged(){
-      return this.memory.some(event => event.type === ModelEventType.SetProperty)
+   public excludeEvents(type: ModelEventType) {
+      const [searching, other] = splitArray(this.memory, (event) => event.type === type);
+
+      this.memory = other;
+      return searching;
    }
 
-   get isUpdating(){
-      return this.memory.some(event => event.type === ModelEventType.Update)
+   public filterEvents(type: ModelEventType) {
+      return this.memory.filter((event) => event.type === type);
    }
 
-   get isNew(){
-      return this.memory.some(event => event.type === ModelEventType.New)
-   }
+   public removeEvent(searchingEvent: ModelEvent) {
+      const [searching, other] = splitArray(this.memory, (event) => event === searchingEvent);
 
-   get isCreate(){
-      return this.memory.some(event => event.type === ModelEventType.Create)
-   }
-
-   get isRemoved(){
-      return this.memory.some(event => event.type === ModelEventType.DeleteSuccess)
-   }
-
-   reduceSetEvents(){
-      const setEvents = this.excludeEvents(ModelEventType.SetProperty) as Array<ModelEvent<ModelEventSetPropertyPayload>>
-
-      const result: Array<ModelEvent<ModelEventSetPropertyPayload>> = []
-      setEvents.sort((a, b) => a.date - b.date).forEach(event => {
-         const setEvent = result.find(e => e.payload.name === event.payload.name)
-         if(!setEvent)
-            return result.push(event)
-
-         setEvent.payload.newValue = event.payload.newValue
-         setEvent.date = event.date
-         return
-      })
-
-      this.memory = [...this.memory, ...result]
-      return setEvents
-   }
-
-   excludeEvents(type: ModelEventType){
-      const [searching, other] = splitArray(this.memory, event => event.type === type)
-
-      this.memory = other
-      return searching
-   }
-
-   filterEvents(type: ModelEventType) {
-      return this.memory.filter(event => event.type === type)
-   }
-
-   removeEvent(searchingEvent: ModelEvent){
-      const [searching, other] = splitArray(this.memory, event => event === searchingEvent)
-
-      this.memory = other
-      return !!searching.length
+      this.memory = other;
+      return !!searching.length;
    }
 
 }
 
-function splitArray<T>(arr: Array<T>, predicate: (v: T) => boolean) {
-   const searching = new Array<T>()
-   const other = new Array<T>()
+function splitArray<T>(arr: T[], predicate: (v: T) => boolean) {
+   const searching = new Array<T>();
+   const other = new Array<T>();
 
-   arr.forEach(val => {
-      if(predicate(val))
-         return searching.push(val)
+   arr.forEach((val) => {
+      if (predicate(val)) {
+         return searching.push(val);
+      }
 
-      return other.push(val)
-   })
+      return other.push(val);
+   });
 
-   return [searching, other]
+   return [searching, other];
 }
 
 // TODO: turn into operator
 function takeWhileThenContinue<T>(stream: Observable<T>, predicate: (v: T) => boolean, sampler: Observable<any>) {
-   const whileTrue = stream.pipe(takeWhile(predicate))
+   const whileTrue = stream.pipe(takeWhile(predicate));
    const lastWhenFalse = stream.pipe(
       skipWhile(predicate),
-      sample(sampler)
-   )
+      sample(sampler),
+   );
 
    return merge(
       whileTrue,
-      lastWhenFalse
-   )
+      lastWhenFalse,
+   );
 }
 
 function getObserver(data: any): ModelObserver | undefined {
-   if(typeof data !== 'object')
-      return
+   if (typeof data !== 'object') {
+      return;
+   }
 
-   return data[ModelObserverReference as unknown as string] as ModelObserver
+   return data[ModelObserverReference as unknown as string] as ModelObserver;
 }
 
 export function isReading(data: AbstractData, property?: string) {
-   const observer = getObserver(data)
-   console.log('is reading observer', observer)
-   if(!observer)
-      return false
-
-   if(!property)
-      return observer.isReading
-
-   const {memory, schema} = observer
-
-   if(memory.some(event => event.type === ModelEventType.GetProperty && event.payload.name === property))
-      return true
-
-   if(!schema[property]) {
-      observer.get(property)
-      return true
+   const observer = getObserver(data);
+   console.log('is reading observer', observer);
+   if (!observer) {
+      return false;
    }
 
-   return false
+   if (!property) {
+      return observer.isReading;
+   }
+
+   const {memory, schema} = observer;
+
+   if (memory.some((event) => event.type === ModelEventType.GetProperty && event.payload.name === property)) {
+      return true;
+   }
+
+   if (!schema[property]) {
+      observer.get(property);
+      return true;
+   }
+
+   return false;
 }

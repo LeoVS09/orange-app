@@ -1,6 +1,6 @@
-export * from './database'
+export * from './database';
 
 export {
-   runProgram
-} from './judge'
+   runProgram,
+} from './judge';
 

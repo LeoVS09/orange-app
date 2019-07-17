@@ -1,100 +1,100 @@
-import {PartialUserProfile, UserType} from "./user";
-import {Test} from "@/models/tests";
-import {ModelReadState, ModelStatus} from "@/store/modules/statuses/types";
-import {defaultPartialProfile, mockInput, mockOutput, mockTag} from "@/models/mock/mock";
+import {PartialUserProfile, UserType} from './user';
+import {Test} from '@/models/tests';
+import {ModelReadState, ModelStatus} from '@/store/modules/statuses/types';
+import {defaultPartialProfile, mockInput, mockOutput, mockTag} from '@/models/mock/mock';
 
 export {
    defaultPartialProfile,
    mockTag,
    mockOutput,
    mockInput,
-   mockTags
-} from './mock/mock'
+   mockTags,
+} from './mock/mock';
 
 export enum ProblemTestingStatus {
    NotTested = 'NotTested',
    Testing = 'Testing',
    AlmostSolved = 'AlmostSolved',
    Solved = 'Solved',
-   Error = 'Error'
+   Error = 'Error',
 }
 
 export interface PartialProblem {
-   id: string
-   name: string
+   id: string;
+   name: string;
 
-   createdAt: Date
-   updatedAt: Date
-   publicationDate: Date
+   createdAt: Date;
+   updatedAt: Date;
+   publicationDate: Date;
 
-   difficulty: number
+   difficulty: number;
 
-   author: PartialUserProfile
-   tester: PartialUserProfile | null
+   author: PartialUserProfile;
+   tester: PartialUserProfile | null;
 
-   testingStatus: ProblemTestingStatus
-   tags: Array<Tag>
+   testingStatus: ProblemTestingStatus;
+   tags: Tag[];
 }
 
 export interface FullProblem extends PartialProblem {
-   description: string
-   note: string | null
+   description: string;
+   note: string | null;
 
    limits: {
       time: number // ms
-      memory: number // byte
-   }
+      memory: number, // byte
+   };
 
    io: {
       input: PartialProgramInput
-      output: PartialProgramOutput
-   }
+      output: PartialProgramOutput,
+   };
 
-   resultRun?: ResultRunProgram
-   tests: Array<Test>
+   resultRun?: ResultRunProgram;
+   tests: Test[];
 }
 
 
 export interface Tag {
-   id: string
-   name: string
-   createdAt: Date
-   updatedAt: Date
+   id: string;
+   name: string;
+   createdAt: Date;
+   updatedAt: Date;
 
-   problemsTags?: Array<ProblemTag>
+   problemsTags?: ProblemTag[];
 }
 
 export interface ProblemTag {
-   nodeId: string
-   createdAt: Date
-   updatedAt: Date
+   nodeId: string;
+   createdAt: Date;
+   updatedAt: Date;
 
-   problem: PartialProblem
+   problem: PartialProblem;
 }
 
 // TODO: refactor to solution
 export interface ResultRunProgram {
-   problemId: string
-   isAllTestsSuccessful: boolean
-   failedTest: number
-   isCompilationSuccessful: boolean
-   isUnexpectedError: boolean
-   status: number
+   problemId: string;
+   isAllTestsSuccessful: boolean;
+   failedTest: number;
+   isCompilationSuccessful: boolean;
+   isUnexpectedError: boolean;
+   status: number;
 }
 
 export interface PartialProgramInput {
-   id: string,
-   name: string
+   id: string;
+   name: string;
 }
 
 export interface PartialProgramOutput extends PartialProgramInput {
 }
 
 export interface ProblemError {
-   problemId: string
-   readState: ModelReadState
-   status: ModelStatus
-   testingStatus?: ProblemTestingStatus
+   problemId: string;
+   readState: ModelReadState;
+   status: ModelStatus;
+   testingStatus?: ProblemTestingStatus;
 }
 
 export function defaultProblem(): FullProblem {
@@ -112,20 +112,20 @@ export function defaultProblem(): FullProblem {
       author: {
          ...defaultPartialProfile(),
          login: 'Author',
-         type: UserType.TEACHER
+         type: UserType.TEACHER,
       },
 
       tester: {
          ...defaultPartialProfile(),
          login: 'Tester',
-         type: UserType.TEACHER
+         type: UserType.TEACHER,
       },
 
       tags: [mockTag('some'), mockTag('tags')],
 
       limits: {
          time: 30000,
-         memory: 2048
+         memory: 2048,
       },
 
       io: {
@@ -135,6 +135,6 @@ export function defaultProblem(): FullProblem {
 
       testingStatus: ProblemTestingStatus.NotTested,
 
-      tests: []
-   }
+      tests: [],
+   };
 }

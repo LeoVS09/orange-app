@@ -2,17 +2,17 @@
 export enum Platform {
    DESKTOP,
    TABLET,
-   MOBILE
+   MOBILE,
 }
 
 export enum Translation {
    EN = 'en',
-   RU = 'ru'
+   RU = 'ru',
 }
 
 export class UIState {
-   currentPlatform: Platform = Platform.DESKTOP
-   sideBarVisible: boolean = true
-   isSignInPage: boolean = true
-   locale: Translation = Translation.EN
+   public currentPlatform: Platform = Platform.DESKTOP;
+   public sideBarVisible: boolean = true;
+   public isSignInPage: boolean = true;
+   public locale: Translation = Translation.EN;
 }

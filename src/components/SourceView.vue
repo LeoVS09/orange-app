@@ -12,28 +12,28 @@
 </template>
 
 <script lang="ts">
-   import Vue from 'vue'
-   import {Component, Prop} from 'vue-property-decorator'
-   import TextareaAutoresize from './TextareaAutoresize.vue'
+import Vue from 'vue';
+import {Component, Prop} from 'vue-property-decorator';
+import TextareaAutoresize from './TextareaAutoresize.vue';
 
-   @Component({
-      components: {
-         TextareaAutoresize
-      }
-   })
-   export default class SourceView extends Vue {
+@Component({
+   components: {
+      TextareaAutoresize,
+   },
+})
+export default class SourceView extends Vue {
 
-      @Prop(String)
-      text: String
+   @Prop(String)
+   public text!: String;
 
-      @Prop(Boolean)
-      editable: Boolean
+   @Prop(Boolean)
+   public editable!: Boolean;
 
-      updateValue(value: string) {
-         this.$emit('input', value)
-      }
-
+   public updateValue(value: string) {
+      this.$emit('input', value);
    }
+
+}
 </script>
 
 <style lang="scss" scoped>

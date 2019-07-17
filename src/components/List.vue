@@ -115,338 +115,354 @@
 </template>
 
 <script lang="ts">
-   import Vue from 'vue'
-   import ListItem from './ListItem.vue';
-   import Button from './Button.vue';
-   import {Component, Prop, Emit, Mixins} from 'vue-property-decorator'
-   import {ListEvents, DataItem, Header, ListMeta, SimpleHeader, ListSortEvent} from './types'
-   // @ts-ignore
-   import crypto from 'crypto-js'
-   import Loadable from "@/components/mixins/loadable";
+import Vue from 'vue';
+import ListItem from './ListItem.vue';
+import Button from './Button.vue';
+import {Component, Prop, Emit, Mixins} from 'vue-property-decorator';
+import {ListEvents, DataItem, Header, ListMeta, SimpleHeader, ListSortEvent} from './types';
+// @ts-ignore
+import crypto from 'crypto-js';
+import Loadable from '@/components/mixins/loadable';
 
-   export interface ListSortHeader {
-      by: string
-      ascending: boolean
-   }
+export interface ListSortHeader {
+   by: string;
+   ascending: boolean;
+}
 
-   function toHeaders(headers: Array<any>): Array<Header> {
-      return headers.map(header => {
-         if (typeof header === 'string')
-            return {
-               key: header,
-               label: header.slice(0, 1).toUpperCase() + header.slice(1)
-            }
-
-         const keys = Object.keys(header)
-         if (keys.length > 1)
-            return header
-
+function toHeaders(headers: any[]): Header[] {
+   return headers.map((header) => {
+      if (typeof header === 'string') {
          return {
-            key: keys[0],
-            label: header[keys[0]]
-         }
-      })
-   }
-
-   const listTransitionDown = 'list-item-down'
-   const listTransitionFade = 'list-item-fade'
-
-   interface IPageNumbers {
-      left?: {
-         n: number,
-         points: boolean
+            key: header,
+            label: header.slice(0, 1).toUpperCase() + header.slice(1),
+         };
       }
-      center: Array<number>
-      right?: {
-         n: number,
-         points: boolean
-      }
-   }
 
-   @Component({
-      components: {
-         ListItem,
-         Button
+      const keys = Object.keys(header);
+      if (keys.length > 1) {
+         return header;
       }
+
+      return {
+         key: keys[0],
+         label: header[keys[0]],
+      };
+   });
+}
+
+const listTransitionDown = 'list-item-down';
+const listTransitionFade = 'list-item-fade';
+
+interface IPageNumbers {
+   left?: {
+      n: number,
+      points: boolean,
+   };
+   center: number[];
+   right?: {
+      n: number,
+      points: boolean,
+   };
+}
+
+@Component({
+   components: {
+      ListItem,
+      Button,
+   },
+})
+export default class List extends Mixins(Loadable) {
+
+   @Prop({
+      type: Array,
+      required: true,
    })
-   export default class List extends Mixins(Loadable) {
+   public items!: DataItem[];
 
-      @Prop({
-         type: Array,
-         required: true
-      })
-      items: Array<DataItem>
+   @Prop({
+      type: Array,
+   })
+   public headers?: Array<Header | string | SimpleHeader>;
 
-      @Prop({
-         type: Array
-      })
-      headers?: Array<Header | string | SimpleHeader>
+   @Prop({
+      type: Array,
+   })
+   public exceptions?: string[];
 
-      @Prop({
-         type: Array
-      })
-      exceptions?: Array<string>
+   @Prop({
+      type: Object,
+   })
+   public meta!: ListMeta;
 
-      @Prop({
-         type: Object
-      })
-      meta: ListMeta
+   @Prop({
+      type: Function,
+   })
+   public filter?: (item: DataItem) => boolean;
 
-      @Prop({
-         type: Function
-      })
-      filter?: (item: DataItem) => boolean
+   @Prop({
+      type: Function,
+   })
+   public formatData?: (a: DataItem) => DataItem;
 
-      @Prop({
-         type: Function
-      })
-      formatData?: (a: DataItem) => DataItem
+   @Prop({
+      type: Boolean,
+   })
+   public isCanAdd?: boolean;
 
-      @Prop({
-         type: Boolean
-      })
-      isCanAdd?: boolean
+   @Prop({
+      type: Boolean,
+      default: true,
+   })
+   public pagination!: boolean;
 
-      @Prop({
-         type: Boolean,
-         default: true
-      })
-      pagination: boolean
+   @Prop({
+      type: Number,
+      default: 10,
+   })
+   public itemsOnPage!: number;
 
-      @Prop({
-         type: Number,
-         default: 10
-      })
-      itemsOnPage: number
+   @Prop({
+      type: Number,
+      default: 5,
+   })
+   public maxPageNumbers!: number;
 
-      @Prop({
-         type: Number,
-         default: 5
-      })
-      maxPageNumbers: number
+   public currentPage: number = 1;
 
-      currentPage: number = 1
+   public isHovered = false;
 
-      isHovered = false;
+   public sortHeader: ListSortHeader | null = null;
 
-      sortHeader: ListSortHeader | null = null;
-
-      // TODO: make consistently items animation
-      listTransitionName = listTransitionDown
+   // TODO: make consistently items animation
+   public listTransitionName = listTransitionDown;
 
 
-      get visibleHeaders(): Array<Header> {
-         if (this.headers)
-            return toHeaders(this.headers)
-
-         if (this.items.length)
-            return toHeaders(Object.keys(this.items[0]))
-
-         return []
+   get visibleHeaders(): Header[] {
+      if (this.headers) {
+         return toHeaders(this.headers);
       }
 
-      get visibleItems(): Array<DataItem> {
-         let result = this.items
-
-         if (this.filter)
-            result = result.filter(this.filter)
-
-         if (this.sortHeader) {
-            const {by, ascending} = this.sortHeader
-
-            result = result.slice().sort((a, b) => {
-               const aValue = a[by]
-               const bValue = b[by]
-
-               if (aValue === bValue)
-                  return 0
-
-               if (!ascending)
-                  return aValue < bValue ? 1 : -1
-
-               return aValue > bValue ? 1 : -1
-            })
-         }
-
-         if (!this.pagination)
-            return result
-
-         const start = (this.currentPage - 1) * this.itemsOnPage
-         return result.slice(start, start + this.itemsOnPage)
+      if (this.items.length) {
+         return toHeaders(Object.keys(this.items[0]));
       }
 
-      get pagesCount() {
-         if (this.items.length <= this.itemsOnPage)
-            return 0
-
-         return Math.ceil(this.items.length / this.itemsOnPage)
-      }
-
-      get pageNumbers(): IPageNumbers {
-         const count = this.pagesCount
-         const current = this.currentPage
-         const max = this.maxPageNumbers
-         const middle = max / 2
-
-         const allPages = new Array(count).fill(0).map((v, i) => i + 1)
-
-         const firstPage = allPages[0]
-         const lastPage = allPages[allPages.length - 1]
-
-         if (current < middle)
-            return {
-               center: allPages.slice(0, max),
-               right: count > max ? {
-                  n: lastPage,
-                  points: true
-               } : undefined
-            }
-
-         if (count - current < middle)
-            return {
-               left: count > max ? {
-                  n: firstPage,
-                  points: true
-               } : undefined,
-               center: max >= allPages.length ?
-                  allPages.slice(0, allPages.length) :
-                  allPages.slice(allPages.length - max)
-            }
-
-         const start = current - Math.floor(middle)
-         const end = current + Math.floor(middle)
-
-         let left
-
-         if (firstPage !== start) {
-            left = {
-               n: firstPage,
-               points: false
-            }
-
-            if (start - firstPage > 1)
-               left.points = true
-         }
-
-         let right
-
-         if (lastPage !== end) {
-            right = {
-               n: lastPage,
-               points: false
-            }
-
-            if (lastPage - end > 1)
-               right.points = true
-         }
-
-         return {
-            left,
-            center: allPages.slice(start - 1, end),
-            right
-         }
-      }
-
-      nextPage() {
-         this.listTransitionName = listTransitionFade
-
-         if (this.currentPage + 1 > this.pagesCount)
-            return
-
-         const page = this.currentPage + 1
-         this.$emit(ListEvents.nextPage, page)
-
-         this.goToPage(page)
-
-         // TODO: refactor, need use js animation in this case
-         setTimeout(() => this.listTransitionName = listTransitionDown, 1000)
-      }
-
-      previousPage() {
-         this.listTransitionName = listTransitionFade
-
-         if (this.currentPage <= 1)
-            return
-
-         const page = this.currentPage - 1
-         this.$emit(ListEvents.previousPage, page)
-
-         this.goToPage(page)
-
-         setTimeout(() => this.listTransitionName = listTransitionDown, 1000)
-      }
-
-      @Emit(ListEvents.toPage)
-      goToPage(next: number) {
-         const old = this.currentPage
-         this.currentPage = next
-
-         return {
-            old,
-            next
-         }
-      }
-
-      hash(item: Object): string {
-         return crypto.MD5(JSON.stringify(item)).toString()
-      }
-
-
-      onClickHeader(header: Header) {
-         this.$emit(ListEvents.clickHeader, header)
-
-         this.sort(header)
-      }
-
-      @Emit(ListEvents.sort)
-      sort(header: Header) {
-
-         if (this.sortHeader && this.sortHeader.by === header.key)
-            return this.sortHeader = {
-               ...this.sortHeader,
-               ascending: !this.sortHeader.ascending
-            } as ListSortEvent
-
-         return this.sortHeader = {
-            by: header.key,
-            ascending: false
-         } as ListSortEvent
-
-      }
-
-      @Emit(ListEvents.chooseItem)
-      onClickItem(item: DataItem) {
-         return item
-      }
-
-      @Emit(ListEvents.add)
-      onClickAdd() {
-         return
-      }
-
-      onMouseOver() {
-         this.isHovered = true
-      }
-
-      onMouseLeave() {
-         this.isHovered = false
-      }
-
-      @Emit(ListEvents.onItemOver)
-      onItemOver(item: DataItem) {
-         return item
-      }
-
-      @Emit(ListEvents.onItemLeave)
-      onItemLeave(item: DataItem) {
-         return item
-      }
-
-      @Emit(ListEvents.onItemMove)
-      onItemMove(item: DataItem) {
-         return item
-      }
+      return [];
    }
+
+   get visibleItems(): DataItem[] {
+      let result = this.items;
+
+      if (this.filter) {
+         result = result.filter(this.filter);
+      }
+
+      if (this.sortHeader) {
+         const {by, ascending} = this.sortHeader;
+
+         result = result.slice().sort((a, b) => {
+            const aValue = a[by];
+            const bValue = b[by];
+
+            if (aValue === bValue) {
+               return 0;
+            }
+
+            if (!ascending) {
+               return aValue < bValue ? 1 : -1;
+            }
+
+            return aValue > bValue ? 1 : -1;
+         });
+      }
+
+      if (!this.pagination) {
+         return result;
+      }
+
+      const start = (this.currentPage - 1) * this.itemsOnPage;
+      return result.slice(start, start + this.itemsOnPage);
+   }
+
+   get pagesCount() {
+      if (this.items.length <= this.itemsOnPage) {
+         return 0;
+      }
+
+      return Math.ceil(this.items.length / this.itemsOnPage);
+   }
+
+   get pageNumbers(): IPageNumbers {
+      const count = this.pagesCount;
+      const current = this.currentPage;
+      const max = this.maxPageNumbers;
+      const middle = max / 2;
+
+      const allPages = new Array(count).fill(0).map((v, i) => i + 1);
+
+      const firstPage = allPages[0];
+      const lastPage = allPages[allPages.length - 1];
+
+      if (current < middle) {
+         return {
+            center: allPages.slice(0, max),
+            right: count > max ? {
+               n: lastPage,
+               points: true,
+            } : undefined,
+         };
+      }
+
+      if (count - current < middle) {
+         return {
+            left: count > max ? {
+               n: firstPage,
+               points: true,
+            } : undefined,
+            center: max >= allPages.length ?
+               allPages.slice(0, allPages.length) :
+               allPages.slice(allPages.length - max),
+         };
+      }
+
+      const start = current - Math.floor(middle);
+      const end = current + Math.floor(middle);
+
+      let left;
+
+      if (firstPage !== start) {
+         left = {
+            n: firstPage,
+            points: false,
+         };
+
+         if (start - firstPage > 1) {
+            left.points = true;
+         }
+      }
+
+      let right;
+
+      if (lastPage !== end) {
+         right = {
+            n: lastPage,
+            points: false,
+         };
+
+         if (lastPage - end > 1) {
+            right.points = true;
+         }
+      }
+
+      return {
+         left,
+         center: allPages.slice(start - 1, end),
+         right,
+      };
+   }
+
+   public nextPage() {
+      this.listTransitionName = listTransitionFade;
+
+      if (this.currentPage + 1 > this.pagesCount) {
+         return;
+      }
+
+      const page = this.currentPage + 1;
+      this.$emit(ListEvents.nextPage, page);
+
+      this.goToPage(page);
+
+      // TODO: refactor, need use js animation in this case
+      setTimeout(() => this.listTransitionName = listTransitionDown, 1000);
+   }
+
+   public previousPage() {
+      this.listTransitionName = listTransitionFade;
+
+      if (this.currentPage <= 1) {
+         return;
+      }
+
+      const page = this.currentPage - 1;
+      this.$emit(ListEvents.previousPage, page);
+
+      this.goToPage(page);
+
+      setTimeout(() => this.listTransitionName = listTransitionDown, 1000);
+   }
+
+   @Emit(ListEvents.toPage)
+   public goToPage(next: number) {
+      const old = this.currentPage;
+      this.currentPage = next;
+
+      return {
+         old,
+         next,
+      };
+   }
+
+   public hash(item: Object): string {
+      return crypto.MD5(JSON.stringify(item)).toString();
+   }
+
+
+   public onClickHeader(header: Header) {
+      this.$emit(ListEvents.clickHeader, header);
+
+      this.sort(header);
+   }
+
+   @Emit(ListEvents.sort)
+   public sort(header: Header) {
+
+      if (this.sortHeader && this.sortHeader.by === header.key) {
+         return this.sortHeader = {
+            ...this.sortHeader,
+            ascending: !this.sortHeader.ascending,
+         } as ListSortEvent;
+      }
+
+      return this.sortHeader = {
+         by: header.key,
+         ascending: false,
+      } as ListSortEvent;
+
+   }
+
+   @Emit(ListEvents.chooseItem)
+   public onClickItem(item: DataItem) {
+      return item;
+   }
+
+   @Emit(ListEvents.add)
+   public onClickAdd() {
+      return;
+   }
+
+   public onMouseOver() {
+      this.isHovered = true;
+   }
+
+   public onMouseLeave() {
+      this.isHovered = false;
+   }
+
+   @Emit(ListEvents.onItemOver)
+   public onItemOver(item: DataItem) {
+      return item;
+   }
+
+   @Emit(ListEvents.onItemLeave)
+   public onItemLeave(item: DataItem) {
+      return item;
+   }
+
+   @Emit(ListEvents.onItemMove)
+   public onItemMove(item: DataItem) {
+      return item;
+   }
+}
 </script>
 
 <style lang="scss">

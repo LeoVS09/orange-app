@@ -13,36 +13,36 @@
 
 
 <script lang="ts">
-   import Vue from 'vue'
-   import {Component, Prop} from 'vue-property-decorator'
-   import IconBase from './IconBase.vue'
+import Vue from 'vue';
+import {Component, Prop} from 'vue-property-decorator';
+import IconBase from './IconBase.vue';
 
-   @Component({
-      components: {
-         IconBase
-      }
-   })
-   export default class LdrX extends Vue {
+@Component({
+   components: {
+      IconBase,
+   },
+})
+export default class LdrX extends Vue {
 
-      @Prop({
-         type: [Number, String],
-         default: 18
-      }) width: number | string
+   @Prop({
+      type: [Number, String],
+      default: 18,
+   }) public width!: number | string;
 
-      @Prop({
-         type: [Number, String],
-         default: 18
-      }) height: number | string
+   @Prop({
+      type: [Number, String],
+      default: 18,
+   }) public height!: number | string;
 
-      @Prop( {
-         type: String,
-         default: 'currentColor'
-      }) iconColor: string
+   @Prop( {
+      type: String,
+      default: 'currentColor',
+   }) public iconColor!: string;
 
-      onClick(value: any) {
-         this.$emit('click', value)
-      }
+   public onClick(value: any) {
+      this.$emit('click', value);
    }
+}
 </script>
 
 <style lang="scss">

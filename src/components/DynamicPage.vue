@@ -52,178 +52,207 @@
 </template>
 
 <script lang="ts">
-   import Vue from 'vue'
-   import {Component, Prop} from 'vue-property-decorator'
-   import {List, PageHeader, Section, Button, ButtonGroup, Tags} from '@/components/index'
-   import {Country} from "@/models";
-   import {DynamicPageAction, DynamicPageMeta} from "@/components/types";
+import Vue from 'vue';
+import {Component, Prop} from 'vue-property-decorator';
+import {List, PageHeader, Section, Button, ButtonGroup, Tags} from '@/components/index';
+import {Country} from '@/models';
+import {DynamicPageAction, DynamicPageMeta} from '@/components/types';
 
-   @Component({
-      components: {
-         List,
-         PageHeader,
-         Section,
-         Button,
-         ButtonGroup,
-         Tags
-      }
+@Component({
+   components: {
+      List,
+      PageHeader,
+      Section,
+      Button,
+      ButtonGroup,
+      Tags,
+   },
+})
+export default class DynamicPage extends Vue {
+
+   @Prop({
+      type: Object,
+      required: true,
    })
-   export default class DynamicPage extends Vue {
+   public meta!: DynamicPageMeta;
 
-      meta: DynamicPageMeta
-
-      showButton(action: DynamicPageAction): boolean {
-         if(typeof this.meta.header === 'string' || !this.meta.header.actions)
-            return false
-
-         if(Array.isArray(this.meta.header.actions))
-            return action.showTrigger ? action.showTrigger(this) : true
-
-         if(!this.meta.header.actions.showTrigger)
-            return action.showTrigger ? action.showTrigger(this) : true
-
-         if(!this.meta.header.actions.showTrigger(this))
-            return false
-
-         return action.showTrigger ? action.showTrigger(this) : true
+   public showButton(action: DynamicPageAction): boolean {
+      if (typeof this.meta.header === 'string' || !this.meta.header.actions) {
+         return false;
       }
 
-      get tags(): Array<any> | undefined {
-         if(!this.meta.tags)
-            return
-
-         return this.meta.tags.getter(this)
+      if (Array.isArray(this.meta.header.actions)) {
+         return action.showTrigger ? action.showTrigger(this) : true;
       }
 
-      get activeTags(): Array<any> {
-         if(!this.meta.tags)
-            return []
-
-         return this.meta.tags.active(this)
+      if (!this.meta.header.actions.showTrigger) {
+         return action.showTrigger ? action.showTrigger(this) : true;
       }
 
-      onChooseAction(tag: any) {
-         if(!this.meta.tags)
-            return
-
-         return this.meta.tags.choose(this, tag)
+      if (!this.meta.header.actions.showTrigger(this)) {
+         return false;
       }
 
-      get headerText(){
-         if(typeof this.meta.header === 'string')
-            return this.meta.header
+      return action.showTrigger ? action.showTrigger(this) : true;
+   }
 
-         if(typeof this.meta.header.text === 'string')
-            return this.meta.header.text
-
-         return this.meta.header.text(this.model)
+   get tags(): any[] | undefined {
+      if (!this.meta.tags) {
+         return;
       }
 
-      get listHeaders() {
-         if(!this.meta.list)
-            return
+      return this.meta.tags.getter(this);
+   }
 
-         return this.meta.list.headers
+   get activeTags(): any[] {
+      if (!this.meta.tags) {
+         return [];
       }
 
+      return this.meta.tags.active(this);
+   }
 
-
-      get activeFilter(){
-         if(!this.meta.list || !this.meta.list.filters)
-            return
-
-         return this.meta.list.filters.active(this)
+   public onChooseAction(tag: any) {
+      if (!this.meta.tags) {
+         return;
       }
 
-      get model(): any {
-         if(!this.meta.model || !this.meta.model.getter)
-            return
+      return this.meta.tags.choose(this, tag);
+   }
 
-         if(typeof this.meta.model.getter === 'string')
-            return this.$store.getters[this.meta.model.getter]
-
-         return this.meta.model.getter(this)
+   get headerText() {
+      if (typeof this.meta.header === 'string') {
+         return this.meta.header;
       }
 
-      get items(): Array<any> | undefined {
-         if(!this.meta.list)
-            return
-
-         if(Array.isArray(this.meta.list.items))
-            return this.meta.list.items
-
-         if(this.meta.list.items.getter)
-            return this.meta.list.items.getter(this)
-
-         if(this.meta.list.items.fromModel)
-            return this.meta.list.items.fromModel(this.model)
-
-         return
+      if (typeof this.meta.header.text === 'string') {
+         return this.meta.header.text;
       }
 
-      loadItems(){
+      return this.meta.header.text(this.model);
+   }
 
-         if(!this.meta.list || !this.meta.list.actions || !this.meta.list.actions.loadAction)
-            return
-
-         return this.meta.list.actions.loadAction(this)
+   get listHeaders() {
+      if (!this.meta.list) {
+         return;
       }
 
-      loadModel(){
-         if(!this.meta.model || !this.meta.model.actions || !this.meta.model.actions.loadAction)
-            return
+      return this.meta.list.headers;
+   }
 
-         return this.meta.model.actions.loadAction(this)
+
+
+   get activeFilter() {
+      if (!this.meta.list || !this.meta.list.filters) {
+         return;
       }
 
-      loadTags(){
-         if(!this.meta.tags || !this.meta.tags.actions || !this.meta.tags.actions.loadAction)
-            return
+      return this.meta.list.filters.active(this);
+   }
 
-         return this.meta.tags.actions.loadAction(this)
+   get model(): any {
+      if (!this.meta.model || !this.meta.model.getter) {
+         return;
       }
 
-      load(){
+      if (typeof this.meta.model.getter === 'string') {
+         return this.$store.getters[this.meta.model.getter];
+      }
 
-         if(this.meta.list && this.meta.list.actions) {
-            if(!this.meta.list.actions.loadTrigger || this.meta.list.actions.loadTrigger(this.items))
-               this.loadItems()
+      return this.meta.model.getter(this);
+   }
+
+   get items(): any[] | undefined {
+      if (!this.meta.list) {
+         return;
+      }
+
+      if (Array.isArray(this.meta.list.items)) {
+         return this.meta.list.items;
+      }
+
+      if (this.meta.list.items.getter) {
+         return this.meta.list.items.getter(this);
+      }
+
+      if (this.meta.list.items.fromModel) {
+         return this.meta.list.items.fromModel(this.model);
+      }
+
+      return;
+   }
+
+   public loadItems() {
+
+      if (!this.meta.list || !this.meta.list.actions || !this.meta.list.actions.loadAction) {
+         return;
+      }
+
+      return this.meta.list.actions.loadAction(this);
+   }
+
+   public loadModel() {
+      if (!this.meta.model || !this.meta.model.actions || !this.meta.model.actions.loadAction) {
+         return;
+      }
+
+      return this.meta.model.actions.loadAction(this);
+   }
+
+   public loadTags() {
+      if (!this.meta.tags || !this.meta.tags.actions || !this.meta.tags.actions.loadAction) {
+         return;
+      }
+
+      return this.meta.tags.actions.loadAction(this);
+   }
+
+   public load() {
+
+      if (this.meta.list && this.meta.list.actions) {
+         if (!this.meta.list.actions.loadTrigger || this.meta.list.actions.loadTrigger(this.items)) {
+            this.loadItems();
          }
+      }
 
-         if(this.meta.model && this.meta.model.actions) {
-            if(!this.meta.model.actions.loadTrigger || this.meta.model.actions.loadTrigger(this.model))
-               this.loadModel()
-         }
-
-         if(this.meta.tags && this.meta.tags.actions) {
-            if(!this.meta.tags.actions.loadTrigger || this.meta.tags.actions.loadTrigger(this.model))
-               this.loadTags()
+      if (this.meta.model && this.meta.model.actions) {
+         if (!this.meta.model.actions.loadTrigger || this.meta.model.actions.loadTrigger(this.model)) {
+            this.loadModel();
          }
       }
 
-      created(){
-         console.log('created')
-         this.load()
-      }
-
-      onClickAction(action: DynamicPageAction) {
-         action.action(this)
-      }
-
-      onClickFilter(filter: any) {
-         if(!this.meta.list || !this.meta.list.filters)
-            return
-
-         return this.meta.list.filters.choose(this, filter)
-      }
-
-      chooseItem(country: Country){
-         if(!this.meta.list || !this.meta.list.chooseItem)
-            return
-
-         return this.meta.list.chooseItem(country)
+      if (this.meta.tags && this.meta.tags.actions) {
+         if (!this.meta.tags.actions.loadTrigger || this.meta.tags.actions.loadTrigger(this.model)) {
+            this.loadTags();
+         }
       }
    }
+
+   public created() {
+      console.log('created');
+      this.load();
+   }
+
+   public onClickAction(action: DynamicPageAction) {
+      action.action(this);
+   }
+
+   public onClickFilter(filter: any) {
+      if (!this.meta.list || !this.meta.list.filters) {
+         return;
+      }
+
+      return this.meta.list.filters.choose(this, filter);
+   }
+
+   public chooseItem(country: Country) {
+      if (!this.meta.list || !this.meta.list.chooseItem) {
+         return;
+      }
+
+      return this.meta.list.chooseItem(country);
+   }
+}
 </script>
 
 <style lang="scss">

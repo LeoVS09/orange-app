@@ -1,53 +1,54 @@
 import {UserProfile, UserType} from '../models';
-import {login, currentUser, register} from '../api'
+import {login, currentUser, register} from '../api';
 // @ts-ignore
-import crypto from 'crypto-js'
-import * as mutationTypes from "@/api/database/mutations/types";
-import * as fragmentsTypes from "@/api/database/fragments/types";
-import {Email} from "@/models/email";
+import crypto from 'crypto-js';
+import * as mutationTypes from '@/api/database/mutations/types';
+import * as fragmentsTypes from '@/api/database/fragments/types';
+import {Email} from '@/models/email';
 
 const TOKEN_NAME = 'token';
-const TOKEN_KEY = 'key' // TODO
+const TOKEN_KEY = 'key'; // TODO
 
 function encryptId(user: UserProfile): string {
-   return crypto.AES.encrypt(user.id, TOKEN_KEY).toString() // TODO
+   return crypto.AES.encrypt(user.id, TOKEN_KEY).toString(); // TODO
 }
 
 function decryptId(token: string): string {
-   return crypto.AES.decrypt(token, TOKEN_KEY).toString(crypto.enc.Utf8) // TODO
+   return crypto.AES.decrypt(token, TOKEN_KEY).toString(crypto.enc.Utf8); // TODO
 }
 
 
 export async function signin(username: string, password: string, isRemember: boolean): Promise<UserProfile | null> {
    if (!username.length || !password.length) {
-      console.error('Not have login or password')
-      return null
+      console.error('Not have login or password');
+      return null;
    }
 
    const result = await login({
       username,
-      password
-   })
-    return handleLoginResult(isRemember, result)
+      password,
+   });
+   return handleLoginResult(isRemember, result);
 }
 
 export async function signup(input: mutationTypes.RegisterVariables) {
-   const {username, password, email, firstName} = input
+   const {username, password, email, firstName} = input;
    if (!username.length || !password.length || !email.length || !firstName.length) {
-      console.error('Not have login or password')
+      console.error('Not have login or password');
       return null;
    }
 
-   const result = await register(input)
-   return handleLoginResult(false, result)
+   const result = await register(input);
+   return handleLoginResult(false, result);
 }
 
 function handleLoginResult(isRemember: boolean, userData?: mutationTypes.Login_login_user | null) {
-   console.log('login result', userData)
+   console.log('login result', userData);
 
-   if (!userData)
-      throw new Error('Cannot login')
-   let user = toUser(userData);
+   if (!userData) {
+      throw new Error('Cannot login');
+   }
+   const user = toUser(userData);
 
    const token = encryptId(user);
 
@@ -61,12 +62,14 @@ function handleLoginResult(isRemember: boolean, userData?: mutationTypes.Login_l
 }
 
 function toUser(userData: mutationTypes.Login_login_user): UserProfile {
-   if (!userData.profiles.nodes.length)
-      throw new Error('UserProfile not have profile')
+   if (!userData.profiles.nodes.length) {
+      throw new Error('UserProfile not have profile');
+   }
 
-   const profile = userData.profiles.nodes[0]
-   if(!profile)
-      throw new Error('User not have profiles')
+   const profile = userData.profiles.nodes[0];
+   if (!profile) {
+      throw new Error('User not have profiles');
+   }
 
    return {
       id: profile.id,
@@ -74,7 +77,7 @@ function toUser(userData: mutationTypes.Login_login_user): UserProfile {
       login: userData.username,
       isAdmin: userData.isAdmin,
       avatarUrl: userData.avatarUrl,
-      emails: userData.userEmails.nodes as Array<Email>,
+      emails: userData.userEmails.nodes as Email[],
       firstName: profile.firstName || '',
       middleName: profile.middleName,
       lastName: profile.lastName || '',
@@ -86,8 +89,8 @@ function toUser(userData: mutationTypes.Login_login_user): UserProfile {
       phone: profile.phone,
       languages: [],
       codeEditors: [],
-      travels: []
-   }
+      travels: [],
+   };
 }
 
 
@@ -101,12 +104,12 @@ export function signout() {
 }
 
 interface checkResultOk {
-   userId: string,
-   ok: true
+   userId: string;
+   ok: true;
 }
 
 interface checkResultFalse {
-   ok: false
+   ok: false;
 }
 
 export function checkIsLogin(): checkResultOk | checkResultFalse {
@@ -121,28 +124,29 @@ export function checkIsLogin(): checkResultOk | checkResultFalse {
 
    return {
       userId: decryptId(token),
-      ok: true
+      ok: true,
    };
 }
 
 interface currentUserOk {
-   user: UserProfile,
-   ok: true
+   user: UserProfile;
+   ok: true;
 }
 
 interface currentUserFalse {
-   ok: false
+   ok: false;
 }
 
 export async function currentUserIfHave(): Promise<currentUserOk | currentUserFalse> {
-   const userData = await currentUser()
-   if (!userData)
+   const userData = await currentUser();
+   if (!userData) {
       return {
-         ok: false
-      }
+         ok: false,
+      };
+   }
 
    return {
       user: toUser(userData),
-      ok: true
-   }
+      ok: true,
+   };
 }

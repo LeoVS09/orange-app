@@ -20,54 +20,53 @@
 </template>
 
 <script lang="ts">
-   import {Component, Prop, Mixins} from 'vue-property-decorator'
-   import {Getter, Action, State} from 'vuex-class'
-   import {PageHeader, Button, List, Tags, Input, ModelInfo, Section, TextSection, PageHeaderAction, Filters, DataView} from '@/components';
-   import {ROUTES} from '@/router'
-   import Vue from 'vue'
-   import {ProgrammingLanguageModel} from "@/models/programmingLanguage";
-   import LazyData from '@/containers/LazyData.vue'
-   import LazyProperty from '@/containers/LazyProperty.vue'
+import {Component, Prop, Mixins} from 'vue-property-decorator';
+import {Getter, Action, State} from 'vuex-class';
+import {PageHeader, Button, List, Tags, Input, ModelInfo, Section, TextSection, PageHeaderAction, Filters, DataView} from '@/components';
+import {ROUTES} from '@/router';
+import Vue from 'vue';
+import {ProgrammingLanguageModel} from '@/models/programmingLanguage';
+import LazyData from '@/containers/LazyData.vue';
+import LazyProperty from '@/containers/LazyProperty.vue';
 
-
-   @Component({
-      components: {
-         PageHeader,
-         Button,
-         Filters,
-         List,
-         Tags,
-         Section,
-         TextSection,
-         Action: PageHeaderAction,
-         DataView,
-         ModelInfo,
-         LazyData,
-         LazyProperty
-      }
+@Component({
+   components: {
+      PageHeader,
+      Button,
+      Filters,
+      List,
+      Tags,
+      Section,
+      TextSection,
+      Action: PageHeaderAction,
+      DataView,
+      ModelInfo,
+      LazyData,
+      LazyProperty,
+   },
+})
+export default class ProgrammingLanguageView extends Vue {
+   @Prop({
+      type: String,
+      required: true,
    })
-   export default class ProgrammingLanguageView extends Vue {
-      @Prop({
-         type: String,
-         required: true
-      })
-      id: string
+   public id!: string;
 
-      get model(){
-         return ProgrammingLanguageModel.findOne(this.id, () => this.$forceUpdate())
-      }
-
-      @Getter isTeacher: boolean;
-
-      ROUTES = ROUTES
-
-      add() {
-         // TODO
-      }
-
-      validate(){
-         // TODO
-      }
-
+   get model() {
+      return ProgrammingLanguageModel.findOne(this.id, () => this.$forceUpdate());
    }
+
+   @Getter public isTeacher!: boolean;
+
+   public ROUTES = ROUTES;
+
+   public add() {
+      // TODO
+   }
+
+   public validate() {
+      // TODO
+   }
+
+}
 </script>

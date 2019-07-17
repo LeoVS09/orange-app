@@ -1,47 +1,47 @@
-import {FullProblem, PartialProblem} from "./problems";
-import {ResultOfProblem} from "./tests";
-import {PartialUserProfile} from './user'
-import {Team} from "@/models/team";
+import {FullProblem, PartialProblem} from './problems';
+import {ResultOfProblem} from './tests';
+import {PartialUserProfile} from './user';
+import {Team} from '@/models/team';
 
 export interface Requirements {
-   course?: number
+   course?: number;
 }
 
 export interface PartialContest {
-   id: string,
-   name: string
+   id: string;
+   name: string;
    // TODO: rename to description
-   text: string | null,
-   creatorId: string,
-   creator: PartialUserProfile,
+   text: string | null;
+   creatorId: string;
+   creator: PartialUserProfile;
 
-   startDate: Date | null,
-   endDate: Date | null,
-   startPublicationDate: Date | null,
-   endPublicationDate: Date | null,
+   startDate: Date | null;
+   endDate: Date | null;
+   startPublicationDate: Date | null;
+   endPublicationDate: Date | null;
 
-   createdAt: Date,
-   updatedAt: Date,
+   createdAt: Date;
+   updatedAt: Date;
 
 }
 
-export interface FullContest extends PartialContest{
-   problems: Array<PartialProblem> | null,
+export interface FullContest extends PartialContest {
+   problems: PartialProblem[] | null;
    // TODO: rename to contestants
-   profiles: Array<PartialUserProfile> | null,
-   teams: Array<Team> | null,
+   profiles: PartialUserProfile[] | null;
+   teams: Team[] | null;
 
    requirements?: {
       contestant?: Requirements,
-      team?: Requirements
-   },
+      team?: Requirements,
+   };
 
-   place?: string,
-   rules?: Array<string>,
-   comments?: Array<string>,
-   technicalEquipment?: string,
-   organizers?: Array<string>,
-   contacts?: string,
-   tax?: number,
-   fund?: number
+   place?: string;
+   rules?: string[];
+   comments?: string[];
+   technicalEquipment?: string;
+   organizers?: string[];
+   contacts?: string;
+   tax?: number;
+   fund?: number;
 }

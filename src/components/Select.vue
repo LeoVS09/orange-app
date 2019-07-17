@@ -36,120 +36,122 @@
 </template>
 
 <script lang="ts">
-   import Vue from 'vue'
-   import {Component, Prop, Watch, Mixins, Emit} from 'vue-property-decorator'
-   import {toStringWhenDefined} from "@/components/utils";
-   import Focusable from "./mixins/inputs/focusable";
+import Vue from 'vue';
+import {Component, Prop, Watch, Mixins, Emit} from 'vue-property-decorator';
+import {toStringWhenDefined} from '@/components/utils';
+import Focusable from './mixins/inputs/focusable';
 
-   interface SelectItem {
-      text: string
-      value: any
+interface SelectItem {
+   text: string;
+   value: any;
+}
+
+interface Options {
+   tabindex?: number;
+   autofocus?: boolean;
+   disabled?: boolean;
+}
+
+@Component
+export default class Select extends Mixins(Focusable) {
+
+   @Prop({
+      type: Array,
+      default: [],
+   })
+   public items!: any[];
+
+   @Prop(String)
+   public placeholder!: string;
+
+   @Prop([String, Number, Boolean])
+   public value: any;
+
+   public currentValue = toStringWhenDefined(this.value);
+
+   @Prop({
+      type: String,
+      default: 'text',
+   })
+   public textField!: string;
+
+   @Prop(Number)
+   public tabindex!: number;
+
+   @Prop(Boolean)
+   public autofocus!: boolean;
+
+   @Prop({
+      type: Boolean,
+      default: false,
+   })
+   public error!: boolean;
+
+   @Prop(Boolean)
+   public disabled!: boolean;
+
+   @Prop(Function)
+   public extractText?: (value: any) => string;
+
+   public extractTextFromItem = (value: any) => {
+      if (this.extractText) {
+         return this.extractText(value);
+      }
+
+      if (typeof value !== 'object') {
+         return value as string;
+      }
+
+      return value[this.textField];
    }
 
-   interface Options {
-      tabindex?: number,
-      autofocus?: boolean,
-      disabled?: boolean
+   get visibleItems() {
+      return this.items.map((value) => {
+         const text = this.extractTextFromItem(value);
+
+         return {text, value};
+      });
    }
 
-   @Component
-   export default class Select extends Mixins(Focusable) {
-
-      @Prop({
-         type: Array,
-         default: []
-      })
-      items: Array<any>;
-
-      @Prop(String)
-      placeholder: string;
-
-      @Prop([String, Number, Boolean])
-      value: any;
-
-      currentValue = toStringWhenDefined(this.value);
-
-      @Prop({
-         type: String,
-         default: "text"
-      })
-      textField: string;
-
-      @Prop(Number)
-      tabindex: number;
-
-      @Prop(Boolean)
-      autofocus: boolean;
-
-      @Prop({
-         type: Boolean,
-         default: false
-      })
-      error: boolean;
-
-      @Prop(Boolean)
-      disabled: boolean;
-
-      @Prop(Function)
-      extractText?: (value: any) => string
-
-      extractTextFromItem = (value: any) => {
-         if(this.extractText)
-            return this.extractText(value)
-
-         if (typeof value !== 'object')
-            return value as string
-
-         return value[this.textField]
-      }
-
-      get visibleItems() {
-         return this.items.map(value => {
-            const text = this.extractTextFromItem(value)
-
-            return {text, value}
-         })
-      }
-
-      @Emit('click')
-      handleClick() {
-         this.focused = !this.focused
-         return this.focused
-      }
-
-      @Emit('input')
-      chooseItem(item: SelectItem) {
-         this.currentValue = item.text;
-         return item.value
-      }
-
-      @Watch('value')
-      updateValue(value: any) {
-         if (typeof value !== 'object') {
-            this.currentValue = value;
-         }
-
-         this.currentValue = value[this.textField]
-      }
-
-      get options(): Options {
-         let result = {} as Options;
-
-         if (this.tabindex) {
-            result['tabindex'] = this.tabindex;
-         }
-
-         if (this.autofocus) {
-            result['autofocus'] = true;
-         }
-
-         if (this.disabled) {
-            result['disabled'] = true;
-         }
-
-         return result;
-      }
+   @Emit('click')
+   public handleClick() {
+      this.focused = !this.focused;
+      return this.focused;
    }
+
+   @Emit('input')
+   public chooseItem(item: SelectItem) {
+      this.currentValue = item.text;
+      return item.value;
+   }
+
+   @Watch('value')
+   public updateValue(value: any) {
+      if (typeof value !== 'object') {
+         this.currentValue = value;
+      }
+
+      this.currentValue = value[this.textField];
+   }
+
+   get options(): Options {
+      const result = {} as Options;
+
+      if (this.tabindex) {
+         result.tabindex = this.tabindex;
+      }
+
+      if (this.autofocus) {
+         result.autofocus = true;
+      }
+
+      if (this.disabled) {
+         result.disabled = true;
+      }
+
+      return result;
+   }
+}
 </script>
 
 <style scoped lang="scss">

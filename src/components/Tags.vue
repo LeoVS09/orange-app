@@ -27,113 +27,117 @@
 </template>
 
 <script lang="ts">
-   import Vue from 'vue'
-   import {Component, Prop, Emit, Mixins} from 'vue-property-decorator'
-   import {ButtonGroup} from '@/components/index';
-   import {onWheel, randomId} from "@/components/utils";
-   import {onSideHover} from "@/components/predictive";
-   import Loadable from "@/components/mixins/loadable";
+import Vue from 'vue';
+import {Component, Prop, Emit, Mixins} from 'vue-property-decorator';
+import {ButtonGroup} from '@/components/index';
+import {onWheel, randomId} from '@/components/utils';
+import {onSideHover} from '@/components/predictive';
+import Loadable from '@/components/mixins/loadable';
 
-   export interface BaseTag {
-      [key: string]: any
-      name: string
+export interface BaseTag {
+   [key: string]: any;
+   name: string;
+}
+
+const scrollLeft = (el: Element, left = 100) => el.scrollBy({
+   top: 0,
+   left: -left,
+   behavior: 'smooth',
+});
+const scrollRight = (el: Element, left = 100) => el.scrollLeft += left;
+
+enum ScroolTo {
+   NONE = 'NONE',
+   LEFT = 'LEFT',
+   RIGHT = 'RIGHT',
+}
+
+@Component({
+   components: {
+      ButtonGroup,
+   },
+})
+export default class Tags extends Mixins(Loadable) {
+
+   public id = 'tags-' + randomId();
+
+   @Prop({
+      type: Array,
+      default: () => [],
+   }) public values!: BaseTag[];
+
+   @Prop({
+      type: Boolean,
+      default: true,
+   })
+   public scrollable!: boolean;
+
+   @Prop({
+      type: Array,
+      default: () => [],
+   })
+   public activeTags!: BaseTag[];
+
+   public scrollTo = ScroolTo.NONE;
+
+   public isCanAnimateScroll = true;
+
+   @Emit('choose')
+   public chooseTag(tag: BaseTag) {
+      return tag;
    }
 
-   const scrollLeft = (el: Element, left = 100) => el.scrollBy({
-      top: 0,
-      left: -left,
-      behavior: 'smooth'
-   })
-   const scrollRight = (el: Element, left = 100) => el.scrollLeft += left
-
-   enum ScroolTo {
-      NONE = 'NONE',
-      LEFT = 'LEFT',
-      RIGHT = 'RIGHT'
-   }
-
-   @Component({
-      components: {
-         ButtonGroup
-      }
-   })
-   export default class Tags extends Mixins(Loadable) {
-
-      id = 'tags-' + randomId()
-
-      @Prop({
-         type: Array,
-         default: () => []
-      }) values: Array<BaseTag>
-
-      @Prop({
-         type: Boolean,
-         default: true
-      })
-      scrollable: boolean
-
-      @Prop({
-         type: Array,
-         default: () => []
-      })
-      activeTags: Array<BaseTag>
-
-      scrollTo = ScroolTo.NONE
-
-      @Emit('choose')
-      chooseTag(tag: BaseTag) {
-         return tag
+   public mounted() {
+      const el = document.querySelector(`#${this.id}`);
+      if (!el) {
+         return console.error('Cannot add scrolling');
       }
 
-      isCanAnimateScroll = true
+      onWheel(el, {
+         up: () => scrollLeft(el),
+         down: () => scrollRight(el),
+      });
 
-      mounted(){
-         const el = document.querySelector(`#${this.id}`)
-         if(!el)
-            return console.error('Cannot add scrolling')
-
-         onWheel(el, {
-            up: () => scrollLeft(el),
-            down: () => scrollRight(el)
-         })
-
-         const infiniteScroll = () => {
-            const step = 100
-            if(this.scrollTo === ScroolTo.LEFT)
-               el.scrollLeft -= step
-
-            if(this.scrollTo === ScroolTo.RIGHT)
-               el.scrollLeft += step
-
-            if(this.isCanAnimateScroll)
-               setTimeout(infiniteScroll, 100)
+      const infiniteScroll = () => {
+         const step = 100;
+         if (this.scrollTo === ScroolTo.LEFT) {
+            el.scrollLeft -= step;
          }
 
-         infiniteScroll()
+         if (this.scrollTo === ScroolTo.RIGHT) {
+            el.scrollLeft += step;
+         }
 
-         onSideHover(el, 0.1, {
-            left: async () => {
-               this.scrollTo = ScroolTo.LEFT
-            },
-            right: async () => {
-               this.scrollTo = ScroolTo.RIGHT
-            },
-            center: async () => {
-               this.scrollTo = ScroolTo.NONE
-            }
-         })
+         if (this.isCanAnimateScroll) {
+            setTimeout(infiniteScroll, 100);
+         }
+      };
 
-         el.addEventListener('mouseleave', event => {
-            this.scrollTo = ScroolTo.NONE
-         })
-      }
+      infiniteScroll();
 
-      beforeDestroy(){
-         this.isCanAnimateScroll = false;
-      }
+      onSideHover(el, 0.1, {
+         left: async () => {
+            this.scrollTo = ScroolTo.LEFT;
+         },
+         right: async () => {
+            this.scrollTo = ScroolTo.RIGHT;
+         },
+         center: async () => {
+            this.scrollTo = ScroolTo.NONE;
+         },
+      });
 
-
+      el.addEventListener('mouseleave', (event) => {
+         this.scrollTo = ScroolTo.NONE;
+      });
    }
+
+   public beforeDestroy() {
+      this.isCanAnimateScroll = false;
+   }
+
+
+}
 </script>
 
 <style scoped lang="scss">

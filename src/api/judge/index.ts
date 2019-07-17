@@ -1,22 +1,22 @@
-import {ResultRunProgram} from "../../models";
+import {ResultRunProgram} from '../../models';
 import urls from '../urls.json';
 
 const credentials: RequestCredentials = 'same-origin';
 
 interface RunProgramRequestBody {
-  problemId: string,
-  code: string
+  problemId: string;
+  code: string;
 }
 
 
 export function runProgram(problemId: string, code: string): Promise<ResultRunProgram> {
-  let body: RunProgramRequestBody = {
+  const body: RunProgramRequestBody = {
     problemId,
-    code
+    code,
   };
   return fetch(urls.ORANGE_MANAGER_SERVER + urls.RUN_PROGRAM, {
-    method: "POST",
+    method: 'POST',
     credentials,
-    body: JSON.stringify(body)
-  }).then(response => response.json())
+    body: JSON.stringify(body),
+  }).then((response) => response.json());
 }

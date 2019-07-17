@@ -1,159 +1,159 @@
-import Vue from 'vue'
-import {Component, Prop} from 'vue-property-decorator'
+import Vue from 'vue';
+import {Component, Prop} from 'vue-property-decorator';
 
 @Component
 export default class BaseButton extends Vue {
-   @Prop(Number) tabindex: number;
+   @Prop(Number) public tabindex!: number;
 
    @Prop({
       type: Boolean,
-      default: false
+      default: false,
    })
-   disabled: boolean;
+   public disabled!: boolean;
 
-   @Prop(String) icon: string;
-
-   @Prop({
-      type: Boolean,
-      default: false
-   })
-   shadow: boolean;
+   @Prop(String) public icon!: string;
 
    @Prop({
       type: Boolean,
-      default: false
+      default: false,
    })
-   simple: boolean;
+   public shadow!: boolean;
 
    @Prop({
       type: Boolean,
-      default: false
+      default: false,
    })
-   biggerFont: boolean
+   public simple!: boolean;
 
    @Prop({
       type: Boolean,
-      default: false
+      default: false,
    })
-   active: boolean;
+   public biggerFont!: boolean;
 
    @Prop({
       type: Boolean,
-      default: false
+      default: false,
    })
-   primary: boolean;
+   public active!: boolean;
 
    @Prop({
       type: Boolean,
-      default: false
+      default: false,
    })
-   maxWidth: boolean
+   public primary!: boolean;
 
    @Prop({
       type: Boolean,
-      default: false
+      default: false,
    })
-   maxHeight: boolean
+   public maxWidth!: boolean;
 
    @Prop({
       type: Boolean,
-      default: true
+      default: false,
    })
-   gradientHighlight: boolean
+   public maxHeight!: boolean;
 
    @Prop({
       type: Boolean,
-      default: false
+      default: true,
    })
-   borderHighlight: boolean
-
-   @Prop({
-      type: String
-   })
-   hovered: string
+   public gradientHighlight!: boolean;
 
    @Prop({
       type: Boolean,
-      default: false
+      default: false,
    })
-   fadeText: boolean
+   public borderHighlight!: boolean;
+
+   @Prop({
+      type: String,
+   })
+   public hovered!: string;
 
    @Prop({
       type: Boolean,
-      default: false
+      default: false,
    })
-   textCanFade: boolean
+   public fadeText!: boolean;
 
    @Prop({
       type: Boolean,
-      default: false
+      default: false,
    })
-   circle: boolean
+   public textCanFade!: boolean;
 
    @Prop({
       type: Boolean,
-      default: false
+      default: false,
    })
-   secondary: boolean
+   public circle!: boolean;
 
    @Prop({
       type: Boolean,
-      default: false
+      default: false,
    })
-   bold: boolean
+   public secondary!: boolean;
 
    @Prop({
       type: Boolean,
-      default: false
+      default: false,
    })
-   noActiveBold: boolean
+   public bold!: boolean;
 
    @Prop({
       type: Boolean,
-      default: false
+      default: false,
    })
-   simpleActive: boolean
+   public noActiveBold!: boolean;
 
    @Prop({
       type: Boolean,
-      default: true
+      default: false,
    })
-   iconLeft: boolean
+   public simpleActive!: boolean;
 
    @Prop({
       type: Boolean,
-      default: false
+      default: true,
    })
-   contrast: boolean
+   public iconLeft!: boolean;
 
    @Prop({
       type: Boolean,
-      default: false
+      default: false,
    })
-   textOnHover: boolean
+   public contrast!: boolean;
 
    @Prop({
       type: Boolean,
-      default: false
+      default: false,
    })
-   staticSize: boolean
+   public textOnHover!: boolean;
 
    @Prop({
       type: Boolean,
-      default: false
+      default: false,
    })
-   onlyIcon: boolean
+   public staticSize!: boolean;
 
    @Prop({
       type: Boolean,
-      default: false
+      default: false,
    })
-   ghost: boolean
+   public onlyIcon!: boolean;
 
    @Prop({
       type: Boolean,
-      default: false
+      default: false,
    })
-   leftAlign: boolean
+   public ghost!: boolean;
+
+   @Prop({
+      type: Boolean,
+      default: false,
+   })
+   public leftAlign!: boolean;
 
 }

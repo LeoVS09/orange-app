@@ -1,6 +1,6 @@
-import {StatusScopes} from "@/store/modules/statuses/types";
+import {StatusScopes} from '@/store/modules/statuses/types';
 
 
 export class StatusState {
-   scopes: StatusScopes = {}
+   public scopes: StatusScopes = {};
 }

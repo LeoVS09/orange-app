@@ -20,118 +20,120 @@
 </template>
 
 <script lang="ts">
-   import Vue from 'vue'
-   import {Component, Prop, Emit} from 'vue-property-decorator'
-   import {formatDate, isDate} from "./utils";
-   import Icon from './icons/MaterialIcon.vue'
-   import {Filter} from "./decorators";
+import Vue from 'vue';
+import {Component, Prop, Emit} from 'vue-property-decorator';
+import {formatDate, isDate} from './utils';
+import Icon from './icons/MaterialIcon.vue';
+import {Filter} from './decorators';
 
-   export interface DataViewValues {
-      [label: string]: any
-   }
+export interface DataViewValues {
+   [label: string]: any;
+}
 
-   @Component({
-      components: {
-         Icon
-      }
+@Component({
+   components: {
+      Icon,
+   },
+})
+export default class DataView extends Vue {
+
+   @Prop({
+      type: Object,
+      required: true,
    })
-   export default class DataView extends Vue {
+   public values!: DataViewValues;
 
-      @Prop({
-         type: Object,
-         required: true
-      })
-      values: DataViewValues
+   @Prop({
+      type: Function,
+   })
+   public formatValue!: (value: any) => any;
 
-      @Prop({
-         type: Function
-      })
-      formatValue: (value: any) => any
+   @Prop({
+      type: Boolean,
+      default: true,
+   })
+   public compact!: boolean;
 
-      @Prop({
-         type: Boolean,
-         default: true
-      })
-      compact: boolean
+   @Prop({
+      type: Boolean,
+      default: false,
+   })
+   public inRow!: boolean;
 
-      @Prop({
-         type: Boolean,
-         default: false
-      })
-      inRow: boolean
+   @Prop({
+      type: Boolean,
+      default: false,
+   })
+   public modelInfo!: boolean;
 
-      @Prop({
-         type: Boolean,
-         default: false
-      })
-      modelInfo: boolean
+   @Prop({
+      type: Array,
+   })
+   public order!: string[];
 
-      @Prop({
-         type: Array
-      })
-      order: Array<string>
+   @Prop({
+      type: Array,
+   })
+   public exclude!: string[];
 
-      @Prop({
-         type: Array
-      })
-      exclude: Array<string>
+   @Prop({
+      type: Object,
+      default: () => ({}),
+   })
+   public icons!: {[key: string]: string};
 
-      @Prop({
-         type: Object,
-         default: () => ({})
-      })
-      icons: {[key: string]: string}
+   @Prop({
+      type: Boolean,
+      default: false,
+   })
+   public contrast!: boolean;
 
-      @Prop({
-         type: Boolean,
-         default: false
-      })
-      contrast: boolean
+   @Prop({
+      type: Boolean,
+      default: false,
+   })
+   public small!: boolean;
 
-      @Prop({
-         type: Boolean,
-         default: false
-      })
-      small: boolean
+   get visibleValues() {
+      let keys = Object.keys(this.values);
 
-      get visibleValues(){
-         let keys = Object.keys(this.values)
+      if (this.order) {
+         const notOrdered = keys.filter((k) => this.order.indexOf(k) === -1);
+         const have = this.order.filter((k) => keys.indexOf(k) !== -1);
 
-         if(this.order) {
-            const notOrdered = keys.filter(k => this.order.indexOf(k) === -1)
-            const have = this.order.filter(k => keys.indexOf(k) !== -1)
-
-            keys = [
-               ...have,
-               ...notOrdered
-            ]
-         }
-
-         if(this.exclude)
-            keys = keys.filter(k => this.exclude.indexOf(k) === -1)
-
-
-         return keys.map(label => {
-            const value = this.values[label]
-
-            const icon = this.icons[label]
-
-            return {label, icon, value}
-         })
+         keys = [
+            ...have,
+            ...notOrdered,
+         ];
       }
 
-      valueToText(value: any) {
-         if(this.formatValue)
-            return this.formatValue(value)
-
-         return value
+      if (this.exclude) {
+         keys = keys.filter((k) => this.exclude.indexOf(k) === -1);
       }
 
-      @Emit('click')
-      choseItem(value: {label: string, value: any}) {
-         return value
-      }
+
+      return keys.map((label) => {
+         const value = this.values[label];
+
+         const icon = this.icons[label];
+
+         return {label, icon, value};
+      });
    }
+
+   public valueToText(value: any) {
+      if (this.formatValue) {
+         return this.formatValue(value);
+      }
+
+      return value;
+   }
+
+   @Emit('click')
+   public choseItem(value: {label: string, value: any}) {
+      return value;
+   }
+}
 </script>
 
 <style scoped lang="scss">

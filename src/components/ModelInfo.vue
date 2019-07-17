@@ -16,118 +16,122 @@
 </template>
 
 <script lang="ts">
-   import Vue from 'vue'
-   import {Component, Prop} from 'vue-property-decorator'
-   import Section from './Section.vue'
-   import DataView from './DataView.vue'
+import Vue from 'vue';
+import {Component, Prop} from 'vue-property-decorator';
+import Section from './Section.vue';
+import DataView from './DataView.vue';
 
-   export interface IModelInfoTopData {
-      [key: string]: string | {
-         text: string,
-         icon: string
+export interface IModelInfoTopData {
+   [key: string]: string | {
+      text: string,
+      icon: string,
+   };
+}
+
+function normaliseName(key: string): string {
+   return key.slice(0, 1).toUpperCase() + (key.slice(1).split('').map((c) => {
+      if (c.match(/[A-Z]/)) {
+         return ' ' + c.toLowerCase();
       }
-   }
 
-   function normaliseName(key: string): string {
-      return key.slice(0,1).toUpperCase() + (key.slice(1).split('').map(c => {
-         if(c.match(/[A-Z]/))
-            return ' ' + c.toLowerCase()
+      return c;
+   }).join(''));
+}
 
-         return c
-      }).join(''))
-   }
+function isArrayOfObjects(arr: any[]): arr is Array<{[key: string]: string}> {
+   return typeof arr[0] === 'object';
+}
 
-   function isArrayOfObjects(arr: Array<any>): arr is Array<{[key: string]: string}> {
-      return typeof arr[0] === 'object'
-   }
+@Component({
+   components: {
+      Section,
+      DataView,
+   },
+})
+export default class ModelInfo extends Vue {
 
-   @Component({
-      components: {
-         Section,
-         DataView
-      }
+   @Prop({
+      type: Object,
+      required: true,
    })
-   export default class ModelInfo extends Vue {
+   public value!: {[key: string]: any};
 
-      @Prop({
-         type: Object,
-         required: true
-      })
-      value: {[key: string]: any}
+   @Prop({
+      type: Boolean,
+      default: false,
+   })
+   public editable!: boolean;
 
-      @Prop({
-         type: Boolean,
-         default: false
-      })
-      editable: boolean
+   @Prop(Array)
+   public properties!: Array<string | {[key: string]: string}>;
 
-      @Prop(Array)
-      properties: Array<string | {[key: string]: string}>
+   @Prop({
+      type: Array,
+      default: () => [
+         'id',
+         'nodeId',
+         'name',
+         'createdAt',
+         'updatedAt',
+      ],
+   })
+   public excludeDefaults!: string[];
 
-      @Prop({
-         type: Array,
-         default: () => [
-            'id',
-            'nodeId',
-            'name',
-            'createdAt',
-            'updatedAt'
-         ]
-      })
-      excludeDefaults: Array<string>
+   @Prop({
+      type: Array,
+      default: () => [],
+   })
+   public exclude!: string[];
 
-      @Prop({
-         type: Array,
-         default: () => []
-      })
-      exclude: Array<string>
+   get mainData() {
+      // TODO: refactor this, very bad code
+      // NOTE: code !== sleep
 
-      get mainData() {
-         // TODO: refactor this, very bad code
-         // NOTE: code !== sleep
+      let keys: string[];
+      const labels: {[key: string]: string} = {};
 
-         let keys: Array<string>
-         let labels: {[key: string]: string} = {}
+      if (!this.properties) {
+         keys = Object.keys(this.value);
+         const exclude = [...this.excludeDefaults, ...this.exclude];
 
-         if(!this.properties) {
-            keys = Object.keys(this.value)
-            const exclude = [...this.excludeDefaults, ...this.exclude]
+         keys = keys.filter((k) =>
+            k[0] !== '_' &&
+            exclude.indexOf(k) === -1,
+         );
+      } else if (isArrayOfObjects(this.properties)) {
+         keys = [];
 
-            keys = keys.filter(k =>
-               k[0] !== '_' &&
-               exclude.indexOf(k) === -1
-            )
-         } else if(isArrayOfObjects(this.properties)) {
-            keys = []
+         this.properties.forEach((property) => {
+            const key = Object.keys(property)[0];
 
-            this.properties.forEach(property => {
-               const key = Object.keys(property)[0]
+            labels[key] = property[key];
 
-               labels[key] = property[key]
+            keys.push(key);
+         });
+      } else {
+         keys = this.properties as string[];
+ }
 
-               keys.push(key)
-            })
-         } else
-            keys = this.properties as Array<string>
+      if (!this.properties || typeof this.properties[0] !== 'object') {
+         keys.forEach((key) => labels[key] = normaliseName(key));
+      }
 
-         if(!this.properties || typeof this.properties[0] !== 'object')
-            keys.forEach(key => labels[key] = normaliseName(key))
+      const result: {[key: string]: any} = {};
 
-         let result: {[key: string]: any} = {}
-
-         for(const key of keys) {
-            const value = this.value[key]
-            if(typeof value === 'object')
-               continue
-
-            const label = labels[key]
-
-            result[label] = value
+      for (const key of keys) {
+         const value = this.value[key];
+         if (typeof value === 'object') {
+            continue;
          }
 
-         return result
+         const label = labels[key];
+
+         result[label] = value;
       }
+
+      return result;
    }
+}
 </script>
 
 <style lang="scss">

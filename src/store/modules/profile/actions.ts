@@ -1,32 +1,32 @@
-import * as API from "@/api";
-import * as queryTypes from '@/api/database/queries/types'
+import * as API from '@/api';
+import * as queryTypes from '@/api/database/queries/types';
 import {
    University,
-   UserProfile
-} from "@/models";
-import {IRegisterProfilePayload} from './types'
-import * as mutations from './mutationTypes'
-import * as actionTypes from './actionTypes'
-import {checkIsLogin, currentUserIfHave, signin, signout, signup} from "@/authentication";
-import {City, Country} from "@/models/country";
-import {ProfileState} from './state'
-import {IActionContext} from '@/store/state'
-import * as fragmentsTypes from "@/api/database/fragments/types";
+   UserProfile,
+} from '@/models';
+import {IRegisterProfilePayload} from './types';
+import * as mutations from './mutationTypes';
+import * as actionTypes from './actionTypes';
+import {checkIsLogin, currentUserIfHave, signin, signout, signup} from '@/authentication';
+import {City, Country} from '@/models/country';
+import {ProfileState} from './state';
+import {IActionContext} from '@/store/state';
+import * as fragmentsTypes from '@/api/database/fragments/types';
 
 
 // const DEBUG = process.env.NODE_ENV !== 'production'
-const DEBUG = false
+const DEBUG = false;
 
 export interface ILoginToProfilePayload {
-   login: string,
-   password: string,
-   isRemember: boolean
+   login: string;
+   password: string;
+   isRemember: boolean;
 }
 
 export default {
 
    [actionTypes.SETUP_USER_PROFILE]({commit}: IActionContext<ProfileState>, user: UserProfile) {
-      commit(mutations.SET_PROFILE_DATA, user)
+      commit(mutations.SET_PROFILE_DATA, user);
    },
 
    async [actionTypes.INITIALISE_PROFILE_DATA]({commit}: IActionContext<ProfileState>) {
@@ -34,13 +34,14 @@ export default {
    },
 
    async [actionTypes.LOGIN_TO_PROFILE]({commit}: IActionContext<ProfileState>, {login, password, isRemember}: ILoginToProfilePayload): Promise<boolean> {
-      const result = await signin(login, password, isRemember)
+      const result = await signin(login, password, isRemember);
 
-      if (!result)
-         return false
+      if (!result) {
+         return false;
+      }
 
       commit(mutations.SET_PROFILE_DATA, result);
-      return true
+      return true;
    },
 
    [actionTypes.LOGOUT_FROM_PROFILE]({commit}: IActionContext<ProfileState>) {
@@ -68,35 +69,38 @@ export default {
          firstName: user.firstName,
          middleName: user.middleName,
          lastName: user.lastName,
-         avatarUrl: user.avatarUrl
-      })
-      if (!result)
-         return false
-
-      commit(mutations.SET_PROFILE_DATA, {...result, ...user});
-      return true
-   },
-   async [actionTypes.INIT_PROFILE]({commit}: IActionContext<ProfileState>): Promise<boolean> {
-      console.log('App start, check is login')
-      const checkResult = checkIsLogin();
-      console.log('check is login result', checkResult)
-      if (!checkResult.ok) {
-         return false
+         avatarUrl: user.avatarUrl,
+      });
+      if (!result) {
+         return false;
       }
 
-      const current = await currentUserIfHave()
-      if (!current.ok)
-         return false
+      commit(mutations.SET_PROFILE_DATA, {...result, ...user});
+      return true;
+   },
+   async [actionTypes.INIT_PROFILE]({commit}: IActionContext<ProfileState>): Promise<boolean> {
+      console.log('App start, check is login');
+      const checkResult = checkIsLogin();
+      console.log('check is login result', checkResult);
+      if (!checkResult.ok) {
+         return false;
+      }
 
-      if (current.user.id !== checkResult.userId)
-         return false
+      const current = await currentUserIfHave();
+      if (!current.ok) {
+         return false;
+      }
+
+      if (current.user.id !== checkResult.userId) {
+         return false;
+      }
 
       commit(mutations.SET_PROFILE_DATA, current.user);
-      return true
-   }
-}
+      return true;
+   },
+};
 
 export function handleReadError(description: string, id?: string) {
    // TODO
-   console.error(description)
+   console.error(description);
 }

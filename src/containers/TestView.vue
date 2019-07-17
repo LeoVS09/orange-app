@@ -11,80 +11,81 @@
 </template>
 
 <script lang="ts">
-   import Vue from 'vue'
-   import {Component, Prop} from 'vue-property-decorator'
-   import {Action, Getter} from 'vuex-class'
-   import {MaterialIcon, SourceView} from '@/components';
-   import * as actions from '@/store/actionTypes';
-   import {Test} from "@/models";
-   import {MODULES, actionName} from "@/store/actionTypes";
-   import {IUpdateTestActionPayload} from "@/store/modules/problems/actions";
-   import {GET_READ_STATE, GET_STATUS} from "@/store/modules/statuses/getters";
-   import {ModelStatus} from "@/store/modules";
-   import {ModelReadState} from "@/store/modules/statuses/types";
-   import {STATUS_SCOPES} from "@/store/statusScopes";
+import Vue from 'vue';
+import {Component, Prop} from 'vue-property-decorator';
+import {Action, Getter} from 'vuex-class';
+import {MaterialIcon, SourceView} from '@/components';
+import * as actions from '@/store/actionTypes';
+import {Test} from '@/models';
+import {MODULES, actionName} from '@/store/actionTypes';
+import {IUpdateTestActionPayload} from '@/store/modules/problems/actions';
+import {GET_READ_STATE, GET_STATUS} from '@/store/modules/statuses/getters';
+import {ModelStatus} from '@/store/modules';
+import {ModelReadState} from '@/store/modules/statuses/types';
+import {STATUS_SCOPES} from '@/store/statusScopes';
 
-   @Component({
-      components: {
-         SourceView,
-         Icon: MaterialIcon
-      }
+@Component({
+   components: {
+      SourceView,
+      Icon: MaterialIcon,
+   },
+})
+export default class TestView extends Vue {
+
+   @Prop({
+      type: Object,
+      required: true,
    })
-   export default class TestView extends Vue {
+   public testData!: Test;
 
-      @Prop({
-         type: Object,
-         required: true
-      })
-      testData: Test
+   @Prop({
+      type: Boolean,
+      default: false,
+   })
+   public editable!: boolean;
 
-      @Prop({
-         type: Boolean,
-         default: false
-      })
-      editable: boolean
+   @Getter(GET_STATUS)
+   public getStatus!: (scope: string, id: string) => ModelStatus;
 
-      @Getter(GET_STATUS)
-      getStatus: (scope: string, id: string) => ModelStatus
+   @Getter(GET_READ_STATE)
+   public getRead!: (scope: string, id: string) => ModelReadState;
 
-      @Getter(GET_READ_STATE)
-      getRead: (scope: string, id: string) => ModelReadState
+   @Action(actionName(MODULES.PROBLEMS, actions.EDIT_TEST)) public editTest!: (test: Test) => void;
+   @Action(actionName(MODULES.PROBLEMS, actions.UPDATE_TEST)) public updateTest!: (payload: IUpdateTestActionPayload) => boolean;
 
-      @Action(actionName(MODULES.PROBLEMS, actions.EDIT_TEST)) editTest: (test: Test) => void
-      @Action(actionName(MODULES.PROBLEMS, actions.UPDATE_TEST)) updateTest: (payload: IUpdateTestActionPayload) => boolean
-
-      get isEdited(){
-         return this.getStatus(STATUS_SCOPES.TESTS, this.testData.id) === ModelStatus.Changed
-      }
-
-      get isTestCorect(){
-         const test = this.testData
-         return test.input.length && test.output.length
-      }
-
-      get isSyncing() {
-         if (this.isEdited)
-            return false;
-
-         const status = this.getStatus(STATUS_SCOPES.TESTS, this.testData.id)
-
-         return status === ModelStatus.Creating || status === ModelStatus.Updating
-      }
-
-      updateInput(input: string) {
-         this.editTest({
-            ...this.testData,
-            input
-         })
-      }
-
-      updateOutput(output: string) {
-         this.editTest({
-            ...this.testData,
-            output
-         })
-      }
+   get isEdited() {
+      return this.getStatus(STATUS_SCOPES.TESTS, this.testData.id) === ModelStatus.Changed;
    }
+
+   get isTestCorect() {
+      const test = this.testData;
+      return test.input.length && test.output.length;
+   }
+
+   get isSyncing() {
+      if (this.isEdited) {
+         return false;
+      }
+
+      const status = this.getStatus(STATUS_SCOPES.TESTS, this.testData.id);
+
+      return status === ModelStatus.Creating || status === ModelStatus.Updating;
+   }
+
+   public updateInput(input: string) {
+      this.editTest({
+         ...this.testData,
+         input,
+      });
+   }
+
+   public updateOutput(output: string) {
+      this.editTest({
+         ...this.testData,
+         output,
+      });
+   }
+}
 </script>
 
 <style scoped lang="scss">

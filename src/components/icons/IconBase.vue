@@ -16,36 +16,36 @@
 
 
 <script lang="ts">
-   import Vue from 'vue'
-   import {Component, Prop} from 'vue-property-decorator'
+import Vue from 'vue';
+import {Component, Prop} from 'vue-property-decorator';
 
-   @Component
-   export default class IconBase extends Vue {
+@Component
+export default class IconBase extends Vue {
 
-      @Prop({
-         type: String,
-         default: 'box'
-      }) iconName: string
+   @Prop({
+      type: String,
+      default: 'box',
+   }) public iconName!: string;
 
-      @Prop({
-         type: [Number, String],
-         default: 48
-      }) width: number | string
+   @Prop({
+      type: [Number, String],
+      default: 48,
+   }) public width!: number | string;
 
-      @Prop({
-         type: [Number, String],
-         default: 48
-      }) height: number | string
+   @Prop({
+      type: [Number, String],
+      default: 48,
+   }) public height!: number | string;
 
-      @Prop( {
-         type: String,
-         default: 'currentColor'
-      }) iconColor: string
+   @Prop( {
+      type: String,
+      default: 'currentColor',
+   }) public iconColor!: string;
 
-      onClick(event: any) {
-         this.$emit('click', event.target.value)
-      }
+   public onClick(event: any) {
+      this.$emit('click', event.target.value);
    }
+}
 </script>
 
 <style lang="scss">

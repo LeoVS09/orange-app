@@ -62,163 +62,165 @@
 </template>
 
 <script lang="ts">
-   import Vue from 'vue'
-   import {Component, Prop} from 'vue-property-decorator'
-   import {Button, Logo, MaterialIcon} from '@/components'
-   import {Action, Getter} from 'vuex-class'
-   import {UserProfile} from "@/models"
-   import {ROUTES} from '@/router'
-   import {IListener, onPredictiveHover, onScroll} from "@/components/predictive";
-   import {Translation} from "@/store/modules/ui/state";
-   import * as actions from '@/store/actionTypes'
-   import {RouterPush} from "@/components/decorators";
+import Vue from 'vue';
+import {Component, Prop} from 'vue-property-decorator';
+import {Button, Logo, MaterialIcon} from '@/components';
+import {Action, Getter} from 'vuex-class';
+import {UserProfile} from '@/models';
+import {ROUTES} from '@/router';
+import {IListener, onPredictiveHover, onScroll} from '@/components/predictive';
+import {Translation} from '@/store/modules/ui/state';
+import * as actions from '@/store/actionTypes';
+import {RouterPush} from '@/components/decorators';
 
-   // TODO: use router links
+// TODO: use router links
 
-   let mousemoveListener: IListener
+let mousemoveListener: IListener;
 
-   @Component({
-      components: {
-         Icon: MaterialIcon,
-         Logo,
-         Button
+@Component({
+   components: {
+      Icon: MaterialIcon,
+      Logo,
+      Button,
+   },
+})
+export default class TopBar extends Vue {
+
+   get profileText() {
+      if (!this.userData) {
+         return this.$t('Sign In');
       }
+
+      let name = this.userData.firstName;
+      name = name[0].toUpperCase() + name.slice(1);
+
+      return name;
+   }
+
+   get isMenuVisible() {
+      return this.isProfileActionsHover &&
+         !this.isActionCompleted &&
+         !!this.userData &&
+         (this.isScroll || !this.scrollTop);
+   }
+
+   get isProblemsRoute() {
+      return this.$route.name === ROUTES.PROBLEMS;
+   }
+
+   get isContestsRoute() {
+      return this.$route.name === ROUTES.CONTESTS;
+   }
+
+   @Prop({
+      type: Boolean,
+      default: false,
    })
-   export default class TopBar extends Vue {
+   public showProfileActions!: boolean;
 
-      @Prop({
-         type: Boolean,
-         default: false
-      })
-      showProfileActions: boolean;
+   @Getter('profile') public userData?: UserProfile;
 
-      @Getter('profile') userData?: UserProfile;
+   @Getter public locale!: Translation;
 
-      @Getter locale: Translation
+   @Action(actions.SET_LOCALE) public setLocale!: (locale: Translation) => void;
 
-      @Action(actions.SET_LOCALE) setLocale: (locale: Translation) => void
+   public isProfileActionsHover = this.showProfileActions;
+   public isScroll = false;
+   public scrollTop = 0;
+   public isActionCompleted = false;
 
-      isProfileActionsHover = this.showProfileActions;
-      isScroll = false;
-      scrollTop = 0;
-      isActionCompleted = false;
+   public ROUTES = ROUTES;
+   public Translation = Translation;
 
-      ROUTES = ROUTES
-      Translation = Translation
+   @RouterPush(ROUTES.HOME)
+   public clickHome!: () => void;
 
-      created() {
-         mousemoveListener = onPredictiveHover(
-            () => this.startHoverProfile(),
-            () => this.endHoverProfile()
-         )
+   @RouterPush(ROUTES.PROBLEMS)
+   public clickProblems!: () => void;
 
-         onScroll(
-            top => this.startScroll(top),
-            top => this.endScroll(top)
-         )
+   @RouterPush(ROUTES.CONTESTS)
+   public clickContests!: () => void;
+
+   @RouterPush(ROUTES.COUNTRIES)
+   public clickCountries!: () => void;
+
+   @RouterPush(ROUTES.PROGRAMMING_LANGUAGES)
+   public clickProgrammingLanguages!: () => void;
+
+   public created() {
+      mousemoveListener = onPredictiveHover(
+         () => this.startHoverProfile(),
+         () => this.endHoverProfile(),
+      );
+
+      onScroll(
+         (top) => this.startScroll(top),
+         (top) => this.endScroll(top),
+      );
+   }
+
+   public beforeDestroy() {
+      mousemoveListener.destroy();
+   }
+
+   public onMenuIconClick() {
+      console.log('click');
+      // TODO
+   }
+
+   public startHoverProfile(): boolean {
+      if (!this.userData) {
+         return this.isProfileActionsHover;
       }
 
-      beforeDestroy() {
-         mousemoveListener.destroy()
+      this.isProfileActionsHover = true;
+      const showProfileActions = this.isMenuVisible;
+      this.$emit('update:is-menu-visible', showProfileActions);
+
+      return this.isProfileActionsHover;
+   }
+
+   public endHoverProfile() {
+      this.isProfileActionsHover = false;
+      this.isActionCompleted = false;
+      const showProfileActions = this.isMenuVisible;
+      this.$emit('update:is-menu-visible', showProfileActions);
+
+      return this.isProfileActionsHover;
+   }
+
+   public startScroll(top: number) {
+      this.isScroll = true;
+      this.scrollTop = top;
+   }
+
+   public endScroll(top: number) {
+      this.isScroll = false;
+      this.scrollTop = top;
+   }
+
+   public clickProfile() {
+      if (this.userData) {
+         this.$router.push({name: ROUTES.PROFILE});
+      } else {
+         this.$router.push({name: ROUTES.SIGNIN});
       }
+      this.isActionCompleted = true;
+   }
 
-      get profileText() {
-         if (!this.userData) {
-            return this.$t('Sign In')
-         }
+   public clickSignOut() {
+      this.$store.dispatch(actions.LOGOUT_FROM_PROFILE);
+      this.isActionCompleted = true;
+   }
 
-         let name = this.userData.firstName;
-         name = name[0].toUpperCase() + name.slice(1);
-
-         return name;
-      }
-
-      get isMenuVisible() {
-         return this.isProfileActionsHover &&
-            !this.isActionCompleted &&
-            !!this.userData &&
-            (this.isScroll || !this.scrollTop)
-      }
-
-      onMenuIconClick(){
-         console.log('click')
-         // TODO
-      }
-
-      startHoverProfile(): boolean {
-         if (!this.userData)
-            return this.isProfileActionsHover
-
-         this.isProfileActionsHover = true;
-         const showProfileActions = this.isMenuVisible;
-         this.$emit("update:is-menu-visible", showProfileActions);
-
-         return this.isProfileActionsHover
-      }
-
-      endHoverProfile() {
-         this.isProfileActionsHover = false;
-         this.isActionCompleted = false;
-         const showProfileActions = this.isMenuVisible;
-         this.$emit("update:is-menu-visible", showProfileActions);
-
-         return this.isProfileActionsHover
-      }
-
-      startScroll(top: number) {
-         this.isScroll = true;
-         this.scrollTop = top;
-      }
-
-      endScroll(top: number) {
-         this.isScroll = false;
-         this.scrollTop = top;
-      }
-
-      @RouterPush(ROUTES.HOME)
-      clickHome: () => void
-
-      get isProblemsRoute(){
-         return this.$route.name === ROUTES.PROBLEMS
-      }
-
-      get isContestsRoute(){
-         return this.$route.name === ROUTES.CONTESTS
-      }
-
-      @RouterPush(ROUTES.PROBLEMS)
-      clickProblems: () => void
-
-      @RouterPush(ROUTES.CONTESTS)
-      clickContests: () => void
-
-      clickProfile() {
-         if (this.userData) {
-            this.$router.push({name: ROUTES.PROFILE})
-         } else {
-            this.$router.push({name: ROUTES.SIGNIN});
-         }
-         this.isActionCompleted = true;
-      }
-
-      @RouterPush(ROUTES.COUNTRIES)
-      clickCountries: () => void
-
-      @RouterPush(ROUTES.PROGRAMMING_LANGUAGES)
-      clickProgrammingLanguages: () => void
-
-      clickSignOut() {
-         this.$store.dispatch(actions.LOGOUT_FROM_PROFILE);
-         this.isActionCompleted = true;
-      }
-
-      toggleLocale(){
-         if(this.locale === Translation.RU)
-            this.setLocale(Translation.EN)
-         else
-            this.setLocale(Translation.RU)
+   public toggleLocale() {
+      if (this.locale === Translation.RU) {
+         this.setLocale(Translation.EN);
+      } else {
+         this.setLocale(Translation.RU);
       }
    }
+}
 </script>
 
 <style scoped lang="scss">

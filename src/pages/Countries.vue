@@ -23,49 +23,49 @@
 </template>
 
 <script lang="ts">
-   import Vue from 'vue'
-   import {Component} from 'vue-property-decorator'
-   import {Getter, Action, State} from 'vuex-class'
-   import {Country, FullProblem, PartialProblem} from "@/models"
-   import * as actions from '@/store/actionTypes';
-   import {PageHeader, Button, List, Tags, Section, PageHeaderAction, Filters} from '@/components';
-   import {ROUTES} from '@/router'
-   import {RouterPush} from '@/components/decorators'
-   import {actionName, MODULES} from '@/store/actionTypes';
-   import {CountryModel} from '@/models/country'
+import Vue from 'vue';
+import {Component} from 'vue-property-decorator';
+import {Getter, Action, State} from 'vuex-class';
+import {Country, FullProblem, PartialProblem} from '@/models';
+import * as actions from '@/store/actionTypes';
+import {PageHeader, Button, List, Tags, Section, PageHeaderAction, Filters} from '@/components';
+import {ROUTES} from '@/router';
+import {RouterPush} from '@/components/decorators';
+import {actionName, MODULES} from '@/store/actionTypes';
+import {CountryModel} from '@/models/country';
 
-   @Component({
-      components: {
-         PageHeader,
-         Button,
-         Filters,
-         List,
-         Tags,
-         Section,
-         Action: PageHeaderAction
-      }
-   })
-   export default class Countries extends Vue {
-
-      data(){
-         return {
-            list: CountryModel.list()
-         }
-      }
+@Component({
+   components: {
+      PageHeader,
+      Button,
+      Filters,
+      List,
+      Tags,
+      Section,
+      Action: PageHeaderAction,
+   },
+})
+export default class Countries extends Vue {
 
 
-      @Getter isTeacher: boolean;
+   @Getter public isTeacher!: boolean;
 
-      add() {
-         // TODO
-      }
+   @RouterPush(ROUTES.COUNTRY)
+   public chooseItem!: (country: Country) => void;
 
-      validate(){
-       // TODO
-      }
-
-      @RouterPush(ROUTES.COUNTRY)
-      chooseItem: (country: Country) => void
-
+   public data() {
+      return {
+         list: CountryModel.list(),
+      };
    }
+
+   public add() {
+      // TODO
+   }
+
+   public validate() {
+    // TODO
+   }
+
+}
 </script>

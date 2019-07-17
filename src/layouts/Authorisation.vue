@@ -11,59 +11,59 @@
 </template>
 
 <script lang="ts">
-   import Vue from 'vue'
-   import {Component} from 'vue-property-decorator'
-   import {Getter} from 'vuex-class'
-   import {Logo, Input, Button} from '@/components'
-   import eventBus, {BusEventTypes, AuthorisationEventPayload, AuthorisationEventState} from "@/pages/eventBus";
-   import {ROUTES} from "@/router";
-   // TODO: add transition between pages change
+import Vue from 'vue';
+import {Component} from 'vue-property-decorator';
+import {Getter} from 'vuex-class';
+import {Logo, Input, Button} from '@/components';
+import eventBus, {BusEventTypes, AuthorisationEventPayload, AuthorisationEventState} from '@/pages/eventBus';
+import {ROUTES} from '@/router';
+// TODO: add transition between pages change
 
-   @Component({
-      components: {
-         Logo,
-         Input,
-         Button
-      }
-   })
-   export default class Authorisation extends Vue {
+@Component({
+   components: {
+      Logo,
+      Input,
+      Button,
+   },
+})
+export default class Authorisation extends Vue {
 
-      // @ts-ignore
-      @Getter('isSignInPage') isSignInPage: boolean;
-      isRemember = true;
-      login = "";
-      password = "";
+   // @ts-ignore
+   @Getter('isSignInPage') public isSignInPage: boolean;
+   public isRemember = true;
+   public login = '';
+   public password = '';
 
-      clickRemember() {
-         this.isRemember = !this.isRemember;
-      }
-
-      clickHome() {
-         this.$router.push({name: ROUTES.HOME});
-      }
-
-      created(){
-         eventBus.$on(BusEventTypes.Authorisation, (payload: AuthorisationEventPayload) => {
-            switch (payload.state) {
-               case AuthorisationEventState.Completed:
-                  console.log('route', this.$route)
-                  let name = this.$route.query.from
-                  if(!name)
-                     name = ROUTES.HOME
-                  this.$router.push({ name })
-                  return
-            }
-
-            console.error('Unexpected authorisation state', payload)
-         })
-      }
-
-      mounted() {
-         console.log('route', this.$route)
-      }
-
+   public clickRemember() {
+      this.isRemember = !this.isRemember;
    }
 
+   public clickHome() {
+      this.$router.push({name: ROUTES.HOME});
+   }
+
+   public created() {
+      eventBus.$on(BusEventTypes.Authorisation, (payload: AuthorisationEventPayload) => {
+         switch (payload.state) {
+            case AuthorisationEventState.Completed:
+               console.log('route', this.$route);
+               let name = this.$route.query.from as string;
+               if (!name) {
+                  name = ROUTES.HOME;
+               }
+               this.$router.push({ name });
+               return;
+         }
+
+         console.error('Unexpected authorisation state', payload);
+      });
+   }
+
+   public mounted() {
+      console.log('route', this.$route);
+   }
+
+}
 </script>
 
 <style scoped lang="scss">

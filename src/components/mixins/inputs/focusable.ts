@@ -1,15 +1,15 @@
-import Vue from 'vue'
-import {Component} from 'vue-property-decorator'
+import Vue from 'vue';
+import {Component} from 'vue-property-decorator';
 
 @Component
 export default class Focusable extends Vue {
-   focused = false
+   public focused = false;
 
-   onFocus(){
-      this.focused = true
+   public onFocus() {
+      this.focused = true;
    }
 
-   onBlur(){
-      this.focused = false
+   public onBlur() {
+      this.focused = false;
    }
 }

@@ -25,111 +25,116 @@
 </template>
 
 <script lang="ts">
-   import Vue from 'vue'
-   import {Component, Prop, Emit} from 'vue-property-decorator'
-   import {ButtonEvent, ButtonEvents, ButtonGroupMeta} from "./types";
-   import Button from './Button.vue'
+import Vue from 'vue';
+import {Component, Prop, Emit} from 'vue-property-decorator';
+import {ButtonEvent, ButtonEvents, ButtonGroupMeta} from './types';
+import Button from './Button.vue';
 
-   interface ReflectedButton {
-      value: any
-      label: string
-      isActive: boolean
-   }
+interface ReflectedButton {
+   value: any;
+   label: string;
+   isActive: boolean;
+}
 
-   @Component({
-      components: {
-         Button
-      }
-   })
-   export default class ButtonGroup extends Vue {
+@Component({
+   components: {
+      Button,
+   },
+})
+export default class ButtonGroup extends Vue {
 
-      @Prop({
-         type: Object
-      })
-      meta: ButtonGroupMeta
-
-      @Prop({
-         type: Boolean,
-         default: true
-      })
-      hoverAnimation: boolean
-
-      @Prop({
-         type: Boolean,
-         default: true
-      })
-      horizontal: boolean
-
-      @Prop({
-         type: Boolean,
-         default: false
-      })
-      vertical: boolean
-
-      @Prop({
-         type: Boolean,
-         default: false
-      })
-      secondary: boolean
-
-      @Prop({
-         type: Boolean,
-         default: false
-      })
-      bordered: boolean
-
-      mounted() {
-         this.$on(ButtonEvents.over, this.buttonOver)
-         this.$on(ButtonEvents.leave, this.buttonLeave)
+   get reflectedButtons(): ReflectedButton[] | undefined {
+      if (!this.meta || !this.meta.buttons) {
+         return;
       }
 
-      hovered: string | null = null
-
-      buttonOver(event: ButtonEvent) {
-         if (!this.hoverAnimation)
-            return
-
-         this.hovered = event.key
-      }
-
-      buttonLeave(event: ButtonEvent) {
-         if (this.hovered !== event.key)
-            return
-
-         this.hovered = null
-      }
-
-      get reflectedButtons(): Array<ReflectedButton> | undefined {
-         if(!this.meta || !this.meta.buttons)
-            return
-
-         const isActive = (active: any, value: any) => {
-            if(!Array.isArray(active))
-               return active === value
-
-            return active.some(item => item === value)
+      const isActive = (active: any, value: any) => {
+         if (!Array.isArray(active)) {
+            return active === value;
          }
 
-         return this.meta.buttons.map(b => {
-            const keys = Object.keys(b)
-            if(keys.length !== 1)
-               throw new Error('Not implemented yet')
+         return active.some((item) => item === value);
+      };
 
-            const label = keys[0]
-            const value = b[label]
-            return {
-               label,
-               value,
-               isActive: isActive(this.meta.active, value)
-            }
-         })
-      }
+      return this.meta.buttons.map((b) => {
+         const keys = Object.keys(b);
+         if (keys.length !== 1) {
+            throw new Error('Not implemented yet');
+         }
 
-      @Emit('click')
-      onButtonClick(value: any) {
-         return value
-      }
+         const label = keys[0];
+         const value = b[label];
+         return {
+            label,
+            value,
+            isActive: isActive(this.meta.active, value),
+         };
+      });
    }
+
+   @Prop({
+      type: Object,
+   })
+   public meta!: ButtonGroupMeta;
+
+   @Prop({
+      type: Boolean,
+      default: true,
+   })
+   public hoverAnimation!: boolean;
+
+   @Prop({
+      type: Boolean,
+      default: true,
+   })
+   public horizontal!: boolean;
+
+   @Prop({
+      type: Boolean,
+      default: false,
+   })
+   public vertical!: boolean;
+
+   @Prop({
+      type: Boolean,
+      default: false,
+   })
+   public secondary!: boolean;
+
+   @Prop({
+      type: Boolean,
+      default: false,
+   })
+   public bordered!: boolean;
+
+   public hovered: string | null = null;
+
+   public mounted() {
+      this.$on(ButtonEvents.over, this.buttonOver);
+      this.$on(ButtonEvents.leave, this.buttonLeave);
+   }
+
+   public buttonOver(event: ButtonEvent) {
+      if (!this.hoverAnimation) {
+         return;
+      }
+
+      this.hovered = event.key;
+   }
+
+   public buttonLeave(event: ButtonEvent) {
+      if (this.hovered !== event.key) {
+         return;
+      }
+
+      this.hovered = null;
+   }
+
+   @Emit('click')
+   public onButtonClick(value: any) {
+      return value;
+   }
+}
 </script>
 
 <style lang="scss">

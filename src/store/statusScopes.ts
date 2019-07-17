@@ -7,5 +7,5 @@ export enum STATUS_SCOPES {
    PROBLEMS = 'problems',
    TESTS = 'tests',
    TAGS = 'tags',
-   UNIVERSITIES = 'universities'
+   UNIVERSITIES = 'universities',
 }

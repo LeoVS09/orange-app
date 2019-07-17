@@ -1,8 +1,8 @@
-import db from './database'
-import Model from './Model'
+import db from './database';
+import Model from './Model';
 
 export {
-   Model
-}
+   Model,
+};
 
-export default db
+export default db;

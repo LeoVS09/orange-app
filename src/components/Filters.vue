@@ -15,33 +15,33 @@
 </template>
 
 <script lang="ts">
-   import Vue from 'vue'
-   import {Component, Prop, Emit} from 'vue-property-decorator'
-   import ButtonGroup from './ButtonGroup.vue'
-   import {ButtonGroupMetaItem} from './types'
+import Vue from 'vue';
+import {Component, Prop, Emit} from 'vue-property-decorator';
+import ButtonGroup from './ButtonGroup.vue';
+import {ButtonGroupMetaItem} from './types';
 
-   @Component({
-      components: {
-         ButtonGroup
-      }
+@Component({
+   components: {
+      ButtonGroup,
+   },
+})
+export default class Filters extends Vue {
+   @Prop({
+      type: Array,
+      required: true,
    })
-   export default class Filters extends Vue {
-      @Prop({
-         type: Array,
-         required: true
-      })
-      buttons: Array<ButtonGroupMetaItem>
+   public buttons!: ButtonGroupMetaItem[];
 
-      @Prop({
-         type: [Object, String, Number, Array]
-      })
-      active: any
+   @Prop({
+      type: [Object, String, Number, Array],
+   })
+   public active: any;
 
-      @Emit('click')
-      onButtonClick(value: any){
-         return value
-      }
+   @Emit('click')
+   public onButtonClick(value: any) {
+      return value;
    }
+}
 </script>
 
 <style lang="scss">

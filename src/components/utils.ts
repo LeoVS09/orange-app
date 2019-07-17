@@ -1,23 +1,26 @@
 
 export function toStringWhenDefined(value: any): string {
-   if(value === undefined)
-      return ''
+   if (value === undefined) {
+      return '';
+   }
 
-   if(value === null)
-      return ''
+   if (value === null) {
+      return '';
+   }
 
-   return '' + value
+   return '' + value;
 }
 
 export function isDate(date: any) {
-   return Object.prototype.toString.call(date) === '[object Date]'
+   return Object.prototype.toString.call(date) === '[object Date]';
 }
 
 export function formatDate(date: Date) {
-   if(!date)
-      return ''
+   if (!date) {
+      return '';
+   }
 
-   return date.toLocaleDateString()
+   return date.toLocaleDateString();
 }
 
 export function randomId(): string {
@@ -25,8 +28,8 @@ export function randomId(): string {
 }
 
 export interface IOnWheelCallbacks {
-   up?: () => void,
-   down?: () => void
+   up?: () => void;
+   down?: () => void;
 }
 
 export function onWheel(elem: Element, {up = () => {}, down = () => {}}: IOnWheelCallbacks ) {
@@ -40,27 +43,30 @@ export function onWheel(elem: Element, {up = () => {}, down = () => {}}: IOnWhee
 
       e.preventDefault ? e.preventDefault() : (e.returnValue = false);
 
-      if(delta < 0)
-         up()
-      else
-         down()
-   }
+      if (delta < 0) {
+         up();
+      } else {
+         down();
+      }
+   };
 
    if (elem.addEventListener) {
-      if ('onwheel' in document)
+      if ('onwheel' in document) {
          // IE9+, FF17+, Ch31+
-         elem.addEventListener("wheel", onWheelListener);
-       else if ('onmousewheel' in document)
+         elem.addEventListener('wheel', onWheelListener);
+      } else if ('onmousewheel' in document) {
          // устаревший вариант события
-         elem.addEventListener("mousewheel", onWheelListener);
-       else
+         elem.addEventListener('mousewheel', onWheelListener);
+ } else {
          // Firefox < 17
-         elem.addEventListener("MozMousePixelScroll", onWheelListener);
+         elem.addEventListener('MozMousePixelScroll', onWheelListener);
+ }
 
-   } else
+   } else {
       // IE8-
       // @ts-ignore
-      elem.attachEvent("onmousewheel", onWheelListener);
+      elem.attachEvent('onmousewheel', onWheelListener);
+   }
 
 
 }

@@ -1,36 +1,37 @@
-import {randomId} from "@/components/utils";
-import {Country} from "@/models";
-import {City} from "@/models/country";
-import {randomItem} from "@/store/utils";
+import {randomId} from '@/components/utils';
+import {Country} from '@/models';
+import {City} from '@/models/country';
+import {randomItem} from '@/store/utils';
 
 export function mockCountry(): Country {
    return {
       ...randomItem(baseCountries),
       id: 'country-' + randomId(),
       createdAt: new Date(),
-      updatedAt: new Date()
-   }
+      updatedAt: new Date(),
+   };
 }
 
-export function mockCountries(): Array<Country>{
-   return baseCountries.map(country => ({
+export function mockCountries(): Country[] {
+   return baseCountries.map((country) => ({
       ...country,
       id: 'country-' + randomId(),
       createdAt: new Date(),
-      updatedAt: new Date()
-   }))
+      updatedAt: new Date(),
+   }));
 }
 
-export function mockCities(): Array<City> {
-   return baseCities.map(city => ({
+export function mockCities(): City[] {
+   return baseCities.map((city) => ({
       id: 'city-' + randomId(),
       name: city.name,
       createdAt: new Date(),
       updatedAt: new Date(),
-      countryId: 'country-' + randomId()
-   }))
+      countryId: 'country-' + randomId(),
+   }));
 }
 
+/* tslint:disable */
 // TODO: move to database
 const baseCountries = [
    {name: 'Afghanistan', code: 'AF'},

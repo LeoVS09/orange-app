@@ -5,37 +5,38 @@
 </template>
 
 <script lang="ts">
-   import Vue from 'vue'
-   import {Component} from 'vue-property-decorator'
-   import {Action} from 'vuex-class'
-   import * as actions from './store/actionTypes';
-   import eventBus, {AuthorisationEventPayload, AuthorisationEventState, BusEventTypes} from "@/pages/eventBus";
+import Vue from 'vue';
+import {Component} from 'vue-property-decorator';
+import {Action} from 'vuex-class';
+import * as actions from './store/actionTypes';
+import eventBus, {AuthorisationEventPayload, AuthorisationEventState, BusEventTypes} from '@/pages/eventBus';
 
-   // Register the router hooks with their names
-   Component.registerHooks([
-      'beforeRouteEnter',
-      'beforeRouteLeave',
-      'beforeRouteUpdate'
-   ])
+// Register the router hooks with their names
+Component.registerHooks([
+   'beforeRouteEnter',
+   'beforeRouteLeave',
+   'beforeRouteUpdate',
+]);
 
-   @Component
-   export default class App extends Vue {
+@Component
+export default class App extends Vue {
 
-      @Action(actions.INIT_PROFILE) initProfile: () => Promise<boolean>
+   @Action(actions.INIT_PROFILE) public initProfile!: () => Promise<boolean>;
 
-      created() {
-         this.initProfile()
-            .then(result => {
-               if (!result)
-                  return
+   public created() {
+      this.initProfile()
+         .then((result) => {
+            if (!result) {
+               return;
+            }
 
-               const payload: AuthorisationEventPayload = {
-                  state: AuthorisationEventState.Completed
-               }
-               eventBus.$emit(BusEventTypes.Authorisation, payload)
-            })
-      }
+            const payload: AuthorisationEventPayload = {
+               state: AuthorisationEventState.Completed,
+            };
+            eventBus.$emit(BusEventTypes.Authorisation, payload);
+         });
    }
+}
 </script>
 
 <style lang="scss">

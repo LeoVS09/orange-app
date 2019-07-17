@@ -1,157 +1,164 @@
-import db from './database'
-import {ChangeCallback, IPredefinedSchema, ModelSchema} from "./types";
-import { ModelObserver} from "./ModelObserver";
-import {makeTrap} from "@/lazyReactiveORM/wrapData";
-import {debounceTime, filter, share, tap} from 'rxjs/operators'
-import {ModelEvent, ModelEventType} from "@/lazyReactiveORM/events";
-import {READ} from "@/store/CrudModule/actionTypes";
-import {appendPropertyToSchema, schemaToQueryFields} from "@/lazyReactiveORM/actions";
-import {generateQueryEntityById, generateQueryList} from "@/lazyReactiveORM/queryMapper";
-import {client} from "@/api/database/utils";
-import {addOrUpdate, dateToStringFormatter, isSchemaField, wait} from "./utils";
+import db from './database';
+import {ChangeCallback, IPredefinedSchema, ModelSchema} from './types';
+import { ModelObserver} from './ModelObserver';
+import {makeTrap} from '@/lazyReactiveORM/wrapData';
+import {debounceTime, filter, share, tap} from 'rxjs/operators';
+import {ModelEvent, ModelEventType} from '@/lazyReactiveORM/events';
+import {READ} from '@/store/CrudModule/actionTypes';
+import {appendPropertyToSchema, schemaToQueryFields} from '@/lazyReactiveORM/actions';
+import {generateQueryEntityById, generateQueryList} from '@/lazyReactiveORM/queryMapper';
+import {client} from '@/api/database/utils';
+import {addOrUpdate, dateToStringFormatter, isSchemaField, wait} from './utils';
 
-const READ_LIST_TIME = 10
+const READ_LIST_TIME = 10;
 
 export default class Model {
-   entity: string
-   predefinedSchema?: IPredefinedSchema
-   db = db
-   itemsPerPage = 3
+   public entity: string;
+   public predefinedSchema?: IPredefinedSchema;
+   public db = db;
+   public itemsPerPage = 3;
 
    constructor(entity: string, predefinedSchema?: IPredefinedSchema) {
-      this.entity = entity
-      this.predefinedSchema = predefinedSchema
+      this.entity = entity;
+      this.predefinedSchema = predefinedSchema;
 
-      if(this.predefinedSchema)
-         this.db.addPredefinedSchema(this.entity, this.predefinedSchema)
+      if (this.predefinedSchema) {
+         this.db.addPredefinedSchema(this.entity, this.predefinedSchema);
+      }
    }
 
-   findOne(id: string, changed?: ChangeCallback) {
-      if(!id)
-         return
-
-      console.log('Have schemas to build model', Object.keys(this.db.schemas))
-
-      const founded = this.db.findOne(this.entity, id, false)
-      if(founded) {
-         founded.changed = changed
-         return founded.wrapped
+   public findOne(id: string, changed?: ChangeCallback) {
+      if (!id) {
+         return;
       }
 
-      const observer = new ModelObserver(this.entity, {id, changed, predefinedSchema: this.predefinedSchema, db: this.db, excludeProperties: db.excludeProperties})
+      console.log('Have schemas to build model', Object.keys(this.db.schemas));
 
-      this.db.set(this.entity, id, observer)
+      const founded = this.db.findOne(this.entity, id, false);
+      if (founded) {
+         founded.changed = changed;
+         return founded.wrapped;
+      }
 
-      return observer.wrapped
+      const observer = new ModelObserver(this.entity, {id, changed, predefinedSchema: this.predefinedSchema, db: this.db, excludeProperties: db.excludeProperties});
+
+      this.db.set(this.entity, id, observer);
+
+      return observer.wrapped;
    }
 
-   list(){
+   public list() {
 
-      const [trap, stream] = makeTrap()
+      const [trap, stream] = makeTrap();
 
       const list = {
          totalCount: null,
-         nodes: [trap]
-      }
+         nodes: [trap],
+      };
 
-      const memory: Array<ModelEvent> = []
+      const memory: ModelEvent[] = [];
 
       const inMemory = (event: ModelEvent) =>
          event.type === ModelEventType.GetProperty &&
-         event.payload.name === name
+         event.payload.name === name;
 
       stream
          .pipe(
             filter((event: ModelEvent) => event.type === ModelEventType.GetProperty),
             filter((event: ModelEvent) => !inMemory(event)),
             tap((event: ModelEvent) => memory.push(event)),
-            debounceTime(READ_LIST_TIME)
+            debounceTime(READ_LIST_TIME),
          )
          .subscribe(async (event: ModelEvent) => {
             const gets = memory.filter(({payload}) =>
-               !this.db.excludeProperties.some(value => value === payload.name )
-            )
+               !this.db.excludeProperties.some((value) => value === payload.name ),
+            );
 
-            const readProperties = {}
+            const readProperties = {};
             // Schema have information, but gets events not have
             // Data is duplicated
-            gets.forEach(event => appendPropertyToSchema(readProperties, event.payload))
-            console.log('memory', gets, 'readProperties', readProperties)
+            gets.forEach((event) => appendPropertyToSchema(readProperties, event.payload));
+            console.log('memory', gets, 'readProperties', readProperties);
 
-            if(this.db.tables[this.entity]) {
-               console.log('list have entity in db', this.entity)
-               const itemIds = Object.keys(this.db.tables[this.entity])
+            if (this.db.tables[this.entity]) {
+               console.log('list have entity in db', this.entity);
+               const itemIds = Object.keys(this.db.tables[this.entity]);
 
-               const first = this.db.tables[this.entity][itemIds[0]]
+               const first = this.db.tables[this.entity][itemIds[0]];
                if (isSchemaInclude(first.schema, readProperties)) {
-                  console.log('required schema have in db')
+                  console.log('required schema have in db');
 
-                  list.nodes = itemIds.map(id => this.db.tables[this.entity][id].wrapped)
+                  list.nodes = itemIds.map((id) => this.db.tables[this.entity][id].wrapped);
                }
 
-               if(itemIds.length >= this.itemsPerPage) {
-                  console.log('list have required items size in db')
-                  return
+               if (itemIds.length >= this.itemsPerPage) {
+                  console.log('list have required items size in db');
+                  return;
                }
             }
 
-            const listName = entityToList(this.entity)
+            const listName = entityToList(this.entity);
 
-            const query = generateQueryList(listName, schemaToQueryFields(readProperties))
+            const query = generateQueryList(listName, schemaToQueryFields(readProperties));
             const { data } = await client.query({
-               query
-            })
+               query,
+            });
 
-            console.log('read data list', data)
+            console.log('read data list', data);
 
-            const result = dateToStringFormatter(data[listName])
-            list.totalCount = result.totalCount
-            list.nodes = result.nodes
+            const result = dateToStringFormatter(data[listName]);
+            list.totalCount = result.totalCount;
+            list.nodes = result.nodes;
 
             result.nodes.forEach((node: {id: string}) =>
-               addOrUpdate(this.db, this.entity, node)
-            )
+               addOrUpdate(this.db, this.entity, node),
+            );
 
-         })
+         });
 
-      return list
+      return list;
    }
 }
 
 function entityToList(entity: string): string {
-   if(entity.slice(-1) === 'y') {
-      return entity.slice(0, -1) + 'ies'
+   if (entity.slice(-1) === 'y') {
+      return entity.slice(0, -1) + 'ies';
    }
 
-   return entity + 's'
+   return entity + 's';
 }
 
 
 function isSchemaInclude(base: ModelSchema, inside: ModelSchema): boolean {
 
-   for(const key in inside){
-      if(!base[key])
-         return false
-
-      const insideField = inside[key]
-      const baseField = base[key]
-
-      if(!isSchemaField(insideField)){
-         if(insideField !== baseField)
-            return false
-
-         continue
+   for (const key in inside) {
+      if (!base[key]) {
+         return false;
       }
 
-      if(!isSchemaField(baseField))
-         return false
+      const insideField = inside[key];
+      const baseField = base[key];
 
-      if(insideField.type !== baseField.type)
-         return false
+      if (!isSchemaField(insideField)) {
+         if (insideField !== baseField) {
+            return false;
+         }
 
-      if(!isSchemaInclude(baseField.fields, insideField.fields))
-         return false
+         continue;
+      }
+
+      if (!isSchemaField(baseField)) {
+         return false;
+      }
+
+      if (insideField.type !== baseField.type) {
+         return false;
+      }
+
+      if (!isSchemaInclude(baseField.fields, insideField.fields)) {
+         return false;
+      }
    }
 
-   return true
+   return true;
 }

@@ -9,19 +9,22 @@
 </template>
 
 <script lang="ts">
-   import Vue from 'vue'
-   import {Component, Prop, Emit} from 'vue-property-decorator'
+import Vue from 'vue';
+import {Component, Prop, Emit} from 'vue-property-decorator';
 
-   @Component
-   export default class Checkbox extends Vue {
-      @Prop(Boolean)
-      value: boolean;
+@Component
+export default class Checkbox extends Vue {
+   @Prop({
+      type: Boolean,
+      required: true,
+   })
+   public value!: boolean;
 
-      @Emit('input')
-      click() {
-         return !this.value
-      }
+   @Emit('input')
+   public click() {
+      return !this.value;
    }
+}
 </script>
 
 <style scoped lang="scss">
