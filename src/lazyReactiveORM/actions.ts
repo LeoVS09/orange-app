@@ -73,6 +73,12 @@ export const actions = {
          return false
       }
 
+      // TODO: make bug debugging more easy
+      if(name === 'function () { [native code] }'){
+         console.error('Try get value from model with using function as property name', model)
+         return false
+      }
+
       return appendPropertyToSchema(model.schema, payload)
    },
 

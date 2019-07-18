@@ -240,6 +240,7 @@ export class ModelObserver implements IModelObserver {
 
       if (event.type === ModelEventType.GetProperty) {
          const remember = handler(this, event.payload)
+         console.log('remember', remember, event.payload)
          if (!remember) {
             this.removeEvent(event)
          }
@@ -262,6 +263,7 @@ export class ModelObserver implements IModelObserver {
 
    public get(name: string): any {
       if (!this.has(name)) {
+         console.log('not have get', name)
 
          const inMemory = this.memory.find((event) =>
             event.type === ModelEventType.GetProperty &&

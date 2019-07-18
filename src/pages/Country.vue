@@ -4,6 +4,7 @@
          :createdAt="model.createdAt"
          :modified="model.updatedAt"
          v-model="model.name"
+         :is-loading="model | isReading('name')"
       >
          <template #breadcrumbs>
             <breadcrumb :to="{name: ROUTES.COUNTRIES}">{{'Countries' | translate}}</breadcrumb>

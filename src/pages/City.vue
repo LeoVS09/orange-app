@@ -11,7 +11,7 @@
             <breadcrumb :to="{
                name: ROUTES.COUNTRY,
                params: {id: model.countryId}
-            }">{{parent.name }}</breadcrumb>
+            }">{{parent.name || $t('Country')}}</breadcrumb>
          </template>
       </PageHeader>
 

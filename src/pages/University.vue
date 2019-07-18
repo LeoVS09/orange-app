@@ -7,15 +7,15 @@
          :is-loading="model | isReading('shortName')"
       >
          <template #breadcrumbs>
-            <breadcrumb :to="{name: ROUTES.COUNTRIES}">{'Countries' | translate}</breadcrumb>
+            <breadcrumb :to="{name: ROUTES.COUNTRIES}">{{'Countries' | translate}}</breadcrumb>
             <breadcrumb :to="{
                name: ROUTES.COUNTRY,
                params: {id: country && country.id}
-            }">{country.name || ('Country' | translate)}</breadcrumb>
+            }">{{country.name || $t('Country')}}</breadcrumb>
             <breadcrumb :to="{
                name: ROUTES.CITY,
                params: {id: city && city.id}
-            }">{city.name || ('City' | translate)}</breadcrumb>
+            }">{{city.name || $t('City')}}</breadcrumb>
          </template>
       </PageHeader>
 

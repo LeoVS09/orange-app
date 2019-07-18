@@ -32,7 +32,7 @@
          :textWidth="true"
       >
          <template #breadcrumb>
-            <breadcrumb :to="{name: ROUTES.PROBLEMS}">{'Problems' | translate}</breadcrumb>
+            <breadcrumb :to="{name: ROUTES.PROBLEMS}">{{'Problems' | translate}}</breadcrumb>
          </template>
          {{model.name}}
       </page-header>

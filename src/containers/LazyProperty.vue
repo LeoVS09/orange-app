@@ -19,7 +19,7 @@
          if(this.name)
             return this.name
 
-         return this.slotValue
+         return this.slotValue()
       }
 
       parentIdKey = 'lazyDataId'
@@ -29,7 +29,7 @@
          const { properties } = this.owner
 
          const key = this.propertyKey
-         const label = this.slotValue
+         const label = this.slotValue()
 
          if(!key || !label)
             return

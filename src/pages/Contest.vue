@@ -6,7 +6,7 @@
          v-model="model && model.name"
       >
          <temaplte #breadcrumbs>
-            <breadcrumb :to="{name: ROUTES.CONTESTS}">{'Contests' | translate}</breadcrumb>
+            <breadcrumb :to="{name: ROUTES.CONTESTS}">{{'Contests' | translate}}</breadcrumb>
          </temaplte>
       </PageHeader>
 
