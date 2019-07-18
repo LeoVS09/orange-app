@@ -1,23 +1,22 @@
 <template>
    <div class="countries">
       <PageHeader>
-         <template #text>{{'Countries' | translate}}</template>
+         {{'Countries' | translate}}
       </PageHeader>
 
       <Section>
          <list
-            :headers="[
-               {'name': $t('Name')},
-               {'code': $t('Code')},
-               {'updatedAt': $t('Updated')}
-            ]"
             :items="list.nodes"
             :isCanAdd="isTeacher"
             inlineAdd
             :validateAdd="validate"
             @add="add"
             @choose-item="chooseItem"
-         />
+         >
+            <list-column>name</list-column>
+            <list-column>code</list-column>
+            <list-column name="updatedAt">updated</list-column>
+         </list>
       </Section>
    </div>
 </template>
@@ -28,18 +27,19 @@ import {Component} from 'vue-property-decorator';
 import {Getter, Action, State} from 'vuex-class';
 import {Country, FullProblem, PartialProblem} from '@/models';
 import * as actions from '@/store/actionTypes';
-import {PageHeader, Button, List, Tags, Section, PageHeaderAction, Filters} from '@/components';
+import {Button, Tags, Section, PageHeaderAction, Filters} from '@/components';
 import {ROUTES} from '@/router';
 import {RouterPush} from '@/components/decorators';
 import {actionName, MODULES} from '@/store/actionTypes';
 import {CountryRepository} from '@/models/country';
-
+import {List, ListColumn, PageHeader} from '@/containers'
 @Component({
    components: {
       PageHeader,
       Button,
       Filters,
       List,
+      ListColumn,
       Tags,
       Section,
       Action: PageHeaderAction,

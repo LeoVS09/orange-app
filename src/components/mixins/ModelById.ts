@@ -1,6 +1,6 @@
-import Vue from 'vue';
-import {Component, Prop, Mixins} from 'vue-property-decorator';
-import Loadable from '@/components/mixins/loadable';
+import Vue from 'vue'
+import {Component, Prop, Mixins} from 'vue-property-decorator'
+import Loadable from '@/components/mixins/loadable'
 
 @Component
 export default class ModelById extends Loadable {
@@ -8,22 +8,22 @@ export default class ModelById extends Loadable {
       type: String,
       required: true,
    })
-   public id!: string;
+   public id!: string
 
-   public modelById!: (id: string) => any;
+   public modelById!: (id: string) => any
 
    get model(): any | undefined {
       if (!this.modelById) {
-         return;
+         return
       }
 
-      return this.modelById(this.id);
+      return this.modelById(this.id)
    }
 
-   public loadModel!: (id: string) => Promise<boolean>;
+   public loadModel!: (id: string) => Promise<boolean>
 
-   public isLoadingOverride = true;
+   public isLoadingOverride = true
    public loadAction() {
-      return this.loadModel(this.id);
+      return this.loadModel(this.id)
    }
 }

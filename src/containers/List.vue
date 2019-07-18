@@ -3,14 +3,16 @@
         @mouseover="onMouseOver"
         @mouseleave="onMouseLeave"
    >
+      <div class="list--hidden-columns"><slot></slot></div>
+
       <div class="list">
          <div class="list--header">
             <div
                class="list--header-item"
-               v-for="header in visibleHeaders"
+               v-for="header in headers"
                @click="onClickHeader(header)"
             >
-               <span class="list--header-text">{{header.label}}</span>
+               <span class="list--header-text">{{header.label | normalise | capitalise | translate}}</span>
                <div
                   :class="{
                      'list--header-sort-arrow': true,
@@ -40,7 +42,7 @@
             <list-item
                v-for="item in visibleItems"
                @click="onClickItem(item)"
-               :visibleProps="visibleHeaders.map(h => h.key)"
+               :visibleProps="headers.map(h => h.key)"
                :key="hash(item)"
                :item="item"
                :formatData="formatData"
@@ -116,13 +118,14 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import ListItem from './ListItem.vue';
-import Button from './Button.vue';
+import ListItem from '../components/ListItem.vue';
+import Button from '../components/Button.vue';
 import {Component, Prop, Emit, Mixins} from 'vue-property-decorator';
-import {ListEvents, DataItem, Header, ListMeta, SimpleHeader, ListSortEvent} from './types';
+import {ListEvents, DataItem, Header, ListMeta, SimpleHeader, ListSortEvent} from '../components/types';
 // @ts-ignore
 import crypto from 'crypto-js';
 import Loadable from '@/components/mixins/loadable';
+import {randomId} from "@/components/utils";
 
 export interface ListSortHeader {
    by: string;
@@ -177,17 +180,12 @@ export default class List extends Mixins(Loadable) {
       type: Array,
       required: true,
    })
-   public items!: DataItem[];
+   public items!: Array<DataItem>;
 
    @Prop({
       type: Array,
    })
-   public headers?: Array<Header | string | SimpleHeader>;
-
-   @Prop({
-      type: Array,
-   })
-   public exceptions?: string[];
+   public exceptions?: Array<string>;
 
    @Prop({
       type: Object,
@@ -227,10 +225,8 @@ export default class List extends Mixins(Loadable) {
    })
    public maxPageNumbers!: number;
 
-   @Prop({
-      type: Boolean
-   })
-   public isLoading!: boolean
+   // @Prop(Boolean)
+   // public isLoading!: boolean
 
    public currentPage: number = 1;
 
@@ -241,17 +237,12 @@ export default class List extends Mixins(Loadable) {
    // TODO: make consistently items animation
    public listTransitionName = listTransitionDown;
 
+   public listId: string = 'default';
+   public headers: Array<Header> = [];
 
-   get visibleHeaders(): Header[] {
-      if (this.headers) {
-         return toHeaders(this.headers);
-      }
-
-      if (this.items.length) {
-         return toHeaders(Object.keys(this.items[0]));
-      }
-
-      return [];
+   created(){
+      this.listId = `list-${randomId()}`
+      this.headers = []
    }
 
    get visibleItems(): DataItem[] {
@@ -483,6 +474,10 @@ export default class List extends Mixins(Loadable) {
          width: 100%;
          margin: 0;
          padding: 0;
+      }
+
+      &--hidden-columns {
+         display: none;
       }
 
       &--add, &--add-button {

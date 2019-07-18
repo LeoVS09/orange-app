@@ -1,6 +1,6 @@
-import {FullProblem, PartialProblem} from '@/models';
-import {ProblemError} from '@/models/problems';
-import {CrudState} from '@/store/CrudModule';
+import {FullProblem, PartialProblem} from '@/models'
+import {ProblemError} from '@/models/problems'
+import {CrudState} from '@/store/CrudModule'
 
 export enum ProblemFilter {
    All = 'All',
@@ -11,5 +11,5 @@ export enum ProblemFilter {
 
 
 export class ProblemsState extends CrudState<FullProblem | PartialProblem> {
-   public errorHistory: ProblemError[] = [];
+   public errorHistory: ProblemError[] = []
 }

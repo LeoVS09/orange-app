@@ -1,15 +1,15 @@
-import {crudActions, crudMutations, CrudState} from '@/store/CrudModule';
-import {PartialContest, Country, UserType, PartialProblem, Team} from '@/models';
-import {ContestInput, ContestsOrderBy, CountryInput} from '@/api/database/global-types';
-import * as API from '@/api';
-import * as fragmentsTypes from '@/api/database/fragments/types';
-import {STATUS_SCOPES} from '@/store/statusScopes';
-import {defaultPartialProfile} from '@/models/problems';
-import {FullContest} from '@/models/contest';
-import {responseToPartialUserProfile} from '@/store/modules/problems/utils';
-import {PartialProfile} from '@/api/database/fragments/types';
-import {responseToPartialProblem} from '@/store/modules/problems/actions/responseFormat';
-import {PartialUserProfile} from '@/models/user';
+import {crudActions, crudMutations, CrudState} from '@/store/CrudModule'
+import {PartialContest, Country, UserType, PartialProblem, Team} from '@/models'
+import {ContestInput, ContestsOrderBy, CountryInput} from '@/api/database/global-types'
+import * as API from '@/api'
+import * as fragmentsTypes from '@/api/database/fragments/types'
+import {STATUS_SCOPES} from '@/store/statusScopes'
+import {defaultPartialProfile} from '@/models/problems'
+import {FullContest} from '@/models/contest'
+import {responseToPartialUserProfile} from '@/store/modules/problems/utils'
+import {PartialProfile} from '@/api/database/fragments/types'
+import {responseToPartialProblem} from '@/store/modules/problems/actions/responseFormat'
+import {PartialUserProfile} from '@/models/user'
 
 export default {
    namespaced: true,
@@ -42,15 +42,15 @@ export default {
       }),
       {
          readList: async (variables) => {
-            const response = await API.contests(variables);
+            const response = await API.contests(variables)
             if (!response) {
-               return response;
+               return response
             }
 
             return {
                ...response,
                nodes: response.nodes.map((n) => responseToPartialContest(n) as PartialContest),
-            };
+            }
          },
 
          create: async (contest) => responseToFullContest(await API.createContest({
@@ -71,22 +71,22 @@ export default {
          delete: async (id) => responseToPartialContest(await API.deleteContest({input: {id}})),
       },
    ),
-};
+}
 
 function responseToPartialContest(result: fragmentsTypes.PartialContest | undefined | null): PartialContest | undefined | null {
    if (!result) {
-      return result;
+      return result
    }
 
    return {
       ...result,
       creator: responseToPartialUserProfile(result.creator) as PartialUserProfile,
-   };
+   }
 }
 
 function responseToFullContest(result: fragmentsTypes.FullContest | undefined | null): FullContest | undefined | null {
    if (!result) {
-      return result;
+      return result
    }
 
    return {
@@ -95,7 +95,7 @@ function responseToFullContest(result: fragmentsTypes.FullContest | undefined | 
       problems: result.contestsProblems.nodes.map((n) => responseToPartialProblem(n && n.problem) as PartialProblem),
       profiles: result.contestsProfiles.nodes.map((n) => responseToPartialUserProfile(n && n.profile) as PartialUserProfile),
       teams: result.contestsTeams.nodes.map((n) => responseToPartialTeam(n && n.team) as Team),
-   };
+   }
 }
 
 function contestToInput(contest: FullContest): ContestInput {
@@ -107,18 +107,18 @@ function contestToInput(contest: FullContest): ContestInput {
       endDate: contest.endDate,
       startPublicationDate: contest.startPublicationDate,
       endPublicationDate: contest.endPublicationDate,
-   };
+   }
 }
 
 
 function responseToPartialTeam(result: fragmentsTypes.PartialTeam | undefined | null): Team | undefined | null {
    if (!result) {
-      return result;
+      return result
    }
 
    return {
       ...result,
       profiles: [],
       count: result.teamsProfiles.totalCount || 0,
-   };
+   }
 }

@@ -14,7 +14,7 @@
                v-for="prop in dataItems"
                class="lazy-data--item"
             >
-               <span class="lazy-data--label">{{prop.label | normaliseName | capitalise | translate}}</span>
+               <span class="lazy-data--label">{{prop.label | normalise | capitalise | translate}}</span>
                <div
                   v-if="$isReading(value, prop.key)"
                   class="lazy-data--loading"
@@ -79,17 +79,6 @@ export default class LazyData extends Vue {
    public created() {
       this.lazyDataId = `lazy-data-${randomId()}`;
       this.properties = {};
-   }
-
-   @Filter
-   public normaliseName(key: string): string {
-      return key.split('').map((c) => {
-         if (c.match(/[A-Z]/)) {
-            return ' ' + c.toLowerCase();
-         }
-
-         return c;
-      }).join('');
    }
 
 }

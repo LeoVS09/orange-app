@@ -1,11 +1,14 @@
 <template>
    <div class="country">
       <PageHeader
-         :breadcrumbs="[{[$t('Contests')]: {name: ROUTES.CONTESTS}}]"
-         :created="model && model.createdAt"
+         :createdAt="model && model.createdAt"
          :modified="model && model.updatedAt"
          v-model="model && model.name"
-      />
+      >
+         <temaplte #breadcrumbs>
+            <breadcrumb :to="{name: ROUTES.CONTESTS}">{'Contests' | translate}</breadcrumb>
+         </temaplte>
+      </PageHeader>
 
       <ModelInfo
          v-if="model"
@@ -29,17 +32,18 @@ import {Component, Prop, Mixins} from 'vue-property-decorator';
 import {Getter, Action, State} from 'vuex-class';
 import {Country, PartialProblem, Tag} from '@/models';
 import * as actions from '@/store/actionTypes';
-import {PageHeader, Button, List, Tags, Input, ModelInfo, Section, TextSection, PageHeaderAction, Filters, DataView} from '@/components';
+import {Button, ModelInfo, PageHeaderAction, DataView} from '@/components';
 import {ROUTES} from '@/router';
 import ModelById from '@/components/mixins/ModelById';
 import {RouterPush} from '@/components/decorators';
 import {actionName, MODULES} from '@/store/actionTypes';
 import {FullContest} from '@/models/contest';
 import ProblemsList from '@/containers/ProblemsList.vue';
-
+import {PageHeader, Breadcrumb} from '@/containers'
 @Component({
    components: {
       PageHeader,
+      Breadcrumb,
       Button,
       ProblemsList,
       Action: PageHeaderAction,

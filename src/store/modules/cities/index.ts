@@ -1,9 +1,9 @@
-import {crudActions, crudMutations, CrudState} from '@/store/CrudModule';
-import {City, Country} from '@/models';
-import {CitiesOrderBy, CityInput, CountriesOrderBy} from '@/api/database/global-types';
-import * as API from '@/api';
-import * as fragmentsTypes from '@/api/database/fragments/types';
-import {STATUS_SCOPES} from '@/store/statusScopes';
+import {crudActions, crudMutations, CrudState} from '@/store/CrudModule'
+import {City, Country} from '@/models'
+import {CitiesOrderBy, CityInput, CountriesOrderBy} from '@/api/database/global-types'
+import * as API from '@/api'
+import * as fragmentsTypes from '@/api/database/fragments/types'
+import {STATUS_SCOPES} from '@/store/statusScopes'
 
 export default {
    namespaced: true,
@@ -35,22 +35,22 @@ export default {
          delete: (id) => API.deleteCity({input: {id}}),
       },
    ),
-};
+}
 
 function responseToCity(result?: fragmentsTypes.FullCity | null): City | undefined | null {
    if (!result) {
-      return result;
+      return result
    }
 
    return {
       ...result,
       universities: result.universities.nodes as fragmentsTypes.FullCity_universities_nodes[],
-   };
+   }
 }
 
 function cityToInput(city: City): CityInput {
    return {
       name: city.name,
       countryId: city.countryId,
-   };
+   }
 }

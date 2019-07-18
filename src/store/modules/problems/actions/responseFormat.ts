@@ -1,21 +1,21 @@
-import * as fragmentTypes from '@/api/database/fragments/types';
-import {FullProblem, PartialProblem, ProblemTestingStatus, Test} from '@/models';
-import {PartialProblem_problemsTags_nodes} from '@/api/database/fragments/types';
-import {responseToPartialUserProfile} from '@/store/modules/problems/utils';
-import {PartialProblem_problemsTags_nodes_tag} from '@/api/database/fragments/types';
-import {FullProblem_tests_nodes} from '@/api/database/fragments/types';
-import {PartialUserProfile} from '@/models/user';
+import * as fragmentTypes from '@/api/database/fragments/types'
+import {FullProblem, PartialProblem, ProblemTestingStatus, Test} from '@/models'
+import {PartialProblem_problemsTags_nodes} from '@/api/database/fragments/types'
+import {responseToPartialUserProfile} from '@/store/modules/problems/utils'
+import {PartialProblem_problemsTags_nodes_tag} from '@/api/database/fragments/types'
+import {FullProblem_tests_nodes} from '@/api/database/fragments/types'
+import {PartialUserProfile} from '@/models/user'
 
 export function responseToPartialProblem(p: fragmentTypes.PartialProblem | null | undefined): PartialProblem | null | undefined {
    if (!p) {
-      return p;
+      return p
    }
 
    if (!p.author) {
-      throw new Error('Problem not have author');
+      throw new Error('Problem not have author')
    }
 
-   const tags = p.problemsTags.nodes as PartialProblem_problemsTags_nodes[];
+   const tags = p.problemsTags.nodes as PartialProblem_problemsTags_nodes[]
 
    return {
       id: p.id,
@@ -28,16 +28,16 @@ export function responseToPartialProblem(p: fragmentTypes.PartialProblem | null 
       tester: p.tester && responseToPartialUserProfile(p.tester) as PartialUserProfile,
       tags: tags.map((t) => ({ ...t.tag })) as PartialProblem_problemsTags_nodes_tag[],
       testingStatus: ProblemTestingStatus.NotTested, // TODO: make testing in database
-   };
+   }
 }
 
 export function responseToFullProblem(p: fragmentTypes.FullProblem | null | undefined): FullProblem | null | undefined {
    if (!p) {
-      return p;
+      return p
    }
 
    if (!p.inputType || !p.outputType) {
-      throw new Error('Not have input output types');
+      throw new Error('Not have input output types')
    }
 
    return {
@@ -54,7 +54,7 @@ export function responseToFullProblem(p: fragmentTypes.FullProblem | null | unde
          output: p.outputType,
       },
       tests: (p.tests.nodes as FullProblem_tests_nodes[]).map(responseToTest),
-   };
+   }
 }
 
 
@@ -64,5 +64,5 @@ export function responseToTest(t: fragmentTypes.Test): Test {
       input: t.input.split('\\n').join(String.fromCharCode(13, 10)),
       output: t.output.split('\\n').join(String.fromCharCode(13, 10)),
       isPublic: t.isPublic || false,
-   };
+   }
 }

@@ -1,23 +1,23 @@
 <template>
    <div class="university">
       <PageHeader
-         :breadcrumbs="[
-            {[$t('Countries')]: {name: ROUTES.COUNTRIES}},
-            { [country && country.name || $t('Country')]: {
-               name: ROUTES.COUNTRY,
-               params: {id: country && country.id}
-            }
-            },
-            { [city && city.name || $t('City')]: {
-               name: ROUTES.CITY,
-               params: {id: city && city.id}
-            }}
-         ]"
-         :created="model && model.createdAt"
+         :createdAt="model && model.createdAt"
          :modified="model && model.updatedAt"
          v-model="model && model.shortName"
          :is-loading="model | isReading('shortName')"
-      />
+      >
+         <template #breadcrumbs>
+            <breadcrumb :to="{name: ROUTES.COUNTRIES}">{'Countries' | translate}</breadcrumb>
+            <breadcrumb :to="{
+               name: ROUTES.COUNTRY,
+               params: {id: country && country.id}
+            }">{country.name || ('Country' | translate)}</breadcrumb>
+            <breadcrumb :to="{
+               name: ROUTES.CITY,
+               params: {id: city && city.id}
+            }">{city.name || ('City' | translate)}</breadcrumb>
+         </template>
+      </PageHeader>
 
       <LazyData
          v-model="model"
@@ -30,23 +30,19 @@
 
 <script lang="ts">
 import {Component, Prop, Mixins} from 'vue-property-decorator';
-import {Getter, Action, State} from 'vuex-class';
-import {City, Country, University} from '@/models';
-import * as actions from '@/store/actionTypes';
-import {PageHeader, List, ModelInfo, Section, PageHeaderAction} from '@/components';
+import {Getter} from 'vuex-class';
+import {Section, PageHeaderAction} from '@/components';
 import {ROUTES} from '@/router';
-import ModelById from '@/components/mixins/ModelById';
-import {RouterPush} from '@/components/decorators';
-import {actionName, MODULES} from '@/store/actionTypes';
 import ReactiveUpdate, {reactiveUpdate} from '@/components/mixins/ReactiveUpdate';
 import {UniversityRepository} from '@/models/university';
 import LazyData from '@/containers/LazyData.vue';
 import LazyProperty from '@/containers/LazyProperty.vue';
+import {PageHeader, Breadcrumb} from "@/containers";
 
 @Component({
    components: {
       PageHeader,
-      List,
+      Breadcrumb,
       Section,
       Action: PageHeaderAction,
       LazyData,

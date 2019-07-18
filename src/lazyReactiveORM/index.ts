@@ -1,8 +1,8 @@
-import db from './database';
-import Repository from './Repository';
+import db from './database'
+import Repository from './Repository'
 
 export {
    Repository,
-};
+}
 
-export default db;
+export default db

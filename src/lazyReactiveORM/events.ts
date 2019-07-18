@@ -1,4 +1,4 @@
-import {ModelAttributeType} from './types';
+import {ModelAttributeType} from './types'
 
 export enum ModelEventType {
    GetProperty = 'GetProperty',
@@ -22,24 +22,24 @@ export enum ModelEventType {
 }
 
 export interface ModelEvent<T = any> {
-   type: string;
-   date: number;
-   payload: T;
+   type: string
+   date: number
+   payload: T
 }
 
 export interface ModelEventSetPropertyPayload {
-   name: string;
-   oldValue: string | null;
-   newValue: string;
+   name: string
+   oldValue: string | null
+   newValue: string
 }
 
 export interface ModelEventGetPropertyPayload {
-   name: string;
-   type: ModelAttributeType;
-   inner?: ModelEventGetPropertyPayload;
+   name: string
+   type: ModelAttributeType
+   inner?: ModelEventGetPropertyPayload
 }
 
 export interface ModelEventReadPayload {
-   id: string;
-   gets: Array<ModelEvent<ModelEventGetPropertyPayload>>;
+   id: string
+   gets: Array<ModelEvent<ModelEventGetPropertyPayload>>
 }

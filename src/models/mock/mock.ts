@@ -2,9 +2,9 @@ import {
    PartialProgramInput,
    PartialProgramOutput,
    Tag,
-} from '@/models/problems';
-import {PartialUserProfile, UserType} from '@/models/user';
-import {randomId} from '@/components/utils';
+} from '@/models/problems'
+import {PartialUserProfile, UserType} from '@/models/user'
+import {randomId} from '@/components/utils'
 
 
 export function defaultPartialProfile(): PartialUserProfile {
@@ -15,7 +15,7 @@ export function defaultPartialProfile(): PartialUserProfile {
       firstName: 'First',
       lastName: 'Last',
       type: UserType.CONTESTANT,
-   };
+   }
 }
 
 
@@ -26,7 +26,7 @@ export function mockTag(name: string): Tag {
       name,
       createdAt: new Date(),
       updatedAt: new Date(),
-   };
+   }
 }
 
 export function mockTags(): Tag[] {
@@ -62,19 +62,19 @@ export function mockTags(): Tag[] {
       '2-set',
       'chinese remainder theorem',
       'schedules',
-   ].map(mockTag);
+   ].map(mockTag)
 }
 
 export function mockInput(name: string): PartialProgramInput {
    return {
       id: 'tests.ts' + name,
       name,
-   };
+   }
 }
 
 export function mockOutput(name: string): PartialProgramOutput {
    return {
       id: 'tests.ts' + name,
       name,
-   };
+   }
 }

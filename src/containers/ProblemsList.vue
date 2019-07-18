@@ -19,12 +19,6 @@
             @click="setFilter"
          />
          <list
-            :headers="[
-               {'name': $t('Name')},
-               {'difficulty': $t('Difficulty')},
-               {'author': $t('Author')},
-               {'date': $t('Updated')},
-            ]"
             :items="filteredProblems"
             :formatData="formatItem"
             :isCanAdd="isTeacher"
@@ -32,6 +26,10 @@
             @choose-item="chooseItem"
             :load="loadProblems"
          >
+            <list-column>name</list-column>
+            <list-column>difficulty</list-column>
+            <list-column>author</list-column>
+            <list-column name="updatedAt">updated</list-column>
             <template #add>{{'Add' | translate}}</template>
             <template #previous>{{'Previous' | translate}}</template>
             <template #next>{{'Next' | translate}}</template>
@@ -43,9 +41,11 @@
 <script lang="ts">
 import Vue from 'vue';
 import {Component, Prop, Emit} from 'vue-property-decorator';
-import {Button, List, Tags, Section, Filters} from '@/components';
+import {Button, Tags, Section, Filters} from '@/components';
 import {FullProblem, PartialProblem, Tag} from '../models';
 import {ProblemFilter} from '../store/modules/problems';
+import List from './List.vue'
+import ListColumn from './ListColumn.vue'
 
 function filterProblemsByPublication(filter: ProblemFilter, data: Array<PartialProblem | FullProblem>) {
    const now = new Date();
@@ -82,6 +82,7 @@ function filterProblemsByTags(tags: Tag[], data: Array<PartialProblem | FullProb
       Button,
       Filters,
       List,
+      ListColumn,
       Tags,
       Section,
    },

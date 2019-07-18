@@ -1,20 +1,23 @@
 <template>
    <div class="country">
       <PageHeader
-         :breadcrumbs="[{[$t('Programming languages')]: {name: ROUTES.PROGRAMMING_LANGUAGES}}]"
-         :created="model.createdAt"
+         :createdAt="model.createdAt"
          :modified="model.updatedAt"
          v-model="model.name"
          :is-loading="model | isReading('name')"
-      />
+      >
+         <template #breadcrumbs>
+            <breadcrumb :to="{name: ROUTES.PROGRAMMING_LANGUAGES}">{'Programming languages' | translate}</breadcrumb>
+         </template>
+      </PageHeader>
 
-      <LazyData
+      <lazy-data
          v-model="model"
          :editable="isTeacher"
       >
-         <LazyProperty>alias</LazyProperty>
-         <LazyProperty>version</LazyProperty>
-      </LazyData>
+         <lazy-property>alias</lazy-property>
+         <lazy-property>version</lazy-property>
+      </lazy-data>
 
    </div>
 </template>
@@ -22,19 +25,22 @@
 <script lang="ts">
 import {Component, Prop, Mixins} from 'vue-property-decorator';
 import {Getter, Action, State} from 'vuex-class';
-import {PageHeader, Button, List, Tags, Input, ModelInfo, Section, TextSection, PageHeaderAction, Filters, DataView} from '@/components';
+import {Button, Tags, Input, ModelInfo, Section, TextSection, PageHeaderAction, Filters, DataView} from '@/components';
 import {ROUTES} from '@/router';
 import Vue from 'vue';
 import {ProgrammingLanguageRepository} from '@/models/programmingLanguage';
 import LazyData from '@/containers/LazyData.vue';
 import LazyProperty from '@/containers/LazyProperty.vue';
+import {List, ListColumn, PageHeader, Breadcrumb} from '@/containers'
 
 @Component({
    components: {
       PageHeader,
+      Breadcrumb,
       Button,
       Filters,
       List,
+      ListColumn,
       Tags,
       Section,
       TextSection,

@@ -1,28 +1,28 @@
 
 export interface AbstractData {
-   [key: string]: any;
+   [key: string]: any
 }
 
-export type ChangeCallback = () => void;
+export type ChangeCallback = () => void
 
 export interface ModelSchemaField {
-   type: ModelAttributeType;
-   fields: ModelSchema;
+   type: ModelAttributeType
+   fields: ModelSchema
 }
 
 export interface ModelSchema {
-   [key: string]: ModelAttributeType | ModelSchemaField;
+   [key: string]: ModelAttributeType | ModelSchemaField
 }
 
 export interface IModelObserver {
-   schema: ModelSchema;
-   data: AbstractData;
-   wrapped: AbstractData;
-   entity: string;
-   db?: ILazyReactiveDatabase;
-   excludeProperties: string[];
-   updateData: (data: AbstractData) => void;
-   changed?: ChangeCallback;
+   schema: ModelSchema
+   data: AbstractData
+   wrapped: AbstractData
+   entity: string
+   db?: ILazyReactiveDatabase
+   excludeProperties: string[]
+   updateData: (data: AbstractData) => void
+   changed?: ChangeCallback
 }
 
 export enum ModelAttributeType {
@@ -32,15 +32,15 @@ export enum ModelAttributeType {
 }
 
 export interface IPredefinedSchema {
-   [key: string]: ModelAttributeType;
+   [key: string]: ModelAttributeType
 }
 
 export interface ILazyReactiveDatabase {
-   schemas: {[entity: string]: IPredefinedSchema};
-   findOne: (entity: string, id: string, wrapped?: boolean) => AbstractData | undefined;
-   set: (entity: string, id: string, observer: IModelObserver) => void;
-   update: (entity: string, id: string, data: AbstractData) => boolean;
-   add: (entity: string, id: string, data: AbstractData) => void;
+   schemas: {[entity: string]: IPredefinedSchema}
+   findOne: (entity: string, id: string, wrapped?: boolean) => AbstractData | undefined
+   set: (entity: string, id: string, observer: IModelObserver) => void
+   update: (entity: string, id: string, data: AbstractData) => boolean
+   add: (entity: string, id: string, data: AbstractData) => void
 }
 
-export const ModelObserverReference = Symbol('model observer');
+export const ModelObserverReference = Symbol('model observer')

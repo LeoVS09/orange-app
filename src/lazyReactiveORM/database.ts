@@ -1,37 +1,37 @@
-import {AbstractData, ChangeCallback, ILazyReactiveDatabase, IModelObserver, IPredefinedSchema} from './types';
-import {ModelObserver} from '@/lazyReactiveORM/ModelObserver';
+import {AbstractData, ChangeCallback, ILazyReactiveDatabase, IModelObserver, IPredefinedSchema} from './types'
+import {ModelObserver} from '@/lazyReactiveORM/ModelObserver'
 
 class LazyReactiveDatabase implements ILazyReactiveDatabase {
 
-   public tables: {[entity: string]: {[id: string]: IModelObserver}} = {};
+   public tables: {[entity: string]: {[id: string]: IModelObserver}} = {}
    // TODO: part of properties can be computed to exclude
-   public excludeProperties = ['state', '_isVue', 'render', 'toJSON', 'constructor', '__ob__', 'then'];
+   public excludeProperties = ['state', '_isVue', 'render', 'toJSON', 'constructor', '__ob__', 'then']
 
-   public schemas: {[entity: string]: IPredefinedSchema} = {};
+   public schemas: {[entity: string]: IPredefinedSchema} = {}
 
    public addPredefinedSchema(entity: string, schema: IPredefinedSchema) {
-      this.schemas[entity] = schema;
+      this.schemas[entity] = schema
    }
 
    public findOne(entity: string, id: string, wrapped = true): IModelObserver | undefined {
       if (!this.tables[entity]) {
-         this.tables[entity] = {};
+         this.tables[entity] = {}
       }
 
-      const observer = this.tables[entity][id];
+      const observer = this.tables[entity][id]
       if (!observer) {
-         return;
+         return
       }
 
-      return observer;
+      return observer
    }
 
    public set(entity: string, id: string, observer: IModelObserver) {
       if (!this.tables[entity]) {
-         this.tables[entity] = {};
+         this.tables[entity] = {}
       }
 
-      this.tables[entity][id] = observer;
+      this.tables[entity][id] = observer
    }
 
    public add(entity: string, id: string, data: AbstractData) {
@@ -41,23 +41,23 @@ class LazyReactiveDatabase implements ILazyReactiveDatabase {
          data,
          excludeProperties: this.excludeProperties,
          predefinedSchema: this.schemas[entity] || {},
-      });
-      this.set(entity, id, observer);
+      })
+      this.set(entity, id, observer)
    }
 
    public update(entity: string, id: string, data: AbstractData): boolean {
-      const have = this.findOne(entity, id, false) as IModelObserver;
+      const have = this.findOne(entity, id, false) as IModelObserver
       if (!have) {
-         return false;
+         return false
       }
 
-      have.updateData(data);
-      return true;
+      have.updateData(data)
+      return true
    }
 
 }
 
-const Database = new LazyReactiveDatabase();
-console.log('lazy database', Database);
+const Database = new LazyReactiveDatabase()
+console.log('lazy database', Database)
 
-export default Database;
+export default Database

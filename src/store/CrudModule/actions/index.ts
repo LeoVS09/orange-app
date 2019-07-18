@@ -1,19 +1,19 @@
-import {Identical} from '../types';
-import * as mutations from '../mutationTypes';
-import * as actionTypes from '../actionTypes';
-import CrudState from '../state';
-import {IActionContext} from '@/store/state';
+import {Identical} from '../types'
+import * as mutations from '../mutationTypes'
+import * as actionTypes from '../actionTypes'
+import CrudState from '../state'
+import {IActionContext} from '@/store/state'
 import {
    generateStatusManipulation,
    setStatus,
-} from '@/store/modules/statuses/utils';
-import {STATUS_SCOPES} from '@/store/statusScopes';
-import {readListAction} from '@/store/CrudModule/actions/readList';
-import {readAction} from './read';
-import {editAction} from './edit';
-import {updateAction} from './update';
-import {addModelForCreateAction, createAction} from './create';
-import {deleteAction} from './delete';
+} from '@/store/modules/statuses/utils'
+import {STATUS_SCOPES} from '@/store/statusScopes'
+import {readListAction} from '@/store/CrudModule/actions/readList'
+import {readAction} from './read'
+import {editAction} from './edit'
+import {updateAction} from './update'
+import {addModelForCreateAction, createAction} from './create'
+import {deleteAction} from './delete'
 
 export {
    readListAction,
@@ -23,32 +23,32 @@ export {
    addModelForCreateAction,
    deleteAction,
    createAction,
-};
+}
 
 export interface ReadListVariables<T> {
-   first?: number | null;
-   last?: number | null;
-   offset?: number | null;
-   before?: any | null;
-   after?: any | null;
-   orderBy?: T[] | null;
+   first?: number | null
+   last?: number | null
+   offset?: number | null
+   before?: any | null
+   after?: any | null
+   orderBy?: T[] | null
 }
 
 export interface ReadListResponse<T> {
-   totalCount: number | null;
-   nodes: Array<T | null>;
+   totalCount: number | null
+   nodes: Array<T | null>
 }
 
 export interface CrudActionApi<T extends Identical, OrderBy> {
-   readList(variables: ReadListVariables<OrderBy>): Promise<ReadListResponse<T> | undefined | null>;
+   readList(variables: ReadListVariables<OrderBy>): Promise<ReadListResponse<T> | undefined | null>
 
-   create(model: T): Promise<T | undefined | null>;
+   create(model: T): Promise<T | undefined | null>
 
-   read(id: string): Promise<T | undefined | null>;
+   read(id: string): Promise<T | undefined | null>
 
-   update(model: T): Promise<T | undefined | null>;
+   update(model: T): Promise<T | undefined | null>
 
-   delete(id: string): Promise<T | undefined | null>;
+   delete(id: string): Promise<T | undefined | null>
 }
 
 
@@ -65,7 +65,7 @@ export default function crudMutations<T extends Identical, OrderBy>(
             generateStatusManipulation(scope, commit, rootGetters),
             api.readList,
             (status) => setStatus(STATUS_SCOPES.GLOBAL, commit, scope, status),
-         );
+         )
       },
 
 
@@ -76,7 +76,7 @@ export default function crudMutations<T extends Identical, OrderBy>(
             (m) => commit(mutations.SET_OR_ADD, m),
             generateStatusManipulation(scope, commit, rootGetters),
             api.read,
-         );
+         )
       },
 
       // ModelObserver in edit action can be partial
@@ -86,7 +86,7 @@ export default function crudMutations<T extends Identical, OrderBy>(
             model,
             (m) => commit(mutations.SET_OR_ADD, m),
             generateStatusManipulation(scope, commit, rootGetters),
-         );
+         )
       },
 
 
@@ -97,7 +97,7 @@ export default function crudMutations<T extends Identical, OrderBy>(
             (m) => commit(mutations.SET_OR_ADD, m),
             generateStatusManipulation(scope, commit, rootGetters),
             api.update,
-         );
+         )
       },
 
 
@@ -107,7 +107,7 @@ export default function crudMutations<T extends Identical, OrderBy>(
             () => defaultModel(parentId),
             (m) => commit(mutations.SET_OR_ADD, m),
             generateStatusManipulation(scope, commit, rootGetters),
-         );
+         )
       },
 
 
@@ -118,7 +118,7 @@ export default function crudMutations<T extends Identical, OrderBy>(
             (payload) => commit(mutations.SET_BY_ID, payload),
             generateStatusManipulation(scope, commit, rootGetters),
             api.create,
-         );
+         )
       },
 
 
@@ -129,9 +129,9 @@ export default function crudMutations<T extends Identical, OrderBy>(
             (id) => commit(mutations.DELETE, id),
             generateStatusManipulation(scope, commit, rootGetters),
             api.delete,
-         );
+         )
       },
-   };
+   }
 }
 
 

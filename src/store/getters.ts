@@ -1,9 +1,9 @@
-import {RootState } from './state';
-import {GetterTree} from 'vuex';
-import {FullProblem, PartialProblem, UserType} from '@/models';
-import {randomItem, shuffleProblem} from '@/store/utils';
-import { ProblemFilter} from '@/store/modules';
-import {Tag} from '@/models/problems';
+import {RootState } from './state'
+import {GetterTree} from 'vuex'
+import {FullProblem, PartialProblem, UserType} from '@/models'
+import {randomItem, shuffleProblem} from '@/store/utils'
+import { ProblemFilter} from '@/store/modules'
+import {Tag} from '@/models/problems'
 
 const getters: GetterTree<RootState, any> = {
    platform: (state) => state.ui.currentPlatform,
@@ -36,14 +36,14 @@ const getters: GetterTree<RootState, any> = {
 
    allTags: (state) => state.tags.data,
    tagById: (state) => (id: string) => state.tags.data.find((t) => t.id === id),
-};
+}
 
-export default getters;
+export default getters
 
 function findSimilarProblems(problems: Array<PartialProblem | FullProblem>, id: string): Array<PartialProblem | FullProblem> {
    // TODO: algorithm for findOne similar problem
 
-   const anotherProblems = problems.filter((p) => p.id !== id);
+   const anotherProblems = problems.filter((p) => p.id !== id)
 
-   return shuffleProblem(anotherProblems);
+   return shuffleProblem(anotherProblems)
 }

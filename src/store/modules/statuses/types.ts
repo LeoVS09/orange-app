@@ -1,4 +1,4 @@
-export const MODULE_PREFIX = 'statuses';
+export const MODULE_PREFIX = 'statuses'
 
 export enum ModelStatus {
    None = 'None',
@@ -22,33 +22,33 @@ export enum ModelReadState {
 }
 
 export interface ModelState {
-   read: ModelReadState;
-   status: ModelStatus;
-   changedAt: Date;
+   read: ModelReadState
+   status: ModelStatus
+   changedAt: Date
 }
 
 export interface StatusScope {
-   [id: string]: ModelState;
+   [id: string]: ModelState
 }
 
 export interface StatusScopes {
-   [scope: string]: StatusScope;
+   [scope: string]: StatusScope
 }
 
 export interface ISetStatusPayload {
-   scope: string;
-   id: string;
-   status: ModelStatus;
+   scope: string
+   id: string
+   status: ModelStatus
 }
 
 export interface ISetReadStatePayload {
-   scope: string;
-   id: string;
-   read: ModelReadState;
+   scope: string
+   id: string
+   read: ModelReadState
 }
 
 export interface ISetModelStatePayload {
-   scope: string;
-   id: string;
-   model: ModelState;
+   scope: string
+   id: string
+   model: ModelState
 }

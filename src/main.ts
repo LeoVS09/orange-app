@@ -1,61 +1,61 @@
 // The Vue build version to load with the `import` command
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
-import Vue from 'vue';
-import App from './App.vue';
-import { sync } from 'vuex-router-sync';
-import store from './store';
-import setTranslations from './translations';
-import router from './router';
-import { UIEventEmitter, UIEvents } from './utils/UIEventEmitter';
+import Vue from 'vue'
+import App from './App.vue'
+import { sync } from 'vuex-router-sync'
+import store from './store'
+import setTranslations from './translations'
+import router from './router'
+import { UIEventEmitter, UIEvents } from './utils/UIEventEmitter'
 // @ts-ignore
-import vClickOutside from 'v-click-outside';
-import Filters from '@/components/filter';
-import {LazyDBFilters} from '@/lazyReactiveORM/vue';
+import vClickOutside from 'v-click-outside'
+import Filters from '@/components/filter'
+import {LazyDBFilters} from '@/lazyReactiveORM/vue'
 
-Vue.use(vClickOutside);
+Vue.use(vClickOutside)
 
-setTranslations();
+setTranslations()
 
 // TODO lodash types
 // @ts-ignore
-import throttle from 'lodash.throttle';
+import throttle from 'lodash.throttle'
 
-import * as actionTypes from './store/actionTypes';
+import * as actionTypes from './store/actionTypes'
 
-Vue.config.productionTip = false;
+Vue.config.productionTip = false
 
-Vue.use(Filters);
-Vue.use(LazyDBFilters);
+Vue.use(Filters)
+Vue.use(LazyDBFilters)
 
-sync(store, router);
+sync(store, router)
 
 function setPlatformAnalysis() {
   const determinePlatform = () => {
     const currentWidth = window.innerWidth;
     [1200, 820, 0].some((widthValue, index) => {
       if (currentWidth > widthValue) {
-        store.dispatch(actionTypes.SET_PLATFORM, index);
-        return true;
+        store.dispatch(actionTypes.SET_PLATFORM, index)
+        return true
       }
-      return false;
-    });
-  };
+      return false
+    })
+  }
 
   const resizeEvent = throttle(() => {
-    UIEventEmitter.$emit(UIEvents.WINDOW_RESIZE);
+    UIEventEmitter.$emit(UIEvents.WINDOW_RESIZE)
 
-    determinePlatform();
-  }, 75);
-  window.addEventListener('resize', resizeEvent);
+    determinePlatform()
+  }, 75)
+  window.addEventListener('resize', resizeEvent)
 
-  determinePlatform();
+  determinePlatform()
 }
-setPlatformAnalysis();
+setPlatformAnalysis()
 
 // @ts-ignore
 window.debugState = () => {
-  return (() => JSON.parse(JSON.stringify(store.state)))();
-};
+  return (() => JSON.parse(JSON.stringify(store.state)))()
+}
 
 // @ts-ignore no-newValue
 new Vue({
@@ -63,5 +63,5 @@ new Vue({
   router,
   render: (h) => h(App),
   components: { App },
-}).$mount('#app');
+}).$mount('#app')
 

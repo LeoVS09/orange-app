@@ -12,7 +12,7 @@
 <script lang="ts">
 import Vue from 'vue';
 import {Component, Prop, Emit} from 'vue-property-decorator';
-import Button from './Button.vue';
+import Button from '../components/Button.vue';
 
 @Component({
    components: {

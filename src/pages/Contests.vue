@@ -9,11 +9,6 @@
 
       <Section>
          <list
-            :headers="[
-               {'name': $t('Name')},
-               {'author': $t('Author')},
-               {'date': $t('Updated')},
-            ]"
             :items="items"
             :formatData="formatItem"
             :isCanAdd="isTeacher"
@@ -21,6 +16,9 @@
             @choose-item="chooseItem"
             :load="loadItems"
          >
+            <list-column>name</list-column>
+            <list-column>author</list-column>
+            <list-column name="updatedAt">updated</list-column>
             <template #add>{{'Add' | translate}}</template>
             <template #previous>{{'Previous' | translate}}</template>
             <template #next>{{'Next' | translate}}</template>
@@ -35,7 +33,7 @@ import {Component} from 'vue-property-decorator';
 import {Getter, Action, State} from 'vuex-class';
 import {FullProblem, PartialContest, PartialProblem} from '@/models';
 import * as actions from '@/store/actionTypes';
-import {PageHeader, Button, List, Tags, Section, PageHeaderAction, Filters} from '@/components';
+import {Button, Tags, Section, PageHeaderAction, Filters} from '@/components';
 import {ROUTES} from '@/router';
 import {RootState} from '@/store/state';
 import {ProblemFilter} from '@/store/modules';
@@ -43,13 +41,16 @@ import {Tag} from '@/models/problems';
 import {MODULES, actionName} from '@/store/actionTypes';
 import {FullContest} from '@/models/contest';
 import {RouterPush} from '@/components/decorators';
+import {List, ListColumn, PageHeader, Breadcrumb} from '@/containers'
 
 @Component({
    components: {
       PageHeader,
+      Breadcrumb,
       Button,
       Filters,
       List,
+      ListColumn,
       Tags,
       Section,
       Action: PageHeaderAction,

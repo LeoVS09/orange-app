@@ -3,23 +3,23 @@ import {
    MutationOptions,
    OperationVariables,
    QueryOptions,
-} from 'apollo-client';
-import { InMemoryCache } from 'apollo-cache-inmemory';
-import { HttpLink } from 'apollo-link-http';
-import {ExecutionResult} from 'graphql';
+} from 'apollo-client'
+import { InMemoryCache } from 'apollo-cache-inmemory'
+import { HttpLink } from 'apollo-link-http'
+import {ExecutionResult} from 'graphql'
 
 export interface APIClient {
-   mutate<T, TVariables = OperationVariables>(options: MutationOptions<T, TVariables>): Promise<ExecutionResult<T>>;
+   mutate<T, TVariables = OperationVariables>(options: MutationOptions<T, TVariables>): Promise<ExecutionResult<T>>
 
-   query<T, TVariables = OperationVariables>(options: QueryOptions<TVariables>): Promise<ExecutionResult<T>>;
+   query<T, TVariables = OperationVariables>(options: QueryOptions<TVariables>): Promise<ExecutionResult<T>>
 }
 
 function extractRealError(e: any) {
    if (e.graphQLErrors && e.graphQLErrors[0].message) {
-      return e.graphQLErrors[0].message;
+      return e.graphQLErrors[0].message
    }
-   console.log(JSON.stringify(e));
-   return e;
+   console.log(JSON.stringify(e))
+   return e
 }
 
 export function makeClient(uri: string): APIClient {
@@ -29,7 +29,7 @@ export function makeClient(uri: string): APIClient {
          uri,
          credentials: 'include',
       }),
-   });
+   })
 
    return {
       mutate: (options) => new Promise((resolve, reject) => {
@@ -38,10 +38,10 @@ export function makeClient(uri: string): APIClient {
             client.mutate(options)
             // @ts-ignore
                .then(resolve)
-               .catch((e) => reject(extractRealError(e)));
+               .catch((e) => reject(extractRealError(e)))
 
          } catch (e) {
-            reject(extractRealError(e));
+            reject(extractRealError(e))
          }
 
       }),
@@ -51,11 +51,11 @@ export function makeClient(uri: string): APIClient {
             client.query(options)
             // @ts-ignore
                .then(resolve)
-               .catch(reject);
+               .catch(reject)
 
          } catch (e) {
-            reject(e);
+            reject(e)
          }
       }),
-   };
+   }
 }

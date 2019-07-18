@@ -6,19 +6,18 @@
 
       <Section>
          <list
-            :headers="[
-               {'name': $t('Name')},
-               {'alias': $t('Alias')},
-               {'version': $t('Version')},
-               {'updatedAt': $t('Updated')}
-            ]"
             :items="list.nodes"
             :isCanAdd="isTeacher"
             inlineAdd
             :validateAdd="validate"
             @add="add"
             @choose-item="chooseItem"
-         />
+         >
+            <list-column>name</list-column>
+            <list-column>alias</list-column>
+            <list-column>version</list-column>
+            <list-column name="updatedAt">updated</list-column>
+         </list>
       </Section>
    </div>
 </template>
@@ -29,12 +28,13 @@ import {Component} from 'vue-property-decorator';
 import {Getter, Action, State} from 'vuex-class';
 import {Country, FullProblem, PartialProblem} from '@/models';
 import * as actions from '@/store/actionTypes';
-import {PageHeader, Button, List, Tags, Section, PageHeaderAction, Filters} from '@/components';
+import {Button, Tags, Section, PageHeaderAction, Filters} from '@/components';
 import {ROUTES} from '@/router';
 import {RouterPush} from '@/components/decorators';
 import {actionName, MODULES} from '@/store/actionTypes';
 import {CountryRepository} from '@/models/country';
 import {ProgrammingLanguageRepository} from '@/models/programmingLanguage';
+import {List, ListColumn, PageHeader} from '@/containers'
 
 @Component({
    components: {
@@ -45,6 +45,7 @@ import {ProgrammingLanguageRepository} from '@/models/programmingLanguage';
       Tags,
       Section,
       Action: PageHeaderAction,
+      ListColumn
    },
 })
 export default class ProgrammingLanguages extends Vue {

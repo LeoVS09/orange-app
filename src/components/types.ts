@@ -1,4 +1,4 @@
-import Vue from 'vue';
+import Vue from 'vue'
 
 export enum ColorLineType {
    success = 'success',
@@ -6,7 +6,7 @@ export enum ColorLineType {
 }
 
 export interface ButtonEvent {
-   key: string;
+   key: string
 }
 
 export enum ButtonEvents {
@@ -15,26 +15,26 @@ export enum ButtonEvents {
 }
 
 export interface ListItemEvent {
-   key: string;
+   key: string
 }
 
 export interface DataItem {
-   [key: string]: any;
+   [key: string]: any
 }
 
 export interface Header {
-   key: string;
-   label: string;
-   expand?: boolean;
+   key: string
+   label: string
+   expand?: boolean
 }
 
 export interface SimpleHeader {
-   [key: string]: string;
+   [key: string]: string
 }
 
 export interface ListMeta {
-   headers?: Array<Header | string>;
-   exceptions?: string[];
+   headers?: Array<Header | string>
+   exceptions?: string[]
 }
 
 export enum ListItemEvents {
@@ -45,8 +45,8 @@ export enum ListItemEvents {
 }
 
 export interface ListSortEvent {
-   by: string;
-   ascending: boolean;
+   by: string
+   ascending: boolean
 }
 
 export enum ListEvents {
@@ -64,35 +64,37 @@ export enum ListEvents {
 }
 
 export interface ButtonGroupMetaItem {
-   [key: string]: any;
+   [key: string]: any
 }
 
 export interface ButtonGroupMeta {
-   attributes?: Object;
-   active?: any;
-   buttons?: ButtonGroupMetaItem[];
+   attributes?: Object
+   active?: any
+   buttons?: ButtonGroupMetaItem[]
 }
 
-export interface IPropsBreadcrumb {
-   [name: string]: any;
+export interface Breadcrumb {
+   link?: object
+   label: string
+   id: string
 }
 
 export interface DynamicPageAction {
-   showTrigger?: (self: Vue) => boolean;
-   icon: string;
-   text: string;
-   action: (self: Vue) => void;
+   showTrigger?: (self: Vue) => boolean
+   icon: string
+   text: string
+   action: (self: Vue) => void
 }
 
 export interface DynamicPageMeta {
    header: string | {
-      breadcrumbs?: Array<IPropsBreadcrumb | string>
+      breadcrumbs?: Array<Breadcrumb | string>
       text: string | ((model?: any) => string)
       actions?: DynamicPageAction[] | {
          showTrigger?: (self: Vue) => boolean,
          buttons: DynamicPageAction[],
       },
-   };
+   }
    tags?: {
       getter: (self: Vue) => any[],
       active: (self: Vue) => any[],
@@ -101,7 +103,7 @@ export interface DynamicPageMeta {
          loadTrigger?: (self: Vue) => boolean
          loadAction?: (self: Vue) => void,
       },
-   };
+   }
    list?: {
       headers?: Array<Header | string | SimpleHeader>
       filters?: {
@@ -119,13 +121,13 @@ export interface DynamicPageMeta {
          loadAction?: (self: Vue) => void,
       }
       chooseItem?: (item: any) => void,
-   };
+   }
    model?: {
       getter?: (self: Vue) => any
       actions?: {
          loadTrigger?: (model?: any) => boolean
          loadAction?: (self: Vue) => void,
       },
-   };
+   }
 }
 

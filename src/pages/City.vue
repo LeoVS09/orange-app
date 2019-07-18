@@ -1,33 +1,33 @@
 <template>
    <div class="city">
       <PageHeader
-         :breadcrumbs="[
-            {[$t('Countries')]: {name: ROUTES.COUNTRIES}},
-            { [parent && parent.name || $t('Country')]: {
-               name: ROUTES.COUNTRY,
-               params: {id: model && model.countryId}
-            }}
-         ]"
-         :created="model && model.createdAt"
+         :createdAt="model && model.createdAt"
          :modified="model && model.updatedAt"
          v-model="model && model.name"
          :is-loading="model | isReading('name')"
-      />
+      >
+         <template #breadcrumbs>
+            <breadcrumb :to="{name: ROUTES.COUNTRIES}">{{'Countries' | translate}}</breadcrumb>
+            <breadcrumb :to="{
+               name: ROUTES.COUNTRY,
+               params: {id: model.countryId}
+            }">{{parent.name }}</breadcrumb>
+         </template>
+      </PageHeader>
 
       <Section>
          <list
-            :headers="[
-               {'longName': $t('Name')},
-               {'shortName': $t('Short')},
-               {'updatedAt': $t('Updated')}
-            ]"
             :items="model.universities.nodes"
             :isCanAdd="isTeacher"
             inlineAdd
             :validateAdd="validate"
             @add="add"
             @choose-item="chooseItem"
-         />
+         >
+            <list-column name="longName">name</list-column>
+            <list-column name="shortName">short</list-column>
+            <list-column name="updatedAt">updated</list-column>
+         </list>
       </Section>
    </div>
 </template>
@@ -37,7 +37,7 @@ import {Component, Prop, Mixins} from 'vue-property-decorator';
 import {Getter, Action, State} from 'vuex-class';
 import {City, Country, University} from '@/models';
 import * as actions from '@/store/actionTypes';
-import {PageHeader, List, ModelInfo, Section, PageHeaderAction} from '@/components';
+import {ModelInfo, Section, PageHeaderAction} from '@/components';
 import {ROUTES} from '@/router';
 import ModelById from '@/components/mixins/ModelById';
 import {RouterPush} from '@/components/decorators';
@@ -45,14 +45,17 @@ import {actionName, MODULES} from '@/store/actionTypes';
 import {CountryRepository, CityRepository} from '@/models/country';
 import Vue from 'vue';
 import ReactiveUpdate, {reactiveUpdate} from '@/components/mixins/ReactiveUpdate';
+import {List, ListColumn, PageHeader, Breadcrumb} from '@/containers'
 
 @Component({
    components: {
       PageHeader,
       List,
+      ListColumn,
       Section,
       Action: PageHeaderAction,
       ModelInfo,
+      Breadcrumb
    },
 })
 export default class CityView extends Mixins(ReactiveUpdate) {

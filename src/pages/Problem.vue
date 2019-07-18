@@ -30,8 +30,12 @@
          :colorLine="done && 'success'"
          :highlight="false"
          :textWidth="true"
-         :breadcrumbs="[{'Problems': {name: ROUTES.PROBLEMS}}]"
-      >{{model.name}}</page-header>
+      >
+         <template #breadcrumb>
+            <breadcrumb :to="{name: ROUTES.PROBLEMS}">{'Problems' | translate}</breadcrumb>
+         </template>
+         {{model.name}}
+      </page-header>
 
 <!--      <tags :values="model.tags"></tags>-->
 
@@ -167,7 +171,6 @@ import {
    DataView,
    FloatingButton,
    MaterialIcon,
-   PageHeader,
    TextareaAutoresize,
    TextSection,
 } from '@/components';
@@ -175,7 +178,7 @@ import Tags from '../components/Tags.vue';
 import LdrLove from '@/components/icons/LdrLove.vue';
 import LdrX from '@/components/icons/LdrX.vue';
 import LdrRobot from '@/components/icons/LdrRobot.vue';
-import TestView from '../containers/TestView.vue';
+import {TestView, PageHeader, Breadcrumb} from '../containers';
 import {formatDate} from '@/components/utils';
 import {PartialProgramInput, PartialProgramOutput, ProblemError, ProblemTestingStatus} from '@/models/problems';
 import {IUploadCodePayload} from '@/store/modules/problems/actions';
@@ -194,6 +197,7 @@ Component.registerHooks([
 @Component({
    components: {
       TestView,
+      Breadcrumb,
       Icon: MaterialIcon,
       Button,
       TextareaAutoresize,

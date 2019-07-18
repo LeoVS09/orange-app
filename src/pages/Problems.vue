@@ -25,12 +25,13 @@ import {Component} from 'vue-property-decorator';
 import {Getter, Action, State} from 'vuex-class';
 import {FullProblem, PartialProblem} from '@/models';
 import * as actions from '@/store/actionTypes';
-import {PageHeader, PageHeaderAction} from '@/components';
+import {PageHeaderAction} from '@/components';
 import {ROUTES} from '@/router';
 import {Tag} from '@/models/problems';
 import {MODULES, actionName} from '@/store/actionTypes';
 import {RouterPush} from '@/components/decorators';
 import ProblemsList from '@/containers/ProblemsList.vue';
+import {PageHeader} from "@/containers";
 
 @Component({
    components: {

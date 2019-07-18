@@ -44,10 +44,11 @@ import {Getter, Action} from 'vuex-class';
 import {UserProfile, UserType} from '../models';
 import * as actions from '../store/actionTypes';
 import {checkIsLogin} from '../authentication';
-import {MaterialIcon, Input, PageHeader, SourceView, Button, Select} from '../components';
+import {MaterialIcon, Input, SourceView, Button, Select} from '../components';
 import {City, Country} from '@/models/country';
 import {Email} from '@/models/email';
 import {actionName, MODULES} from '@/store/actionTypes';
+import {PageHeader} from "@/containers";
 
 function capitalise(s: string): string {
    return s[0].toUpperCase() + s.slice(1);

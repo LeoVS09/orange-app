@@ -1,16 +1,16 @@
-import * as actionTypes from '../../actionTypes';
-import * as Vuex from 'vuex';
-import staticUserData from './user.json';
-import staticProblemData from './problem.json';
-import {FullProblem, Test, UserProfile, UserType} from '@/models';
-import {mockInput, mockOutput, mockTag} from '@/models/problems';
+import * as actionTypes from '../../actionTypes'
+import * as Vuex from 'vuex'
+import staticUserData from './user.json'
+import staticProblemData from './problem.json'
+import {FullProblem, Test, UserProfile, UserType} from '@/models'
+import {mockInput, mockOutput, mockTag} from '@/models/problems'
 
 
-const USE_STATIC_ID = true;
-const STATIC_ID = 'do5n32edbzsjb0ynz3b7i';
+const USE_STATIC_ID = true
+const STATIC_ID = 'do5n32edbzsjb0ynz3b7i'
 
-const random = (min: number = 0, max: number = 10): number => Math.floor(Math.random() * (max - min)) + min;
-const randomString = (): string => Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+const random = (min: number = 0, max: number = 10): number => Math.floor(Math.random() * (max - min)) + min
+const randomString = (): string => Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)
 
 /* tslint:disable */
 const PROBLEM_NAME = ['hat', 'badge', 'tree', 'data', 'round', 'films', 'bits', 'note', 'store', 'fly', 'ants', 'two', 'three', 'coins', 'oracle'];
@@ -19,8 +19,8 @@ const TAGS = ['brute force', 'data structure', 'graphs', 'math', 'trees', 'binar
 /* tslint:enable */
 // TODO: move to models/mock and refactor
 export function createProblem(): FullProblem {
-   let name = PROBLEM_NAME[random(0, PROBLEM_NAME.length)] + ' ' + PROBLEM_NAME[random(0, PROBLEM_NAME.length)];
-   name = name.substr(0, 1).toUpperCase() + name.substr(1);
+   let name = PROBLEM_NAME[random(0, PROBLEM_NAME.length)] + ' ' + PROBLEM_NAME[random(0, PROBLEM_NAME.length)]
+   name = name.substr(0, 1).toUpperCase() + name.substr(1)
 
    return Object.assign({}, staticProblemData, {
       id: randomString(),
@@ -42,7 +42,7 @@ export function createProblem(): FullProblem {
          isPublic: false,
       } as Test],
       synced: true,
-   });
+   })
 }
 
 export function createUser(login: string, password: string, type: UserType): UserProfile {
@@ -70,7 +70,7 @@ export function createUser(login: string, password: string, type: UserType): Use
          createdAt: new Date(),
          isVerified: true,
       }],
-   };
+   }
 }
 
 //

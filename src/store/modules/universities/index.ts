@@ -1,9 +1,9 @@
-import {CrudState, crudActions, crudMutations} from '@/store/CrudModule';
-import {University} from '@/models';
-import {UniversitiesOrderBy, UniversityInput} from '@/api/database/global-types';
-import * as API from '@/api';
-import * as fragmentsTypes from '@/api/database/fragments/types';
-import {STATUS_SCOPES} from '@/store/statusScopes';
+import {CrudState, crudActions, crudMutations} from '@/store/CrudModule'
+import {University} from '@/models'
+import {UniversitiesOrderBy, UniversityInput} from '@/api/database/global-types'
+import * as API from '@/api'
+import * as fragmentsTypes from '@/api/database/fragments/types'
+import {STATUS_SCOPES} from '@/store/statusScopes'
 
 export default {
    namespaced: true,
@@ -36,10 +36,10 @@ export default {
          delete: (id) => API.deleteUnviersity({input: {id}}),
       },
    ),
-};
+}
 
 function responseToUniversity(result: fragmentsTypes.PartialUniversity | null | undefined): University | null | undefined {
-   return result;
+   return result
 }
 
 function universityToInput(university: University): UniversityInput {
@@ -47,5 +47,5 @@ function universityToInput(university: University): UniversityInput {
       cityId: university.cityId,
       shortName: university.shortName,
       longName: university.longName,
-   };
+   }
 }

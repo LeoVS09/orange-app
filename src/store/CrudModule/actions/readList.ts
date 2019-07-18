@@ -1,8 +1,8 @@
-import {CrudActionApi, Identical, ReadListResponse, ReadListVariables} from '@/store/CrudModule';
-import {StatusManipulation} from '@/store/modules/statuses/utils';
-import {ModelStatus} from '@/store/modules';
-import {ModelReadState} from '@/store/modules/statuses/types';
-import {findById} from '@/store/CrudModule/actions/utils';
+import {CrudActionApi, Identical, ReadListResponse, ReadListVariables} from '@/store/CrudModule'
+import {StatusManipulation} from '@/store/modules/statuses/utils'
+import {ModelStatus} from '@/store/modules'
+import {ModelReadState} from '@/store/modules/statuses/types'
+import {findById} from '@/store/CrudModule/actions/utils'
 
 export async function readListAction<T extends Identical, OrderBy>(
    items: T[],
@@ -12,46 +12,46 @@ export async function readListAction<T extends Identical, OrderBy>(
    setGlobalStatus: (status: ModelStatus) => void,
 ): Promise<boolean> {
 
-   const list = await readList({});
+   const list = await readList({})
    if (!list) {
-      setGlobalStatus(ModelStatus.ErrorReading);
-      return false;
+      setGlobalStatus(ModelStatus.ErrorReading)
+      return false
    }
 
    const setNode = (model: T) => {
-      setOrAddMutation( model);
-      setModelState(model.id, ModelStatus.Synced, ModelReadState.Partial);
-   };
+      setOrAddMutation( model)
+      setModelState(model.id, ModelStatus.Synced, ModelReadState.Partial)
+   }
 
    list.nodes.forEach((node) => {
       if (!node) {
-         return;
+         return
       }
 
-      const have = findById(items, node.id);
+      const have = findById(items, node.id)
       if (!have) {
-         return setNode(node);
+         return setNode(node)
       }
 
-      const status = getStatus(node.id);
-      const readState = getRead(node.id);
+      const status = getStatus(node.id)
+      const readState = getRead(node.id)
 
       if (status === ModelStatus.None || status === ModelStatus.Reading || status === ModelStatus.ErrorReading) {
-         return setNode(node);
+         return setNode(node)
       }
 
       if (status !== ModelStatus.Synced) {
-         return;
+         return
       }
 
       if (readState !== ModelReadState.Full) {
-         return setNode(node);
+         return setNode(node)
       }
 
       if (have.updatedAt !== node.updatedAt) {
-         return setNode(node);
+         return setNode(node)
       }
-   });
+   })
 
-   return true;
+   return true
 }

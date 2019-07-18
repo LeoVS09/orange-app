@@ -1,7 +1,7 @@
-import {randomId} from '@/components/utils';
-import {Country} from '@/models';
-import {City} from '@/models/country';
-import {randomItem} from '@/store/utils';
+import {randomId} from '@/components/utils'
+import {Country} from '@/models'
+import {City} from '@/models/country'
+import {randomItem} from '@/store/utils'
 
 export function mockCountry(): Country {
    return {
@@ -9,7 +9,7 @@ export function mockCountry(): Country {
       id: 'country-' + randomId(),
       createdAt: new Date(),
       updatedAt: new Date(),
-   };
+   }
 }
 
 export function mockCountries(): Country[] {
@@ -18,7 +18,7 @@ export function mockCountries(): Country[] {
       id: 'country-' + randomId(),
       createdAt: new Date(),
       updatedAt: new Date(),
-   }));
+   }))
 }
 
 export function mockCities(): City[] {
@@ -28,7 +28,7 @@ export function mockCities(): City[] {
       createdAt: new Date(),
       updatedAt: new Date(),
       countryId: 'country-' + randomId(),
-   }));
+   }))
 }
 
 /* tslint:disable */

@@ -5,19 +5,20 @@
       success: colorLine === ColorLineType.success,
       error: colorLine === ColorLineType.error,
       'text-width': textWidth,
-      breadcrumbs
+      breadcrumbs: !!breadcrumbs.length
    }">
-      <div class="page-header--breadcrumbs" v-if="breadcrumbs">
-         <template v-for="step in visibleBreadcrumbs">
+      <div class="page-header--hidden-breadcrumbs"><slot name="breadcrumbs"></slot></div>
+      <div class="page-header--breadcrumbs" v-if="breadcrumbs.length">
+         <template v-for="step in breadcrumbs">
             <router-link
                v-if="step.link"
                class="page-header--breadcrumb-step link"
                :to="step.link"
-            >{{step.name}}</router-link>
+            >{{step.label}}</router-link>
             <span
                v-else
                class="page-header--breadcrumb-step"
-            >{{step.name}}</span>
+            >{{step.label}}</span>
 
             <span class="page-header--breadcrumb-separator">/</span>
          </template>
@@ -71,9 +72,9 @@
 import Vue from 'vue';
 import {Component, Prop, Emit} from 'vue-property-decorator';
 import ColorLine from '@/components/ColorLine.vue';
-import {formatDate} from './utils';
-import {ColorLineType, IPropsBreadcrumb} from '@/components/types';
-import DataView from './DataView.vue';
+import {formatDate, randomId} from '../components/utils';
+import {ColorLineType, Breadcrumb} from '@/components/types';
+import DataView from '../components/DataView.vue';
 
 export interface IVisibleBreadcrumbs {
    name: string;
@@ -121,13 +122,8 @@ export default class PageHeader extends Vue {
    })
    public placeholder?: string;
 
-   @Prop({
-      type: Array,
-   })
-   public breadcrumbs?: Array<string | IPropsBreadcrumb>;
-
    @Prop(Date)
-   public created?: Date;
+   public createdAt?: Date;
 
    @Prop(Date)
    public modified?: Date;
@@ -137,28 +133,12 @@ export default class PageHeader extends Vue {
 
    public ColorLineType = ColorLineType;
 
-   get visibleBreadcrumbs(): IVisibleBreadcrumbs[] {
-      if (!this.breadcrumbs) {
-         return [];
-      }
+   public pageHeaderId = 'default'
+   public breadcrumbs: Array<Breadcrumb> = [];
 
-      return this.breadcrumbs.map((b) => {
-         if (typeof b === 'string') {
-            return {
-               name: b,
-            };
-         }
-
-         const name = Object.keys(b)[0];
-         let link = b[name];
-         if (typeof link === 'string') {
-            link = {path: link};
-         }
-         return {
-            name,
-            link,
-         };
-      });
+   created(){
+      this.breadcrumbs = []
+      this.pageHeaderId = `page-header-${randomId()}`
    }
 
    @Emit('input')
@@ -167,11 +147,11 @@ export default class PageHeader extends Vue {
    }
 
    get dataValues() {
-      if (!this.created && !this.modified) {
+      if (!this.createdAt && !this.modified) {
          return;
       }
 
-      const created = this.created && formatDate(this.created);
+      const created = this.createdAt && formatDate(this.createdAt);
       const modified = this.modified && formatDate(this.modified);
 
       const result: {[key: string]: string} = {};
@@ -190,7 +170,7 @@ export default class PageHeader extends Vue {
 </script>
 
 <style scoped lang="scss">
-   @import "../styles/config.scss";
+   @import "../styles/config";
    @import "../styles/skeleton";
 
    .header-loading {
@@ -224,6 +204,10 @@ export default class PageHeader extends Vue {
       flex-direction: column;
       min-height: 5rem;
       position: relative;
+
+      &--hidden-breadcrumbs {
+         display: none;
+      }
 
       &--breadcrumbs {
          width: 100%;

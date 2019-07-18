@@ -1,7 +1,7 @@
-import {StatusState} from './state';
-import actions from './actions';
-import mutations from './mutations';
-import getters from './getters';
+import {StatusState} from './state'
+import actions from './actions'
+import mutations from './mutations'
+import getters from './getters'
 
 export default {
    namespaced: true,
@@ -9,15 +9,15 @@ export default {
    actions,
    getters,
    mutations,
-};
+}
 
 export {
    StatusState,
-};
+}
 
 export {
    StatusScope,
    StatusScopes,
    ModelStatus,
    ISetStatusPayload,
-} from './types';
+} from './types'
