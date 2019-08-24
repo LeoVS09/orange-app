@@ -34,7 +34,7 @@
          <template #breadcrumb>
             <breadcrumb :to="{name: ROUTES.PROBLEMS}">{{'Problems' | translate}}</breadcrumb>
          </template>
-         {{model.name}}
+         {{base.name}}
       </page-header>
 
 <!--      <tags :values="model.tags"></tags>-->
@@ -44,7 +44,7 @@
          :value="model.description"
          @input="updateText"
          placeholder="Problem description..."
-      >{{model.description}}</text-section>
+      >{{base.description}}</text-section>
 
       <text-section highlight :textWidth="false">
          <div class="problem--limits">
@@ -125,20 +125,20 @@
          <div class="authors">
             <div title="author">
                <Icon class="data" type="create"/>
-               <span>{{model.author.login}}</span>
+               <span>{{base.author.login}}</span>
             </div>
             <div title="tester">
                <Icon class="data" type="how_to_reg"/>
-               <span>{{model.tester.login}}</span>
+               <span>{{base.tester.login}}</span>
             </div>
          </div>
          <div class="dates">
             <div title="date of upload">
-               <span>{{formatDate(model.updatedAt)}}</span>
+               <span>{{formatDate(base.updatedAt)}}</span>
                <Icon class="data" type="publish"/>
             </div>
             <div title="date of publication">
-               <span>{{formatDate(model.publicationDate)}}</span>
+               <span>{{formatDate(base.publicationDate)}}</span>
                <Icon class="data" type="public"/>
             </div>
          </div>

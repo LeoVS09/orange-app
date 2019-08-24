@@ -1,7 +1,5 @@
-import Repository from '@/lazyReactiveORM/Repository'
-import {ModelAttributeType} from '@/lazyReactiveORM/types'
+import {Repository} from '@/lazyDB'
 
 export const ProgrammingLanguageRepository = new Repository(
-   'programmingLanguage',
-   {
-   })
+   'programmingLanguage'
+)

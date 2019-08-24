@@ -1,6 +1,7 @@
 import deepMap from 'deep-map'
-import {ILazyReactiveDatabase, ModelAttributeType, ModelSchemaField} from '@/lazyReactiveORM/types'
-import {ModelEventGetPropertyPayload} from '@/lazyReactiveORM/events'
+import {ILazyReactiveDatabase} from "@/lazyDB/database/types";
+import {ModelSchemaField} from "@/lazyDB/types";
+import {ModelAttributeType} from "@/lazyDB/core/types";
 
 const keysForMapDays: string[] = []
 const keyMath = /.+(Date|At)$/gm
@@ -24,7 +25,7 @@ export function dateToStringFormatter <T>(t: T): T {
    })
 }
 
-export function extractEntityFromManyKey(key: string) {
+export function extractEntityNameFromManyKey(key: string) {
    const last = key.slice(-1)
    if (last !== 's') {
       return key
@@ -45,14 +46,6 @@ export function addOrUpdate(db: ILazyReactiveDatabase, entity: string, node: {id
    }
 
    db.add(entity, node.id, node)
-}
-
-export function lastObjectPropertyName({name, inner}: ModelEventGetPropertyPayload): string {
-   if (!inner) {
-      return name
-   }
-
-   return lastObjectPropertyName(inner)
 }
 
 export function isSchemaField(field: ModelSchemaField | ModelAttributeType): field is ModelSchemaField {

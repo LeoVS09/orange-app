@@ -1,5 +1,5 @@
-import Repository from '@/lazyReactiveORM/Repository'
-import {ModelAttributeType} from '@/lazyReactiveORM/types'
+import {Repository} from '@/lazyDB'
+import {ModelAttributeType} from "@/lazyDB/core/types";
 
 export interface University {
    id: string

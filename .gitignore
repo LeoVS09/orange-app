@@ -75,3 +75,10 @@ typings/
 *.njsproj
 *.sln
 *.sw?
+
+# Git patches
+*.patch
+
+# Synchronisation
+.stignore
+.stfolder

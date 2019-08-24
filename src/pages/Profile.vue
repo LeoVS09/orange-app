@@ -170,14 +170,14 @@ export default class Profile extends Vue {
    // inputCountry(value: string) {
    //    // TODO: validation
    //    this.country = value;
-   //    this.$store.dispatch(actions.SEARCH_COUNTRIES, value)
+   //    this.$storage.dispatch(actions.SEARCH_COUNTRIES, value)
    //       .then(results => this.countryAutoComplete = results);
    // }
    //
    // searchCountries(value: string) {
    //    // TODO: complete countries search
    //    this.country = value;
-   //    this.$store.dispatch(actions.SEARCH_COUNTRIES, value)
+   //    this.$storage.dispatch(actions.SEARCH_COUNTRIES, value)
    //       .then(result => console.log(result));
    // }
 
