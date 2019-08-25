@@ -74,5 +74,7 @@ const nodesGetter = (source: ListSource): ProducerStoreGetter<Array<any>> => ({b
    if(!getItem)
       return
 
+   // TODO: add support to string properties for array, like 'slice' and other
+
    return getItem(source, index as number)
 }

@@ -12,42 +12,10 @@ import {extractEntityNameFromManyKey} from "@/lazyDB/utils";
 import {ProducerStore} from "@/lazyDB/core/producer/Store";
 import {asyncReceiveWithMemory} from "@/lazyDB/core/receiver";
 
-const DEFAULT_EXCLUDE_PROPERTIES = [
-   'state',
-   '_isVue',
-   'render',
-   'toJSON',
-   'constructor',
-   '__ob__',
-   'then',
-   'function () { [native code] }'
-]
-
 export default class LazyReactiveDatabase implements ILazyReactiveDatabase {
 
    public storage: DatabaseStorage = makeDatabaseStorage()
-
-   // TODO: part of properties can be computed to exclude
-   public excludeProperties = [...DEFAULT_EXCLUDE_PROPERTIES]
-
    public schemas: IEntityTypeSchemaStorage = {}
-
-   constructor(){
-      asyncReceiveWithMemory(this.store, {
-         [EventType.GetProperty]: (...args) => {
-            console.log('EventType.GetProperty', ...args)
-            return false
-         },
-         [EventType.SetProperty]: (...args) => {
-            console.log('EventType.SetProperty', ...args)
-            return false
-         },
-         [EventType.DeleteProperty]: (...args) => {
-            console.log('EventType.DeleteProperty', ...args)
-            return false
-         }
-      })
-   }
 
    public get store(): ProducerStore {
       return getStore(this.storage) as ProducerStore
