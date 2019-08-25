@@ -7,8 +7,6 @@ import {SymFor} from "@/lazyDB/core/utils";
 const nodesKey = 'nodes'
 const NodesProducerReference = SymFor(nodesKey + ' producer')
 
-
-
 export const makeListSource = (): ListSource => ({
    pageNumber: 1,
    onPage: 10,

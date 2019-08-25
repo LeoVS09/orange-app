@@ -6,7 +6,7 @@ import {
 import {DatabaseStorage, DatabaseStorageMap, DatabaseTableMap} from "@/lazyDB/database/types";
 import {wrapInProducer} from "@/lazyDB/core/producer/wrap";
 import {getStore, isProducer} from "@/lazyDB/core/common";
-import {getter as tableGetter, setter as tableSetter, TableStoreReference} from './table'
+import {applyTableControls, makeTableSource, TableStoreReference} from './table'
 
 export const DatabaseStoreReference = SymFor('database storage')
 
@@ -42,9 +42,7 @@ const getter: ProducerStoreGetter = ({base}, name) => {
    const database = base[DatabaseStoreReference]
    const table = getTableOrCreate(database, name as string)
 
-   return {
-      [TableStoreReference]: table
-   }
+   return makeTableSource(table)
 }
 
 const setter: ProducerStoreSetter = ({base}, name, value) => {
@@ -58,8 +56,7 @@ const setter: ProducerStoreSetter = ({base}, name, value) => {
 
          const store = getStore(value)
 
-         store.getter = tableGetter
-         store.setter = tableSetter
+         applyTableControls(store)
 
          return true
       }

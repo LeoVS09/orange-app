@@ -3,12 +3,14 @@ import {
    IEntityTypeSchema,
    IEntityTypeSchemaStorage,
 } from '../../types'
-import {AbstractData, EventProducer, ModelAttributeType} from "@/lazyDB/core/types";
+import {AbstractData, EventProducer, EventType, ModelAttributeType} from "@/lazyDB/core/types";
 import {getStore} from "@/lazyDB/core/common";
 import {DatabaseStorage} from "../../types";
 import {makeDatabaseStorage} from "../../storage";
 import {ModelEventDispatcher} from "@/lazyDB/core/dispatcher/model/base";
 import {extractEntityNameFromManyKey} from "@/lazyDB/utils";
+import {ProducerStore} from "@/lazyDB/core/producer/Store";
+import {asyncReceiveWithMemory} from "@/lazyDB/core/receiver";
 
 const DEFAULT_EXCLUDE_PROPERTIES = [
    'state',
@@ -29,6 +31,27 @@ export default class LazyReactiveDatabase implements ILazyReactiveDatabase {
    public excludeProperties = [...DEFAULT_EXCLUDE_PROPERTIES]
 
    public schemas: IEntityTypeSchemaStorage = {}
+
+   constructor(){
+      asyncReceiveWithMemory(this.store, {
+         [EventType.GetProperty]: (...args) => {
+            console.log('EventType.GetProperty', ...args)
+            return false
+         },
+         [EventType.SetProperty]: (...args) => {
+            console.log('EventType.SetProperty', ...args)
+            return false
+         },
+         [EventType.DeleteProperty]: (...args) => {
+            console.log('EventType.DeleteProperty', ...args)
+            return false
+         }
+      })
+   }
+
+   public get store(): ProducerStore {
+      return getStore(this.storage) as ProducerStore
+   }
 
    public get dispatcher(): ModelEventDispatcher {
       const store = getStore(this.storage)

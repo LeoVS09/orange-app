@@ -83,7 +83,7 @@ export interface ProducerStoreOptions<T = AbstractData> {
 }
 
 export interface IProducerStore<T = AbstractData> extends ProducerStoreOptions<T>{
-   readonly stream: Observable<ModelEvent<any>> | undefined
+   stream: Observable<ModelEvent<any>> | undefined
 }
 
 export interface EventReducer<T> {

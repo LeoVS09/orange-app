@@ -2,7 +2,7 @@ import {PluginFunction} from 'vue'
 
 
 export const LazyDBFilters: PluginFunction<any> = (Vue) => {
-   // Vue.prototype.$isReading = isReading
+   Vue.prototype.$isReading = () => {}
 
    Vue.filter('isReading', function(value: any, property?: string) {
       // const result = isReading(value, property)

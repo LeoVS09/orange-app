@@ -1,6 +1,6 @@
 import {makeDatabaseTable, TableListKey} from "../../storage/table";
 import {ModelEventDispatcher} from "@/lazyDB/core/dispatcher/model/base";
-import {getStore} from "@/lazyDB/core/common";
+import {getStore, isProducer} from "@/lazyDB/core/common";
 import {AbstractData, EventProducer} from "@/lazyDB/core/types";
 import {DatabaseTable, IEntityTypeSchema, ListProducer} from "../../types";
 import {applyRepositoryControls, getter, setter} from "./controls";

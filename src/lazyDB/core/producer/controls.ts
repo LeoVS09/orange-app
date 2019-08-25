@@ -37,9 +37,10 @@ export function get(store: IProducerStore, prop: PropertyKey) {
          base[prop] = producer
    }
 
-   const valueStore = getStore(value)
+   const valueStore = getStore(producer)
 
-   pushPropertyEventsToParent(store,
+   pushPropertyEventsToParent(
+      store,
       valueStore,
       prop,
       !Array.isArray(base)
@@ -47,7 +48,7 @@ export function get(store: IProducerStore, prop: PropertyKey) {
          : ModelAttributeType.OneToMany
    )
 
-   return value
+   return producer
 }
 
 export function set(store: IProducerStore, prop: PropertyKey, value: any) {

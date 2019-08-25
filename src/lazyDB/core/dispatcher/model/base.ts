@@ -18,7 +18,7 @@ export class ModelEventDispatcher implements IModelEventDispatcher<ModelEventPay
    constructor(dispatcher: IEventDispatcher<ModelEventPayload>) {
       this.dispatcher = dispatcher
       this.eventsSubject = dispatcher.eventsSubject
-      this.dispatch = this.dispatcher.dispatch
+      this.dispatch = (...args) => this.dispatcher.dispatch(...args)
    }
 
    public get = (name: PropertyKey, store: IProducerStore) =>
