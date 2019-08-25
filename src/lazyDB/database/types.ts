@@ -39,6 +39,8 @@ export interface ILazyReactiveDatabase {
    update: (entity: string, id: string, data: AbstractData) => boolean
    add: (entity: string, id: string, data: AbstractData) => void
    getSchemaByKey: (key: string, type: ModelAttributeType) => IEntityTypeSchema | undefined
+   setSchema: (entity: string, schema: IEntityTypeSchema) => void
+   excludeProperties: Array<string>
 }
 
 export const ListItemGetterReference = SymFor('list item getter') as 'list item getter'

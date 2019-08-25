@@ -11,11 +11,31 @@ import {ModelEventDispatcher} from "@/lazyDB/core/dispatcher/model/base";
 import {extractEntityNameFromManyKey} from "@/lazyDB/utils";
 import {ProducerStore} from "@/lazyDB/core/producer/Store";
 import {asyncReceiveWithMemory} from "@/lazyDB/core/receiver";
+import {applyRepositoryControls} from "@/lazyDB/database/base/repository/controls";
+
+export interface LazyReactiveDatabaseOptions {
+   storage?: DatabaseStorage
+   schemas?: IEntityTypeSchemaStorage
+   excludeProperties?: Array<string>
+}
 
 export default class LazyReactiveDatabase implements ILazyReactiveDatabase {
 
-   public storage: DatabaseStorage = makeDatabaseStorage()
-   public schemas: IEntityTypeSchemaStorage = {}
+   public storage: DatabaseStorage
+   public schemas: IEntityTypeSchemaStorage
+   public excludeProperties: Array<string>
+
+   constructor(
+      {
+         storage = makeDatabaseStorage(),
+         schemas = {},
+         excludeProperties = []
+      }: LazyReactiveDatabaseOptions = {}
+   ) {
+      this.storage = storage
+      this.schemas = schemas
+      this.excludeProperties = excludeProperties
+   }
 
    public get store(): ProducerStore {
       return getStore(this.storage) as ProducerStore
@@ -31,16 +51,16 @@ export default class LazyReactiveDatabase implements ILazyReactiveDatabase {
    }
 
    public findOne(entity: string, id: string): EventProducer {
-      // if(!this.schemas[entity])
+      if (!this.schemas[entity])
          return this.storage[entity][id]
 
-      // const schema = this.schemas[entity]
-      // const model = this.storage[entity][id]
-      // const store = getStore(model)
-      //
-      // store.getter = ()
-      //
-      // return model
+      const model = this.storage[entity][id]
+      const store = getStore(model)
+      const schema = this.schemas[entity]
+
+      applyRepositoryControls(store, schema)
+
+      return model
    }
 
    public set(entity: string, id: string, data: AbstractData | EventProducer) {

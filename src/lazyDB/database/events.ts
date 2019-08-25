@@ -1,5 +1,5 @@
 import {ModelEvent, ModelEventGetPropertyPayload, ModelEventSetPropertyPayload, AbstractData} from "../core/types";
-import {ModelSchema} from "@/lazyDB/types";
+import {ModelReadSchema} from "@/lazyDB/types";
 import {ListSource} from "@/lazyDB/database/types";
 
 
@@ -39,7 +39,7 @@ export enum AsyncConnectorEventTypes {
 }
 
 export interface ReadEventPayload<T> {
-   schema: ModelSchema
+   schema: ModelReadSchema
    current: T
    next: T
    gets: Array<ModelEvent<ModelEventGetPropertyPayload>>

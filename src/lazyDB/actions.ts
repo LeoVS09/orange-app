@@ -16,46 +16,25 @@
 //    lastObjectPropertyName,
 //    wait,
 // } from './utils'
-// import {AbstractData, ModelAttributeType, ModelSchema} from './types'
+// import {AbstractData, ModelAttributeType, ModelReadSchema} from './types'
 // import {ModelObserver} from '@/lazyReactiveORM/ModelObserver'
 //
 //
-// export function appendPropertyToSchema(schema: ModelSchema, {name, inner, type}: ModelEventGetPropertyPayload): boolean {
-//    if (!inner) {
-//       if (schema[name]) {
-//          return false
-//       }
 //
-//       schema[name] = type
-//       return true
-//    }
-//
-//    let property = schema[name]
-//
-//    if (!property || !isSchemaField(property)) {
-//       property = schema[name] = {
-//          type,
-//          fields: {},
-//       }
-//    }
-//
-//    return appendPropertyToSchema(property.fields, inner)
-// }
 //
 // // TODO: multiple types of object schema, need better solution
-// export function schemaToQueryFields(schema: ModelSchema): Array<string | QueryField> {
+// export function schemaToQueryFields(schema: ModelReadSchema): Array<string | QueryField> {
 //    const keys = Object.keys(schema)
 //
 //    return keys.map((key) => {
 //       const field = schema[key]
-//       if (!isSchemaField(field)) {
+//       if (!isSchemaField(field))
 //          return key
-//       }
 //
 //       return {
 //          entity: key,
 //          type: field.type,
-//          fields: schemaToQueryFields(field.fields as ModelSchema),
+//          fields: schemaToQueryFields(field.fields as ModelReadSchema),
 //       }
 //    })
 // }

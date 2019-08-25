@@ -3,15 +3,14 @@ import {SymFor} from "@/lazyDB/core/utils";
 
 export type ChangeCallback = () => void
 
-export interface ModelSchemaField {
+export interface ModelReadSchemaField {
    type: ModelAttributeType
-   fields: ModelSchema
+   fields: ModelReadSchema
 }
 
-export interface ModelSchema {
-   [key: string]: ModelAttributeType | ModelSchemaField
+export interface ModelReadSchema {
+   [key: string]: ModelAttributeType | ModelReadSchemaField
 }
-
 
 export const ModelObserverReference = SymFor('model observer')
 export const ListViewObserverReference = SymFor('list view observer')

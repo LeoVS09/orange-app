@@ -9,7 +9,7 @@
 //    AbstractData,
 //    ILazyReactiveDatabase, IPredefinedSchema, ListSource,
 //    ListViewObserverReference,
-//    ModelAttributeType, ModelSchema,
+//    ModelAttributeType, ModelReadSchema,
 //    EventProducer
 // } from "@/lazyReactiveORM/types";
 // import {
@@ -74,7 +74,7 @@
 //
 //    public source: ListSource<AbstractData>
 //    public nextDraft: ListSource<AbstractData>
-//    public readSchema: ModelSchema
+//    public readSchema: ModelReadSchema
 //
 //
 //    constructor(source: ListSource<AbstractData> = defaultListSource(), {

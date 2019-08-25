@@ -3,7 +3,7 @@
 //    AbstractData, ILazyReactiveDatabase,
 //    IPredefinedSchema,
 //    ModelAttributeType,
-//    ModelEventDispatcherReference, ModelSchema,
+//    ModelEventDispatcherReference, ModelReadSchema,
 //    ModelStateMemoryReference, StateReference, EventProducer
 // } from './types'
 // import {Observable, Subject} from 'rxjs'
@@ -77,9 +77,9 @@
 //    })
 // }
 //
-// export function predefinedToRealSchema(predefinedSchema: IPredefinedSchema): ModelSchema {
+// export function predefinedToRealSchema(predefinedSchema: IPredefinedSchema): ModelReadSchema {
 //
-//    const schema: ModelSchema = {}
+//    const schema: ModelReadSchema = {}
 //
 //    Object.keys(predefinedSchema).forEach(key => {
 //       const type = predefinedSchema[key]

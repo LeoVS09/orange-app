@@ -1,5 +1,5 @@
 // import db from './database/Database'
-// import {ChangeCallback, IPredefinedSchema, ModelSchema} from './types'
+// import {ChangeCallback, IPredefinedSchema, ModelReadSchema} from './types'
 // import { ModelObserver} from './ModelObserver'
 // import {applySchemaToData, wrapData} from '@/lazyReactiveORM/wrapData'
 // import {debounceTime, filter, share, tap} from 'rxjs/operators'
@@ -142,7 +142,7 @@
 // }
 //
 //
-// function isSchemaInclude(base: ModelSchema, inside: ModelSchema): boolean {
+// function isSchemaInclude(base: ModelReadSchema, inside: ModelReadSchema): boolean {
 //
 //    for (const key in inside) {
 //       if (!base[key]) {

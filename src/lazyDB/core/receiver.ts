@@ -4,11 +4,11 @@ import {StateMemory} from "./memory";
 
 export function receive(
    store: IProducerStore,
-   subscriber: (event:  ModelEvent<ModelEventPayload | undefined>) => void | Promise<void>
-){
+   subscriber: (event: ModelEvent<ModelEventPayload | undefined>) => void | Promise<void>
+) {
    const {dispatcher, subscription} = store
 
-   if(subscription)
+   if (subscription)
       subscription.unsubscribe()
 
    store.subscription = dispatcher.eventsSubject
@@ -41,18 +41,18 @@ export function atomicReceiveWithMemory(store: IProducerStore, reducers: EventRe
    // event adding to storage memory
    receive(store, event => {
       const {payload} = event
-      if(!payload){
+      if (!payload) {
          console.error('Not have payload on event:', event)
          throw new Error('Not have event payload')
       }
 
       const {store} = payload
 
-      const {isHaveReducer, isHandled}  = handleEventByReducer(event)
-      if(!isHaveReducer)
+      const {isHaveReducer, isHandled} = handleEventByReducer(event)
+      if (!isHaveReducer)
          return;
 
-      if(isHandled || !store.memory)
+      if (isHandled || !store.memory)
          return;
 
       store.memory.push(event)
@@ -62,7 +62,7 @@ export function atomicReceiveWithMemory(store: IProducerStore, reducers: EventRe
 export function asyncReceiveWithMemory(store: IProducerStore, reducers: EventReducersMap) {
    const {dispatcher, subscription} = store
 
-   if(subscription)
+   if (subscription)
       subscription.unsubscribe()
 
    store.memory = new StateMemory<ModelEvent<any>>()
@@ -79,29 +79,29 @@ export function asyncReceiveWithMemory(store: IProducerStore, reducers: EventRed
       )
 
    store.subscription = store.stream!.subscribe(async event => {
-         const {payload: {store}} = event
+      const {payload: {store}} = event
 
-         const {isHaveReducer, isHandled} = handleEventByReducer(event)
-         if(!isHaveReducer)
-            return;
+      const {isHaveReducer, isHandled} = handleEventByReducer(event)
+      if (!isHaveReducer)
+         return;
 
-         if(!isHandled || !store.memory)
-            return;
+      if (!isHandled || !store.memory)
+         return;
 
-         store.memory.remove(event)
-      })
+      store.memory.remove(event)
+   })
 }
 
 function saveInMemoryIfCan<Payload extends ModelEventPayload = ModelEventPayload>(event: ModelEvent<Payload | undefined>) {
    const {payload} = event
-   if(!payload){
+   if (!payload) {
       console.error('Not have payload on event:', event)
       throw new Error('Not have event payload')
    }
 
    const {store} = payload
 
-   if(store.memory)
+   if (store.memory)
       store.memory.push(event)
 }
 
@@ -112,19 +112,19 @@ export interface EventHandleResult {
 
 function handleEventByReducer<T extends ModelEventPayload = ModelEventPayload>(event: ModelEvent<T | undefined>): EventHandleResult {
    const {payload} = event
-   if(!payload){
+   if (!payload) {
       console.error('Not have payload on event:', event)
       throw new Error('Not have event payload')
    }
 
    const {store} = payload
 
-   if(!store.reducers)
+   if (!store.reducers)
       return {isHaveReducer: false, isHandled: false};
 
    const handler = store.reducers[event.type]
 
-   if(!handler){
+   if (!handler) {
       console.warn('Not have handler for event', event)
       return {isHaveReducer: false, isHandled: false}
    }

@@ -1,5 +1,5 @@
 // import {ModelEvent, ModelEventTypes,} from './events'
-// import {AbstractData, ChangeCallback, ModelObserverReference, ModelSchema, EventProducer,} from './types'
+// import {AbstractData, ChangeCallback, ModelObserverReference, ModelReadSchema, EventProducer,} from './types'
 // import StatefulModel from "@/lazyReactiveORM/StatefulModel";
 // import {wrapData} from "@/lazyReactiveORM/wrapData";
 // import {Observable} from "rxjs";
@@ -19,7 +19,7 @@
 //
 //    public data: AbstractData
 //    public nextDraft: AbstractData
-//    public readSchema: ModelSchema
+//    public readSchema: ModelReadSchema
 //
 //    constructor(wrapped: EventProducer, {
 //       changed = () => {},

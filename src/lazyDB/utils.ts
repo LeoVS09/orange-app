@@ -1,6 +1,6 @@
 import deepMap from 'deep-map'
 import {ILazyReactiveDatabase} from "@/lazyDB/database/types";
-import {ModelSchemaField} from "@/lazyDB/types";
+import {ModelReadSchemaField} from "@/lazyDB/types";
 import {ModelAttributeType} from "@/lazyDB/core/types";
 
 const keysForMapDays: string[] = []
@@ -48,7 +48,7 @@ export function addOrUpdate(db: ILazyReactiveDatabase, entity: string, node: {id
    db.add(entity, node.id, node)
 }
 
-export function isSchemaField(field: ModelSchemaField | ModelAttributeType): field is ModelSchemaField {
+export function isSchemaField(field: ModelReadSchemaField | ModelAttributeType): field is ModelReadSchemaField {
    return typeof field === 'object'
 }
 
