@@ -1,6 +1,6 @@
-import {ModelReadSchema} from "@/lazyDB/types";
-import {isSchemaField} from "@/lazyDB/utils";
-import {ModelEventGetPropertyPayload} from "@/lazyDB/core/types";
+import {ModelReadSchema} from '@/lazyDB/types'
+import {isSchemaField} from '@/lazyDB/utils'
+import {ModelEventGetPropertyPayload} from '@/lazyDB/core/types'
 
 export function appendPropertyToSchema(schema: ModelReadSchema, {name, inner, type}: ModelEventGetPropertyPayload): boolean {
    if (!inner) {
@@ -14,11 +14,12 @@ export function appendPropertyToSchema(schema: ModelReadSchema, {name, inner, ty
 
    let property = schema[name as string]
 
-   if (!property || !isSchemaField(property))
+   if (!property || !isSchemaField(property)) {
       property = schema[name as string] = {
          type,
          fields: {},
       }
+   }
 
    return appendPropertyToSchema(property.fields, inner)
 }

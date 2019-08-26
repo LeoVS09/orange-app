@@ -1,5 +1,5 @@
 import gql from 'graphql-tag'
-import {ModelAttributeType} from "@/lazyDB/core/types";
+import {ModelAttributeType} from '@/lazyDB/core/types'
 
 export interface QueryField {
    entity: string

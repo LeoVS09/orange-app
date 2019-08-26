@@ -5,8 +5,8 @@ import {
    ModelEventGetPropertyPayload,
    ModelEventSetPropertyPayload,
    IProducerStore,
-   ProducerStoreReference
-} from "./types";
+   ProducerStoreReference,
+} from './types'
 
 export interface GetStore<T = AbstractData> {
    (producer: EventProducer): IProducerStore<T>
@@ -18,23 +18,27 @@ export const getStore: GetStore = <T = AbstractData>(producer: EventProducer): I
 }
 
 export function isProducer(value: any): value is EventProducer {
-   if(!value || typeof value !== 'object')
+   if (!value || typeof value !== 'object') {
       return false
+   }
 
    return !!value[ProducerStoreReference]
 }
 
 export function isProducerable(value: any): value is AbstractData {
-   if(!value || typeof value !== 'object')
+   if (!value || typeof value !== 'object') {
       return false
+   }
 
    // TODO: make array wrap to producer
-   if(Array.isArray(value))
+   if (Array.isArray(value)) {
       return true
+   }
 
    const proto = Object.getPrototypeOf(value)
-   if (!proto || proto === Object.prototype)
+   if (!proto || proto === Object.prototype) {
       return true
+   }
 
    // TODO: add functions
    return false
@@ -44,13 +48,13 @@ export const getEventPayload = (
    name: PropertyKey,
    store: IProducerStore,
    type: ModelAttributeType = ModelAttributeType.Simple,
-   inner?: ModelEventGetPropertyPayload
+   inner?: ModelEventGetPropertyPayload,
 ): ModelEventGetPropertyPayload =>
    ({
       store,
       name,
       type,
-      inner
+      inner,
    })
 
 export const setEventPayload = (
@@ -59,7 +63,7 @@ export const setEventPayload = (
    newValue: any,
    store: IProducerStore,
    type: ModelAttributeType = ModelAttributeType.Simple,
-   inner?: ModelEventSetPropertyPayload
+   inner?: ModelEventSetPropertyPayload,
 ): ModelEventSetPropertyPayload =>
    ({
       store,
@@ -67,5 +71,5 @@ export const setEventPayload = (
       type,
       oldValue,
       newValue,
-      inner
+      inner,
    })

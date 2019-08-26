@@ -1,7 +1,7 @@
-import {SymFor} from "./utils";
-import {StateMemory} from "./memory";
-import {Observable, Subject, Subscription} from "rxjs";
-import {Payload} from "vuex";
+import {SymFor} from './utils'
+import {StateMemory} from './memory'
+import {Observable, Subject, Subscription} from 'rxjs'
+import {Payload} from 'vuex'
 
 // This object can't be mapped tp producer
 export type AtomicObject =
@@ -32,7 +32,7 @@ export interface EventProducer extends AbstractData {
 export enum EventType {
    GetProperty = 'GetProperty',
    SetProperty = 'SetProperty',
-   DeleteProperty = 'DeleteProperty'
+   DeleteProperty = 'DeleteProperty',
 }
 
 export interface ModelEvent<T> {
@@ -58,16 +58,12 @@ export interface IEventDispatcher<Payload> {
 export interface IModelEventDispatcher<Payload extends ModelEventPayload = ModelEventPayload> extends IEventDispatcher<Payload> {
    get(prop: PropertyKey, store: IProducerStore): any
    set<T>(prop: PropertyKey, oldValue: T, newValue: T, store: IProducerStore): any
-   delete(prop: PropertyKey, store: IProducerStore):  any
+   delete(prop: PropertyKey, store: IProducerStore): any
 }
 
-export interface ProducerStoreGetter<T = AbstractData> {
-   (store: IProducerStore<T>, prop: PropertyKey): any
-}
+export type ProducerStoreGetter<T = AbstractData> = (store: IProducerStore<T>, prop: PropertyKey) => any
 
-export interface ProducerStoreSetter<T = AbstractData> {
-   (store: IProducerStore<T>, prop: PropertyKey, value: any): boolean
-}
+export type ProducerStoreSetter<T = AbstractData> = (store: IProducerStore<T>, prop: PropertyKey, value: any) => boolean
 
 export interface ProducerStoreOptions<T = AbstractData> {
    base: T
@@ -82,15 +78,11 @@ export interface ProducerStoreOptions<T = AbstractData> {
    setter?: ProducerStoreSetter<T>
 }
 
-export interface IProducerStore<T = AbstractData> extends ProducerStoreOptions<T>{
+export interface IProducerStore<T = AbstractData> extends ProducerStoreOptions<T> {
    stream: Observable<ModelEvent<any>> | undefined
 }
 
-export interface EventReducer<T> {
-   // If reducer handler event return true,
-   // and event will be removed from memory
-   (store: IProducerStore, event: T): boolean | undefined | void
-}
+export type EventReducer<T> = (store: IProducerStore, event: T) => boolean | undefined | void
 
 export interface EventReducersMap {
    [key: string]: EventReducer<any> | undefined
@@ -123,7 +115,5 @@ export interface ModelEventSetPropertyPayload extends ModelEventPayload, Propert
    inner?: ModelEventSetPropertyPayload
 }
 
-export interface StateResolver<T> {
-   (memory: StateMemory<T>): boolean
-}
+export type StateResolver<T> = (memory: StateMemory<T>) => boolean
 

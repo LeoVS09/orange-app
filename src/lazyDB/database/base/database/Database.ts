@@ -3,34 +3,34 @@ import {
    IEntityTypeSchema,
    IEntityTypeSchemaStorage,
 } from '../../types'
-import {AbstractData, EventProducer, EventType, ModelAttributeType} from "@/lazyDB/core/types";
-import {getStore} from "@/lazyDB/core/common";
-import {DatabaseStorage} from "../../types";
-import {makeDatabaseStorage} from "../../storage";
-import {ModelEventDispatcher} from "@/lazyDB/core/dispatcher/model/base";
-import {extractEntityNameFromManyKey} from "@/lazyDB/utils";
-import {ProducerStore} from "@/lazyDB/core/producer/Store";
-import {asyncReceiveWithMemory} from "@/lazyDB/core/receiver";
-import {applyRepositoryControls} from "@/lazyDB/database/base/repository/controls";
+import {AbstractData, EventProducer, EventType, ModelAttributeType} from '@/lazyDB/core/types'
+import {getStore} from '@/lazyDB/core/common'
+import {DatabaseStorage} from '../../types'
+import {makeDatabaseStorage} from '../../storage'
+import {ModelEventDispatcher} from '@/lazyDB/core/dispatcher/model/base'
+import {extractEntityNameFromManyKey} from '@/lazyDB/utils'
+import {ProducerStore} from '@/lazyDB/core/producer/Store'
+import {asyncReceiveWithMemory} from '@/lazyDB/core/receiver'
+import {applyRepositoryControls} from '@/lazyDB/database/base/repository/controls'
 
 export interface LazyReactiveDatabaseOptions {
    storage?: DatabaseStorage
    schemas?: IEntityTypeSchemaStorage
-   excludeProperties?: Array<string>
+   excludeProperties?: string[]
 }
 
 export default class LazyReactiveDatabase implements ILazyReactiveDatabase {
 
    public storage: DatabaseStorage
    public schemas: IEntityTypeSchemaStorage
-   public excludeProperties: Array<string>
+   public excludeProperties: string[]
 
    constructor(
       {
          storage = makeDatabaseStorage(),
          schemas = {},
-         excludeProperties = []
-      }: LazyReactiveDatabaseOptions = {}
+         excludeProperties = [],
+      }: LazyReactiveDatabaseOptions = {},
    ) {
       this.storage = storage
       this.schemas = schemas
@@ -51,8 +51,9 @@ export default class LazyReactiveDatabase implements ILazyReactiveDatabase {
    }
 
    public findOne(entity: string, id: string): EventProducer {
-      if (!this.schemas[entity])
+      if (!this.schemas[entity]) {
          return this.storage[entity][id]
+      }
 
       const model = this.storage[entity][id]
       const store = getStore(model)
@@ -70,8 +71,9 @@ export default class LazyReactiveDatabase implements ILazyReactiveDatabase {
    public add(entity: string, id: string, data: AbstractData): boolean {
       // TODO: produce event
       const model = this.storage[entity][id]
-      if (model)
+      if (model) {
          return false
+      }
 
       this.set(entity, id, data)
       return true
@@ -80,19 +82,22 @@ export default class LazyReactiveDatabase implements ILazyReactiveDatabase {
    public update(entity: string, id: string, data: AbstractData): boolean {
       // TODO: produce event
       const model = this.storage[entity][id]
-      if (!model)
+      if (!model) {
          return false
+      }
 
-      for (const key in data)
+      for (const key in data) {
          model[key] = data[key]
+      }
 
       return true
    }
 
    public getSchemaByKey(key: string, type: ModelAttributeType) {
       let fieldEntity = key
-      if (type === ModelAttributeType.OneToMany)
+      if (type === ModelAttributeType.OneToMany) {
          fieldEntity = extractEntityNameFromManyKey(key)
+      }
 
       return this.schemas[fieldEntity]
    }

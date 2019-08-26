@@ -16,8 +16,9 @@ export function splitArray<T>(arr: T[], predicate: (v: T) => boolean) {
 
 // create symbol if can
 export function SymFor(key: string): string {
-   if (typeof Symbol === 'undefined' || !Symbol.for)
+   if (typeof Symbol === 'undefined' || !Symbol.for) {
       return '__$' + key.split(' ').join('_')
+   }
 
    return Symbol.for(key) as unknown as string
 }

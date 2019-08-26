@@ -1,11 +1,10 @@
-import {AbstractData, EventProducer, IProducerStore, ModelAttributeType} from "@/lazyDB/core/types";
-import {AsyncConnectorEventTypes, ModelEventReadPayload} from "@/lazyDB/database/events";
+import {AbstractData, EventProducer, IProducerStore, ModelAttributeType} from '@/lazyDB/core/types'
+import {AsyncConnectorEventTypes, ModelEventReadPayload} from '@/lazyDB/database/events'
 
-import {SymFor} from "@/lazyDB/core/utils";
+import {SymFor} from '@/lazyDB/core/utils'
+import {ModelReadSchema} from '@/lazyDB/types'
 
-export interface AsyncConnectorReducer<T, R> {
-   (store: IProducerStore, event: T): Promise<R>
-}
+export type AsyncConnectorReducer<T, R> = (store: IProducerStore, event: T) => Promise<R>
 
 export interface AsyncConnectorReducersMap {
    [key: string]: AsyncConnectorReducer<any, any>
@@ -40,18 +39,16 @@ export interface ILazyReactiveDatabase {
    add: (entity: string, id: string, data: AbstractData) => void
    getSchemaByKey: (key: string, type: ModelAttributeType) => IEntityTypeSchema | undefined
    setSchema: (entity: string, schema: IEntityTypeSchema) => void
-   excludeProperties: Array<string>
+   excludeProperties: string[]
 }
 
 export const ListItemGetterReference = SymFor('list item getter') as 'list item getter'
 
-export interface ListItemGetter {
-   (source: ListSource, index: number): any
-}
+export type ListItemGetter = (source: ListSource, index: number) => any
 
 export interface ListSource {
    // nodes list storing only id
-   nodes: Array<string>
+   nodes: string[]
    totalCount: number | null
    onPage: number
    pageNumber: number
@@ -61,9 +58,14 @@ export interface ListSource {
 }
 
 export interface ListProducer<T> {
-   readonly nodes: Array<T>
+   readonly nodes: T[]
    readonly totalCount: number | null
    onPage: number
    pageNumber: number
    readonly maxPageNumber: number | null
+}
+
+export interface IDatabaseProducerStore extends IProducerStore {
+   excludeProperties?: string[]
+   readSchema?: ModelReadSchema
 }

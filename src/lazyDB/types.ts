@@ -1,5 +1,5 @@
-import {ModelAttributeType} from "@/lazyDB/core/types";
-import {SymFor} from "@/lazyDB/core/utils";
+import {ModelAttributeType} from '@/lazyDB/core/types'
+import {SymFor} from '@/lazyDB/core/utils'
 
 export type ChangeCallback = () => void
 

@@ -1,9 +1,9 @@
 export {
    makeDatabaseStorage,
-   DatabaseStoreReference
+   DatabaseStoreReference,
 } from './database'
 
 export {
    makeDatabaseTable,
-   TableStoreReference
+   TableStoreReference,
 } from './table'

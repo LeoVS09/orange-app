@@ -1,4 +1,4 @@
-import {ModelEventGetPropertyPayload, ModelEventSetPropertyPayload} from "../core/types";
+import {ModelEventGetPropertyPayload, ModelEventSetPropertyPayload} from '../core/types'
 
 export function lastObjectPropertyName({name, inner}: ModelEventGetPropertyPayload | ModelEventSetPropertyPayload): string {
    if (!inner) {

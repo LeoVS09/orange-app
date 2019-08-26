@@ -1,10 +1,10 @@
-import {makeDatabaseTable, TableListKey} from "../../storage/table";
-import {ModelEventDispatcher} from "@/lazyDB/core/dispatcher/model/base";
-import {getStore, isProducer} from "@/lazyDB/core/common";
-import {AbstractData, EventProducer} from "@/lazyDB/core/types";
-import {DatabaseTable, IEntityTypeSchema, ListProducer} from "../../types";
-import {applyRepositoryControls, getter, setter} from "./controls";
-import {ProducerStore} from "@/lazyDB/core/producer/Store";
+import {makeDatabaseTable, TableListKey} from '../../storage/table'
+import {ModelEventDispatcher} from '@/lazyDB/core/dispatcher/model/base'
+import {getStore, isProducer} from '@/lazyDB/core/common'
+import {AbstractData, EventProducer} from '@/lazyDB/core/types'
+import {DatabaseTable, IDatabaseProducerStore, IEntityTypeSchema, ListProducer} from '../../types'
+import {applyRepositoryControls, getter, setter} from './controls'
+import {ProducerStore} from '@/lazyDB/core/producer/Store'
 
 export interface LazyReactiveRepositoryOptions {
    table?: DatabaseTable
@@ -21,16 +21,16 @@ export default class LazyReactiveRepository {
       entity: string,
       {
          table = makeDatabaseTable(),
-         schema
-      }: LazyReactiveRepositoryOptions = {}
+         schema,
+      }: LazyReactiveRepositoryOptions = {},
    ) {
       this.entity = entity
       this.table = table
       this.schema = schema
    }
 
-   public get store(): ProducerStore {
-      return getStore(this.table) as ProducerStore
+   public get store(): IDatabaseProducerStore {
+      return getStore(this.table) as IDatabaseProducerStore
    }
 
    public get dispatcher(): ModelEventDispatcher {
@@ -38,8 +38,9 @@ export default class LazyReactiveRepository {
    }
 
    public findOne(id: string, onChange?: () => void): EventProducer {
-      if(!this.schema)
+      if (!this.schema) {
          return this.table[id]
+      }
 
       const model = this.table[id]
       const store = getStore(model)

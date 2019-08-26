@@ -1,4 +1,4 @@
-import {EventReducersMap, EventType } from "./types";
+import {EventReducersMap, EventType } from './types'
 
 export const changeTrackableReducersMap: EventReducersMap = {
 
@@ -12,5 +12,5 @@ export const changeTrackableReducersMap: EventReducersMap = {
 
    [EventType.DeleteProperty]: (store, event) =>
       // Store all delete events
-      false
+      false,
 }

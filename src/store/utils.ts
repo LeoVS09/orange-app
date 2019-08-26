@@ -32,7 +32,7 @@ export function setById<T extends Identical>(items: T[], id: string, newItem: T)
 }
 
 export function updateById<T extends Identical>(items: T[], id: string, handler: (model: T) => void) {
-   const item = items.find(it => it.id === id)
+   const item = items.find((it) => it.id === id)
    if (!item) {
       console.error('Cannot findOne model to set by id:', id)
       return

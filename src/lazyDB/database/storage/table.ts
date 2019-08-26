@@ -1,9 +1,9 @@
-import {IProducerStore, ProducerStoreGetter, ProducerStoreSetter} from "@/lazyDB/core/types";
-import {wrapInProducer} from "@/lazyDB/core/producer/wrap";
-import {getStore} from "@/lazyDB/core/common";
-import {SymFor} from "@/lazyDB/core/utils";
-import {DatabaseTable, DatabaseTableMap, ListItemGetter, ListItemGetterReference} from "@/lazyDB/database/types";
-import {applyListControls, makeListSource} from "@/lazyDB/database/base/repository/list";
+import {IProducerStore, ProducerStoreGetter, ProducerStoreSetter} from '@/lazyDB/core/types'
+import {wrapInProducer} from '@/lazyDB/core/producer/wrap'
+import {getStore} from '@/lazyDB/core/common'
+import {SymFor} from '@/lazyDB/core/utils'
+import {DatabaseTable, DatabaseTableMap, ListItemGetter, ListItemGetterReference} from '@/lazyDB/database/types'
+import {applyListControls, makeListSource} from '@/lazyDB/database/base/repository/list'
 
 export const TableStoreReference = SymFor('table storage')
 
@@ -11,7 +11,7 @@ export const TableStoreReference = SymFor('table storage')
 export const TableListKey = '__list__'
 
 export const makeTableSource = (table: DatabaseTableMap) => ({
-   [TableStoreReference]: table
+   [TableStoreReference]: table,
 })
 
 export function makeDatabaseTable(table: DatabaseTableMap = new Map()): DatabaseTable {
@@ -31,8 +31,9 @@ export function applyTableControls(store: IProducerStore) {
 }
 
 export const getter: ProducerStoreGetter = ({base}, name) => {
-   if(name === TableListKey)
+   if (name === TableListKey) {
       return base[TableListKey] || makeListSource()
+   }
 
    const table = base[TableStoreReference] as DatabaseTableMap
    const model = table.get(name as string)
@@ -43,7 +44,7 @@ export const getter: ProducerStoreGetter = ({base}, name) => {
 export const setter: ProducerStoreSetter = ({base}, name, value) => {
    const table = base[TableStoreReference] as DatabaseTableMap
 
-   if(name === TableListKey){
+   if (name === TableListKey) {
       base[TableListKey] = value
 
       const store = getStore(value)
@@ -58,8 +59,9 @@ export const setter: ProducerStoreSetter = ({base}, name, value) => {
 
 const listItemGetter = (table: DatabaseTableMap): ListItemGetter => ({nodes}, index) => {
    const id = nodes[index as number]
-   if(!id)
+   if (!id) {
       return
+   }
 
    return table.get(id)
 }

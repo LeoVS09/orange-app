@@ -1,6 +1,6 @@
 import {University} from '@/models/university'
 import {Repository} from '@/lazyDB'
-import {ModelAttributeType} from "@/lazyDB/core/types";
+import {ModelAttributeType} from '@/lazyDB/core/types'
 
 export interface Country {
    id: string

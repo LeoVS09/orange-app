@@ -1,6 +1,6 @@
-import {ModelEvent, ModelEventGetPropertyPayload, ModelEventSetPropertyPayload, AbstractData} from "../core/types";
-import {ModelReadSchema} from "@/lazyDB/types";
-import {ListSource} from "@/lazyDB/database/types";
+import {ModelEvent, ModelEventGetPropertyPayload, ModelEventSetPropertyPayload, AbstractData} from '../core/types'
+import {ModelReadSchema} from '@/lazyDB/types'
+import {ListSource} from '@/lazyDB/database/types'
 
 
 // ModelEventTypes extends EventType,

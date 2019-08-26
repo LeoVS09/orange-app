@@ -1,5 +1,5 @@
-import {ModelEvent, StateResolver} from "../core/types";
-import {ModelEventTypes} from "./events";
+import {ModelEvent, StateResolver} from '../core/types'
+import {ModelEventTypes} from './events'
 
 export const isReading: StateResolver<ModelEvent<any>> = ({ memory }) =>
    memory.some(({ type }) => type === ModelEventTypes.Read)
@@ -16,7 +16,7 @@ export const isCreate: StateResolver<ModelEvent<any>> = ({ memory }) =>
 export const isDeleting: StateResolver<ModelEvent<any>> = ({ memory }) =>
    memory.some(({ type }) =>
       type === ModelEventTypes.DeleteProperty ||
-      type === ModelEventTypes.Delete
+      type === ModelEventTypes.Delete,
    )
 
 export const isDeleted: StateResolver<ModelEvent<any>> = ({ memory }) =>

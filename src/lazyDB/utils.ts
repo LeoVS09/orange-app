@@ -1,7 +1,7 @@
 import deepMap from 'deep-map'
-import {ILazyReactiveDatabase} from "@/lazyDB/database/types";
-import {ModelReadSchemaField} from "@/lazyDB/types";
-import {ModelAttributeType} from "@/lazyDB/core/types";
+import {ILazyReactiveDatabase} from '@/lazyDB/database/types'
+import {ModelReadSchemaField} from '@/lazyDB/types'
+import {ModelAttributeType} from '@/lazyDB/core/types'
 
 const keysForMapDays: string[] = []
 const keyMath = /.+(Date|At)$/gm

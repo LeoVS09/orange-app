@@ -26,7 +26,7 @@ export default class ChildValue extends Vue {
       return parent
    }
 
-   slotValue(): string | null {
+   public slotValue(): string | null {
       const slot = this.$slots.default && this.$slots.default[0]
       console.log('ChildValue', this.$slots)
       if (!slot) {

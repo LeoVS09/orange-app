@@ -3,11 +3,13 @@ import {
    EventProducer,
    EventReducersMap,
    IModelEventDispatcher,
-   IProducerStore, ModelEvent, ModelEventPayload, ProducerStoreOptions,
-   ProxyRevoke
-} from "@/lazyDB/core/types";
-import {StateMemory} from "@/lazyDB/core/memory";
-import {Observable, Subscription} from "rxjs";
+   IProducerStore,
+   ModelEvent,
+   ProducerStoreOptions,
+   ProxyRevoke,
+} from '@/lazyDB/core/types'
+import {StateMemory} from '@/lazyDB/core/memory'
+import {Observable, Subscription} from 'rxjs'
 
 export class ProducerStore implements IProducerStore {
    public base: AbstractData
@@ -40,11 +42,13 @@ export class ProducerStore implements IProducerStore {
    }
 
    get stream() {
-      if(this._stream)
+      if (this._stream) {
          return this._stream
+      }
 
-      if (!this.dispatcher)
-         return;
+      if (!this.dispatcher) {
+         return
+      }
 
       return this.dispatcher.eventsSubject
    }

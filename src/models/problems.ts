@@ -3,7 +3,7 @@ import {Test} from '@/models/tests'
 import {ModelReadState, ModelStatus} from '@/store/modules/statuses/types'
 import {defaultPartialProfile, mockInput, mockOutput, mockTag} from '@/models/mock/mock'
 import {Repository} from '@/lazyDB'
-import {ModelAttributeType} from "@/lazyDB/core/types";
+import {ModelAttributeType} from '@/lazyDB/core/types'
 
 export {
    defaultPartialProfile,

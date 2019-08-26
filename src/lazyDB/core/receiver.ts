@@ -1,15 +1,16 @@
-import {EventReducersMap, ModelEvent, ModelEventPayload, IProducerStore} from "./types";
-import {share, tap} from "rxjs/operators";
-import {StateMemory} from "./memory";
+import {EventReducersMap, ModelEvent, ModelEventPayload, IProducerStore} from './types'
+import {share, tap} from 'rxjs/operators'
+import {StateMemory} from './memory'
 
 export function receive(
    store: IProducerStore,
-   subscriber: (event: ModelEvent<ModelEventPayload | undefined>) => void | Promise<void>
+   subscriber: (event: ModelEvent<ModelEventPayload | undefined>) => void | Promise<void>,
 ) {
    const {dispatcher, subscription} = store
 
-   if (subscription)
+   if (subscription) {
       subscription.unsubscribe()
+   }
 
    store.subscription = dispatcher.eventsSubject
       .subscribe(subscriber)
@@ -18,7 +19,7 @@ export function receive(
 export function atomicReceiveByReducers(store: IProducerStore, reducers: EventReducersMap) {
    store.reducers = reducers
 
-   receive(store, event => {
+   receive(store, (event) => {
       handleEventByReducer(event)
    })
 }
@@ -26,7 +27,7 @@ export function atomicReceiveByReducers(store: IProducerStore, reducers: EventRe
 export function asyncReceiveByReducers(store: IProducerStore, reducers: EventReducersMap) {
    store.reducers = reducers
 
-   receive(store, async event => {
+   receive(store, async (event) => {
       handleEventByReducer(event)
    })
 }
@@ -39,7 +40,7 @@ export function atomicReceiveWithMemory(store: IProducerStore, reducers: EventRe
    // Trying handle event by reducers in storage
    // If event not handled (handler return false) and storage have memory
    // event adding to storage memory
-   receive(store, event => {
+   receive(store, (event) => {
       const {payload} = event
       if (!payload) {
          console.error('Not have payload on event:', event)
@@ -49,11 +50,13 @@ export function atomicReceiveWithMemory(store: IProducerStore, reducers: EventRe
       const {store} = payload
 
       const {isHaveReducer, isHandled} = handleEventByReducer(event)
-      if (!isHaveReducer)
-         return;
+      if (!isHaveReducer) {
+         return
+      }
 
-      if (isHandled || !store.memory)
-         return;
+      if (isHandled || !store.memory) {
+         return
+      }
 
       store.memory.push(event)
    })
@@ -62,8 +65,9 @@ export function atomicReceiveWithMemory(store: IProducerStore, reducers: EventRe
 export function asyncReceiveWithMemory(store: IProducerStore, reducers: EventReducersMap) {
    const {dispatcher, subscription} = store
 
-   if (subscription)
+   if (subscription) {
       subscription.unsubscribe()
+   }
 
    store.memory = new StateMemory<ModelEvent<any>>()
    store.reducers = reducers
@@ -71,22 +75,23 @@ export function asyncReceiveWithMemory(store: IProducerStore, reducers: EventRed
    // Trying handle event by reducers in storage
    // If event handled (handler return true) and storage have memory
    // event would remove from storage memory
-   // @ts-ignore
    store.stream = dispatcher.eventsSubject
       .pipe(
          tap(saveInMemoryIfCan),
-         share()
+         share(),
       )
 
-   store.subscription = store.stream!.subscribe(async event => {
+   store.subscription = store.stream!.subscribe(async (event) => {
       const {payload: {store}} = event
 
       const {isHaveReducer, isHandled} = handleEventByReducer(event)
-      if (!isHaveReducer)
-         return;
+      if (!isHaveReducer) {
+         return
+      }
 
-      if (!isHandled || !store.memory)
-         return;
+      if (!isHandled || !store.memory) {
+         return
+      }
 
       store.memory.remove(event)
    })
@@ -101,8 +106,9 @@ function saveInMemoryIfCan<Payload extends ModelEventPayload = ModelEventPayload
 
    const {store} = payload
 
-   if (store.memory)
+   if (store.memory) {
       store.memory.push(event)
+   }
 }
 
 export interface EventHandleResult {
@@ -119,8 +125,9 @@ function handleEventByReducer<T extends ModelEventPayload = ModelEventPayload>(e
 
    const {store} = payload
 
-   if (!store.reducers)
-      return {isHaveReducer: false, isHandled: false};
+   if (!store.reducers) {
+      return {isHaveReducer: false, isHandled: false}
+   }
 
    const handler = store.reducers[event.type]
 
@@ -131,7 +138,7 @@ function handleEventByReducer<T extends ModelEventPayload = ModelEventPayload>(e
 
    return {
       isHaveReducer: true,
-      isHandled: !!handler(store, event.payload)
+      isHandled: !!handler(store, event.payload),
    }
 }
 

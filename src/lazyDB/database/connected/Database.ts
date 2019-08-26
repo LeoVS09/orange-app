@@ -1,4 +1,4 @@
-import LazyReactiveDatabase from "./base/database/Database";
+import LazyReactiveDatabase from '../base/database/Database'
 
 const DEFAULT_EXCLUDE_PROPERTIES = [
    'state',
@@ -9,17 +9,17 @@ const DEFAULT_EXCLUDE_PROPERTIES = [
    '__ob__',
    'then',
    'function () { [native code] }',
-   'slice'
+   'slice',
 ]
 
 // Simple version of database
 // TODO: must have base lifecycle handlers and debug tools
 export class Database extends LazyReactiveDatabase {
 
-   constructor(){
+   constructor() {
       super({
          // TODO: part of properties can be computed to exclude
-         excludeProperties: [...DEFAULT_EXCLUDE_PROPERTIES]
+         excludeProperties: [...DEFAULT_EXCLUDE_PROPERTIES],
       })
 
       // const {base} = this.store

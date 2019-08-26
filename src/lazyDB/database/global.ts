@@ -1,6 +1,6 @@
-import {Database} from "./Database";
-import {makeConnectedRepositoryClass} from "@/lazyDB/database/Repository";
-import {getStore} from "@/lazyDB/core/common";
+import {Database} from './connected/Database'
+import {makeConnectedRepositoryClass} from '@/lazyDB/database/connected/Repository'
+import {getStore} from '@/lazyDB/core/common'
 
 // Global default database
 // Only for simplified usage of library
@@ -9,7 +9,7 @@ const db = new Database()
 
 export default db
 
-if(typeof(window) !== 'undefined') {
+if (typeof(window) !== 'undefined') {
    // @ts-ignore
    window.db = db
    console.warn('Global db instance appended to window', db)
@@ -22,10 +22,10 @@ class Repository extends makeConnectedRepositoryClass(db) {
 
 export {
    db,
-   Repository
+   Repository,
 }
 
 
 const store = getStore(db.storage)
 
-store.stream!.subscribe(event => console.log(event))
+store.stream!.subscribe((event) => console.log(event))

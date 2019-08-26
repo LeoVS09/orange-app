@@ -5,12 +5,12 @@ import {
    ModelEventGetPropertyPayload,
    ModelEventSetPropertyPayload,
    IProducerStore,
-} from "./types";
-import {receive} from "./receiver";
-import {getEventPayload, setEventPayload} from "./common";
+} from './types'
+import {receive} from './receiver'
+import {getEventPayload, setEventPayload} from './common'
 
 export function pushPropertyEventsToParent(parent: IProducerStore, child: IProducerStore, prop: PropertyKey, type: ModelAttributeType) {
-   receive(child, event => {
+   receive(child, (event) => {
 
       switch (event.type) {
          case EventType.GetProperty:
@@ -38,7 +38,7 @@ export function wrapGetEventToNestingLevel(
    name: PropertyKey,
    type: ModelAttributeType,
    store: IProducerStore,
-   event: ModelEvent<ModelEventGetPropertyPayload>
+   event: ModelEvent<ModelEventGetPropertyPayload>,
 ): ModelEvent<ModelEventGetPropertyPayload> {
 
    const inner = event.payload
@@ -47,7 +47,7 @@ export function wrapGetEventToNestingLevel(
 
    return {
       ...event,
-      payload
+      payload,
    }
 }
 
@@ -55,7 +55,7 @@ export function wrapSetEventToNestingLevel(
    name: PropertyKey,
    type: ModelAttributeType,
    store: IProducerStore,
-   event: ModelEvent<ModelEventSetPropertyPayload>
+   event: ModelEvent<ModelEventSetPropertyPayload>,
 ): ModelEvent<ModelEventSetPropertyPayload> {
 
    const inner = event.payload
@@ -64,6 +64,6 @@ export function wrapSetEventToNestingLevel(
 
    return {
       ...event,
-      payload
+      payload,
    }
 }

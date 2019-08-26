@@ -1,11 +1,11 @@
 import {
    IProducerStore,
    ModelAttributeType,
-   ProducerStoreReference
-} from "../types";
-import {getStore, isProducerable} from "../common";
-import {pushPropertyEventsToParent} from "../toParent";
-import {wrapInProducerIfNot} from "./wrap";
+   ProducerStoreReference,
+} from '../types'
+import {getStore, isProducerable} from '../common'
+import {pushPropertyEventsToParent} from '../toParent'
+import {wrapInProducerIfNot} from './wrap'
 
 export function get(store: IProducerStore, prop: PropertyKey) {
    if (
@@ -13,8 +13,9 @@ export function get(store: IProducerStore, prop: PropertyKey) {
       // Directly check with reference
       // when ProducerStoreReference is string
       prop === ProducerStoreReference
-   )
+   ) {
       return store
+   }
 
    const {dispatcher, base, getter, setter} = store
 
@@ -24,17 +25,19 @@ export function get(store: IProducerStore, prop: PropertyKey) {
       ? getter(store, prop)
       : base[prop]
 
-   if (!isProducerable(value))
+   if (!isProducerable(value)) {
       return value
+   }
 
    const producer = wrapInProducerIfNot(value)
 
    // TODO: refactor
-   if (producer !== value){
-      if(setter)
+   if (producer !== value) {
+      if (setter) {
          setter(store, prop, producer)
-      else
+      } else {
          base[prop] = producer
+      }
    }
 
    const valueStore = getStore(producer)
@@ -45,7 +48,7 @@ export function get(store: IProducerStore, prop: PropertyKey) {
       prop,
       !Array.isArray(base)
          ? ModelAttributeType.OneToOne
-         : ModelAttributeType.OneToMany
+         : ModelAttributeType.OneToMany,
    )
 
    return producer
@@ -53,7 +56,7 @@ export function get(store: IProducerStore, prop: PropertyKey) {
 
 export function set(store: IProducerStore, prop: PropertyKey, value: any) {
    const {base, dispatcher, setter, getter} = store
-   if(typeof prop === 'symbol') {
+   if (typeof prop === 'symbol') {
       base[prop as unknown as string] = value
       return true
    }
@@ -64,8 +67,9 @@ export function set(store: IProducerStore, prop: PropertyKey, value: any) {
 
    dispatcher.set(prop, oldValue, value, store)
 
-   if(setter)
+   if (setter) {
       return setter(store, prop, value)
+   }
 
    base[prop as unknown as string] = value
 
