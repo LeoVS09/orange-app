@@ -105,7 +105,7 @@ function saveInMemoryIfCan<Payload extends ModelEventPayload = ModelEventPayload
    }
 
    const {store} = payload
-
+   console.log('save in memory', event, store.memory)
    if (store.memory) {
       store.memory.push(event)
    }

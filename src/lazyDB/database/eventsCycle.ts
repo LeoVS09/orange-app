@@ -6,34 +6,9 @@
 // import {isReading, isUpdating} from "@/lazyDB/database/states";
 //
 // const UPDATE_TIME = 1000
-// const READ_TIME = 10
+//
 // const REDUCE_SET_TIME = 500
 //
-// export function getsSpawnReadEvent(
-//    modelState: StateMemory<ModelEvent<any>>,
-//    stream: Observable<ModelEvent<any>>,
-//    dispatcher: IModelEventDispatcher,
-//    canRead: () => boolean = () => true
-// ) {
-//    /*
-//    * Take all get events, when pause spawn read event
-//    * If when reading was get events, after read success spawn another read event
-//    * */
-//    takeWhileThenContinue(
-//       stream.pipe(filter((event) => event.type === ModelEventTypes.GetProperty)),
-//       () => canRead() && !isReading(modelState),
-//       stream.pipe(filter((event) => event.type === ModelEventTypes.ReadSuccess)),
-//    )
-//       .pipe(
-//          debounceTime(READ_TIME),
-//          map(() => modelState.filter(event => event.type === ModelEventTypes.GetProperty)),
-//          filter((gets) => !!gets.length),
-//       )
-//       .subscribe((gets) => {
-//          const payload: ModelEventReadPayload = {gets}
-//          dispatcher.dispatch(ModelEventTypes.Read, payload)
-//       })
-// }
 //
 // export function setsSpawnReadEvent(
 //    modelState: StateMemory<ModelEvent<any>>,
@@ -103,16 +78,3 @@
 //    return setEvents
 // }
 //
-// // TODO: turn into operator
-// function takeWhileThenContinue<T>(stream: Observable<T>, predicate: (v: T) => boolean, sampler: Observable<any>) {
-//    const whileTrue = stream.pipe(takeWhile(predicate))
-//    const lastWhenFalse = stream.pipe(
-//       skipWhile(predicate),
-//       sample(sampler),
-//    )
-//
-//    return merge(
-//       whileTrue,
-//       lastWhenFalse,
-//    )
-// }

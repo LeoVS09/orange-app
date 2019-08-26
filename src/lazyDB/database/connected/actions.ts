@@ -16,22 +16,17 @@ export function isExcludeProperty({excludeProperties}: IDatabaseProducerStore, p
 
 export const databaseReducers: EventReducersMap = {
    [EventType.GetProperty]: (store, payload) => {
-      console.log('EventType.GetProperty', payload)
-
-      if (isExcludeProperty(store, payload)) {
+      if (isExcludeProperty(store, payload))
          return true
-      }
 
       return false
    },
 
    [EventType.SetProperty]: (store, payload) => {
-      console.log('EventType.SetProperty', payload)
       return false
    },
 
    [EventType.DeleteProperty]: (store, payload) => {
-      console.log('EventType.DeleteProperty', payload)
       return false
    },
 }
