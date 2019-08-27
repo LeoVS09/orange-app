@@ -1,10 +1,12 @@
 import {makeDatabaseTable, TableListKey} from '../../storage/table'
 import {ModelEventDispatcher} from '@/lazyDB/core/dispatcher/model/base'
-import {getStore, isProducer} from '@/lazyDB/core/common'
-import {AbstractData, EventProducer} from '@/lazyDB/core/types'
+import {getStore} from '@/lazyDB/core/common'
+import {AbstractData, EventProducer, ModelAttributeType} from '@/lazyDB/core/types'
 import {DatabaseTable, IDatabaseProducerStore, IEntityTypeSchema, ListProducer} from '../../types'
-import {applyRepositoryControls, getter, setter} from './controls'
-import {ProducerStore} from '@/lazyDB/core/producer/Store'
+import {applyRepositoryControls} from './controls'
+import {asyncReceiveWithMemory} from "@/lazyDB/core/receiver";
+import {repositoryReducers} from "@/lazyDB/database/connected/actions";
+import {getsSpawnReadEvent} from "@/lazyDB/database/cycle/read";
 
 export interface LazyReactiveRepositoryOptions {
    table?: DatabaseTable
@@ -16,6 +18,7 @@ export default class LazyReactiveRepository {
    public entity: string
    public table: DatabaseTable
    public schema?: IEntityTypeSchema
+   public excludeProperties: Array<string> = []
 
    constructor(
       entity: string,
@@ -43,9 +46,16 @@ export default class LazyReactiveRepository {
       }
 
       const model = this.table[id]
-      const store = getStore(model)
+      const store = getStore(model) as IDatabaseProducerStore
 
       applyRepositoryControls(store, this.schema)
+
+      store.excludeProperties = this.excludeProperties
+      // TODO: remove requiring of order
+      // Current logic require this order to call functions
+      asyncReceiveWithMemory(store, repositoryReducers, id, ModelAttributeType.OneToOne)
+      // spawn require to stream which generate only on async receive
+      getsSpawnReadEvent(store)
 
       return model
    }

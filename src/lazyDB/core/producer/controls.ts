@@ -41,9 +41,9 @@ export function get(store: IProducerStore, prop: PropertyKey) {
    }
 
    const valueStore = getStore(producer)
+   valueStore.parent = store
 
    pushPropertyEventsToParent(
-      store,
       valueStore,
       prop,
       !Array.isArray(base)

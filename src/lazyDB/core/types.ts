@@ -102,17 +102,19 @@ export interface PropertyEventPayload {
    name: PropertyKey
 }
 
-export interface ModelEventGetPropertyPayload extends ModelEventPayload, PropertyEventPayload {
-   inner?: ModelEventGetPropertyPayload
+export interface ModelEventInnerPayload<T> extends ModelEventPayload, PropertyEventPayload {
+   inner?: ModelEventInnerPayload<T> | T
+}
+
+export interface ModelEventGetPropertyPayload extends ModelEventPayload, PropertyEventPayload, ModelEventInnerPayload<ModelEventGetPropertyPayload> {
 }
 
 export type ModelEventDeletePropertyPayload = ModelEventGetPropertyPayload
 
-export interface ModelEventSetPropertyPayload extends ModelEventPayload, PropertyEventPayload {
-   oldValue: any | null
-   newValue: any | null
-   // If have inner payload then old and new value is null
-   inner?: ModelEventSetPropertyPayload
+export interface ModelEventSetPropertyPayload extends ModelEventPayload, PropertyEventPayload, ModelEventInnerPayload<ModelEventSetPropertyPayload> {
+   oldValue?: any
+   newValue?: any
+   // If have inner payload then old and new value is undefined
 }
 
 export type StateResolver<T> = (memory: StateMemory<T>) => boolean

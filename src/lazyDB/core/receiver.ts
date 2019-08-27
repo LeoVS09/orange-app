@@ -1,16 +1,18 @@
-import {EventReducersMap, ModelEvent, ModelEventPayload, IProducerStore} from './types'
+import {EventReducersMap, ModelEvent, ModelEventPayload, IProducerStore, ModelAttributeType} from './types'
 import {share, tap} from 'rxjs/operators'
 import {StateMemory} from './memory'
+import {pushToParentIfCan} from "@/lazyDB/core/toParent";
+
+export const unsubscribeStore = ({subscription}: IProducerStore) =>
+   subscription && subscription.unsubscribe()
 
 export function receive(
    store: IProducerStore,
    subscriber: (event: ModelEvent<ModelEventPayload | undefined>) => void | Promise<void>,
 ) {
-   const {dispatcher, subscription} = store
+   unsubscribeStore(store)
 
-   if (subscription) {
-      subscription.unsubscribe()
-   }
+   const {dispatcher} = store
 
    store.subscription = dispatcher.eventsSubject
       .subscribe(subscriber)
@@ -62,12 +64,10 @@ export function atomicReceiveWithMemory(store: IProducerStore, reducers: EventRe
    })
 }
 
-export function asyncReceiveWithMemory(store: IProducerStore, reducers: EventReducersMap) {
-   const {dispatcher, subscription} = store
+export function asyncReceiveWithMemory(store: IProducerStore, reducers: EventReducersMap, prop?: PropertyKey, type?: ModelAttributeType) {
+   unsubscribeStore(store)
 
-   if (subscription) {
-      subscription.unsubscribe()
-   }
+   const {dispatcher} = store
 
    store.memory = new StateMemory<ModelEvent<any>>()
    store.reducers = reducers
@@ -82,16 +82,17 @@ export function asyncReceiveWithMemory(store: IProducerStore, reducers: EventRed
       )
 
    store.subscription = store.stream!.subscribe(async (event) => {
-      const {payload: {store}} = event
 
       const {isHaveReducer, isHandled} = handleEventByReducer(event)
+
       if (!isHaveReducer) {
+         console.log('pushToParentIfCan', prop, event, type)
+         prop && pushToParentIfCan(store, prop, event, type)
          return
       }
 
-      if (!isHandled || !store.memory) {
+      if (!isHandled || !store.memory)
          return
-      }
 
       store.memory.remove(event)
    })
@@ -106,9 +107,8 @@ function saveInMemoryIfCan<Payload extends ModelEventPayload = ModelEventPayload
 
    const {store} = payload
    console.log('save in memory', event, store.memory)
-   if (store.memory) {
+   if (store.memory)
       store.memory.push(event)
-   }
 }
 
 export interface EventHandleResult {
@@ -125,9 +125,8 @@ function handleEventByReducer<T extends ModelEventPayload = ModelEventPayload>(e
 
    const {store} = payload
 
-   if (!store.reducers) {
+   if (!store.reducers)
       return {isHaveReducer: false, isHandled: false}
-   }
 
    const handler = store.reducers[event.type]
 

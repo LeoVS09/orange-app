@@ -1,37 +1,55 @@
 import {
-   EventType,
+   IProducerStore,
    ModelAttributeType,
    ModelEvent,
    ModelEventGetPropertyPayload,
+   ModelEventInnerPayload, ModelEventPayload,
    ModelEventSetPropertyPayload,
-   IProducerStore,
 } from './types'
 import {receive} from './receiver'
 import {getEventPayload, setEventPayload} from './common'
 
-export function pushPropertyEventsToParent(parent: IProducerStore, child: IProducerStore, prop: PropertyKey, type: ModelAttributeType) {
-   receive(child, (event) => {
+export function pushPropertyEventsToParent(child: IProducerStore, prop: PropertyKey, type: ModelAttributeType = ModelAttributeType.OneToOne) {
+   receive(child, event =>
+      pushToParentIfCan(child, prop, event, type)
+   )
+}
 
-      switch (event.type) {
-         case EventType.GetProperty:
-         case EventType.DeleteProperty: {
-            event = wrapGetEventToNestingLevel(prop, type, parent, event as ModelEvent<ModelEventGetPropertyPayload>)
-            break
-         }
+export function pushToParentIfCan(
+   child: IProducerStore,
+   prop: PropertyKey,
+   event: ModelEvent<ModelEventPayload | undefined>,
+   type: ModelAttributeType = ModelAttributeType.OneToOne
+) {
+   const {parent} = child
+   if(!parent)
+      return
 
-         case EventType.SetProperty: {
-            event = wrapSetEventToNestingLevel(prop, type, parent, event as ModelEvent<ModelEventSetPropertyPayload>)
-            break
-         }
+   const wrapped = wrapEventToNestingLevel(prop, type, parent, event)
 
-         default:
-            console.warn('Not have wrapper to nesting level for event:', event)
-            return
-      }
+   const { dispatcher } = parent
+   dispatcher.eventsSubject.next(wrapped)
+}
 
-      const { dispatcher } = parent
-      dispatcher.eventsSubject.next(event)
-   })
+export function wrapEventToNestingLevel<T = ModelEventGetPropertyPayload>(
+   name: PropertyKey,
+   type: ModelAttributeType,
+   store: IProducerStore,
+   event: ModelEvent<T>,
+): ModelEvent<ModelEventInnerPayload<T>> {
+   const inner = event.payload
+
+   const payload = {
+      store,
+      name,
+      type,
+      inner
+   }
+
+   return {
+      ...event,
+      payload
+   }
 }
 
 export function wrapGetEventToNestingLevel(

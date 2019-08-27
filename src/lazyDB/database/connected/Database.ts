@@ -1,4 +1,5 @@
 import LazyReactiveDatabase from '../base/database/Database'
+import {connectDebugToActionsStream} from "@/lazyDB/debug/actions";
 
 const DEFAULT_EXCLUDE_PROPERTIES = [
    'state',
@@ -27,6 +28,8 @@ export class Database extends LazyReactiveDatabase {
       // base[ExcludePropertiesReference] = this.excludeProperties
       //
       // asyncReceiveWithMemory(this.store, databaseReducers)
+
+      connectDebugToActionsStream(this.store)
    }
 
 
