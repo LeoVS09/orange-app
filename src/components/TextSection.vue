@@ -15,47 +15,46 @@
 </template>
 
 <script lang="ts">
-   import Vue from 'vue'
-   import {Component, Prop, Emit} from 'vue-property-decorator'
-   import TextareaAutoresize from './TextareaAutoresize.vue'
+import Vue from 'vue'
+import { Component, Prop, Emit } from 'vue-property-decorator'
+import TextareaAutoresize from './TextareaAutoresize.vue'
 
-   // TODO: add markdown editor
+// TODO: add markdown editor
 
    @Component({
-      components: {
-         TextareaAutoresize
-      }
+     components: {
+       TextareaAutoresize,
+     },
    })
-   export default class TextSection extends Vue {
-
+export default class TextSection extends Vue {
       @Prop({
-         type: Boolean,
-         default: false
+        type: Boolean,
+        default: false,
       }) editable?: boolean
 
       @Prop({
-         type: String
+        type: String,
       }) value?: string
 
       @Prop({
-         type: String
+        type: String,
       }) placeholder?: string
 
       @Prop({
-         type: Boolean,
-         default: false
+        type: Boolean,
+        default: false,
       }) highlight?: boolean
 
       @Prop({
-         type: Boolean,
-         default: true
+        type: Boolean,
+        default: true,
       }) textWidth?: boolean
 
       @Emit('input')
       updateValue(value: string) {
-         return value
+        return value
       }
-   }
+}
 </script>
 
 <style scoped lang="scss">
@@ -102,6 +101,5 @@
          }
       }
    }
-
 
 </style>

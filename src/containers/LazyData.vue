@@ -12,6 +12,7 @@
          <div class="lazy-data--content">
             <div
                v-for="prop in dataItems"
+               :key="prop.label"
                class="lazy-data--item"
             >
                <span class="lazy-data--label">{{prop.label | normalise | capitalise | translate}}</span>
@@ -29,11 +30,11 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
-import {Component, Prop} from 'vue-property-decorator';
-import {Section} from '@/components';
-import {randomId} from '@/components/utils';
-import {Filter} from '@/components/decorators';
+import Vue from 'vue'
+import { Component, Prop } from 'vue-property-decorator'
+import { Section } from '@/components'
+import { randomId } from '@/components/utils'
+import { Filter } from '@/components/decorators'
 
 export interface DataItem {
    key: string;
@@ -45,42 +46,42 @@ export interface PropertiesStore {
 }
 
 @Component({
-   components: {
-      Section,
-   },
+  components: {
+    Section,
+  },
 })
 export default class LazyData extends Vue {
    @Prop({
-      type: Object,
-      required: true,
+     type: Object,
+     required: true,
    })
    public value!: {[key: string]: any};
 
    @Prop({
-      type: Boolean,
-      default: false,
+     type: Boolean,
+     default: false,
    })
    public editable!: boolean;
 
    public properties: PropertiesStore = {};
+
    public lazyDataId: string = 'default';
 
    get dataItems(): DataItem[] {
-      console.log('LazyData slots', this.$slots);
+     console.log('LazyData slots', this.$slots)
 
-      const properties = Object.keys(this.properties).map((key) => ({
-         key,
-         label: this.properties[key],
-      }));
-      console.log('LazyData properties', properties);
-      return properties;
+     const properties = Object.keys(this.properties).map(key => ({
+       key,
+       label: this.properties[key],
+     }))
+     console.log('LazyData properties', properties)
+     return properties
    }
 
    public created() {
-      this.lazyDataId = `lazy-data-${randomId()}`;
-      this.properties = {};
+     this.lazyDataId = `lazy-data-${randomId()}`
+     this.properties = {}
    }
-
 }
 </script>
 

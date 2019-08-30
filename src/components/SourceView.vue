@@ -12,17 +12,16 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
-import {Component, Prop} from 'vue-property-decorator';
-import TextareaAutoresize from './TextareaAutoresize.vue';
+import Vue from 'vue'
+import { Component, Prop } from 'vue-property-decorator'
+import TextareaAutoresize from './TextareaAutoresize.vue'
 
 @Component({
-   components: {
-      TextareaAutoresize,
-   },
+  components: {
+    TextareaAutoresize,
+  },
 })
 export default class SourceView extends Vue {
-
    @Prop(String)
    public text!: String;
 
@@ -30,9 +29,8 @@ export default class SourceView extends Vue {
    public editable!: Boolean;
 
    public updateValue(value: string) {
-      this.$emit('input', value);
+     this.$emit('input', value)
    }
-
 }
 </script>
 

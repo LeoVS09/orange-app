@@ -8,12 +8,12 @@ import PageHeader from './PageHeader.vue'
 import Breadcrumb from './PageHeaderBreadcrumb.vue'
 
 export {
-   LazyProperty,
-   LazyData,
-   List,
-   ListColumn,
-   TopBar,
-   TestView,
-   PageHeader,
-   Breadcrumb,
+  LazyProperty,
+  LazyData,
+  List,
+  ListColumn,
+  TopBar,
+  TestView,
+  PageHeader,
+  Breadcrumb,
 }

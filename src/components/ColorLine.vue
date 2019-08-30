@@ -21,20 +21,19 @@
 </template>
 
 <script lang="ts">
-   import Vue from 'vue'
-   import {Component, Prop} from 'vue-property-decorator'
-   import {ColorLineType} from "@/components/types"
-
+import Vue from 'vue'
+import { Component, Prop } from 'vue-property-decorator'
+import { ColorLineType } from '@/components/types'
 
    @Component
-   export default class ColorLine extends Vue {
+export default class ColorLine extends Vue {
       @Prop({
-         type: String,
-         default: ColorLineType.success
+        type: String,
+        default: ColorLineType.success,
       }) type?: ColorLineType
 
       ColorLineType = ColorLineType
-   }
+}
 </script>
 
 <style scoped lang="scss">

@@ -23,14 +23,14 @@ export interface ResultOfProblem {
 }
 
 export function defaultTest(): Test {
-   return {
-      id: '',
-      index: 0,
-      input: '',
-      output: '',
-      problemId: '',
-      createdAt: new Date(),
-      updatedAt: new Date(),
-      isPublic: false,
-   }
+  return {
+    id: '',
+    index: 0,
+    input: '',
+    output: '',
+    problemId: '',
+    createdAt: new Date(),
+    updatedAt: new Date(),
+    isPublic: false,
+  }
 }

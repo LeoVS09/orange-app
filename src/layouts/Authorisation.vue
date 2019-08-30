@@ -11,57 +11,59 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
-import {Component} from 'vue-property-decorator';
-import {Getter} from 'vuex-class';
-import {Logo, Input, Button} from '@/components';
-import eventBus, {BusEventTypes, AuthorisationEventPayload, AuthorisationEventState} from '@/pages/eventBus';
-import {ROUTES} from '@/router';
+import Vue from 'vue'
+import { Component } from 'vue-property-decorator'
+import { Getter } from 'vuex-class'
+import { Logo, Input, Button } from '@/components'
+import eventBus, { BusEventTypes, AuthorisationEventPayload, AuthorisationEventState } from '@/pages/eventBus'
+import { ROUTES } from '@/router'
 // TODO: add transition between pages change
 
 @Component({
-   components: {
-      Logo,
-      Input,
-      Button,
-   },
+  components: {
+    Logo,
+    Input,
+    Button,
+  },
 })
 export default class Authorisation extends Vue {
-
    @Getter('isSignInPage') public isSignInPage!: boolean;
+
    public isRemember = true;
+
    public login = '';
+
    public password = '';
 
    public clickRemember() {
-      this.isRemember = !this.isRemember;
+     this.isRemember = !this.isRemember
    }
 
    public clickHome() {
-      this.$router.push({name: ROUTES.HOME});
+     this.$router.push({ name: ROUTES.HOME })
    }
 
    public created() {
-      eventBus.$on(BusEventTypes.Authorisation, (payload: AuthorisationEventPayload) => {
-         switch (payload.state) {
-            case AuthorisationEventState.Completed:
-               console.log('route', this.$route);
-               let name = this.$route.query.from as string;
-               if (!name) {
-                  name = ROUTES.HOME;
-               }
-               this.$router.push({ name });
-               return;
-         }
+     eventBus.$on(BusEventTypes.Authorisation, (payload: AuthorisationEventPayload) => {
+       switch (payload.state) {
+         case AuthorisationEventState.Completed: {
+           console.log('route', this.$route)
+           let name = this.$route.query.from as string
+           if (!name)
+             name = ROUTES.HOME
 
-         console.error('Unexpected authorisation state', payload);
-      });
+           this.$router.push({ name })
+           return
+         }
+       }
+
+       console.error('Unexpected authorisation state', payload)
+     })
    }
 
    public mounted() {
-      console.log('route', this.$route);
+     console.log('route', this.$route)
    }
-
 }
 </script>
 
@@ -82,7 +84,6 @@ export default class Authorisation extends Vue {
       flex-direction: column;
       justify-content: center;
       align-items: center;
-
 
       &--container {
          box-shadow: 0 1px 10px 0 rgba(0, 0, 0, 0.4);

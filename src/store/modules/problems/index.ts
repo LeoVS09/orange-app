@@ -1,15 +1,15 @@
-import { ProblemsState, ProblemFilter} from './state'
+import { ProblemsState, ProblemFilter } from './state'
 import actions from './actions'
 import mutations from './mutations'
 
 export default {
-   namespaced: true,
-   state: new ProblemsState(),
-   actions,
-   mutations,
+  namespaced: true,
+  state: new ProblemsState(),
+  actions,
+  mutations,
 }
 
 export {
-   ProblemsState,
-   ProblemFilter,
+  ProblemsState,
+  ProblemFilter,
 }

@@ -1,30 +1,27 @@
 
 export function toStringWhenDefined(value: any): string {
-   if (value === undefined) {
-      return ''
-   }
+  if (value === undefined)
+    return ''
 
-   if (value === null) {
-      return ''
-   }
+  if (value === null)
+    return ''
 
-   return '' + value
+  return `${value}`
 }
 
 export function isDate(date: any) {
-   return Object.prototype.toString.call(date) === '[object Date]'
+  return Object.prototype.toString.call(date) === '[object Date]'
 }
 
 export function formatDate(date: Date) {
-   if (!date) {
-      return ''
-   }
+  if (!date)
+    return ''
 
-   return date.toLocaleDateString()
+  return date.toLocaleDateString()
 }
 
 export function randomId(): string {
-   return Math.random().toString(36).substring(2) + Math.random().toString(36).substring(2)
+  return Math.random().toString(36).substring(2) + Math.random().toString(36).substring(2)
 }
 
 export interface IOnWheelCallbacks {
@@ -32,41 +29,39 @@ export interface IOnWheelCallbacks {
    down?: () => void
 }
 
-export function onWheel(elem: Element, { up = () => { }, down = () => { }}: IOnWheelCallbacks ) {
+export function onWheel(elem: Element, { up = () => { }, down = () => { } }: IOnWheelCallbacks) {
+  const onWheelListener: EventListener = (e) => {
+    e = e || window.event
 
-   const onWheelListener: EventListener = (e) => {
-      e = e || window.event
+    // wheelDelta не дает возможность узнать количество пикселей
+    // @ts-ignore
+    const delta = e.deltaY || e.detail || -e.wheelDelta
 
-      // wheelDelta не дает возможность узнать количество пикселей
-      // @ts-ignore
-      const delta = e.deltaY || e.detail || -e.wheelDelta
+    if (e.preventDefault)
+      e.preventDefault()
+    else
+      e.returnValue = false
 
-      e.preventDefault ? e.preventDefault() : (e.returnValue = false)
+    if (delta < 0)
+      up()
+    else
+      down()
+  }
 
-      if (delta < 0) {
-         up()
-      } else {
-         down()
-      }
-   }
-
-   if (elem.addEventListener) {
-      if ('onwheel' in document) {
-         // IE9+, FF17+, Ch31+
-         elem.addEventListener('wheel', onWheelListener)
-      } else if ('onmousewheel' in document) {
-         // устаревший вариант события
-         elem.addEventListener('mousewheel', onWheelListener)
- } else {
-         // Firefox < 17
-         elem.addEventListener('MozMousePixelScroll', onWheelListener)
- }
-
-   } else {
-      // IE8-
-      // @ts-ignore
-      elem.attachEvent('onmousewheel', onWheelListener)
-   }
-
-
+  if (elem.addEventListener) {
+    if ('onwheel' in document) {
+      // IE9+, FF17+, Ch31+
+      elem.addEventListener('wheel', onWheelListener)
+    } else if ('onmousewheel' in document) {
+      // устаревший вариант события
+      elem.addEventListener('mousewheel', onWheelListener)
+    } else {
+      // Firefox < 17
+      elem.addEventListener('MozMousePixelScroll', onWheelListener)
+    }
+  } else {
+    // IE8-
+    // @ts-ignore
+    elem.attachEvent('onmousewheel', onWheelListener)
+  }
 }

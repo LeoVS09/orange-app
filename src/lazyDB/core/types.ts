@@ -1,7 +1,7 @@
-import { SymFor} from './utils'
-import { StateMemory} from './memory'
-import { Observable, Subject, Subscription} from 'rxjs'
-import { Payload} from 'vuex'
+import { Observable, Subject, Subscription } from 'rxjs'
+import { Payload } from 'vuex'
+import { SymFor } from './utils'
+import { StateMemory } from './memory'
 
 // This object can't be mapped tp producer
 export type AtomicObject =
@@ -118,4 +118,3 @@ export interface ModelEventSetPropertyPayload extends ModelEventPayload, Propert
 }
 
 export type StateResolver<T> = (memory: StateMemory<T>) => boolean
-

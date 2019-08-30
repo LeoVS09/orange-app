@@ -15,10 +15,12 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
-import {Component, Prop, Watch, Mixins} from 'vue-property-decorator';
-import Focusable from './mixins/inputs/focusable';
-import {toStringWhenDefined} from './utils';
+import Vue from 'vue'
+import {
+  Component, Prop, Watch, Mixins,
+} from 'vue-property-decorator'
+import Focusable from './mixins/inputs/focusable'
+import { toStringWhenDefined } from './utils'
 
 interface Options {
    tabindex?: number;
@@ -28,7 +30,6 @@ interface Options {
 
 @Component
 export default class Input extends Mixins(Focusable) {
-
    @Prop(String)
    public type!: string;
 
@@ -47,8 +48,8 @@ export default class Input extends Mixins(Focusable) {
    public autofocus!: boolean;
 
    @Prop({
-      type: [Boolean, String],
-      default: false,
+     type: [Boolean, String],
+     default: false,
    })
    public error!: boolean | string;
 
@@ -56,34 +57,31 @@ export default class Input extends Mixins(Focusable) {
    public disabled!: boolean;
 
    public inputValue(event: any) {
-      const value = event.target.value;
+     const { value } = event.target
 
-      this.currentValue = value;
+     this.currentValue = value
 
-      this.$emit('input', value);
+     this.$emit('input', value)
    }
 
    @Watch('value')
    public updateValue(value: string) {
-      this.currentValue = value;
+     this.currentValue = value
    }
 
    get options(): Options {
-      const result = {} as Options;
+     const result = {} as Options
 
-      if (this.tabindex) {
-         result.tabindex = this.tabindex;
-      }
+     if (this.tabindex)
+       result.tabindex = this.tabindex
 
-      if (this.autofocus) {
-         result.autofocus = true;
-      }
+     if (this.autofocus)
+       result.autofocus = true
 
-      if (this.disabled) {
-         result.disabled = true;
-      }
+     if (this.disabled)
+       result.disabled = true
 
-      return result;
+     return result
    }
 }
 </script>

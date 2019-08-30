@@ -22,50 +22,48 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
-import {Component} from 'vue-property-decorator';
-import {Getter, Action, State} from 'vuex-class';
-import {Country, FullProblem, PartialProblem} from '@/models';
-import * as actions from '@/store/actionTypes';
-import {Button, Tags, Section, PageHeaderAction, Filters} from '@/components';
-import {ROUTES} from '@/router';
-import {RouterPush} from '@/components/decorators';
-import {actionName, MODULES} from '@/store/actionTypes';
-import {CountryRepository} from '@/models/country';
-import {List, ListColumn, PageHeader} from '@/containers'
+import Vue from 'vue'
+import { Component } from 'vue-property-decorator'
+import { Getter } from 'vuex-class'
+import { Country } from '@/models'
+import {
+  Button, Tags, Section, PageHeaderAction, Filters,
+} from '@/components'
+import { ROUTES } from '@/router'
+import { RouterPush } from '@/components/decorators'
+import { CountryRepository } from '@/models/country'
+import { List, ListColumn, PageHeader } from '@/containers'
+
 @Component({
-   components: {
-      PageHeader,
-      Button,
-      Filters,
-      List,
-      ListColumn,
-      Tags,
-      Section,
-      Action: PageHeaderAction,
-   },
+  components: {
+    PageHeader,
+    Button,
+    Filters,
+    List,
+    ListColumn,
+    Tags,
+    Section,
+    Action: PageHeaderAction,
+  },
 })
 export default class Countries extends Vue {
-
-
    @Getter public isTeacher!: boolean;
 
    @RouterPush(ROUTES.COUNTRY)
    public chooseItem!: (country: Country) => void;
 
    public data() {
-      return {
-         list: CountryRepository.list(),
-      };
+     return {
+       list: CountryRepository.list(),
+     }
    }
 
    public add() {
-      // TODO
+     // TODO
    }
 
    public validate() {
-    // TODO
+     // TODO
    }
-
 }
 </script>

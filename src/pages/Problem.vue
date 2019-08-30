@@ -80,11 +80,17 @@
          <h2>Tests</h2>
 
          <template v-for="test in model.tests">
-            <div class="problem--new-test" v-if="!test.id">
+            <div class="problem--new-test" v-if="!test.id" :key="test.id">
                <div class="line"></div>
                <p class="text">New test</p>
             </div>
-            <TestView class="problem--test" :testData="test" :editable="true" :problemId="model.id"/>
+            <TestView
+              class="problem--test"
+              :testData="test"
+              :editable="true"
+              :problemId="model.id"
+              :key="test"
+            />
          </template>
 
       </div>
@@ -160,62 +166,67 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
-import {Component, Prop} from 'vue-property-decorator';
-import {Action, Getter} from 'vuex-class';
-import {FullProblem, ResultRunProgram} from '@/models';
-import * as actions from '@/store/actionTypes';
-import {actionName, MODULES} from '@/store/actionTypes';
+import Vue from 'vue'
+import { Component, Prop } from 'vue-property-decorator'
+import { Action, Getter } from 'vuex-class'
+import { FullProblem, ResultRunProgram } from '@/models'
+import * as actions from '@/store/actionTypes'
 import {
-   Button,
-   DataView,
-   FloatingButton,
-   MaterialIcon,
-   TextareaAutoresize,
-   TextSection,
-} from '@/components';
-import Tags from '../components/Tags.vue';
-import LdrLove from '@/components/icons/LdrLove.vue';
-import LdrX from '@/components/icons/LdrX.vue';
-import LdrRobot from '@/components/icons/LdrRobot.vue';
-import {TestView, PageHeader, Breadcrumb} from '../containers';
-import {formatDate} from '@/components/utils';
-import {PartialProgramInput, PartialProgramOutput, ProblemError, ProblemTestingStatus} from '@/models/problems';
-import {IUploadCodePayload} from '@/store/modules/problems/actions';
-import {ROUTES} from '@/router';
-import {ModelStatus} from '@/store/modules';
-import {ModelReadState} from '@/store/modules/statuses/types';
-import {GET_READ_STATE, GET_STATUS} from '@/store/modules/statuses/getters';
-import {STATUS_SCOPES} from '@/store/statusScopes';
+  Button,
+  DataView,
+  FloatingButton,
+  MaterialIcon,
+  TextareaAutoresize,
+  TextSection,
+} from '@/components'
+import Tags from '../components/Tags.vue'
+import LdrLove from '@/components/icons/LdrLove.vue'
+import LdrX from '@/components/icons/LdrX.vue'
+import LdrRobot from '@/components/icons/LdrRobot.vue'
+import { TestView, PageHeader, Breadcrumb } from '../containers'
+import { formatDate } from '@/components/utils'
+import {
+  PartialProgramInput,
+  PartialProgramOutput,
+  ProblemError,
+  ProblemTestingStatus,
+} from '@/models/problems'
+import { IUploadCodePayload } from '@/store/modules/problems/actions'
+import { ROUTES } from '@/router'
+import { ModelStatus } from '@/store/modules'
+import { ModelReadState } from '@/store/modules/statuses/types'
+import { GET_READ_STATE, GET_STATUS } from '@/store/modules/statuses/getters'
+import { STATUS_SCOPES } from '@/store/statusScopes'
+
+const { actionName, MODULES } = actions
 
 // TODO: examples and description on one screen
 
 Component.registerHooks([
-   'beforeRouteUpdate',
-]);
+  'beforeRouteUpdate',
+])
 
 @Component({
-   components: {
-      TestView,
-      Breadcrumb,
-      Icon: MaterialIcon,
-      Button,
-      TextareaAutoresize,
-      PageHeader,
-      Tags,
-      TextSection,
-      DataView,
-      FloatingButton,
-      LdrLove,
-      LdrX,
-      LdrRobot,
-   },
+  components: {
+    TestView,
+    Breadcrumb,
+    Icon: MaterialIcon,
+    Button,
+    TextareaAutoresize,
+    PageHeader,
+    Tags,
+    TextSection,
+    DataView,
+    FloatingButton,
+    LdrLove,
+    LdrX,
+    LdrRobot,
+  },
 })
 export default class ProblemView extends Vue {
-
    @Prop({
-      type: String,
-      required: true,
+     type: String,
+     required: true,
    })
    public id!: string;
 
@@ -226,30 +237,31 @@ export default class ProblemView extends Vue {
    @Getter public isTeacher?: boolean;
 
    @Action(actionName(MODULES.PROBLEMS, actions.EDIT)) public editProblem!: (problem: FullProblem) => void;
+
    @Action(actionName(MODULES.PROBLEMS, actions.UPDATE)) public updateProblem!: (id: string) => Promise<FullProblem | undefined>;
+
    @Action(actionName(MODULES.PROBLEMS, actions.CREATE)) public createProblem!: (problem: FullProblem) => Promise<FullProblem | undefined>;
+
    @Action(actionName(MODULES.PROBLEMS, actions.UPLOAD_CODE)) public uploadCode!: (payload: IUploadCodePayload) => Promise<void>;
 
    @Getter(GET_STATUS)
    public getStatus!: (scope: string, id: string) => ModelStatus;
 
    get status(): ModelStatus {
-      if (!this.model) {
-         return ModelStatus.None;
-      }
+     if (!this.model)
+       return ModelStatus.None
 
-      return this.getStatus(STATUS_SCOPES.PROBLEMS, this.model.id);
+     return this.getStatus(STATUS_SCOPES.PROBLEMS, this.model.id)
    }
 
    @Getter(GET_READ_STATE)
    public getRead!: (scope: string, id: string) => ModelReadState;
 
    get readState(): ModelReadState {
-      if (!this.model) {
-         return ModelReadState.None;
-      }
+     if (!this.model)
+       return ModelReadState.None
 
-      return this.getRead(STATUS_SCOPES.PROBLEMS, this.model.id);
+     return this.getRead(STATUS_SCOPES.PROBLEMS, this.model.id)
    }
 
    public solutionCode = '';
@@ -257,208 +269,198 @@ export default class ProblemView extends Vue {
    public ROUTES = ROUTES;
 
    public ProblemStatus = ModelStatus;
+
    public ProblemTestingStatus = ProblemTestingStatus;
+
    public ProblemReadState = ModelReadState;
 
    get model() {
-      return this.problemById(this.id);
+     return this.problemById(this.id)
    }
 
    get isReadingError() {
-      if (this.model) {
-         return this.status === ModelStatus.ErrorReading;
-      }
+     if (this.model)
+       return this.status === ModelStatus.ErrorReading
 
-      const error = this.problemErrorById(this.id);
-      if (!error) {
-         return false;
-      }
+     const error = this.problemErrorById(this.id)
+     if (!error)
+       return false
 
-      return error.status === ModelStatus.ErrorReading;
+     return error.status === ModelStatus.ErrorReading
    }
 
    get resultRun(): ResultRunProgram | undefined {
-      if (this.model) {
-         return this.model.resultRun;
-      }
+     if (this.model)
+       return this.model.resultRun
 
-      return undefined;
+     return undefined
    }
 
    get done(): boolean {
-      if (!this.resultRun) {
-         return false;
-      }
+     if (!this.resultRun)
+       return false
 
-      return this.resultRun.isAllTestsSuccessful;
+     return this.resultRun.isAllTestsSuccessful
    }
 
    get isSynced(): boolean {
-      if (!this.model) {
-         return true;
-      }
+     if (!this.model)
+       return true
 
-      return this.status === ModelStatus.Synced;
+     return this.status === ModelStatus.Synced
    }
 
    get isCreate(): boolean {
-      if (!this.model) {
-         return false;
-      }
+     if (!this.model)
+       return false
 
-      return this.status === ModelStatus.ForCreate ||
-         this.status === ModelStatus.Creating ||
-         this.status === ModelStatus.ErrorCreating;
+     return this.status === ModelStatus.ForCreate
+         || this.status === ModelStatus.Creating
+         || this.status === ModelStatus.ErrorCreating
    }
 
    get isProcessing(): boolean {
-      if (!this.model) {
-         return false;
-      }
+     if (!this.model)
+       return false
 
-      return this.status === ModelStatus.Reading ||
-         this.status === ModelStatus.Creating ||
-         this.status === ModelStatus.Updating ||
-         this.status === ModelStatus.Deleting;
+     return this.status === ModelStatus.Reading
+         || this.status === ModelStatus.Creating
+         || this.status === ModelStatus.Updating
+         || this.status === ModelStatus.Deleting
    }
 
    public formatDate(value: Date) {
-      return formatDate(value);
+     return formatDate(value)
    }
 
    public formatIO(value: PartialProgramInput | PartialProgramOutput) {
-      return value.name;
+     return value.name
    }
 
    public formatBytes(bytes: number, decimals: number = 0) {
-      if (bytes == 0) { return '0 bytes'; }
-      const k = 1024;
-      const sizes = ['bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
-      const i = Math.floor(Math.log(bytes) / Math.log(k));
-      return parseFloat((bytes / Math.pow(k, i)).toFixed(decimals)) + ' ' + sizes[i];
+     if (bytes === 0)
+       return '0 bytes'
+     const k = 1024
+     const sizes = ['bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB']
+     const i = Math.floor(Math.log(bytes) / Math.log(k))
+     return `${parseFloat((bytes / k ** i).toFixed(decimals))} ${sizes[i]}`
    }
 
    public formatTime(ms: number, decimals: number = 0) {
-      if (ms == 0) { return '0 ms'; }
-      const k = 1000;
-      const sizes = ['ms', 'seconds'];
-      const i = Math.floor(Math.log(ms) / Math.log(k));
-      return parseFloat((ms / Math.pow(k, i)).toFixed(decimals)) + ' ' + sizes[i];
+     if (ms === 0)
+       return '0 ms'
+     const k = 1000
+     const sizes = ['ms', 'seconds']
+     const i = Math.floor(Math.log(ms) / Math.log(k))
+     return `${parseFloat((ms / k ** i).toFixed(decimals))} ${sizes[i]}`
    }
 
    public handleUpload() {
-      // TODO: Upload error handle
-      if (!this.model) {
-         return console.error('Cannot upload code without problem data');
-      }
+     // TODO: Upload error handle
+     if (!this.model)
+       return console.error('Cannot upload code without problem data')
 
-      if (!this.solutionCode) {
-         return console.error('Not have code for uplaoad');
-      }
+     if (!this.solutionCode)
+       return console.error('Not have code for uplaoad')
 
-      this.uploadCode({
-         problemId: this.model.id,
-         text: this.solutionCode,
-      });
+     this.uploadCode({
+       problemId: this.model.id,
+       text: this.solutionCode,
+     })
    }
 
    get statusLabel(): string | undefined {
-      if (!this.resultRun) {
-         return;
-      }
+     if (!this.resultRun)
+       return
 
-      const {status} = this.resultRun;
-      if (status === 0) {
-         return;
-      }
+     const { status } = this.resultRun
+     if (status === 0)
+       return
 
-      switch (status) {
-         case 1:
-            return 'Internal Error';
+     switch (status) {
+       case 1:
+         return 'Internal Error'
 
-         case 2:
-            return 'Real time limit exceeded';
+       case 2:
+         return 'Real time limit exceeded'
 
-         case 3:
-            return 'Memory limit exceeded';
+       case 3:
+         return 'Memory limit exceeded'
 
-         case 4:
-            return 'CPU limit exceeded';
+       case 4:
+         return 'CPU limit exceeded'
 
-         default:
-            return 'Unexpected error';
-      }
+       default:
+         return 'Unexpected error'
+     }
    }
 
    public updateName(name: string) {
-      // TODO: handle edit errors
-      if (!this.model) {
-         return console.error('Cannot edit not existed problem');
-      }
+     // TODO: handle edit errors
+     if (!this.model)
+       return console.error('Cannot edit not existed problem')
 
-      this.editProblem({...this.model, name });
+     this.editProblem({ ...this.model, name })
    }
 
    public updateText(description: string) {
-      if (!this.model) {
-         return console.error('Cannot edit not existed problem');
-      }
+     if (!this.model)
+       return console.error('Cannot edit not existed problem')
 
-      this.editProblem({...this.model, description });
+     this.editProblem({ ...this.model, description })
    }
 
    public syncProblem() {
-      if (!this.model) {
-         console.error('Not have problem data for sync');
-         return;
-      }
+     if (!this.model) {
+       console.error('Not have problem data for sync')
+       return
+     }
 
-      if (
-         this.status === ModelStatus.Changed ||
-         this.status === ModelStatus.ErrorUpdating
-      ) {
-         this.updateProblem(this.model.id);
-         return;
-      }
+     if (
+       this.status === ModelStatus.Changed
+         || this.status === ModelStatus.ErrorUpdating
+     ) {
+       this.updateProblem(this.model.id)
+       return
+     }
 
-      if (
-         this.status === ModelStatus.ForCreate ||
-         this.status === ModelStatus.ErrorCreating
-      ) {
+     if (
+       this.status === ModelStatus.ForCreate
+         || this.status === ModelStatus.ErrorCreating
+     ) {
+       // TODO: display errors
+       if (!this.model.name.length) {
+         console.error('Not have name')
+         return
+       }
+       if (!this.model.description.length) {
+         console.error('Not have text')
+         return
+       }
+       if (!this.model.tests || !this.model.tests.length) {
+         console.error('Unexpected situation in tests')
+         return
+       }
+       if (!this.model.tests[0].id.length) {
+         console.error('Not have tests')
+         return
+       }
 
-         // TODO: display errors
-         if (!this.model.name.length) {
-            console.error('Not have name');
-            return;
-         }
-         if (!this.model.description.length) {
-            console.error('Not have text');
-            return;
-         }
-         if (!this.model.tests || !this.model.tests.length) {
-            console.error('Unexpected situation in tests');
-            return;
-         }
-         if (!this.model.tests[0].id.length) {
-            console.error('Not have tests');
-            return;
-         }
+       this.createProblem(this.model)
+         .then((problem) => {
+           if (!problem) {
+             console.error('Error when create')
+             // TODO: handle error
+             return
+           }
 
-         this.createProblem(this.model)
-            .then((problem) => {
-               if (!problem) {
-                  console.error('Error when create');
-                  // TODO: handle error
-                  return;
-               }
+           // TODO: by name routing
+           this.$router.push({ path: `/problem/${problem.id}` })
+         })
+       return
+     }
 
-               // TODO: by name routing
-               this.$router.push({path: `/problem/${problem.id}`});
-            });
-         return;
-      }
-
-      console.error('Cannot understand what do with this problem', this.model);
+     console.error('Cannot understand what do with this problem', this.model)
    }
 }
 </script>
@@ -615,7 +617,6 @@ export default class ProblemView extends Vue {
 
       }
 
-
       &--new-test {
          display: flex;
          flex-direction: row;
@@ -652,7 +653,6 @@ export default class ProblemView extends Vue {
             top: -100px;
          }
       }
-
 
    }
 </style>

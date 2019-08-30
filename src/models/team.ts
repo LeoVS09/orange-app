@@ -1,4 +1,4 @@
-import { PartialUserProfile, UserProfile} from './user'
+import { PartialUserProfile, UserProfile } from './user'
 
 export interface Team {
    id: string

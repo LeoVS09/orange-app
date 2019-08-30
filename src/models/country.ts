@@ -1,6 +1,6 @@
-import { University} from '@/models/university'
-import { Repository} from '@/lazyDB'
-import { ModelAttributeType} from '@/lazyDB/core/types'
+import { University } from '@/models/university'
+import { Repository } from '@/lazyDB'
+import { ModelAttributeType } from '@/lazyDB/core/types'
 
 export interface Country {
    id: string
@@ -21,15 +21,16 @@ export interface City {
 }
 
 export const CountryRepository = new Repository(
-   'country',
-   {
-      cities: ModelAttributeType.OneToMany,
-})
+  'country',
+  {
+    cities: ModelAttributeType.OneToMany,
+  },
+)
 
 export const CityRepository = new Repository(
-   'city',
-   {
-      country: ModelAttributeType.OneToOne,
-      universities: ModelAttributeType.OneToMany,
-   },
+  'city',
+  {
+    country: ModelAttributeType.OneToOne,
+    universities: ModelAttributeType.OneToMany,
+  },
 )

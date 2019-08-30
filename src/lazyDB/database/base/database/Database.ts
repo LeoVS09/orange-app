@@ -1,104 +1,104 @@
 import {
-   ILazyReactiveDatabase,
-   IEntityTypeSchema,
-   IEntityTypeSchemaStorage, IDatabaseProducerStore,
+  ILazyReactiveDatabase,
+  IEntityTypeSchema,
+  IEntityTypeSchemaStorage,
+  IDatabaseProducerStore,
+  DatabaseStorage,
 } from '../../types'
-import { AbstractData, EventProducer, EventType, ModelAttributeType} from '@/lazyDB/core/types'
-import { getStore} from '@/lazyDB/core/common'
-import { DatabaseStorage} from '../../types'
-import { makeDatabaseStorage} from '../../storage'
-import { ModelEventDispatcher} from '@/lazyDB/core/dispatcher/model/base'
-import { extractEntityNameFromManyKey} from '@/lazyDB/utils'
-import { ProducerStore} from '@/lazyDB/core/producer/Store'
-import { asyncReceiveWithMemory} from '@/lazyDB/core/receiver'
-import { applyRepositoryControls} from '@/lazyDB/database/base/repository/controls'
+import {
+  AbstractData,
+  EventProducer,
+  ModelAttributeType,
+} from '@/lazyDB/core/types'
+import { getStore } from '@/lazyDB/core/common'
+
+import { makeDatabaseStorage } from '../../storage'
+import { ModelEventDispatcher } from '@/lazyDB/core/dispatcher/model/base'
+import { extractEntityNameFromManyKey } from '@/lazyDB/utils'
+import { applyRepositoryControls } from '@/lazyDB/database/base/repository/controls'
 
 export interface LazyReactiveDatabaseOptions {
-   storage?: DatabaseStorage
-   schemas?: IEntityTypeSchemaStorage
-   excludeProperties?: Array<string>
+  storage?: DatabaseStorage
+  schemas?: IEntityTypeSchemaStorage
+  excludeProperties?: Array<string>
 }
 
 export default class LazyReactiveDatabase implements ILazyReactiveDatabase {
+  public storage: DatabaseStorage
 
-   public storage: DatabaseStorage
-   public schemas: IEntityTypeSchemaStorage
-   public excludeProperties: Array<string>
+  public schemas: IEntityTypeSchemaStorage
 
-   constructor(
-      {
-         storage = makeDatabaseStorage(),
-         schemas = { },
-         excludeProperties = [],
-      }: LazyReactiveDatabaseOptions = { },
-   ) {
-      this.storage = storage
-      this.schemas = schemas
-      this.excludeProperties = excludeProperties
-   }
+  public excludeProperties: Array<string>
 
-   public get store(): IDatabaseProducerStore {
-      return getStore(this.storage) as IDatabaseProducerStore
-   }
+  constructor(
+    {
+      storage = makeDatabaseStorage(),
+      schemas = {},
+      excludeProperties = [],
+    }: LazyReactiveDatabaseOptions = {},
+  ) {
+    this.storage = storage
+    this.schemas = schemas
+    this.excludeProperties = excludeProperties
+  }
 
-   public get dispatcher(): ModelEventDispatcher {
-      const store = getStore(this.storage)
-      return store.dispatcher as ModelEventDispatcher
-   }
+  public get store(): IDatabaseProducerStore {
+    return getStore(this.storage) as IDatabaseProducerStore
+  }
 
-   public setSchema(entity: string, schema: IEntityTypeSchema) {
-      this.schemas[entity] = schema
-   }
+  public get dispatcher(): ModelEventDispatcher {
+    const store = getStore(this.storage)
+    return store.dispatcher as ModelEventDispatcher
+  }
 
-   public findOne(entity: string, id: string): EventProducer {
-      if (!this.schemas[entity]) {
-         return this.storage[entity][id]
-      }
+  public setSchema(entity: string, schema: IEntityTypeSchema) {
+    this.schemas[entity] = schema
+  }
 
-      const model = this.storage[entity][id]
-      const store = getStore(model)
-      const schema = this.schemas[entity]
+  public findOne(entity: string, id: string): EventProducer {
+    if (!this.schemas[entity])
+      return this.storage[entity][id]
 
-      applyRepositoryControls(store, schema)
+    const model = this.storage[entity][id]
+    const store = getStore(model)
+    const schema = this.schemas[entity]
 
-      return model
-   }
+    applyRepositoryControls(store, schema)
 
-   public set(entity: string, id: string, data: AbstractData | EventProducer) {
-      this.storage[entity][id] = data
-   }
+    return model
+  }
 
-   public add(entity: string, id: string, data: AbstractData): boolean {
-      // TODO: produce event
-      const model = this.storage[entity][id]
-      if (model) {
-         return false
-      }
+  public set(entity: string, id: string, data: AbstractData | EventProducer) {
+    this.storage[entity][id] = data
+  }
 
-      this.set(entity, id, data)
-      return true
-   }
+  public add(entity: string, id: string, data: AbstractData): boolean {
+    // TODO: produce event
+    const model = this.storage[entity][id]
+    if (model)
+      return false
 
-   public update(entity: string, id: string, data: AbstractData): boolean {
-      // TODO: produce event
-      const model = this.storage[entity][id]
-      if (!model) {
-         return false
-      }
+    this.set(entity, id, data)
+    return true
+  }
 
-      for (const key in data) {
-         model[key] = data[key]
-      }
+  public update(entity: string, id: string, data: AbstractData): boolean {
+    // TODO: produce event
+    const model = this.storage[entity][id]
+    if (!model)
+      return false
 
-      return true
-   }
+    Object.keys(data)
+      .forEach(key => model[key] = data[key])
 
-   public getSchemaByKey(key: string, type: ModelAttributeType) {
-      let fieldEntity = key
-      if (type === ModelAttributeType.OneToMany) {
-         fieldEntity = extractEntityNameFromManyKey(key)
-      }
+    return true
+  }
 
-      return this.schemas[fieldEntity]
-   }
+  public getSchemaByKey(key: string, type: ModelAttributeType) {
+    let fieldEntity = key
+    if (type === ModelAttributeType.OneToMany)
+      fieldEntity = extractEntityNameFromManyKey(key)
+
+    return this.schemas[fieldEntity]
+  }
 }

@@ -16,5 +16,21 @@ declare module '*.graphql' {
 
 declare module '*.vue' {
    import Vue from 'vue'
+
    export default Vue
+}
+
+declare module 'lodash.throttle' {
+  const content: any
+  export default content
+}
+
+declare module 'crypto-js' {
+  const content: any
+  export default content
+}
+
+declare module 'v-click-outside' {
+  const content: any
+  export default content
 }

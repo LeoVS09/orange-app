@@ -13,21 +13,20 @@
 </template>
 
 <script lang="ts">
-  import Vue from 'vue'
-  import {Component} from 'vue-property-decorator'
-  import TopBar from '../containers/TopBar.vue'
-  import { Footer } from '@/components'
+import Vue from 'vue'
+import { Component } from 'vue-property-decorator'
+import TopBar from '../containers/TopBar.vue'
+import { Footer } from '@/components'
 
   @Component({
     components: {
       TopBar,
-      'footer-view': Footer
-    }
+      'footer-view': Footer,
+    },
   })
-  export default class Home extends Vue {
-
+export default class Home extends Vue {
     showProfileActions = false
-  }
+}
 
 </script>
 

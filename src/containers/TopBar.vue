@@ -62,59 +62,57 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
-import {Component, Prop} from 'vue-property-decorator';
-import {Button, Logo, MaterialIcon} from '@/components';
-import {Action, Getter} from 'vuex-class';
-import {UserProfile} from '@/models';
-import {ROUTES} from '@/router';
-import {IListener, onPredictiveHover, onScroll} from '@/components/predictive';
-import {Translation} from '@/store/modules/ui/state';
-import * as actions from '@/store/actionTypes';
-import {RouterPush} from '@/components/decorators';
+import Vue from 'vue'
+import { Component, Prop } from 'vue-property-decorator'
+import { Action, Getter } from 'vuex-class'
+import { Button, Logo, MaterialIcon } from '@/components'
+import { UserProfile } from '@/models'
+import { ROUTES } from '@/router'
+import { IListener, onPredictiveHover, onScroll } from '@/components/predictive'
+import { Translation } from '@/store/modules/ui/state'
+import * as actions from '@/store/actionTypes'
+import { RouterPush } from '@/components/decorators'
 
 // TODO: use router links
 
-let mousemoveListener: IListener;
+let mousemoveListener: IListener
 
 @Component({
-   components: {
-      Icon: MaterialIcon,
-      Logo,
-      Button,
-   },
+  components: {
+    Icon: MaterialIcon,
+    Logo,
+    Button,
+  },
 })
 export default class TopBar extends Vue {
+  get profileText() {
+    if (!this.userData)
+      return this.$t('Sign In')
 
-   get profileText() {
-      if (!this.userData) {
-         return this.$t('Sign In');
-      }
+    let name = this.userData.firstName
+    name = name[0].toUpperCase() + name.slice(1)
 
-      let name = this.userData.firstName;
-      name = name[0].toUpperCase() + name.slice(1);
+    return name
+  }
 
-      return name;
-   }
+  get isMenuVisible() {
+    return this.isProfileActionsHover
+         && !this.isActionCompleted
+         && !!this.userData
+         && (this.isScroll || !this.scrollTop)
+  }
 
-   get isMenuVisible() {
-      return this.isProfileActionsHover &&
-         !this.isActionCompleted &&
-         !!this.userData &&
-         (this.isScroll || !this.scrollTop);
-   }
+  get isProblemsRoute() {
+    return this.$route.name === ROUTES.PROBLEMS
+  }
 
-   get isProblemsRoute() {
-      return this.$route.name === ROUTES.PROBLEMS;
-   }
-
-   get isContestsRoute() {
-      return this.$route.name === ROUTES.CONTESTS;
-   }
+  get isContestsRoute() {
+    return this.$route.name === ROUTES.CONTESTS
+  }
 
    @Prop({
-      type: Boolean,
-      default: false,
+     type: Boolean,
+     default: false,
    })
    public showProfileActions!: boolean;
 
@@ -125,11 +123,15 @@ export default class TopBar extends Vue {
    @Action(actions.SET_LOCALE) public setLocale!: (locale: Translation) => void;
 
    public isProfileActionsHover = this.showProfileActions;
+
    public isScroll = false;
+
    public scrollTop = 0;
+
    public isActionCompleted = false;
 
    public ROUTES = ROUTES;
+
    public Translation = Translation;
 
    @RouterPush(ROUTES.HOME)
@@ -148,77 +150,75 @@ export default class TopBar extends Vue {
    public clickProgrammingLanguages!: () => void;
 
    public created() {
-      mousemoveListener = onPredictiveHover(
-         () => this.startHoverProfile(),
-         () => this.endHoverProfile(),
-      );
+     mousemoveListener = onPredictiveHover(
+       () => this.startHoverProfile(),
+       () => this.endHoverProfile(),
+     )
 
-      onScroll(
-         (top) => this.startScroll(top),
-         (top) => this.endScroll(top),
-      );
+     onScroll(
+       top => this.startScroll(top),
+       top => this.endScroll(top),
+     )
    }
 
    public beforeDestroy() {
-      mousemoveListener.destroy();
+     mousemoveListener.destroy()
    }
 
    public onMenuIconClick() {
-      console.log('click');
-      // TODO
+     console.log('click')
+     // TODO
    }
 
    public startHoverProfile(): boolean {
-      if (!this.userData) {
-         return this.isProfileActionsHover;
-      }
+     if (!this.userData)
+       return this.isProfileActionsHover
 
-      this.isProfileActionsHover = true;
-      const showProfileActions = this.isMenuVisible;
-      this.$emit('update:is-menu-visible', showProfileActions);
+     this.isProfileActionsHover = true
+     const showProfileActions = this.isMenuVisible
+     this.$emit('update:is-menu-visible', showProfileActions)
 
-      return this.isProfileActionsHover;
+     return this.isProfileActionsHover
    }
 
    public endHoverProfile() {
-      this.isProfileActionsHover = false;
-      this.isActionCompleted = false;
-      const showProfileActions = this.isMenuVisible;
-      this.$emit('update:is-menu-visible', showProfileActions);
+     this.isProfileActionsHover = false
+     this.isActionCompleted = false
+     const showProfileActions = this.isMenuVisible
+     this.$emit('update:is-menu-visible', showProfileActions)
 
-      return this.isProfileActionsHover;
+     return this.isProfileActionsHover
    }
 
    public startScroll(top: number) {
-      this.isScroll = true;
-      this.scrollTop = top;
+     this.isScroll = true
+     this.scrollTop = top
    }
 
    public endScroll(top: number) {
-      this.isScroll = false;
-      this.scrollTop = top;
+     this.isScroll = false
+     this.scrollTop = top
    }
 
    public clickProfile() {
-      if (this.userData) {
-         this.$router.push({name: ROUTES.PROFILE});
-      } else {
-         this.$router.push({name: ROUTES.SIGNIN});
-      }
-      this.isActionCompleted = true;
+     if (this.userData)
+       this.$router.push({ name: ROUTES.PROFILE })
+     else
+       this.$router.push({ name: ROUTES.SIGNIN })
+
+     this.isActionCompleted = true
    }
 
    public clickSignOut() {
-      this.$store.dispatch(actions.LOGOUT_FROM_PROFILE);
-      this.isActionCompleted = true;
+     this.$store.dispatch(actions.LOGOUT_FROM_PROFILE)
+     this.isActionCompleted = true
    }
 
    public toggleLocale() {
-      if (this.locale === Translation.RU) {
-         this.setLocale(Translation.EN);
-      } else {
-         this.setLocale(Translation.RU);
-      }
+     if (this.locale === Translation.RU)
+       this.setLocale(Translation.EN)
+     else
+       this.setLocale(Translation.RU)
    }
 }
 </script>

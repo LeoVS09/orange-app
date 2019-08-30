@@ -12,39 +12,38 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
-import {Component, Prop} from 'vue-property-decorator';
+import Vue from 'vue'
+import { Component, Prop } from 'vue-property-decorator'
 
 // TODO: Combine TextSection with this Section
 
 @Component
 export default class Section extends Vue {
-
    @Prop({
-      type: Boolean,
-      default: false,
+     type: Boolean,
+     default: false,
    }) public highlight!: boolean;
 
    @Prop({
-      type: Boolean,
-      default: false,
+     type: Boolean,
+     default: false,
    }) public textWidth!: boolean;
 
    @Prop({
-      type: Boolean,
-      default: false,
+     type: Boolean,
+     default: false,
    })
    public withoutMargin!: boolean;
 
    @Prop({
-      type: Boolean,
-      default: false,
+     type: Boolean,
+     default: false,
    })
    public borderBottom!: boolean;
 
    @Prop({
-      type: Boolean,
-      default: false,
+     type: Boolean,
+     default: false,
    })
    public borderTop!: boolean;
 }

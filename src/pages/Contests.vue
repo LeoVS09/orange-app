@@ -28,38 +28,50 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
-import {Component} from 'vue-property-decorator';
-import {Getter, Action, State} from 'vuex-class';
-import {FullProblem, PartialContest, PartialProblem} from '@/models';
-import * as actions from '@/store/actionTypes';
-import {Button, Tags, Section, PageHeaderAction, Filters} from '@/components';
-import {ROUTES} from '@/router';
-import {RootState} from '@/store/state';
-import {ProblemFilter} from '@/store/modules';
-import {Tag} from '@/models/problems';
-import {MODULES, actionName} from '@/store/actionTypes';
-import {FullContest} from '@/models/contest';
-import {RouterPush} from '@/components/decorators';
-import {List, ListColumn, PageHeader, Breadcrumb} from '@/containers'
+import Vue from 'vue'
+import { Component } from 'vue-property-decorator'
+import { Getter, Action } from 'vuex-class'
+import { PartialContest } from '@/models'
+import * as actions from '@/store/actionTypes'
+import {
+  Button,
+  Tags,
+  Section,
+  PageHeaderAction,
+  Filters,
+} from '@/components'
+import { ROUTES } from '@/router'
+import { ProblemFilter } from '@/store/modules'
+import { Tag } from '@/models/problems'
+import { FullContest } from '@/models/contest'
+import { RouterPush } from '@/components/decorators'
+import {
+  List,
+  ListColumn,
+  PageHeader,
+  Breadcrumb,
+} from '@/containers'
+
+const { MODULES, actionName } = actions
 
 @Component({
-   components: {
-      PageHeader,
-      Breadcrumb,
-      Button,
-      Filters,
-      List,
-      ListColumn,
-      Tags,
-      Section,
-      Action: PageHeaderAction,
-   },
+  components: {
+    PageHeader,
+    Breadcrumb,
+    Button,
+    Filters,
+    List,
+    ListColumn,
+    Tags,
+    Section,
+    Action: PageHeaderAction,
+  },
 })
 export default class Contests extends Vue {
-
    @Getter('contests') public items!: Array<PartialContest | FullContest>;
+
    @Getter public isTeacher!: boolean;
+
    @Getter public allTags!: Tag[];
 
    @Action(actionName(MODULES.CONTESTS, actions.READ_LIST))
@@ -74,12 +86,11 @@ export default class Contests extends Vue {
    public chooseItem!: (item: PartialContest) => void;
 
    public formatItem(item: PartialContest) {
-      return {
-         ...item,
-         date: item.updatedAt ? item.updatedAt : item.createdAt,
-         author: item.creator.login,
-      };
+     return {
+       ...item,
+       date: item.updatedAt ? item.updatedAt : item.createdAt,
+       author: item.creator.login,
+     }
    }
-
 }
 </script>

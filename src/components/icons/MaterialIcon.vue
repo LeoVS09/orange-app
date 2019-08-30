@@ -3,17 +3,17 @@
 </template>
 
 <script lang="ts">
-   import Vue from 'vue'
-   import {Component} from 'vue-property-decorator'
+import Vue from 'vue'
+import { Component } from 'vue-property-decorator'
 
    @Component({
-      props: {
-         type: String
-      }
+     props: {
+       type: String,
+     },
    })
-   export default class MaterialIcon extends Vue {
+export default class MaterialIcon extends Vue {
 
-   }
+}
 </script>
 
 <style scoped lang="scss">

@@ -33,44 +33,44 @@
 </template>
 
 <script lang="ts">
-import {Component, Prop, Mixins} from 'vue-property-decorator';
-import {Getter, Action, State} from 'vuex-class';
-import {City, Country, University} from '@/models';
-import * as actions from '@/store/actionTypes';
-import {ModelInfo, Section, PageHeaderAction} from '@/components';
-import {ROUTES} from '@/router';
-import ModelById from '@/components/mixins/ModelById';
-import {RouterPush} from '@/components/decorators';
-import {actionName, MODULES} from '@/store/actionTypes';
-import {CountryRepository, CityRepository} from '@/models/country';
-import Vue from 'vue';
-import ReactiveUpdate, {reactiveUpdate} from '@/components/mixins/ReactiveUpdate';
-import {List, ListColumn, PageHeader, Breadcrumb} from '@/containers'
+import { Component, Prop, Mixins } from 'vue-property-decorator'
+import { Getter } from 'vuex-class'
+import { University } from '@/models'
+import { ModelInfo, Section, PageHeaderAction } from '@/components'
+import { ROUTES } from '@/router'
+import { RouterPush } from '@/components/decorators'
+import { CityRepository } from '@/models/country'
+import ReactiveUpdate, { reactiveUpdate } from '@/components/mixins/ReactiveUpdate'
+import {
+  List,
+  ListColumn,
+  PageHeader,
+  Breadcrumb,
+} from '@/containers'
 
 @Component({
-   components: {
-      PageHeader,
-      List,
-      ListColumn,
-      Section,
-      Action: PageHeaderAction,
-      ModelInfo,
-      Breadcrumb
-   },
+  components: {
+    PageHeader,
+    List,
+    ListColumn,
+    Section,
+    Action: PageHeaderAction,
+    ModelInfo,
+    Breadcrumb,
+  },
 })
 export default class CityView extends Mixins(ReactiveUpdate) {
+  get model() {
+    return CityRepository.findOne(this.id, reactiveUpdate(this))
+  }
 
-   get model() {
-      return CityRepository.findOne(this.id, reactiveUpdate(this));
-   }
-
-   get parent() {
-      return this.model && this.model.country;
-   }
+  get parent() {
+    return this.model && this.model.country
+  }
 
    @Prop({
-      type: String,
-      required: true,
+     type: String,
+     required: true,
    })
    public id!: string;
 
@@ -82,12 +82,11 @@ export default class CityView extends Mixins(ReactiveUpdate) {
    public chooseItem!: (university: University) => void;
 
    public add() {
-      // TODO
+     // TODO
    }
 
    public validate() {
-      // TODO
+     // TODO
    }
-
 }
 </script>

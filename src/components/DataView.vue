@@ -11,6 +11,7 @@
          class="data-view--item"
          v-for="prop in visibleValues"
          @click="choseItem(prop)"
+         :key="prop.icon || prop.label"
       >
          <Icon v-if="prop.icon" class="data-view--icon">{{prop.icon}}</Icon>
          <span v-else class="data-view--label">{{prop.label}}</span>
@@ -20,118 +21,114 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
-import {Component, Prop, Emit} from 'vue-property-decorator';
-import {formatDate, isDate} from './utils';
-import Icon from './icons/MaterialIcon.vue';
-import {Filter} from './decorators';
+import Vue from 'vue'
+import { Component, Prop, Emit } from 'vue-property-decorator'
+import { formatDate, isDate } from './utils'
+import Icon from './icons/MaterialIcon.vue'
+import { Filter } from './decorators'
 
 export interface DataViewValues {
    [label: string]: any;
 }
 
 @Component({
-   components: {
-      Icon,
-   },
+  components: {
+    Icon,
+  },
 })
 export default class DataView extends Vue {
-
    @Prop({
-      type: Object,
-      required: true,
+     type: Object,
+     required: true,
    })
    public values!: DataViewValues;
 
    @Prop({
-      type: Function,
+     type: Function,
    })
    public formatValue!: (value: any) => any;
 
    @Prop({
-      type: Boolean,
-      default: true,
+     type: Boolean,
+     default: true,
    })
    public compact!: boolean;
 
    @Prop({
-      type: Boolean,
-      default: false,
+     type: Boolean,
+     default: false,
    })
    public inRow!: boolean;
 
    @Prop({
-      type: Boolean,
-      default: false,
+     type: Boolean,
+     default: false,
    })
    public modelInfo!: boolean;
 
    @Prop({
-      type: Array,
+     type: Array,
    })
    public order!: string[];
 
    @Prop({
-      type: Array,
+     type: Array,
    })
    public exclude!: string[];
 
    @Prop({
-      type: Object,
-      default: () => ({}),
+     type: Object,
+     default: () => ({}),
    })
    public icons!: {[key: string]: string};
 
    @Prop({
-      type: Boolean,
-      default: false,
+     type: Boolean,
+     default: false,
    })
    public contrast!: boolean;
 
    @Prop({
-      type: Boolean,
-      default: false,
+     type: Boolean,
+     default: false,
    })
    public small!: boolean;
 
    get visibleValues() {
-      let keys = Object.keys(this.values);
+     let keys = Object.keys(this.values)
 
-      if (this.order) {
-         const notOrdered = keys.filter((k) => this.order.indexOf(k) === -1);
-         const have = this.order.filter((k) => keys.indexOf(k) !== -1);
+     if (this.order) {
+       const notOrdered = keys.filter(k => this.order.indexOf(k) === -1)
+       const have = this.order.filter(k => keys.indexOf(k) !== -1)
 
-         keys = [
-            ...have,
-            ...notOrdered,
-         ];
-      }
+       keys = [
+         ...have,
+         ...notOrdered,
+       ]
+     }
 
-      if (this.exclude) {
-         keys = keys.filter((k) => this.exclude.indexOf(k) === -1);
-      }
+     if (this.exclude)
+       keys = keys.filter(k => this.exclude.indexOf(k) === -1)
 
+     return keys.map((label) => {
+       const value = this.values[label]
 
-      return keys.map((label) => {
-         const value = this.values[label];
+       const icon = this.icons[label]
 
-         const icon = this.icons[label];
-
-         return {label, icon, value};
-      });
+       return { label, icon, value }
+     })
    }
 
    public valueToText(value: any) {
-      if (this.formatValue) {
-         return this.formatValue(value);
-      }
+     if (this.formatValue)
+       return this.formatValue(value)
 
-      return value;
+     return value
    }
 
    @Emit('click')
    public choseItem(value: {label: string, value: any}) {
-      return value;
+     return value
    }
 }
 </script>
@@ -197,13 +194,11 @@ export default class DataView extends Vue {
          font-weight: normal;
       }
 
-
       &.small &--icon {
          margin-right: 0.5rem;
          font-size: 1rem;
          margin-top: -0.1rem;
       }
-
 
       &.contrast &--label, &.contrast &--icon {
          color: $highlight-header-text-color;
@@ -228,6 +223,5 @@ export default class DataView extends Vue {
          }
       }
    }
-
 
 </style>

@@ -1,9 +1,9 @@
-import { City, Country} from './country'
-import { University} from './university'
-import { Language} from './language'
-import { CodeEditor} from './codeEditor'
-import { Travel} from './travel'
-import { Email} from './email'
+import { City, Country } from './country'
+import { University } from './university'
+import { Language } from './language'
+import { CodeEditor } from './codeEditor'
+import { Travel } from './travel'
+import { Email } from './email'
 
 export enum UserType {
    CONTESTANT = 'CONTESTANT',

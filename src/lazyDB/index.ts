@@ -1,7 +1,7 @@
-import db, { Repository} from './database/global'
+import db, { Repository } from './database/global'
 
 export {
-   Repository,
+  Repository,
 }
 
 export default db

@@ -6,23 +6,21 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
-import {Component, Emit, Prop} from 'vue-property-decorator';
+import Vue from 'vue'
+import { Component, Emit, Prop } from 'vue-property-decorator'
 
 @Component
 export default class Logo extends Vue {
-
    @Prop({
-      type: Boolean,
-      default: false,
+     type: Boolean,
+     default: false,
    })
    public isAuth!: boolean;
 
    @Emit('click')
    public onClick(event: any) {
-      return event;
+     return event
    }
-
 }
 </script>
 

@@ -1,14 +1,14 @@
 import {
-   AbstractData,
-   EventReducer, EventType,
-   ModelEventDeletePropertyPayload,
-   ModelEventGetPropertyPayload,
-   ModelEventSetPropertyPayload,
+  AbstractData,
+  EventReducer, EventType,
+  ModelEventDeletePropertyPayload,
+  ModelEventGetPropertyPayload,
+  ModelEventSetPropertyPayload,
 } from './types'
-import { wrapInProducer} from './producer/wrap'
-import { getStore} from './common'
-import { atomicReceiveByReducers} from '@/lazyDB/core/receiver'
-import { AtomicModelEventDispatcher} from '@/lazyDB/core/dispatcher/model/atomic'
+import { wrapInProducer } from './producer/wrap'
+import { getStore } from './common'
+import { atomicReceiveByReducers } from '@/lazyDB/core/receiver'
+import { AtomicModelEventDispatcher } from '@/lazyDB/core/dispatcher/model/atomic'
 
 export interface AtomicProducerActions {
    get?: EventReducer<ModelEventGetPropertyPayload>
@@ -17,19 +17,19 @@ export interface AtomicProducerActions {
 }
 
 export function makeAtomicProducer<T extends AbstractData = AbstractData>(
-   { get, set, delete: deleteAction}: AtomicProducerActions,
-   base: T = { } as T,
+  { get, set, delete: deleteAction }: AtomicProducerActions,
+  base: T = { } as T,
 ) {
-   const producer = wrapInProducer(base, new AtomicModelEventDispatcher())
-   const store = getStore(producer)!
+  const producer = wrapInProducer(base, new AtomicModelEventDispatcher())
+  const store = getStore(producer)!
 
-   atomicReceiveByReducers(store, {
-      [EventType.GetProperty]: get,
-      [EventType.SetProperty]: set,
-      [EventType.DeleteProperty]: deleteAction,
-   })
+  atomicReceiveByReducers(store, {
+    [EventType.GetProperty]: get,
+    [EventType.SetProperty]: set,
+    [EventType.DeleteProperty]: deleteAction,
+  })
 
-   // cannot handle internal producers by atomic
+  // cannot handle internal producers by atomic
 
-   return producer
+  return producer
 }

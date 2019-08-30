@@ -1,16 +1,16 @@
+import Vue from 'vue'
 import * as mutationTypes from './mutationTypes'
 import {
-   UserProfile,
+  UserProfile,
 } from '@/models'
-import Vue from 'vue'
-import { ProfileState} from './state'
+import { ProfileState } from './state'
 
 export default {
-   [mutationTypes.SET_PROFILE_DATA](state: ProfileState, user: UserProfile) {
-      Vue.set(state, 'data', user)
-   },
+  [mutationTypes.SET_PROFILE_DATA](state: ProfileState, user: UserProfile) {
+    Vue.set(state, 'data', user)
+  },
 
-   [mutationTypes.LOGOUT_FROM_PROFILE](state: ProfileState) {
-      Vue.set(state, 'data', undefined)
-   },
+  [mutationTypes.LOGOUT_FROM_PROFILE](state: ProfileState) {
+    Vue.set(state, 'data', undefined)
+  },
 }

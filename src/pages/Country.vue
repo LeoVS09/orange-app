@@ -35,46 +35,51 @@
 </template>
 
 <script lang="ts">
-import {Component, Prop, Mixins} from 'vue-property-decorator';
-import {Getter, Action, State} from 'vuex-class';
-import {Country} from '@/models';
-import * as actions from '@/store/actionTypes';
-import {Button, Tags, Input, ModelInfo, Section, TextSection, PageHeaderAction, Filters, DataView} from '@/components';
-import {ROUTES} from '@/router';
-import ModelById from '@/components/mixins/ModelById';
-import {City} from '@/models/country';
-import {RouterPush} from '@/components/decorators';
-import {actionName, MODULES} from '@/store/actionTypes';
-import Vue from 'vue';
-import {CountryRepository} from '@/models/country';
-import {List, ListColumn, LazyProperty, LazyData, PageHeader, Breadcrumb} from '@/containers'
+import { Component, Prop } from 'vue-property-decorator'
+import { Getter } from 'vuex-class'
+import Vue from 'vue'
+import {
+  Button,
+  Tags,
+  Section,
+  TextSection,
+  PageHeaderAction,
+  Filters,
+  DataView,
+} from '@/components'
+import { ROUTES } from '@/router'
+import { City, CountryRepository } from '@/models/country'
+import { RouterPush } from '@/components/decorators'
+
+import {
+  List, ListColumn, LazyProperty, LazyData, PageHeader, Breadcrumb,
+} from '@/containers'
 
 @Component({
-   components: {
-      PageHeader,
-      Breadcrumb,
-      Button,
-      Filters,
-      List,
-      Tags,
-      Section,
-      TextSection,
-      Action: PageHeaderAction,
-      DataView,
-      LazyData,
-      LazyProperty,
-      ListColumn
-   },
+  components: {
+    PageHeader,
+    Breadcrumb,
+    Button,
+    Filters,
+    List,
+    Tags,
+    Section,
+    TextSection,
+    Action: PageHeaderAction,
+    DataView,
+    LazyData,
+    LazyProperty,
+    ListColumn,
+  },
 })
 export default class CountryView extends Vue {
-
-   get model() {
-      return CountryRepository.findOne(this.id, () => this.$forceUpdate());
-   }
+  get model() {
+    return CountryRepository.findOne(this.id, () => this.$forceUpdate())
+  }
 
    @Prop({
-      type: String,
-      required: true,
+     type: String,
+     required: true,
    })
    public id!: string;
 
@@ -86,12 +91,11 @@ export default class CountryView extends Vue {
    public chooseItem!: (city: City) => void;
 
    public add() {
-      // TODO
+     // TODO
    }
 
    public validate() {
-      // TODO
+     // TODO
    }
-
 }
 </script>

@@ -55,13 +55,13 @@
 </template>
 
 <script lang="ts">
-   import Vue from 'vue'
-   import {Component, Prop, Mixins} from 'vue-property-decorator'
-   import Spinner from './Spinner.vue'
-   import Icon from './icons/MaterialIcon.vue'
-   import {randomId} from './utils'
-   import {ButtonEvent, ButtonEvents} from './types'
-   import ButtonBase from './mixins/inputs/baseButton'
+import Vue from 'vue'
+import { Component, Prop, Mixins } from 'vue-property-decorator'
+import Spinner from './Spinner.vue'
+import Icon from './icons/MaterialIcon.vue'
+import { randomId } from './utils'
+import { ButtonEvent, ButtonEvents } from './types'
+import ButtonBase from './mixins/inputs/baseButton'
 
    interface Options {
       tabindex?: number,
@@ -69,53 +69,50 @@
    }
 
    @Component({
-      components: {
-         Spinner,
-         Icon
-      }
+     components: {
+       Spinner,
+       Icon,
+     },
    })
-   export default class Button extends Mixins(ButtonBase) {
-
+export default class Button extends Mixins(ButtonBase) {
       key = randomId()
 
       get isAnotherButtonHovered() {
-         if (this.hovered && this.hovered !== this.key)
-            return true
+        if (this.hovered && this.hovered !== this.key)
+          return true
 
-         return false
+        return false
       }
 
       onMouseOver() {
-         const event: ButtonEvent = {key: this.key}
-         this.$parent.$emit(ButtonEvents.over, event)
+        const event: ButtonEvent = { key: this.key }
+        this.$parent.$emit(ButtonEvents.over, event)
       }
 
       onMouseLeave() {
-         const event: ButtonEvent = {key: this.key}
-         this.$parent.$emit(ButtonEvents.leave, event)
+        const event: ButtonEvent = { key: this.key }
+        this.$parent.$emit(ButtonEvents.leave, event)
       }
 
       get options(): Options {
-         let result = {} as Options;
+        const result = {} as Options
 
-         if (this.tabindex) {
-            result['tabindex'] = this.tabindex;
-         }
+        if (this.tabindex)
+          result.tabindex = this.tabindex
 
-         if (this.disabled) {
-            result['disabled'] = 'disabled';
-         }
+        if (this.disabled)
+          result.disabled = 'disabled'
 
-         return result;
+        return result
       }
 
       onClick() {
-         if (this.disabled)
-            return
+        if (this.disabled)
+          return
 
-         this.$emit('click')
+        this.$emit('click')
       }
-   }
+}
 </script>
 
 <style scoped lang="scss">
@@ -583,7 +580,6 @@
             left: 0;
          }
 
-
          &:active {
             border-color: $button-color;
          }
@@ -618,7 +614,6 @@
             background-position: -50% 50%
          }
       }
-
 
       .text-fade {
          &-enter-active, &-leave-active {

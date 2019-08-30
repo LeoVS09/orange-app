@@ -11,36 +11,34 @@
    </icon-base>
 </template>
 
-
 <script lang="ts">
-import Vue from 'vue';
-import {Component, Prop} from 'vue-property-decorator';
-import IconBase from './IconBase.vue';
+import Vue from 'vue'
+import { Component, Prop } from 'vue-property-decorator'
+import IconBase from './IconBase.vue'
 
 @Component({
-   components: {
-      IconBase,
-   },
+  components: {
+    IconBase,
+  },
 })
 export default class LdrX extends Vue {
-
    @Prop({
-      type: [Number, String],
-      default: 18,
+     type: [Number, String],
+     default: 18,
    }) public width!: number | string;
 
    @Prop({
-      type: [Number, String],
-      default: 18,
+     type: [Number, String],
+     default: 18,
    }) public height!: number | string;
 
-   @Prop( {
-      type: String,
-      default: 'currentColor',
+   @Prop({
+     type: String,
+     default: 'currentColor',
    }) public iconColor!: string;
 
    public onClick(value: any) {
-      this.$emit('click', value);
+     this.$emit('click', value)
    }
 }
 </script>

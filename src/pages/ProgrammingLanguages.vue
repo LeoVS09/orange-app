@@ -23,52 +23,52 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
-import {Component} from 'vue-property-decorator';
-import {Getter, Action, State} from 'vuex-class';
-import {Country, FullProblem, PartialProblem} from '@/models';
-import * as actions from '@/store/actionTypes';
-import {Button, Tags, Section, PageHeaderAction, Filters} from '@/components';
-import {ROUTES} from '@/router';
-import {RouterPush} from '@/components/decorators';
-import {actionName, MODULES} from '@/store/actionTypes';
-import {CountryRepository} from '@/models/country';
-import {ProgrammingLanguageRepository} from '@/models/programmingLanguage';
-import {List, ListColumn, PageHeader} from '@/containers'
+import Vue from 'vue'
+import { Component } from 'vue-property-decorator'
+import { Getter } from 'vuex-class'
+import { Country } from '@/models'
+import {
+  Button,
+  Tags,
+  Section,
+  PageHeaderAction,
+  Filters,
+} from '@/components'
+import { ROUTES } from '@/router'
+import { RouterPush } from '@/components/decorators'
+import { ProgrammingLanguageRepository } from '@/models/programmingLanguage'
+import { List, ListColumn, PageHeader } from '@/containers'
 
 @Component({
-   components: {
-      PageHeader,
-      Button,
-      Filters,
-      List,
-      Tags,
-      Section,
-      Action: PageHeaderAction,
-      ListColumn
-   },
+  components: {
+    PageHeader,
+    Button,
+    Filters,
+    List,
+    Tags,
+    Section,
+    Action: PageHeaderAction,
+    ListColumn,
+  },
 })
 export default class ProgrammingLanguages extends Vue {
-
-
    @Getter public isTeacher!: boolean;
 
    @RouterPush(ROUTES.PROGRAMMING_LANGUAGE)
    public chooseItem!: (country: Country) => void;
 
    public data() {
-      return {
-         list: ProgrammingLanguageRepository.list(),
-      };
+     return {
+       list: ProgrammingLanguageRepository.list(),
+     }
    }
 
    public add() {
-      // TODO
+     // TODO
    }
 
    public validate() {
-    // TODO
+     // TODO
    }
-
 }
 </script>

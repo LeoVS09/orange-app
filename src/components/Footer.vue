@@ -5,15 +5,15 @@
 </template>
 
 <script lang="ts">
-  import Vue from 'vue'
-  import {Component} from 'vue-property-decorator'
-  // @ts-ignore
-  import heartImage from '../static/heart.svg'
+import Vue from 'vue'
+import { Component } from 'vue-property-decorator'
+// @ts-ignore
+import heartImage from '../static/heart.svg'
 
   @Component
-  export default class Footer extends Vue {
+export default class Footer extends Vue {
     heart = heartImage
-  }
+}
 </script>
 
 <style lang="scss" scoped>
@@ -32,7 +32,6 @@
     bottom: 0;
     z-index: 5;
     background-color: $footer-color;
-
 
   }
 </style>

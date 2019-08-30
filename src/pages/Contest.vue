@@ -28,46 +28,52 @@
 </template>
 
 <script lang="ts">
-import {Component, Prop, Mixins} from 'vue-property-decorator';
-import {Getter, Action, State} from 'vuex-class';
-import {Country, PartialProblem, Tag} from '@/models';
-import * as actions from '@/store/actionTypes';
-import {Button, ModelInfo, PageHeaderAction, DataView} from '@/components';
-import {ROUTES} from '@/router';
-import ModelById from '@/components/mixins/ModelById';
-import {RouterPush} from '@/components/decorators';
-import {actionName, MODULES} from '@/store/actionTypes';
-import {FullContest} from '@/models/contest';
-import ProblemsList from '@/containers/ProblemsList.vue';
-import {PageHeader, Breadcrumb} from '@/containers'
+import { Component, Mixins } from 'vue-property-decorator'
+import { Getter, Action } from 'vuex-class'
+import { PartialProblem, Tag } from '@/models'
+import * as actions from '@/store/actionTypes'
+import {
+  Button,
+  ModelInfo,
+  PageHeaderAction,
+  DataView,
+} from '@/components'
+import { ROUTES } from '@/router'
+import ModelById from '@/components/mixins/ModelById'
+import { RouterPush } from '@/components/decorators'
+import { FullContest } from '@/models/contest'
+import ProblemsList from '@/containers/ProblemsList.vue'
+import { PageHeader, Breadcrumb } from '@/containers'
+
+const { actionName, MODULES } = actions
+
 @Component({
-   components: {
-      PageHeader,
-      Breadcrumb,
-      Button,
-      ProblemsList,
-      Action: PageHeaderAction,
-      DataView,
-      ModelInfo,
-   },
+  components: {
+    PageHeader,
+    Breadcrumb,
+    Button,
+    ProblemsList,
+    Action: PageHeaderAction,
+    DataView,
+    ModelInfo,
+  },
 })
 export default class ContestView extends Mixins(ModelById) {
+  get items() {
+    if (!this.model)
+      return []
 
-
-   get items() {
-      if (!this.model) {
-         return [];
-      }
-
-      return (this.model as FullContest).problems || [];
-   }
+    return (this.model as FullContest).problems || []
+  }
 
    @Getter('contestById') public modelById!: (id: string) => FullContest;
 
    @Getter public isTeacher!: boolean;
+
    @Getter public allTags!: Tag[];
 
    @Action(actionName(MODULES.CONTESTS, actions.READ)) public loadModel!: (id: string) => Promise<boolean>;
+
    @Action(actionName(MODULES.TAGS, actions.READ_LIST)) public loadTags!: () => void;
 
    public ROUTES = ROUTES;
@@ -76,12 +82,11 @@ export default class ContestView extends Mixins(ModelById) {
    public chooseItem!: (problem: PartialProblem) => void;
 
    public add() {
-      // TODO
+     // TODO
    }
 
    public validate() {
-      // TODO
+     // TODO
    }
-
 }
 </script>

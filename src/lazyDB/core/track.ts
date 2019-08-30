@@ -1,24 +1,23 @@
-import { AbstractData, EventProducer} from './types'
-import { wrapInProducer} from './producer/wrap'
-import { asyncReceiveWithMemory} from './receiver'
-import { changeTrackableReducersMap} from './actions'
-import { isChanged} from './states'
-import { getStore} from './common'
+import { AbstractData, EventProducer } from './types'
+import { wrapInProducer } from './producer/wrap'
+import { asyncReceiveWithMemory } from './receiver'
+import { changeTrackableReducersMap } from './actions'
+import { isChanged } from './states'
+import { getStore } from './common'
 
 export function trackChange(data: AbstractData = { }) {
-   const producer = wrapInProducer(data)
-   const store = getStore(producer)
+  const producer = wrapInProducer(data)
+  const store = getStore(producer)
 
-   asyncReceiveWithMemory(store, changeTrackableReducersMap)
+  asyncReceiveWithMemory(store, changeTrackableReducersMap)
 
-   return producer
+  return producer
 }
 
 export const isProduerChanged = (producer: EventProducer) => {
-   const store = getStore(producer)
-   if (!store || !store.memory) {
-      return false
-   }
+  const store = getStore(producer)
+  if (!store || !store.memory)
+    return false
 
-   return isChanged(store.memory)
+  return isChanged(store.memory)
 }

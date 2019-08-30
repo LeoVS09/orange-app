@@ -13,26 +13,27 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
-import {Component, Watch, Prop, Mixins} from 'vue-property-decorator';
-import ButtonBase from './mixins/inputs/baseButton';
-import Button from './Button.vue';
+import Vue from 'vue'
+import {
+  Component, Watch, Prop, Mixins,
+} from 'vue-property-decorator'
+import ButtonBase from './mixins/inputs/baseButton'
+import Button from './Button.vue'
 
 @Component({
-   components: {
-      Button,
-   },
+  components: {
+    Button,
+  },
 })
 export default class FloatingButton extends Mixins(ButtonBase) {
-
    @Prop({
-      type: Boolean,
-      default: true,
+     type: Boolean,
+     default: true,
    })
    public visible!: boolean;
 
    public onClick(event: any) {
-      this.$emit('click', event);
+     this.$emit('click', event)
    }
 }
 </script>

@@ -7,42 +7,41 @@
 </template>
 
 <script lang="ts">
-  import Vue from 'vue'
-  import {Component, Prop} from 'vue-property-decorator'
+import Vue from 'vue'
+import { Component, Prop } from 'vue-property-decorator'
 
   @Component
-  export default class TextareaAutoresize extends Vue {
-
+export default class TextareaAutoresize extends Vue {
      @Prop({
-        type: String
+       type: String,
      }) value?: string
 
      @Prop({
-        type: String
+       type: String,
      }) placeholder?: string
 
-    updateValue(event: any){
-      this.$nextTick(this.resize);
+     updateValue(event: any) {
+       this.$nextTick(this.resize)
 
-      this.$emit('input', event.target.value);
-    }
+       this.$emit('input', event.target.value)
+     }
 
-    mounted(){
-      this.resize();
-    }
+     mounted() {
+       this.resize()
+     }
 
-    resize(){
-      // @ts-ignore
-      this.$el.style.setProperty('height', 'auto');
-      let contentHeight = this.$el.scrollHeight + 1;
+     resize() {
+       // @ts-ignore
+       this.$el.style.setProperty('height', 'auto')
+       const contentHeight = this.$el.scrollHeight + 1
 
-      const heightVal = contentHeight + 'px';
-      // @ts-ignore
-      this.$el.style.setProperty('height', heightVal);
+       const heightVal = `${contentHeight}px`
+       // @ts-ignore
+       this.$el.style.setProperty('height', heightVal)
 
-      return this
-    }
-  }
+       return this
+     }
+}
 </script>
 
 <style scoped lang="scss">

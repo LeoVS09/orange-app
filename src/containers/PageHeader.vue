@@ -13,14 +13,19 @@
             <router-link
                v-if="step.link"
                class="page-header--breadcrumb-step link"
+               :key="step.link"
                :to="step.link"
             >{{step.label}}</router-link>
             <span
+              :key="step.label"
                v-else
                class="page-header--breadcrumb-step"
             >{{step.label}}</span>
 
-            <span class="page-header--breadcrumb-separator">/</span>
+            <span
+              class="page-header--breadcrumb-separator"
+              :key="step.label + 'separator'"
+            >/</span>
          </template>
       </div>
 
@@ -69,12 +74,12 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
-import {Component, Prop, Emit} from 'vue-property-decorator';
-import ColorLine from '@/components/ColorLine.vue';
-import {formatDate, randomId} from '../components/utils';
-import {ColorLineType, Breadcrumb} from '@/components/types';
-import DataView from '../components/DataView.vue';
+import Vue from 'vue'
+import { Component, Prop, Emit } from 'vue-property-decorator'
+import ColorLine from '@/components/ColorLine.vue'
+import { formatDate, randomId } from '../components/utils'
+import { ColorLineType, Breadcrumb } from '@/components/types'
+import DataView from '../components/DataView.vue'
 
 export interface IVisibleBreadcrumbs {
    name: string;
@@ -82,43 +87,43 @@ export interface IVisibleBreadcrumbs {
 }
 
 @Component({
-   components: {
-      ColorLine,
-      DataView,
-   },
+  components: {
+    ColorLine,
+    DataView,
+  },
 })
 export default class PageHeader extends Vue {
    @Prop({
-      type: Boolean,
-      default: true,
+     type: Boolean,
+     default: true,
    })
    public highlight?: boolean;
 
    @Prop({
-      type: Boolean,
-      default: false,
+     type: Boolean,
+     default: false,
    })
    public editable?: boolean;
 
    @Prop({
-      type: String,
-      default: '',
+     type: String,
+     default: '',
    })
    public value?: string;
 
    @Prop({
-      type: [String, Boolean],
+     type: [String, Boolean],
    })
    public colorLine?: ColorLineType;
 
    @Prop({
-      type: Boolean,
-      default: false,
+     type: Boolean,
+     default: false,
    })
    public textWidth?: boolean;
 
    @Prop({
-      type: String,
+     type: String,
    })
    public placeholder?: string;
 
@@ -134,37 +139,35 @@ export default class PageHeader extends Vue {
    public ColorLineType = ColorLineType;
 
    public pageHeaderId = 'default'
+
    public breadcrumbs: Array<Breadcrumb> = [];
 
-   created(){
-      this.breadcrumbs = []
-      this.pageHeaderId = `page-header-${randomId()}`
+   created() {
+     this.breadcrumbs = []
+     this.pageHeaderId = `page-header-${randomId()}`
    }
 
    @Emit('input')
    public updateValue(event: any) {
-      return event.target.value;
+     return event.target.value
    }
 
    get dataValues() {
-      if (!this.createdAt && !this.modified) {
-         return;
-      }
+     if (!this.createdAt && !this.modified)
+       return
 
-      const created = this.createdAt && formatDate(this.createdAt);
-      const modified = this.modified && formatDate(this.modified);
+     const created = this.createdAt && formatDate(this.createdAt)
+     const modified = this.modified && formatDate(this.modified)
 
-      const result: {[key: string]: string} = {};
+     const result: {[key: string]: string} = {}
 
-      if (modified) {
-         result.Modified = modified;
-      }
+     if (modified)
+       result.Modified = modified
 
-      if (created) {
-         result.Created = created;
-      }
+     if (created)
+       result.Created = created
 
-      return result;
+     return result
    }
 }
 </script>
@@ -311,8 +314,6 @@ export default class PageHeader extends Vue {
             max-width: $max-text-width;
          }
       }
-
-
 
       &.highlight {
          background: $active-gradient;

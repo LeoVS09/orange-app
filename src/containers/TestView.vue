@@ -11,36 +11,36 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
-import {Component, Prop} from 'vue-property-decorator';
-import {Action, Getter} from 'vuex-class';
-import {MaterialIcon, SourceView} from '@/components';
-import * as actions from '@/store/actionTypes';
-import {Test} from '@/models';
-import {MODULES, actionName} from '@/store/actionTypes';
-import {IUpdateTestActionPayload} from '@/store/modules/problems/actions';
-import {GET_READ_STATE, GET_STATUS} from '@/store/modules/statuses/getters';
-import {ModelStatus} from '@/store/modules';
-import {ModelReadState} from '@/store/modules/statuses/types';
-import {STATUS_SCOPES} from '@/store/statusScopes';
+import Vue from 'vue'
+import { Component, Prop } from 'vue-property-decorator'
+import { Action, Getter } from 'vuex-class'
+import { MaterialIcon, SourceView } from '@/components'
+import * as actions from '@/store/actionTypes'
+import { Test } from '@/models'
+import { IUpdateTestActionPayload } from '@/store/modules/problems/actions'
+import { GET_READ_STATE, GET_STATUS } from '@/store/modules/statuses/getters'
+import { ModelStatus } from '@/store/modules'
+import { ModelReadState } from '@/store/modules/statuses/types'
+import { STATUS_SCOPES } from '@/store/statusScopes'
+
+const { MODULES, actionName } = actions
 
 @Component({
-   components: {
-      SourceView,
-      Icon: MaterialIcon,
-   },
+  components: {
+    SourceView,
+    Icon: MaterialIcon,
+  },
 })
 export default class TestView extends Vue {
-
    @Prop({
-      type: Object,
-      required: true,
+     type: Object,
+     required: true,
    })
    public testData!: Test;
 
    @Prop({
-      type: Boolean,
-      default: false,
+     type: Boolean,
+     default: false,
    })
    public editable!: boolean;
 
@@ -51,39 +51,39 @@ export default class TestView extends Vue {
    public getRead!: (scope: string, id: string) => ModelReadState;
 
    @Action(actionName(MODULES.PROBLEMS, actions.EDIT_TEST)) public editTest!: (test: Test) => void;
+
    @Action(actionName(MODULES.PROBLEMS, actions.UPDATE_TEST)) public updateTest!: (payload: IUpdateTestActionPayload) => boolean;
 
    get isEdited() {
-      return this.getStatus(STATUS_SCOPES.TESTS, this.testData.id) === ModelStatus.Changed;
+     return this.getStatus(STATUS_SCOPES.TESTS, this.testData.id) === ModelStatus.Changed
    }
 
    get isTestCorect() {
-      const test = this.testData;
-      return test.input.length && test.output.length;
+     const test = this.testData
+     return test.input.length && test.output.length
    }
 
    get isSyncing() {
-      if (this.isEdited) {
-         return false;
-      }
+     if (this.isEdited)
+       return false
 
-      const status = this.getStatus(STATUS_SCOPES.TESTS, this.testData.id);
+     const status = this.getStatus(STATUS_SCOPES.TESTS, this.testData.id)
 
-      return status === ModelStatus.Creating || status === ModelStatus.Updating;
+     return status === ModelStatus.Creating || status === ModelStatus.Updating
    }
 
    public updateInput(input: string) {
-      this.editTest({
-         ...this.testData,
-         input,
-      });
+     this.editTest({
+       ...this.testData,
+       input,
+     })
    }
 
    public updateOutput(output: string) {
-      this.editTest({
-         ...this.testData,
-         output,
-      });
+     this.editTest({
+       ...this.testData,
+       output,
+     })
    }
 }
 </script>

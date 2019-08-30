@@ -1,16 +1,18 @@
-import { PartialUserProfile, UserType} from './user'
-import { Test} from '@/models/tests'
-import { ModelReadState, ModelStatus} from '@/store/modules/statuses/types'
-import { defaultPartialProfile, mockInput, mockOutput, mockTag} from '@/models/mock/mock'
-import { Repository} from '@/lazyDB'
-import { ModelAttributeType} from '@/lazyDB/core/types'
+import { PartialUserProfile, UserType } from './user'
+import { Test } from '@/models/tests'
+import { ModelReadState, ModelStatus } from '@/store/modules/statuses/types'
+import {
+  defaultPartialProfile, mockInput, mockOutput, mockTag,
+} from '@/models/mock/mock'
+import { Repository } from '@/lazyDB'
+import { ModelAttributeType } from '@/lazyDB/core/types'
 
 export {
-   defaultPartialProfile,
-   mockTag,
-   mockOutput,
-   mockInput,
-   mockTags,
+  defaultPartialProfile,
+  mockTag,
+  mockOutput,
+  mockInput,
+  mockTags,
 } from './mock/mock'
 
 export enum ProblemTestingStatus {
@@ -22,30 +24,30 @@ export enum ProblemTestingStatus {
 }
 
 export const TagRepository = new Repository(
-   'tag',
-   {
-      problemsTags: ModelAttributeType.OneToMany,
-   },
+  'tag',
+  {
+    problemsTags: ModelAttributeType.OneToMany,
+  },
 )
 
 export const ProblemRepository = new Repository(
-   'problem',
-   {
-      author: ModelAttributeType.OneToOne,
-      tester: ModelAttributeType.OneToOne,
-      inputType: ModelAttributeType.OneToOne,
-      outputType: ModelAttributeType.OneToOne,
-      tests: ModelAttributeType.OneToMany,
-      problemsTags: ModelAttributeType.OneToMany,
-   },
+  'problem',
+  {
+    author: ModelAttributeType.OneToOne,
+    tester: ModelAttributeType.OneToOne,
+    inputType: ModelAttributeType.OneToOne,
+    outputType: ModelAttributeType.OneToOne,
+    tests: ModelAttributeType.OneToMany,
+    problemsTags: ModelAttributeType.OneToMany,
+  },
 )
 
 export const ProblemsTagRepository = new Repository(
-   'problemsTag',
-   {
-      problem: ModelAttributeType.OneToOne,
-      tag: ModelAttributeType.OneToOne,
-   },
+  'problemsTag',
+  {
+    problem: ModelAttributeType.OneToOne,
+    tag: ModelAttributeType.OneToOne,
+  },
 )
 
 export interface PartialProblem {
@@ -82,7 +84,6 @@ export interface FullProblem extends PartialProblem {
    resultRun?: ResultRunProgram
    tests: Array<Test>
 }
-
 
 export interface Tag {
    id: string
@@ -127,43 +128,43 @@ export interface ProblemError {
 }
 
 export function defaultProblem(): FullProblem {
-   return {
-      id: '',
-      name: '',
-      description: '',
-      difficulty: 0,
-      note: '',
+  return {
+    id: '',
+    name: '',
+    description: '',
+    difficulty: 0,
+    note: '',
 
-      createdAt: new Date(),
-      updatedAt: new Date(),
-      publicationDate: new Date(),
+    createdAt: new Date(),
+    updatedAt: new Date(),
+    publicationDate: new Date(),
 
-      author: {
-         ...defaultPartialProfile(),
-         login: 'Author',
-         type: UserType.TEACHER,
-      },
+    author: {
+      ...defaultPartialProfile(),
+      login: 'Author',
+      type: UserType.TEACHER,
+    },
 
-      tester: {
-         ...defaultPartialProfile(),
-         login: 'Tester',
-         type: UserType.TEACHER,
-      },
+    tester: {
+      ...defaultPartialProfile(),
+      login: 'Tester',
+      type: UserType.TEACHER,
+    },
 
-      tags: [mockTag('some'), mockTag('tags')],
+    tags: [mockTag('some'), mockTag('tags')],
 
-      limits: {
-         time: 30000,
-         memory: 2048,
-      },
+    limits: {
+      time: 30000,
+      memory: 2048,
+    },
 
-      io: {
-         input: mockInput('stdin'),
-         output: mockOutput('stdout'),
-      },
+    io: {
+      input: mockInput('stdin'),
+      output: mockOutput('stdout'),
+    },
 
-      testingStatus: ProblemTestingStatus.NotTested,
+    testingStatus: ProblemTestingStatus.NotTested,
 
-      tests: [],
-   }
+    tests: [],
+  }
 }

@@ -15,31 +15,31 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
-import {Component, Prop, Emit} from 'vue-property-decorator';
-import ButtonGroup from './ButtonGroup.vue';
-import {ButtonGroupMetaItem} from './types';
+import Vue from 'vue'
+import { Component, Prop, Emit } from 'vue-property-decorator'
+import ButtonGroup from './ButtonGroup.vue'
+import { ButtonGroupMetaItem } from './types'
 
 @Component({
-   components: {
-      ButtonGroup,
-   },
+  components: {
+    ButtonGroup,
+  },
 })
 export default class Filters extends Vue {
    @Prop({
-      type: Array,
-      required: true,
+     type: Array,
+     required: true,
    })
    public buttons!: ButtonGroupMetaItem[];
 
    @Prop({
-      type: [Object, String, Number, Array],
+     type: [Object, String, Number, Array],
    })
    public active: any;
 
    @Emit('click')
    public onButtonClick(value: any) {
-      return value;
+     return value
    }
 }
 </script>

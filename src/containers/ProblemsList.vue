@@ -39,56 +39,49 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
-import {Component, Prop, Emit} from 'vue-property-decorator';
-import {Button, Tags, Section, Filters} from '@/components';
-import {FullProblem, PartialProblem, Tag} from '../models';
-import {ProblemFilter} from '../store/modules/problems';
+import Vue from 'vue'
+import { Component, Prop, Emit } from 'vue-property-decorator'
+import {
+  Button, Tags, Section, Filters,
+} from '@/components'
+import { FullProblem, PartialProblem, Tag } from '../models'
+import { ProblemFilter } from '../store/modules/problems'
 import List from './List.vue'
 import ListColumn from './ListColumn.vue'
 
 function filterProblemsByPublication(filter: ProblemFilter, data: Array<PartialProblem | FullProblem>) {
-   const now = new Date();
+  const now = new Date()
 
-   if (filter === ProblemFilter.All) {
-      return data;
-   }
+  if (filter === ProblemFilter.All)
+    return data
 
-   if (filter === ProblemFilter.Public) {
-      return data.filter((p) => p.publicationDate && p.publicationDate <= now);
-   }
+  if (filter === ProblemFilter.Public)
+    return data.filter(p => p.publicationDate && p.publicationDate <= now)
 
-   if (filter === ProblemFilter.NotPublic) {
-      return data.filter((p) => !p.publicationDate || p.publicationDate > now);
-   }
+  if (filter === ProblemFilter.NotPublic)
+    return data.filter(p => !p.publicationDate || p.publicationDate > now)
 
-   return data;
+  return data
 }
 
 function filterProblemsByTags(tags: Tag[], data: Array<PartialProblem | FullProblem>) {
-   if (!tags.length) {
-      return data;
-   }
+  if (!tags.length)
+    return data
 
-   return data.filter((p) =>
-      tags.every((tag) =>
-         p.tags.some(({id}) => tag.id === id),
-      ),
-   );
+  return data.filter(p => tags.every(tag => p.tags.some(({ id }) => tag.id === id)))
 }
 
 @Component({
-   components: {
-      Button,
-      Filters,
-      List,
-      ListColumn,
-      Tags,
-      Section,
-   },
+  components: {
+    Button,
+    Filters,
+    List,
+    ListColumn,
+    Tags,
+    Section,
+  },
 })
 export default class ProblemsList extends Vue {
-
    @Prop(Array) public problems!: Array<PartialProblem | FullProblem>;
 
    @Prop(Array) public tags!: Tag[];
@@ -96,6 +89,7 @@ export default class ProblemsList extends Vue {
    @Prop(Boolean) public isTeacher!: boolean;
 
    @Prop(Function) public loadProblems!: () => void;
+
    @Prop(Function) public loadTags!: () => void;
 
    public activeFilter: ProblemFilter = ProblemFilter.All;
@@ -105,51 +99,49 @@ export default class ProblemsList extends Vue {
    public activeTags: Tag[] = [];
 
    get filteredProblems() {
-      if (!this.problems || !this.problems.length) {
-         return [];
-      }
+     if (!this.problems || !this.problems.length)
+       return []
 
-      const publicated = filterProblemsByPublication(this.activeFilter, this.problems);
+     const publicated = filterProblemsByPublication(this.activeFilter, this.problems)
 
-      return filterProblemsByTags(this.activeTags, publicated);
+     return filterProblemsByTags(this.activeTags, publicated)
    }
 
    @Emit('add')
    public add(value: any) {
-      return value;
+     return value
    }
 
    @Emit('choose-item')
    public chooseItem(value: PartialProblem | FullProblem): PartialProblem | FullProblem {
-      return value;
+     return value
    }
 
    @Emit('set-filter')
    public setFilter(filter: ProblemFilter): ProblemFilter {
-      return this.activeFilter = filter;
+     return this.activeFilter = filter
    }
 
    @Emit('set-filter-tags')
    public toggleFilterTag(tag: Tag): Tag[] {
-      const index = this.activeTags.findIndex((item) => item.id === tag.id);
-      if (index === -1) {
-         this.activeTags.push(tag);
-         return this.activeTags;
-      }
+     const index = this.activeTags.findIndex(item => item.id === tag.id)
+     if (index === -1) {
+       this.activeTags.push(tag)
+       return this.activeTags
+     }
 
-      this.activeTags = [...this.activeTags.slice(0, index), ...this.activeTags.slice(index + 1)];
+     this.activeTags = [...this.activeTags.slice(0, index), ...this.activeTags.slice(index + 1)]
 
-      return this.activeTags;
+     return this.activeTags
    }
 
    public formatItem(item: PartialProblem) {
-      return {
-         ...item,
-         date: item.updatedAt ? item.updatedAt : item.createdAt,
-         author: item.author.login,
-      };
+     return {
+       ...item,
+       date: item.updatedAt ? item.updatedAt : item.createdAt,
+       author: item.author.login,
+     }
    }
-
 }
 </script>
 

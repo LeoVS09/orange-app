@@ -18,7 +18,7 @@ export enum ModelStatus {
 export enum ModelReadState {
    None = 'None',
    Partial = 'Partial',
-   Full =  'Full',
+   Full = 'Full',
 }
 
 export interface ModelState {

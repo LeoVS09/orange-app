@@ -1,9 +1,11 @@
-import { AbstractData, EventProducer, IProducerStore, ModelAttributeType} from '@/lazyDB/core/types'
-import { AsyncConnectorEventTypes, ModelEventReadPayload} from '@/lazyDB/database/events'
+import {
+  AbstractData, EventProducer, IProducerStore, ModelAttributeType,
+} from '@/lazyDB/core/types'
+import { AsyncConnectorEventTypes, ModelEventReadPayload } from '@/lazyDB/database/events'
 
-import { SymFor} from '@/lazyDB/core/utils'
-import { ModelReadSchema} from '@/lazyDB/types'
-import { DatabaseDispatcher} from '@/lazyDB/database/dispatcher'
+import { SymFor } from '@/lazyDB/core/utils'
+import { ModelReadSchema } from '@/lazyDB/types'
+import { DatabaseDispatcher } from '@/lazyDB/database/dispatcher'
 
 export type AsyncConnectorReducer<T, R> = (store: IProducerStore, event: T) => Promise<R>
 

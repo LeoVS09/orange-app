@@ -26,7 +26,12 @@
             'select--options-container': true,
             'empty': !visibleItems.length
          }">
-            <div v-for="item in visibleItems" @mousedown="chooseItem(item)" class="select--option">
+            <div
+              v-for="item in visibleItems"
+              @mousedown="chooseItem(item)"
+              class="select--option"
+              :key="item.text"
+            >
                <span class="select--option-text">{{item.text}}</span>
             </div>
             <div v-if="!visibleItems.length" class="select--options-loading skeleton-loading"></div>
@@ -36,10 +41,12 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
-import {Component, Prop, Watch, Mixins, Emit} from 'vue-property-decorator';
-import {toStringWhenDefined} from '@/components/utils';
-import Focusable from './mixins/inputs/focusable';
+import Vue from 'vue'
+import {
+  Component, Prop, Watch, Mixins, Emit,
+} from 'vue-property-decorator'
+import { toStringWhenDefined } from '@/components/utils'
+import Focusable from './mixins/inputs/focusable'
 
 interface SelectItem {
    text: string;
@@ -54,10 +61,9 @@ interface Options {
 
 @Component
 export default class Select extends Mixins(Focusable) {
-
    @Prop({
-      type: Array,
-      default: [],
+     type: Array,
+     default: [],
    })
    public items!: any[];
 
@@ -70,8 +76,8 @@ export default class Select extends Mixins(Focusable) {
    public currentValue = toStringWhenDefined(this.value);
 
    @Prop({
-      type: String,
-      default: 'text',
+     type: String,
+     default: 'text',
    })
    public textField!: string;
 
@@ -82,8 +88,8 @@ export default class Select extends Mixins(Focusable) {
    public autofocus!: boolean;
 
    @Prop({
-      type: Boolean,
-      default: false,
+     type: Boolean,
+     default: false,
    })
    public error!: boolean;
 
@@ -94,62 +100,56 @@ export default class Select extends Mixins(Focusable) {
    public extractText?: (value: any) => string;
 
    public extractTextFromItem = (value: any) => {
-      if (this.extractText) {
-         return this.extractText(value);
-      }
+     if (this.extractText)
+       return this.extractText(value)
 
-      if (typeof value !== 'object') {
-         return value as string;
-      }
+     if (typeof value !== 'object')
+       return value as string
 
-      return value[this.textField];
+     return value[this.textField]
    }
 
    get visibleItems() {
-      return this.items.map((value) => {
-         const text = this.extractTextFromItem(value);
+     return this.items.map((value) => {
+       const text = this.extractTextFromItem(value)
 
-         return {text, value};
-      });
+       return { text, value }
+     })
    }
 
    @Emit('click')
    public handleClick() {
-      this.focused = !this.focused;
-      return this.focused;
+     this.focused = !this.focused
+     return this.focused
    }
 
    @Emit('input')
    public chooseItem(item: SelectItem) {
-      this.currentValue = item.text;
-      return item.value;
+     this.currentValue = item.text
+     return item.value
    }
 
    @Watch('value')
    public updateValue(value: any) {
-      if (typeof value !== 'object') {
-         this.currentValue = value;
-      }
+     if (typeof value !== 'object')
+       this.currentValue = value
 
-      this.currentValue = value[this.textField];
+     this.currentValue = value[this.textField]
    }
 
    get options(): Options {
-      const result = {} as Options;
+     const result = {} as Options
 
-      if (this.tabindex) {
-         result.tabindex = this.tabindex;
-      }
+     if (this.tabindex)
+       result.tabindex = this.tabindex
 
-      if (this.autofocus) {
-         result.autofocus = true;
-      }
+     if (this.autofocus)
+       result.autofocus = true
 
-      if (this.disabled) {
-         result.disabled = true;
-      }
+     if (this.disabled)
+       result.disabled = true
 
-      return result;
+     return result
    }
 }
 </script>
@@ -254,7 +254,6 @@ export default class Select extends Mixins(Focusable) {
             background: darken($background-color, 10%);
          }
       }
-
 
       &.error {
          .select--input {

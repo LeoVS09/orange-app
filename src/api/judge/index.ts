@@ -1,4 +1,4 @@
-import { ResultRunProgram} from '../../models'
+import { ResultRunProgram } from '../../models'
 import urls from '../urls.json'
 
 const credentials: RequestCredentials = 'same-origin'
@@ -7,7 +7,6 @@ interface RunProgramRequestBody {
   problemId: string
   code: string
 }
-
 
 export function runProgram(problemId: string, code: string): Promise<ResultRunProgram> {
   const body: RunProgramRequestBody = {
@@ -18,5 +17,5 @@ export function runProgram(problemId: string, code: string): Promise<ResultRunPr
     method: 'POST',
     credentials,
     body: JSON.stringify(body),
-  }).then((response) => response.json())
+  }).then(response => response.json())
 }

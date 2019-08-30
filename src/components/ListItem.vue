@@ -13,130 +13,125 @@
       @click="onClick"
    >
       <div class="list-item--content">
-         <span class="list-item--property"
+         <span
+           class="list-item--property"
                v-for="property in properties"
+           :key="`${property}`"
          >{{property | formatDate}}</span>
       </div>
    </div>
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
-import {Component, Prop, Emit} from 'vue-property-decorator';
-import {randomId, formatDate, isDate} from './utils';
-import {ListItemEvent, ListItemEvents, DataItem} from './types';
+import Vue from 'vue'
+import { Component, Prop, Emit } from 'vue-property-decorator'
+import { randomId, formatDate, isDate } from './utils'
+import { ListItemEvent, ListItemEvents, DataItem } from './types'
 
-const defaultBackground = 'transparent';
+const defaultBackground = 'transparent'
 
-function gradientCircleAtMouse(event: MouseEvent, defaultBackground: string) {
-   const x = event.clientX;
-   const y = event.clientY;
+function gradientCircleAtMouse(event: MouseEvent, background: string) {
+  const x = event.clientX
+  const y = event.clientY
 
-   // @ts-ignore
-   if (!event.currentTarget || !event.currentTarget.getBoundingClientRect) {
-      return defaultBackground;
-   }
+  // @ts-ignore
+  if (!event.currentTarget || !event.currentTarget.getBoundingClientRect)
+    return background
 
-   // @ts-ignore
-   const box = event.currentTarget.getBoundingClientRect();
+  // @ts-ignore
+  const box = event.currentTarget.getBoundingClientRect()
 
-   const positionX = x - box.left;
-   const positionY = y - box.top;
-   return `radial-gradient(circle at ${positionX}px ${positionY}px, rgb(255, 75, 117) 0%, #FD7501 40%, #FD9624 100%)`;
+  const positionX = x - box.left
+  const positionY = y - box.top
+  return `radial-gradient(circle at ${positionX}px ${positionY}px, rgb(255, 75, 117) 0%, #FD7501 40%, #FD9624 100%)`
 }
 
 @Component
 export default class ListItem extends Vue {
-
    public key = randomId();
+
    public background = defaultBackground;
 
    @Prop({
-      type: Object,
-      required: true,
+     type: Object,
+     required: true,
    })
    public item!: DataItem;
 
    @Prop({
-      type: Array,
-      default: [],
+     type: Array,
+     default: [],
    })
    public visibleProps!: string[];
 
    @Prop({
-      type: Function,
+     type: Function,
    })
    public formatData?: (a: DataItem) => DataItem;
 
    @Prop({
-      type: Boolean,
-      default: false,
+     type: Boolean,
+     default: false,
    })
    public gradientBackground!: boolean;
 
    @Prop({
-      type: Boolean,
-      default: true,
+     type: Boolean,
+     default: true,
    })
    public bordered!: boolean;
 
    @Prop({
-      type: Boolean,
-      default: true,
+     type: Boolean,
+     default: true,
    })
    public hoverShadow!: boolean;
 
    get properties() {
-      let item = this.item;
-      if (this.formatData) {
-         item = this.formatData(item);
-      }
+     let { item } = this
+     if (this.formatData)
+       item = this.formatData(item)
 
-      let visibleProps = this.visibleProps;
-      if (!visibleProps) {
-         visibleProps = Object.keys(item);
-      }
+     let { visibleProps } = this
+     if (!visibleProps)
+       visibleProps = Object.keys(item)
 
-      return visibleProps.map((key) => item[key]);
+     return visibleProps.map(key => item[key])
    }
 
    @Emit(ListItemEvents.move)
    public onMouseMove(event: MouseEvent) {
-      if (this.gradientBackground) {
-         this.background = gradientCircleAtMouse(event, defaultBackground);
-      }
-      else {
-         this.background = '';
-      }
+     if (this.gradientBackground)
+       this.background = gradientCircleAtMouse(event, defaultBackground)
+     else
+       this.background = ''
 
-      const itemEvent: ListItemEvent = {key: this.key};
-      return itemEvent;
+     const itemEvent: ListItemEvent = { key: this.key }
+     return itemEvent
    }
 
    @Emit(ListItemEvents.leave)
    public onMouseLeave() {
-      this.background = defaultBackground;
+     this.background = defaultBackground
 
-      const itemEvent: ListItemEvent = {key: this.key};
-      return itemEvent;
+     const itemEvent: ListItemEvent = { key: this.key }
+     return itemEvent
    }
 
    @Emit(ListItemEvents.over)
    public onMouseOver(event: MouseEvent) {
-      if (this.gradientBackground) {
-         this.background = gradientCircleAtMouse(event, defaultBackground);
-      }
-      else {
-         this.background = '';
-      }
+     if (this.gradientBackground)
+       this.background = gradientCircleAtMouse(event, defaultBackground)
+     else
+       this.background = ''
 
-      const itemEvent: ListItemEvent = {key: this.key};
-      return itemEvent;
+     const itemEvent: ListItemEvent = { key: this.key }
+     return itemEvent
    }
 
    @Emit(ListItemEvents.click)
    public onClick(event: any) {
-      return event;
+     return event
    }
 }
 </script>
@@ -184,9 +179,7 @@ export default class ListItem extends Vue {
             }
          }
 
-
       }
-
 
    }
 

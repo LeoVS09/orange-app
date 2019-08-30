@@ -1,13 +1,26 @@
-import { ActionContext} from 'vuex'
-import { ProblemsState, ProfileState, UIState, Platform, ProblemFilter} from './modules'
-import { City, Country, FullProblem, PartialContest, PartialProblem, University, UserProfile} from '@/models'
-import { ProblemError, Tag} from '@/models/problems'
-import { ModelStatus, StatusState} from '@/store/modules/statuses'
-import { ModelReadState} from '@/store/modules/statuses/types'
-import { CrudState} from '@/store/CrudModule'
+import { ActionContext } from 'vuex'
+import {
+  ProblemsState,
+  ProfileState,
+  UIState,
+  Platform,
+} from './modules'
+import {
+  City,
+  Country,
+  FullProblem,
+  PartialContest,
+  PartialProblem,
+  University,
+  UserProfile,
+} from '@/models'
+import { ProblemError, Tag } from '@/models/problems'
+import { ModelStatus, StatusState } from '@/store/modules/statuses'
+import { ModelReadState } from '@/store/modules/statuses/types'
+import { CrudState } from '@/store/CrudModule'
 import TagsState from '@/store/modules/tags/state'
-import { Translation} from '@/store/modules/ui/state'
-import { FullContest} from '@/models/contest'
+import { Translation } from '@/store/modules/ui/state'
+import { FullContest } from '@/models/contest'
 
 export interface RootState {
    ui: UIState

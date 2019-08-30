@@ -12,7 +12,10 @@ export enum Translation {
 
 export class UIState {
    public currentPlatform: Platform = Platform.DESKTOP
+
    public sideBarVisible: boolean = true
+
    public isSignInPage: boolean = true
+
    public locale: Translation = Translation.EN
 }
