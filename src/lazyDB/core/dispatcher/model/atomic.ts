@@ -1,5 +1,5 @@
-import {ModelEventDispatcher} from './base'
-import {AtomicEventDispatcher} from '../base/atomic'
+import { ModelEventDispatcher} from './base'
+import { AtomicEventDispatcher} from '../base/atomic'
 
 export class AtomicModelEventDispatcher extends ModelEventDispatcher {
 

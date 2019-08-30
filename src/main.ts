@@ -10,7 +10,7 @@ import { UIEventEmitter, UIEvents } from './utils/UIEventEmitter'
 // @ts-ignore
 import vClickOutside from 'v-click-outside'
 import Filters from '@/components/filter'
-import {LazyDBFilters} from '@/lazyDB/vue'
+import { LazyDBFilters} from '@/lazyDB/vue'
 
 Vue.use(vClickOutside)
 

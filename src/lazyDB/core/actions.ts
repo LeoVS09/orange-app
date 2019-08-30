@@ -1,4 +1,4 @@
-import {EventReducersMap, EventType } from './types'
+import { EventReducersMap, EventType } from './types'
 
 export const changeTrackableReducersMap: EventReducersMap = {
 
@@ -6,7 +6,7 @@ export const changeTrackableReducersMap: EventReducersMap = {
       // Not storage get events in memory
       true,
 
-   [EventType.SetProperty]: (store, {oldValue, newValue}) =>
+   [EventType.SetProperty]: (store, { oldValue, newValue}) =>
       // Store set events only when they change data
       oldValue === newValue,
 

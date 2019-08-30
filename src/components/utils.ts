@@ -32,7 +32,7 @@ export interface IOnWheelCallbacks {
    down?: () => void
 }
 
-export function onWheel(elem: Element, {up = () => {}, down = () => {}}: IOnWheelCallbacks ) {
+export function onWheel(elem: Element, { up = () => { }, down = () => { }}: IOnWheelCallbacks ) {
 
    const onWheelListener: EventListener = (e) => {
       e = e || window.event

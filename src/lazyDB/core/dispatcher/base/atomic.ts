@@ -1,5 +1,5 @@
-import {IEventDispatcher, ModelEvent} from '@/lazyDB/core/types'
-import {Subject} from 'rxjs'
+import { IEventDispatcher, ModelEvent} from '@/lazyDB/core/types'
+import { Subject} from 'rxjs'
 
 export class AtomicEventDispatcher<Payload> implements IEventDispatcher<Payload> {
 
@@ -10,6 +10,6 @@ export class AtomicEventDispatcher<Payload> implements IEventDispatcher<Payload>
    }
 
    protected atomicDispatch(type: string, payload?: Payload, date = Date.now()) {
-      this.eventsSubject.next({type, payload, date})
+      this.eventsSubject.next({ type, payload, date})
    }
 }

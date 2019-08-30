@@ -1,12 +1,12 @@
-import {University} from '@/models/university'
-import {Repository} from '@/lazyDB'
-import {ModelAttributeType} from '@/lazyDB/core/types'
+import { University} from '@/models/university'
+import { Repository} from '@/lazyDB'
+import { ModelAttributeType} from '@/lazyDB/core/types'
 
 export interface Country {
    id: string
    name: string
    code: string
-   cities?: City[]
+   cities?: Array<City>
    createdAt: Date
    updatedAt: Date
 }
@@ -17,7 +17,7 @@ export interface City {
    createdAt: Date
    updatedAt: Date
    countryId: string
-   universities?: University[]
+   universities?: Array<University>
 }
 
 export const CountryRepository = new Repository(

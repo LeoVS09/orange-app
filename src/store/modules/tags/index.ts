@@ -1,12 +1,12 @@
 import TagsState from '@/store/modules/tags/state'
-import {crudActions, crudMutations} from '@/store/CrudModule'
-import {PartialProblem, Tag} from '@/models'
-import {TagInput, TagsOrderBy} from '@/api/database/global-types'
-import {STATUS_SCOPES} from '@/store/statusScopes'
+import { crudActions, crudMutations} from '@/store/CrudModule'
+import { PartialProblem, Tag} from '@/models'
+import { TagInput, TagsOrderBy} from '@/api/database/global-types'
+import { STATUS_SCOPES} from '@/store/statusScopes'
 import * as API from '@/api'
 import * as fragmentsTypes from '@/api/database/fragments/types'
-import {FullTag_problemsTags_nodes} from '@/api/database/fragments/types'
-import {responseToPartialProblem} from '@/store/modules/problems/actions/responseFormat'
+import { FullTag_problemsTags_nodes} from '@/api/database/fragments/types'
+import { responseToPartialProblem} from '@/store/modules/problems/actions/responseFormat'
 
 
 export default {
@@ -24,9 +24,9 @@ export default {
       {
          readList: (variables) => API.tags(variables),
 
-         create: (tag) => API.createTag({input: {tag: tagToInput(tag)}}),
+         create: (tag) => API.createTag({ input: { tag: tagToInput(tag)}}),
 
-         read: async (id) => responseToTag(await API.tag({id})),
+         read: async (id) => responseToTag(await API.tag({ id})),
 
          update: (tag) => API.updateTag({
             input: {
@@ -35,7 +35,7 @@ export default {
             },
          }),
 
-         delete: (id) => API.deleteTag({input: {id}}),
+         delete: (id) => API.deleteTag({ input: { id}}),
       },
    ),
 }
@@ -46,7 +46,7 @@ function responseToTag(result?: fragmentsTypes.FullTag | null): Tag | undefined 
       return result
    }
 
-   const problems = result.problemsTags.nodes as FullTag_problemsTags_nodes[]
+   const problems = result.problemsTags.nodes as Array<FullTag_problemsTags_nodes>
 
    return {
       ...result,

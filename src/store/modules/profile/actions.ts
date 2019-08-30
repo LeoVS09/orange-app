@@ -4,13 +4,13 @@ import {
    University,
    UserProfile,
 } from '@/models'
-import {IRegisterProfilePayload} from './types'
+import { IRegisterProfilePayload} from './types'
 import * as mutations from './mutationTypes'
 import * as actionTypes from './actionTypes'
-import {checkIsLogin, currentUserIfHave, signin, signout, signup} from '@/authentication'
-import {City, Country} from '@/models/country'
-import {ProfileState} from './state'
-import {IActionContext} from '@/store/state'
+import { checkIsLogin, currentUserIfHave, signin, signout, signup} from '@/authentication'
+import { City, Country} from '@/models/country'
+import { ProfileState} from './state'
+import { IActionContext} from '@/store/state'
 import * as fragmentsTypes from '@/api/database/fragments/types'
 
 
@@ -25,15 +25,15 @@ export interface ILoginToProfilePayload {
 
 export default {
 
-   [actionTypes.SETUP_USER_PROFILE]({commit}: IActionContext<ProfileState>, user: UserProfile) {
+   [actionTypes.SETUP_USER_PROFILE]({ commit}: IActionContext<ProfileState>, user: UserProfile) {
       commit(mutations.SET_PROFILE_DATA, user)
    },
 
-   async [actionTypes.INITIALISE_PROFILE_DATA]({commit}: IActionContext<ProfileState>) {
+   async [actionTypes.INITIALISE_PROFILE_DATA]({ commit}: IActionContext<ProfileState>) {
       // TODO
    },
 
-   async [actionTypes.LOGIN_TO_PROFILE]({commit}: IActionContext<ProfileState>, {login, password, isRemember}: ILoginToProfilePayload): Promise<boolean> {
+   async [actionTypes.LOGIN_TO_PROFILE]({ commit}: IActionContext<ProfileState>, { login, password, isRemember}: ILoginToProfilePayload): Promise<boolean> {
       const result = await signin(login, password, isRemember)
 
       if (!result) {
@@ -44,7 +44,7 @@ export default {
       return true
    },
 
-   [actionTypes.LOGOUT_FROM_PROFILE]({commit}: IActionContext<ProfileState>) {
+   [actionTypes.LOGOUT_FROM_PROFILE]({ commit}: IActionContext<ProfileState>) {
       signout()
       commit(mutations.LOGOUT_FROM_PROFILE)
    },
@@ -59,7 +59,7 @@ export default {
    //    return result.nodes as Array<Country>
    // },
 
-   async [actionTypes.REGISTER_PROFILE]({commit}: IActionContext<ProfileState>, user: IRegisterProfilePayload): Promise<boolean> {
+   async [actionTypes.REGISTER_PROFILE]({ commit}: IActionContext<ProfileState>, user: IRegisterProfilePayload): Promise<boolean> {
       // TODO: add login
       const result = await signup({
          username: user.username,
@@ -75,10 +75,10 @@ export default {
          return false
       }
 
-      commit(mutations.SET_PROFILE_DATA, {...result, ...user})
+      commit(mutations.SET_PROFILE_DATA, { ...result, ...user})
       return true
    },
-   async [actionTypes.INIT_PROFILE]({commit}: IActionContext<ProfileState>): Promise<boolean> {
+   async [actionTypes.INIT_PROFILE]({ commit}: IActionContext<ProfileState>): Promise<boolean> {
       console.log('App start, check is login')
       const checkResult = checkIsLogin()
       console.log('check is login result', checkResult)

@@ -19,7 +19,7 @@ export interface ResultOfTest {
 export interface ResultOfProblem {
    id: string
    member: string
-   testsResults: ResultOfTest[]
+   testsResults: Array<ResultOfTest>
 }
 
 export function defaultTest(): Test {

@@ -2,8 +2,8 @@ import * as actionTypes from '../../actionTypes'
 import * as Vuex from 'vuex'
 import staticUserData from './user.json'
 import staticProblemData from './problem.json'
-import {FullProblem, Test, UserProfile, UserType} from '@/models'
-import {mockInput, mockOutput, mockTag} from '@/models/problems'
+import { FullProblem, Test, UserProfile, UserType} from '@/models'
+import { mockInput, mockOutput, mockTag} from '@/models/problems'
 
 
 const USE_STATIC_ID = true
@@ -22,7 +22,7 @@ export function createProblem(): FullProblem {
    let name = PROBLEM_NAME[random(0, PROBLEM_NAME.length)] + ' ' + PROBLEM_NAME[random(0, PROBLEM_NAME.length)]
    name = name.substr(0, 1).toUpperCase() + name.substr(1)
 
-   return Object.assign({}, staticProblemData, {
+   return Object.assign({ }, staticProblemData, {
       id: randomString(),
       name,
       uploadDate: Date.now() - random(0, 10000000000),

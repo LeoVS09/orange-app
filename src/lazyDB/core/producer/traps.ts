@@ -1,5 +1,5 @@
-import {IProducerStore} from '@/lazyDB/core/types'
-import {deleteProperty, get, set} from './controls'
+import { IProducerStore} from '@/lazyDB/core/types'
+import { deleteProperty, get, set} from './controls'
 
 export const objectTraps: ProxyHandler<IProducerStore> = {
    get,
@@ -25,7 +25,7 @@ export const objectTraps: ProxyHandler<IProducerStore> = {
    },
 }
 
-export const arrayTraps: ProxyHandler<IProducerStore[]> = {
+export const arrayTraps: ProxyHandler<Array<IProducerStore>> = {
    ...Object.keys(objectTraps).reduce((traps, key) => {
       // @ts-ignore
       const handler = objectTraps[key]
@@ -39,9 +39,9 @@ export const arrayTraps: ProxyHandler<IProducerStore[]> = {
       }
 
       return traps
-   }, {}),
+   }, { }),
 
-   deleteProperty([store]: IProducerStore[], prop: PropertyKey): boolean {
+   deleteProperty([store]: Array<IProducerStore>, prop: PropertyKey): boolean {
       if (typeof prop === 'symbol' || (typeof prop === 'string' && isNaN(parseInt(prop)))) {
          throw new Error('LazyDb cannot delete not number properties for arrays')
       }

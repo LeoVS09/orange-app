@@ -1,8 +1,8 @@
-import {IProducerStore, ProducerStoreGetter, ProducerStoreSetter} from '@/lazyDB/core/types'
-import {getStore, isProducer} from '@/lazyDB/core/common'
-import {makeTemporalTrapObject} from '@/lazyDB/database/base/repository/temporal'
-import {ListItemGetterReference, ListSource} from '@/lazyDB/database/types'
-import {SymFor} from '@/lazyDB/core/utils'
+import { IProducerStore, ProducerStoreGetter, ProducerStoreSetter} from '@/lazyDB/core/types'
+import { getStore, isProducer} from '@/lazyDB/core/common'
+import { makeTemporalTrapObject} from '@/lazyDB/database/base/repository/temporal'
+import { ListItemGetterReference, ListSource} from '@/lazyDB/database/types'
+import { SymFor} from '@/lazyDB/core/utils'
 
 const nodesKey = 'nodes'
 const NodesProducerReference = SymFor(nodesKey + ' producer')
@@ -34,7 +34,7 @@ export function applyListControls(store: IProducerStore) {
    store.setter = setter
 }
 
-export const getter: ProducerStoreGetter = ({base}, name) => {
+export const getter: ProducerStoreGetter = ({ base}, name) => {
    if (name !== nodesKey) {
       return base[name as string]
    }
@@ -46,7 +46,7 @@ export const getter: ProducerStoreGetter = ({base}, name) => {
    return base[name]
 }
 
-export const setter: ProducerStoreSetter = ({base}, name, value) => {
+export const setter: ProducerStoreSetter = ({ base}, name, value) => {
    if (name !== nodesKey) {
       base[name as string] = value
    } else {
@@ -61,7 +61,7 @@ export const setter: ProducerStoreSetter = ({base}, name, value) => {
       return true
    }
 
-   const nodesStore = getStore(value) as unknown as IProducerStore<any[]>
+   const nodesStore = getStore(value) as unknown as IProducerStore<Array<any>>
 
    nodesStore.getter = nodesGetter(base as ListSource)
 
@@ -70,7 +70,7 @@ export const setter: ProducerStoreSetter = ({base}, name, value) => {
 
 // Getter for array
 // TODO: add typescript support for arrays
-const nodesGetter = (source: ListSource): ProducerStoreGetter<any[]> => ({base}, index) => {
+const nodesGetter = (source: ListSource): ProducerStoreGetter<Array<any>> => ({ base}, index) => {
    // May be need check is it real
    if (!base.length && base) {
       return makeTemporalTrapObject()

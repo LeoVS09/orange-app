@@ -1,17 +1,17 @@
 import Vue from 'vue'
-import {Identical} from '@/store/CrudModule/types'
+import { Identical} from '@/store/CrudModule/types'
 
 export const randomNumber = () => Math.floor(Math.random() * 1000000)
 
-export function randomItem<T>(array: T[]): T {
+export function randomItem<T>(array: Array<T>): T {
    return array[Math.floor(Math.random() * array.length)]
 }
 
-export function shuffleProblem<T>(array: T[]): T[] {
+export function shuffleProblem<T>(array: Array<T>): Array<T> {
    return array.sort(() => Math.random() - 0.5)
 }
 
-export function setByIdOrPush<T extends Identical>(items: T[], newItem: T) {
+export function setByIdOrPush<T extends Identical>(items: Array<T>, newItem: T) {
    const index = items.findIndex((item) => item.id === newItem.id)
    if (index === -1) {
       items.push(newItem)
@@ -20,7 +20,7 @@ export function setByIdOrPush<T extends Identical>(items: T[], newItem: T) {
    Vue.set(items, index, newItem)
 }
 
-export function setById<T extends Identical>(items: T[], id: string, newItem: T): T | undefined {
+export function setById<T extends Identical>(items: Array<T>, id: string, newItem: T): T | undefined {
    const index = items.findIndex((item) => item.id === id)
    if (index === -1) {
       console.error('Cannot findOne model to set by id:', id, 'newValue data:', newItem)
@@ -31,7 +31,7 @@ export function setById<T extends Identical>(items: T[], id: string, newItem: T)
    return items[index]
 }
 
-export function updateById<T extends Identical>(items: T[], id: string, handler: (model: T) => void) {
+export function updateById<T extends Identical>(items: Array<T>, id: string, handler: (model: T) => void) {
    const item = items.find((it) => it.id === id)
    if (!item) {
       console.error('Cannot findOne model to set by id:', id)
@@ -41,7 +41,7 @@ export function updateById<T extends Identical>(items: T[], id: string, handler:
    handler(item)
 }
 
-export function removeById<T extends Identical>(items: T[], id: string): T[] {
+export function removeById<T extends Identical>(items: Array<T>, id: string): Array<T> {
    const index = items.findIndex((item) => item.id === id)
    if (index) {
       console.error('Not findOne item', id)

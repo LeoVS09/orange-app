@@ -1,5 +1,5 @@
 import gql from 'graphql-tag'
-import {ModelAttributeType} from '@/lazyDB/core/types'
+import { ModelAttributeType} from '@/lazyDB/core/types'
 
 export interface QueryField {
    entity: string
@@ -42,8 +42,8 @@ function buildFieldsQuery(fields: Array<string | QueryField>): string {
       }`
 }
 
-function removeEqual<T>(items: T[]): T[] {
-   const result: T[] = []
+function removeEqual<T>(items: Array<T>): Array<T> {
+   const result: Array<T> = []
 
    for (const item of items) {
       if (!result.some((v) => v === item)) {

@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import {Component, Prop, Mixins} from 'vue-property-decorator'
+import { Component, Prop, Mixins} from 'vue-property-decorator'
 
 @Component
 export default class ReactiveUpdate extends Vue {

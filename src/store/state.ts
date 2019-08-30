@@ -1,13 +1,13 @@
-import {ActionContext} from 'vuex'
-import {ProblemsState, ProfileState, UIState, Platform, ProblemFilter} from './modules'
-import {City, Country, FullProblem, PartialContest, PartialProblem, University, UserProfile} from '@/models'
-import {ProblemError, Tag} from '@/models/problems'
-import {ModelStatus, StatusState} from '@/store/modules/statuses'
-import {ModelReadState} from '@/store/modules/statuses/types'
-import {CrudState} from '@/store/CrudModule'
+import { ActionContext} from 'vuex'
+import { ProblemsState, ProfileState, UIState, Platform, ProblemFilter} from './modules'
+import { City, Country, FullProblem, PartialContest, PartialProblem, University, UserProfile} from '@/models'
+import { ProblemError, Tag} from '@/models/problems'
+import { ModelStatus, StatusState} from '@/store/modules/statuses'
+import { ModelReadState} from '@/store/modules/statuses/types'
+import { CrudState} from '@/store/CrudModule'
 import TagsState from '@/store/modules/tags/state'
-import {Translation} from '@/store/modules/ui/state'
-import {FullContest} from '@/models/contest'
+import { Translation} from '@/store/modules/ui/state'
+import { FullContest} from '@/models/contest'
 
 export interface RootState {
    ui: UIState
@@ -41,10 +41,10 @@ export interface RootGetters {
 
    problemErrorById: (id: string) => ProblemError | undefined
 
-   allCountries: Country[]
-   allTags: Tag[]
-   allCities: City[]
-   allUniversities: University[]
+   allCountries: Array<Country>
+   allTags: Array<Tag>
+   allCities: Array<City>
+   allUniversities: Array<University>
 
    'statuses/status': (scope: string, id: string) => ModelStatus
    'statuses/read': (scopes: string, id: string) => ModelReadState

@@ -1,17 +1,17 @@
-import {defaultTest, FullProblem, PartialProblem, Test} from '@/models'
-import {IActionContext, RootGetters} from '@/store/state'
-import {findById} from '@/store/CrudModule/actions/utils'
-import {GET_READ_STATE} from '@/store/modules/statuses/getters'
-import {STATUS_SCOPES} from '@/store/statusScopes'
-import {ModelReadState} from '@/store/modules/statuses/types'
+import { defaultTest, FullProblem, PartialProblem, Test} from '@/models'
+import { IActionContext, RootGetters} from '@/store/state'
+import { findById} from '@/store/CrudModule/actions/utils'
+import { GET_READ_STATE} from '@/store/modules/statuses/getters'
+import { STATUS_SCOPES} from '@/store/statusScopes'
+import { ModelReadState} from '@/store/modules/statuses/types'
 import * as fragments from '@/api/database/fragments/types'
 import * as actionTypes from '@/store/modules/problems/actionTypes'
-import {ProblemsState} from '@/store/modules'
-import {generateStatusManipulation} from '@/store/modules/statuses/utils'
+import { ProblemsState} from '@/store/modules'
+import { generateStatusManipulation} from '@/store/modules/statuses/utils'
 import * as mutations from '@/store/modules/problems/mutationTypes'
-import {addModelForCreateAction, createAction, deleteAction, editAction, updateAction} from '@/store/CrudModule'
+import { addModelForCreateAction, createAction, deleteAction, editAction, updateAction} from '@/store/CrudModule'
 import * as API from '@/api'
-import {TestInput} from '@/api/database/global-types'
+import { TestInput} from '@/api/database/global-types'
 
 export interface IAddForCreateTestActionPayload {
    problemId: string
@@ -29,7 +29,7 @@ export interface IDeleteTestActionPayload {
 }
 
 export default {
-   [actionTypes.EDIT_TEST]({state, commit, rootGetters}: IActionContext<ProblemsState>, test: Test): boolean {
+   [actionTypes.EDIT_TEST]({ state, commit, rootGetters}: IActionContext<ProblemsState>, test: Test): boolean {
       const problem = getProblemIfFull(state.data, rootGetters, test.problemId)
       if (!problem) {
          return false
@@ -74,7 +74,7 @@ export default {
       return edit(test)
    },
 
-   [actionTypes.ADD_FOR_CREATE_TEST]({state, commit, rootGetters}: IActionContext<ProblemsState>, {problemId, index}: IAddForCreateTestActionPayload): Test | undefined {
+   [actionTypes.ADD_FOR_CREATE_TEST]({ state, commit, rootGetters}: IActionContext<ProblemsState>, { problemId, index}: IAddForCreateTestActionPayload): Test | undefined {
       const problem = getProblemIfFull(state.data, rootGetters, problemId)
       if (!problem) {
          return
@@ -108,7 +108,7 @@ export default {
       )
    },
 
-   async [actionTypes.CREATE_TEST]({state, commit, rootGetters}: IActionContext<ProblemsState>, test: Test): Promise<Test | undefined> {
+   async [actionTypes.CREATE_TEST]({ state, commit, rootGetters}: IActionContext<ProblemsState>, test: Test): Promise<Test | undefined> {
       const problem = getProblemIfFull(state.data, rootGetters, test.problemId)
       if (!problem) {
          return
@@ -119,11 +119,11 @@ export default {
          test,
          (payload) => commit(mutations.SET_BY_ID_TEST, payload),
          generateStatusManipulation(STATUS_SCOPES.TESTS, commit, rootGetters),
-         async (test) => responseToTest(await API.createTest({input: {test: testToInput(test)}})),
+         async (test) => responseToTest(await API.createTest({ input: { test: testToInput(test)}})),
       )
    },
 
-   async [actionTypes.UPDATE_TEST]({state, commit, rootGetters}: IActionContext<ProblemsState>, {problemId, testId}: IUpdateTestActionPayload): Promise<Test | undefined> {
+   async [actionTypes.UPDATE_TEST]({ state, commit, rootGetters}: IActionContext<ProblemsState>, { problemId, testId}: IUpdateTestActionPayload): Promise<Test | undefined> {
       const problem = getProblemIfFull(state.data, rootGetters, problemId)
       if (!problem) {
          return
@@ -143,7 +143,7 @@ export default {
       )
    },
 
-   async [actionTypes.DELETE_TEST]({state, commit, rootGetters}: IActionContext<ProblemsState>, {problemId, testId}: IDeleteTestActionPayload): Promise<Test | undefined> {
+   async [actionTypes.DELETE_TEST]({ state, commit, rootGetters}: IActionContext<ProblemsState>, { problemId, testId}: IDeleteTestActionPayload): Promise<Test | undefined> {
       const problem = getProblemIfFull(state.data, rootGetters, problemId)
       if (!problem) {
          return
@@ -154,7 +154,7 @@ export default {
          testId,
          (id) => commit(mutations.DELETE_TEST, problem.tests.find((t) => t.id === id)),
          generateStatusManipulation(STATUS_SCOPES.TESTS, commit, rootGetters),
-         async (id) => responseToTest(await API.deleteTest({input: {id}})),
+         async (id) => responseToTest(await API.deleteTest({ input: { id}})),
       )
    },
 

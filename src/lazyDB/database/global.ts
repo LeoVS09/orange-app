@@ -1,6 +1,6 @@
-import {Database} from './connected/Database'
-import {makeConnectedRepositoryClass} from '@/lazyDB/database/connected/Repository'
-import {getStore} from '@/lazyDB/core/common'
+import { Database} from './connected/Database'
+import { makeConnectedRepositoryClass} from '@/lazyDB/database/connected/Repository'
+import { getStore} from '@/lazyDB/core/common'
 
 // Global default database
 // Only for simplified usage of library

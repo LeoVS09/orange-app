@@ -1,6 +1,6 @@
-import {StatusState} from './state'
-import {GetterTree} from 'vuex'
-import {ModelStatus, ModelReadState, MODULE_PREFIX} from './types'
+import { StatusState} from './state'
+import { GetterTree} from 'vuex'
+import { ModelStatus, ModelReadState, MODULE_PREFIX} from './types'
 
 export const GET_STATUS = 'statuses/status'
 export const GET_READ_STATE = 'statuses/read'

@@ -6,9 +6,9 @@ import {
    Test,
    ProblemError, PartialProblem,
 } from '@/models'
-import {ProblemFilter, ProblemsState} from './state'
-import {removeById, setById, setByIdOrPush, updateById} from '@/store/utils'
-import {crudMutations, ISetByIdPayload} from '@/store/CrudModule'
+import { ProblemFilter, ProblemsState} from './state'
+import { removeById, setById, setByIdOrPush, updateById} from '@/store/utils'
+import { crudMutations, ISetByIdPayload} from '@/store/CrudModule'
 
 export interface IStartTestingSolutionPayload {
    problemId: string
@@ -16,14 +16,14 @@ export interface IStartTestingSolutionPayload {
 
 export interface ISetTestsPayload {
    problemId: string
-   tests: Test[]
+   tests: Array<Test>
 }
 
 export default {
 
    ...crudMutations(),
 
-   [mutationTypes.START_TESTING_SOLUTION](state: ProblemsState, {problemId}: IStartTestingSolutionPayload) {
+   [mutationTypes.START_TESTING_SOLUTION](state: ProblemsState, { problemId}: IStartTestingSolutionPayload) {
       updateById(state.data, problemId, (problem) =>
          problem.testingStatus = ProblemTestingStatus.Testing,
       )
@@ -44,27 +44,27 @@ export default {
       })
    },
 
-   [mutationTypes.SET_TESTS](state: ProblemsState, {problemId, tests}: ISetTestsPayload) {
-      updateById(state.data as FullProblem[], problemId, (problem) => {
+   [mutationTypes.SET_TESTS](state: ProblemsState, { problemId, tests}: ISetTestsPayload) {
+      updateById(state.data as Array<FullProblem>, problemId, (problem) => {
          problem.tests = tests
          return problem
       })
    },
 
    [mutationTypes.SET_OR_ADD_TEST](state: ProblemsState, test: Test) {
-      updateById(state.data as FullProblem[], test.problemId, (p) =>
+      updateById(state.data as Array<FullProblem>, test.problemId, (p) =>
          setByIdOrPush(p.tests, test),
       )
    },
 
    [mutationTypes.DELETE_TEST](state: ProblemsState, test: Test) {
-      updateById(state.data as FullProblem[], test.problemId, (p) =>
+      updateById(state.data as Array<FullProblem>, test.problemId, (p) =>
          p.tests = removeById(p.tests, test.id),
       )
    },
 
-   [mutationTypes.SET_BY_ID_TEST](state: ProblemsState, {id, model}: ISetByIdPayload<Test>) {
-      updateById(state.data as FullProblem[], model.problemId, (p) =>
+   [mutationTypes.SET_BY_ID_TEST](state: ProblemsState, { id, model}: ISetByIdPayload<Test>) {
+      updateById(state.data as Array<FullProblem>, model.problemId, (p) =>
          setById(p.tests, id, model),
       )
    },

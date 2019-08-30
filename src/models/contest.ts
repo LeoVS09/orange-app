@@ -1,7 +1,7 @@
-import {FullProblem, PartialProblem} from './problems'
-import {ResultOfProblem} from './tests'
-import {PartialUserProfile} from './user'
-import {Team} from '@/models/team'
+import { FullProblem, PartialProblem} from './problems'
+import { ResultOfProblem} from './tests'
+import { PartialUserProfile} from './user'
+import { Team} from '@/models/team'
 
 export interface Requirements {
    course?: number
@@ -26,10 +26,10 @@ export interface PartialContest {
 }
 
 export interface FullContest extends PartialContest {
-   problems: PartialProblem[] | null
+   problems: Array<PartialProblem> | null
    // TODO: rename to contestants
-   profiles: PartialUserProfile[] | null
-   teams: Team[] | null
+   profiles: Array<PartialUserProfile> | null
+   teams: Array<Team> | null
 
    requirements?: {
       contestant?: Requirements,
@@ -37,10 +37,10 @@ export interface FullContest extends PartialContest {
    }
 
    place?: string
-   rules?: string[]
-   comments?: string[]
+   rules?: Array<string>
+   comments?: Array<string>
    technicalEquipment?: string
-   organizers?: string[]
+   organizers?: Array<string>
    contacts?: string
    tax?: number
    fund?: number

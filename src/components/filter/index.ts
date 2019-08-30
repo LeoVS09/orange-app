@@ -1,5 +1,5 @@
-import {PluginFunction} from 'vue'
-import {formatDate, isDate} from '@/components/utils'
+import { PluginFunction} from 'vue'
+import { formatDate, isDate} from '@/components/utils'
 
 const Filters: PluginFunction<any> = (Vue) => {
    Vue.filter('formatDate', function(value: any) {

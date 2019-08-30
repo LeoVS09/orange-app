@@ -1,5 +1,5 @@
 import * as mutationTypes from './mutationTypes'
-import {StatusState} from './state'
+import { StatusState} from './state'
 import {
    ISetModelStatePayload,
    ISetReadStatePayload,
@@ -18,20 +18,20 @@ function defaultModelState(): ModelState {
 }
 
 export default {
-   [mutationTypes.SET_STATUS](state: StatusState, {scope, id, status}: ISetStatusPayload) {
+   [mutationTypes.SET_STATUS](state: StatusState, { scope, id, status}: ISetStatusPayload) {
       const modelState = getModelStateOrCreate(state, scope, id)
 
       modelState.status = status
       modelState.changedAt = new Date()
    },
-   [mutationTypes.SET_READ_STATE](state: StatusState, {scope, id, read}: ISetReadStatePayload) {
+   [mutationTypes.SET_READ_STATE](state: StatusState, { scope, id, read}: ISetReadStatePayload) {
       const modelState = getModelStateOrCreate(state, scope, id)
 
       modelState.read = read
       modelState.status = ModelStatus.Synced
       modelState.changedAt = new Date()
    },
-   [mutationTypes.SET_MODEL_STATE](state: StatusState, {scope, id, model}: ISetModelStatePayload) {
+   [mutationTypes.SET_MODEL_STATE](state: StatusState, { scope, id, model}: ISetModelStatePayload) {
       const modelState = getModelStateOrCreate(state, scope, id)
 
       modelState.status = model.status
@@ -42,7 +42,7 @@ export default {
 
 function getModelStateOrCreate(state: StatusState, scope: string, id: string) {
    if (!state.scopes[scope]) {
-      state.scopes[scope] = {}
+      state.scopes[scope] = { }
    }
 
    const scopeData = state.scopes[scope]

@@ -1,16 +1,16 @@
 import * as API from '@/api'
-import {defaultProblem, FullProblem, PartialProblem, ResultRunProgram} from '@/models'
-import {IActionContext} from '@/store/state'
-import {ProblemFilter, ProblemsState} from '../state'
+import { defaultProblem, FullProblem, PartialProblem, ResultRunProgram} from '@/models'
+import { IActionContext} from '@/store/state'
+import { ProblemFilter, ProblemsState} from '../state'
 import * as mutations from '../mutationTypes'
 import * as actionTypes from '../actionTypes'
-import {IStartTestingSolutionPayload} from '../mutations'
+import { IStartTestingSolutionPayload} from '../mutations'
 import {
    crudActions,
 } from '@/store/CrudModule'
-import {ProblemInput, ProblemsOrderBy} from '@/api/database/global-types'
-import {responseToFullProblem, responseToPartialProblem} from '@/store/modules/problems/actions/responseFormat'
-import {STATUS_SCOPES} from '@/store/statusScopes'
+import { ProblemInput, ProblemsOrderBy} from '@/api/database/global-types'
+import { responseToFullProblem, responseToPartialProblem} from '@/store/modules/problems/actions/responseFormat'
+import { STATUS_SCOPES} from '@/store/statusScopes'
 
 // const DEBUG = process.env.NODE_ENV !== 'production'
 const DEBUG = false
@@ -45,7 +45,7 @@ export default {
             }
          },
 
-         read: async (id) => responseToFullProblem(await API.problem({id})),
+         read: async (id) => responseToFullProblem(await API.problem({ id})),
 
          create: async (problem: FullProblem) => responseToFullProblem(
             await API.createProblem({
@@ -64,13 +64,13 @@ export default {
          ),
 
          delete: async (id) => responseToPartialProblem(
-            await API.deleteProblem({input: {id}}),
+            await API.deleteProblem({ input: { id}}),
          ),
       },
    ),
 
-   async [actionTypes.UPLOAD_CODE]({commit}: IActionContext<ProblemsState>, {problemId, text}: IUploadCodePayload) {
-      const payload: IStartTestingSolutionPayload = {problemId}
+   async [actionTypes.UPLOAD_CODE]({ commit}: IActionContext<ProblemsState>, { problemId, text}: IUploadCodePayload) {
+      const payload: IStartTestingSolutionPayload = { problemId}
       commit(mutations.START_TESTING_SOLUTION, payload)
 
       try {

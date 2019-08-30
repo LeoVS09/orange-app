@@ -1,13 +1,13 @@
-import {Identical} from '@/store/CrudModule'
-import {StatusManipulation} from '@/store/modules/statuses/utils'
-import {ModelStatus} from '@/store/modules'
-import {findById} from '@/store/CrudModule/actions/utils'
+import { Identical} from '@/store/CrudModule'
+import { StatusManipulation} from '@/store/modules/statuses/utils'
+import { ModelStatus} from '@/store/modules'
+import { findById} from '@/store/CrudModule/actions/utils'
 
 export function editAction<T extends Identical>(
-   items: T[],
+   items: Array<T>,
    model: T,
    setOrAddMutation: (model: T) => void,
-   {getStatus, setStatus}: StatusManipulation,
+   { getStatus, setStatus}: StatusManipulation,
 ): boolean {
 
    const status = getStatus(model.id)

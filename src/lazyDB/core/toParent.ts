@@ -6,12 +6,12 @@ import {
    ModelEventInnerPayload, ModelEventPayload,
    ModelEventSetPropertyPayload,
 } from './types'
-import {receive} from './receiver'
-import {getEventPayload, setEventPayload} from './common'
+import { receive} from './receiver'
+import { getEventPayload, setEventPayload} from './common'
 
 export function pushPropertyEventsToParent(child: IProducerStore, prop: PropertyKey, type: ModelAttributeType = ModelAttributeType.OneToOne) {
-   receive(child, event =>
-      pushToParentIfCan(child, prop, event, type)
+   receive(child, (event) =>
+      pushToParentIfCan(child, prop, event, type),
    )
 }
 
@@ -19,38 +19,35 @@ export function pushToParentIfCan(
    child: IProducerStore,
    prop: PropertyKey,
    event: ModelEvent<ModelEventPayload | undefined>,
-   type: ModelAttributeType = ModelAttributeType.OneToOne
+   type: ModelAttributeType = ModelAttributeType.OneToOne,
 ) {
-   const {parent} = child
-   if(!parent)
+   const { parent} = child
+   if (!parent)
       return
 
    const wrapped = wrapEventToNestingLevel(prop, type, parent, event)
 
-   const { dispatcher } = parent
+   const { dispatcher} = parent
    dispatcher.eventsSubject.next(wrapped)
 }
 
-export function wrapEventToNestingLevel<T = ModelEventGetPropertyPayload>(
+export const wrapEventToNestingLevel = <T = ModelEventGetPropertyPayload>(
    name: PropertyKey,
    type: ModelAttributeType,
    store: IProducerStore,
    event: ModelEvent<T>,
-): ModelEvent<ModelEventInnerPayload<T>> {
-   const inner = event.payload
+): ModelEvent<ModelEventInnerPayload<T>> => ({
 
-   const payload = {
+   ...event,
+
+   payload: {
       store,
       name,
       type,
-      inner
-   }
 
-   return {
-      ...event,
-      payload
-   }
-}
+      inner: event.payload,
+   },
+})
 
 export function wrapGetEventToNestingLevel(
    name: PropertyKey,

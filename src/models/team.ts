@@ -1,8 +1,8 @@
-import {PartialUserProfile, UserProfile} from './user'
+import { PartialUserProfile, UserProfile} from './user'
 
 export interface Team {
    id: string
-   profiles: PartialUserProfile[] | null
+   profiles: Array<PartialUserProfile> | null
    count: number
    name: string
    group?: string

@@ -1,10 +1,10 @@
-import {UserProfile, UserType} from '../models'
-import {login, currentUser, register} from '../api'
+import { UserProfile, UserType} from '../models'
+import { login, currentUser, register} from '../api'
 // @ts-ignore
 import crypto from 'crypto-js'
 import * as mutationTypes from '@/api/database/mutations/types'
 import * as fragmentsTypes from '@/api/database/fragments/types'
-import {Email} from '@/models/email'
+import { Email} from '@/models/email'
 
 const TOKEN_NAME = 'token'
 const TOKEN_KEY = 'key' // TODO
@@ -32,7 +32,7 @@ export async function signin(username: string, password: string, isRemember: boo
 }
 
 export async function signup(input: mutationTypes.RegisterVariables) {
-   const {username, password, email, firstName} = input
+   const { username, password, email, firstName} = input
    if (!username.length || !password.length || !email.length || !firstName.length) {
       console.error('Not have login or password')
       return null
@@ -77,7 +77,7 @@ function toUser(userData: mutationTypes.Login_login_user): UserProfile {
       login: userData.username,
       isAdmin: userData.isAdmin,
       avatarUrl: userData.avatarUrl,
-      emails: userData.userEmails.nodes as Email[],
+      emails: userData.userEmails.nodes as Array<Email>,
       firstName: profile.firstName || '',
       middleName: profile.middleName,
       lastName: profile.lastName || '',
@@ -119,7 +119,7 @@ export function checkIsLogin(): checkResultOk | checkResultFalse {
    }
 
    if (token == null) { // TODO: add real check
-      return {ok: false}
+      return { ok: false}
    }
 
    return {

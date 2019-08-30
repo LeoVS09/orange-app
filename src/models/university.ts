@@ -1,5 +1,5 @@
-import {Repository} from '@/lazyDB'
-import {ModelAttributeType} from '@/lazyDB/core/types'
+import { Repository} from '@/lazyDB'
+import { ModelAttributeType} from '@/lazyDB/core/types'
 
 export interface University {
    id: string

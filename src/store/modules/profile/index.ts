@@ -1,4 +1,4 @@
-import {ProfileState} from './state'
+import { ProfileState} from './state'
 import actions from './actions'
 import mutations from './mutations'
 

@@ -1,6 +1,6 @@
 import * as fragmentTypes from '@/api/database/fragments/types'
 import { UserType} from '@/models'
-import {PartialUserProfile} from '@/models/user'
+import { PartialUserProfile} from '@/models/user'
 
 export function responseToPartialUserProfile(p: fragmentTypes.PartialProfile | undefined | null): PartialUserProfile | undefined | null {
    if (!p) {

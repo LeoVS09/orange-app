@@ -1,9 +1,9 @@
-import {crudActions, crudMutations, CrudState} from '@/store/CrudModule'
-import {Country} from '@/models'
-import {CountriesOrderBy, CountryInput} from '@/api/database/global-types'
+import { crudActions, crudMutations, CrudState} from '@/store/CrudModule'
+import { Country} from '@/models'
+import { CountriesOrderBy, CountryInput} from '@/api/database/global-types'
 import * as API from '@/api'
 import * as fragmentsTypes from '@/api/database/fragments/types'
-import {STATUS_SCOPES} from '@/store/statusScopes'
+import { STATUS_SCOPES} from '@/store/statusScopes'
 
 export default {
    namespaced: true,
@@ -21,9 +21,9 @@ export default {
       {
          readList: (variables) => API.countries(variables),
 
-         create: (country) => API.createCountry({input: {country: countryToInput(country)}}),
+         create: (country) => API.createCountry({ input: { country: countryToInput(country)}}),
 
-         read: async (id) => responseToCountry(await API.country({id})),
+         read: async (id) => responseToCountry(await API.country({ id})),
 
          update: (country) => API.updateCountry({
             input: {
@@ -32,7 +32,7 @@ export default {
             },
          }),
 
-         delete: (id) => API.deleteCountry({input: {id}}),
+         delete: (id) => API.deleteCountry({ input: { id}}),
       },
    ),
 }
@@ -44,7 +44,7 @@ function responseToCountry(result: fragmentsTypes.FullCountry | undefined | null
 
    return {
       ...result,
-      cities: result.cities.nodes as fragmentsTypes.FullCountry_cities_nodes[],
+      cities: result.cities.nodes as Array<fragmentsTypes.FullCountry_cities_nodes>,
    }
 }
 

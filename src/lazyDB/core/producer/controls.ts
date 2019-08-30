@@ -3,9 +3,9 @@ import {
    ModelAttributeType,
    ProducerStoreReference,
 } from '../types'
-import {getStore, isProducerable} from '../common'
-import {pushPropertyEventsToParent} from '../toParent'
-import {wrapInProducerIfNot} from './wrap'
+import { getStore, isProducerable} from '../common'
+import { pushPropertyEventsToParent} from '../toParent'
+import { wrapInProducerIfNot} from './wrap'
 
 export function get(store: IProducerStore, prop: PropertyKey) {
    if (
@@ -17,7 +17,7 @@ export function get(store: IProducerStore, prop: PropertyKey) {
       return store
    }
 
-   const {dispatcher, base, getter, setter} = store
+   const { dispatcher, base, getter, setter} = store
 
    dispatcher.get(prop, store)
 
@@ -55,7 +55,7 @@ export function get(store: IProducerStore, prop: PropertyKey) {
 }
 
 export function set(store: IProducerStore, prop: PropertyKey, value: any) {
-   const {base, dispatcher, setter, getter} = store
+   const { base, dispatcher, setter, getter} = store
    if (typeof prop === 'symbol') {
       base[prop as unknown as string] = value
       return true
@@ -77,7 +77,7 @@ export function set(store: IProducerStore, prop: PropertyKey, value: any) {
 }
 
 export function deleteProperty(store: IProducerStore, prop: PropertyKey) {
-   const {base, dispatcher} = store
+   const { base, dispatcher} = store
 
    // The `undefined` check is a fast path for pre-existing keys.
    if (base[prop as unknown as string] !== undefined || prop in base) {

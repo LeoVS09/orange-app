@@ -4,9 +4,12 @@ import {getStore} from '@/lazyDB/core/common'
 import {AbstractData, EventProducer, ModelAttributeType} from '@/lazyDB/core/types'
 import {DatabaseTable, IDatabaseProducerStore, IEntityTypeSchema, ListProducer} from '../../types'
 import {applyRepositoryControls} from './controls'
-import {asyncReceiveWithMemory} from "@/lazyDB/core/receiver";
-import {repositoryReducers} from "@/lazyDB/database/connected/actions";
-import {getsSpawnReadEvent} from "@/lazyDB/database/cycle/read";
+import {asyncReceiveWithMemory} from '@/lazyDB/core/receiver'
+import {repositoryReducers} from '@/lazyDB/database/connected/actions'
+import {getsSpawnReadEvent} from '@/lazyDB/database/cycle/read'
+import {DatabaseDispatcher, getDatabaseStore} from '@/lazyDB/database/dispatcher'
+import {ModelEventTypes} from "@/lazyDB/database/events";
+import {filter} from "rxjs/operators";
 
 export interface LazyReactiveRepositoryOptions {
    table?: DatabaseTable
@@ -36,17 +39,16 @@ export default class LazyReactiveRepository {
       return getStore(this.table) as IDatabaseProducerStore
    }
 
-   public get dispatcher(): ModelEventDispatcher {
-      return this.store.dispatcher as ModelEventDispatcher
+   public get dispatcher(): DatabaseDispatcher {
+      return this.store.dispatcher as DatabaseDispatcher
    }
 
-   public findOne(id: string, onChange?: () => void): EventProducer {
-      if (!this.schema) {
+   public findOne(id: string, onChange: () => void = () => {}): EventProducer {
+      if (!this.schema)
          return this.table[id]
-      }
 
       const model = this.table[id]
-      const store = getStore(model) as IDatabaseProducerStore
+      const store = getDatabaseStore(model)
 
       applyRepositoryControls(store, this.schema)
 
@@ -56,6 +58,13 @@ export default class LazyReactiveRepository {
       asyncReceiveWithMemory(store, repositoryReducers, id, ModelAttributeType.OneToOne)
       // spawn require to stream which generate only on async receive
       getsSpawnReadEvent(store)
+
+      const {stream} = store
+      if (stream)
+         stream.pipe(
+            filter(event => event.type === ModelEventTypes.SetProperty || event.type === ModelEventTypes.ReadSuccess)
+         )
+            .subscribe(() => onChange())
 
       return model
    }

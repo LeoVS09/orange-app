@@ -38,7 +38,7 @@ import updateContestGql from './updateContest.graphql'
 import deleteContestGql from './deleteContest.graphql'
 
 import * as types from './types'
-import {generateMutation} from '@/api/database/utils'
+import { generateMutation} from '@/api/database/utils'
 
 // ------------------------------------------------ Auth ---------------------------------------------------------------
 

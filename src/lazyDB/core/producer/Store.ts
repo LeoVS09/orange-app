@@ -8,8 +8,8 @@ import {
    ProducerStoreOptions,
    ProxyRevoke,
 } from '@/lazyDB/core/types'
-import {StateMemory} from '@/lazyDB/core/memory'
-import {Observable, Subscription} from 'rxjs'
+import { StateMemory} from '@/lazyDB/core/memory'
+import { Observable, Subscription} from 'rxjs'
 
 export class ProducerStore implements IProducerStore {
    public base: AbstractData

@@ -6,8 +6,8 @@ import {
    ModelEventPayload,
    IProducerStore,
 } from '@/lazyDB/core/types'
-import {Subject} from 'rxjs'
-import {getEventPayload, setEventPayload} from '@/lazyDB/core/common'
+import { Subject} from 'rxjs'
+import { getEventPayload, setEventPayload} from '@/lazyDB/core/common'
 
 export class ModelEventDispatcher implements IModelEventDispatcher<ModelEventPayload> {
    public eventsSubject: Subject<ModelEvent<ModelEventPayload | undefined>>

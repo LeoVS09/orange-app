@@ -1,9 +1,9 @@
-import {PartialUserProfile, UserType} from './user'
-import {Test} from '@/models/tests'
-import {ModelReadState, ModelStatus} from '@/store/modules/statuses/types'
-import {defaultPartialProfile, mockInput, mockOutput, mockTag} from '@/models/mock/mock'
-import {Repository} from '@/lazyDB'
-import {ModelAttributeType} from '@/lazyDB/core/types'
+import { PartialUserProfile, UserType} from './user'
+import { Test} from '@/models/tests'
+import { ModelReadState, ModelStatus} from '@/store/modules/statuses/types'
+import { defaultPartialProfile, mockInput, mockOutput, mockTag} from '@/models/mock/mock'
+import { Repository} from '@/lazyDB'
+import { ModelAttributeType} from '@/lazyDB/core/types'
 
 export {
    defaultPartialProfile,
@@ -62,7 +62,7 @@ export interface PartialProblem {
    tester: PartialUserProfile | null
 
    testingStatus: ProblemTestingStatus
-   tags: Tag[]
+   tags: Array<Tag>
 }
 
 export interface FullProblem extends PartialProblem {
@@ -80,7 +80,7 @@ export interface FullProblem extends PartialProblem {
    }
 
    resultRun?: ResultRunProgram
-   tests: Test[]
+   tests: Array<Test>
 }
 
 
@@ -90,7 +90,7 @@ export interface Tag {
    createdAt: Date
    updatedAt: Date
 
-   problemsTags?: ProblemTag[]
+   problemsTags?: Array<ProblemTag>
 }
 
 export interface ProblemTag {

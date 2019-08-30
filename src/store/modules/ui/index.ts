@@ -1,4 +1,4 @@
-import {UIState, Platform} from './state'
+import { UIState, Platform} from './state'
 import actions from './actions'
 import mutations from './mutations'
 

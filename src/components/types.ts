@@ -34,7 +34,7 @@ export interface SimpleHeader {
 
 export interface ListMeta {
    headers?: Array<Header | string>
-   exceptions?: string[]
+   exceptions?: Array<string>
 }
 
 export enum ListItemEvents {
@@ -70,7 +70,7 @@ export interface ButtonGroupMetaItem {
 export interface ButtonGroupMeta {
    attributes?: Object
    active?: any
-   buttons?: ButtonGroupMetaItem[]
+   buttons?: Array<ButtonGroupMetaItem>
 }
 
 export interface Breadcrumb {
@@ -90,14 +90,14 @@ export interface DynamicPageMeta {
    header: string | {
       breadcrumbs?: Array<Breadcrumb | string>
       text: string | ((model?: any) => string)
-      actions?: DynamicPageAction[] | {
+      actions?: Array<DynamicPageAction> | {
          showTrigger?: (self: Vue) => boolean,
-         buttons: DynamicPageAction[],
+         buttons: Array<DynamicPageAction>,
       },
    }
    tags?: {
-      getter: (self: Vue) => any[],
-      active: (self: Vue) => any[],
+      getter: (self: Vue) => Array<any>,
+      active: (self: Vue) => Array<any>,
       choose: (self: Vue, tag: any) => void,
       actions?: {
          loadTrigger?: (self: Vue) => boolean
@@ -107,17 +107,17 @@ export interface DynamicPageMeta {
    list?: {
       headers?: Array<Header | string | SimpleHeader>
       filters?: {
-         buttons: ButtonGroupMetaItem[],
+         buttons: Array<ButtonGroupMetaItem>,
          active: (self: Vue) => any,
          choose: (self: Vue, filter: any) => void,
       }
-      items: any[] | {
-         getter?: (self: Vue) => any[]
-         fromModel?: (model?: any) => any[],
+      items: Array<any> | {
+         getter?: (self: Vue) => Array<any>
+         fromModel?: (model?: any) => Array<any>,
       }
       formatItem?: (item: any) => any
       actions?: {
-         loadTrigger?: (items?: any[]) => boolean
+         loadTrigger?: (items?: Array<any>) => boolean
          loadAction?: (self: Vue) => void,
       }
       chooseItem?: (item: any) => void,

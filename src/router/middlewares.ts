@@ -1,15 +1,15 @@
 // @ts-ignore
 import * as Router from 'vue-router'
-import {ROUTES} from './rotues'
-import {checkIsLogin} from '@/authentication'
+import { ROUTES} from './rotues'
+import { checkIsLogin} from '@/authentication'
 import store from '@/store'
 import * as actions from '@/store/actionTypes'
-import {actionName, MODULES} from '@/store/actionTypes'
-import {FullProblem, PartialProblem} from '@/models'
-import {ModelReadState} from '@/store/modules/statuses/types'
-import {GET_READ_STATE} from '@/store/modules/statuses/getters'
-import {STATUS_SCOPES} from '@/store/statusScopes'
-import {FullContest} from '@/models/contest'
+import { actionName, MODULES} from '@/store/actionTypes'
+import { FullProblem, PartialProblem} from '@/models'
+import { ModelReadState} from '@/store/modules/statuses/types'
+import { GET_READ_STATE} from '@/store/modules/statuses/getters'
+import { STATUS_SCOPES} from '@/store/statusScopes'
+import { FullContest} from '@/models/contest'
 
 const guard = (useAuthComponent: boolean): Router.NavigationGuard =>
    (to: Router.Route, from: Router.Route, next: Function) => {
@@ -24,10 +24,10 @@ const guard = (useAuthComponent: boolean): Router.NavigationGuard =>
 
          switch (to.name) {
             case ROUTES.PROFILE:
-               next({name: ROUTES.SIGNIN, query: {from: to.name}})
+               next({ name: ROUTES.SIGNIN, query: { from: to.name}})
                break
             case ROUTES.CREATE_PROBLEM:
-               next({name: ROUTES.SIGNIN, query: {from: to.name}})
+               next({ name: ROUTES.SIGNIN, query: { from: to.name}})
                break
             default:
                next()
@@ -38,7 +38,7 @@ const guard = (useAuthComponent: boolean): Router.NavigationGuard =>
       if (to.name === ROUTES.PROFILE) {
          const profile = store.state.profile.data
          if (!profile) {
-            next({name: ROUTES.SIGNIN, query: {from: to.name}})
+            next({ name: ROUTES.SIGNIN, query: { from: to.name}})
             return
          }
       }

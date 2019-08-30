@@ -1,5 +1,5 @@
-import {merge, Observable} from "rxjs";
-import {sample, skipWhile, takeWhile} from "rxjs/operators";
+import { merge, Observable} from 'rxjs'
+import { sample, skipWhile, takeWhile} from 'rxjs/operators'
 
 // TODO: turn into operator
 export function takeWhileThenContinue<T>(stream: Observable<T>, predicate: (v: T) => boolean, sampler: Observable<any>) {

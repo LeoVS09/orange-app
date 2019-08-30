@@ -1,9 +1,9 @@
-import {IProducerStore, ProducerStoreGetter, ProducerStoreSetter} from '@/lazyDB/core/types'
-import {wrapInProducer} from '@/lazyDB/core/producer/wrap'
-import {getStore} from '@/lazyDB/core/common'
-import {SymFor} from '@/lazyDB/core/utils'
-import {DatabaseTable, DatabaseTableMap, ListItemGetter, ListItemGetterReference} from '@/lazyDB/database/types'
-import {applyListControls, makeListSource} from '@/lazyDB/database/base/repository/list'
+import { IProducerStore, ProducerStoreGetter, ProducerStoreSetter} from '@/lazyDB/core/types'
+import { wrapInProducer} from '@/lazyDB/core/producer/wrap'
+import { getStore} from '@/lazyDB/core/common'
+import { SymFor} from '@/lazyDB/core/utils'
+import { DatabaseTable, DatabaseTableMap, ListItemGetter, ListItemGetterReference} from '@/lazyDB/database/types'
+import { applyListControls, makeListSource} from '@/lazyDB/database/base/repository/list'
 
 export const TableStoreReference = SymFor('table storage')
 
@@ -30,7 +30,7 @@ export function applyTableControls(store: IProducerStore) {
    store.setter = setter
 }
 
-export const getter: ProducerStoreGetter = ({base}, name) => {
+export const getter: ProducerStoreGetter = ({ base}, name) => {
    if (name === TableListKey) {
       return base[TableListKey] || makeListSource()
    }
@@ -38,10 +38,10 @@ export const getter: ProducerStoreGetter = ({base}, name) => {
    const table = base[TableStoreReference] as DatabaseTableMap
    const model = table.get(name as string)
 
-   return model || {}
+   return model || { }
 }
 
-export const setter: ProducerStoreSetter = ({base}, name, value) => {
+export const setter: ProducerStoreSetter = ({ base}, name, value) => {
    const table = base[TableStoreReference] as DatabaseTableMap
 
    if (name === TableListKey) {
@@ -57,7 +57,7 @@ export const setter: ProducerStoreSetter = ({base}, name, value) => {
    return true
 }
 
-const listItemGetter = (table: DatabaseTableMap): ListItemGetter => ({nodes}, index) => {
+const listItemGetter = (table: DatabaseTableMap): ListItemGetter => ({ nodes}, index) => {
    const id = nodes[index as number]
    if (!id) {
       return

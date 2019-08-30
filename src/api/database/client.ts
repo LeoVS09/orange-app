@@ -6,7 +6,7 @@ import {
 } from 'apollo-client'
 import { InMemoryCache } from 'apollo-cache-inmemory'
 import { HttpLink } from 'apollo-link-http'
-import {ExecutionResult} from 'graphql'
+import { ExecutionResult} from 'graphql'
 
 export interface APIClient {
    mutate<T, TVariables = OperationVariables>(options: MutationOptions<T, TVariables>): Promise<ExecutionResult<T>>

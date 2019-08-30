@@ -1,4 +1,4 @@
-import {AtomicEventDispatcher} from './atomic'
+import { AtomicEventDispatcher} from './atomic'
 
 export class AsyncEventDispatcher<Payload> extends AtomicEventDispatcher<Payload> {
 

@@ -1,4 +1,4 @@
-import Vue, {PluginObject} from 'vue'
+import Vue, { PluginObject} from 'vue'
 import * as Vuex from 'vuex'
 
 import modules from './modules'

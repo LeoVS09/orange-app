@@ -1,4 +1,4 @@
-import {APIClient, makeClient} from './client'
+import { APIClient, makeClient} from './client'
 import urls from '../urls.json'
 import deepMap from 'deep-map'
 
@@ -67,7 +67,7 @@ function mapRequester<R>(requester: (client: APIClient) => R): R  {
    }
 }
 
-const keysForMapDays: string[] = []
+const keysForMapDays: Array<string> = []
 const keyMath = /.+(Date|At)$/gm
 
 // Transform to date types fields with matched names

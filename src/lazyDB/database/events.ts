@@ -3,10 +3,10 @@ import {
    ModelEventGetPropertyPayload,
    ModelEventSetPropertyPayload,
    AbstractData,
-   ModelEventPayload
+   ModelEventPayload,
 } from '../core/types'
-import {ModelReadSchema} from '@/lazyDB/types'
-import {ListSource} from '@/lazyDB/database/types'
+import { ModelReadSchema} from '@/lazyDB/types'
+import { IDatabaseProducerStore, ListSource} from '@/lazyDB/database/types'
 
 
 // ModelEventTypes extends EventType,
@@ -15,22 +15,22 @@ export enum ModelEventTypes {
    GetProperty = 'GetProperty',
    Read = 'Read',
    ReadSuccess = 'ReadSuccess',
-   ErrorReading = 'ErrorReading',
+   ReadFailure = 'ReadFailure',
 
    SetProperty = 'SetProperty',
    Update = 'Update',
    UpdateSuccess = 'UpdateSuccess',
-   ErrorUpdated = 'ErrorUpdated',
+   UpdateFailure = 'UpdateFailure',
 
    New = 'New',
    Create = 'Create',
    CreateSuccess = 'CreateSuccess',
-   ErrorCreating = 'ErrorCreating',
+   CreateFailure = 'CreateFailure',
 
    DeleteProperty = 'DeleteProperty',
    Delete = 'Delete',
    DeleteSuccess = 'DeleteSuccess',
-   ErrorDeleting = 'ErrorDeleting',
+   DeleteFailure = 'DeleteFailure',
 }
 
 export enum AsyncConnectorEventTypes {
@@ -44,13 +44,22 @@ export enum AsyncConnectorEventTypes {
    ErrorDeleting = 'ErrorDeleting',
 }
 
-export interface ReadEventPayload<T> extends ModelEventPayload {
+export interface DatabaseModelPayload extends ModelEventPayload {
+   store: IDatabaseProducerStore
+}
+
+export interface ReadEventPayload extends DatabaseModelPayload {
    readSchema: ModelReadSchema
-   draft: AbstractData
    gets: Array<ModelEvent<ModelEventGetPropertyPayload>>
    sets: Array<ModelEvent<ModelEventSetPropertyPayload>>
 }
 
-export type ModelEventReadPayload = ReadEventPayload<AbstractData>
+export type ModelEventReadPayload = ReadEventPayload
 
-export type ListEventReadPayload = ReadEventPayload<ListSource>
+export interface ReadSuccessEventPayload extends DatabaseModelPayload {
+   data: AbstractData
+}
+
+export interface ReadFailureEventPayload<T extends Error = any> extends DatabaseModelPayload {
+   error: T
+}

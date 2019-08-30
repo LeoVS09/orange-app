@@ -1,9 +1,9 @@
-import {RootState } from './state'
-import {GetterTree} from 'vuex'
-import {FullProblem, PartialProblem, UserType} from '@/models'
-import {randomItem, shuffleProblem} from '@/store/utils'
+import { RootState } from './state'
+import { GetterTree} from 'vuex'
+import { FullProblem, PartialProblem, UserType} from '@/models'
+import { randomItem, shuffleProblem} from '@/store/utils'
 import { ProblemFilter} from '@/store/modules'
-import {Tag} from '@/models/problems'
+import { Tag} from '@/models/problems'
 
 const getters: GetterTree<RootState, any> = {
    platform: (state) => state.ui.currentPlatform,

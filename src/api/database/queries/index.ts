@@ -25,13 +25,13 @@ import teamGql from './team.graphql'
 import teamsGql from './teams.graphql'
 import testsGql from './tests.graphql'
 
-import {mockCountries, mockCities, mockCountry} from '@/models/mock/countries'
+import { mockCountries, mockCities, mockCountry} from '@/models/mock/countries'
 
 import * as types from './types'
-import {mockTags} from '@/models/mock/mock'
-import {generateQuery, generateSimpleQuery} from '@/api/database/utils'
-import {Compiler_translator} from './types'
-import {Compilers_translators} from './types'
+import { mockTags} from '@/models/mock/mock'
+import { generateQuery, generateSimpleQuery} from '@/api/database/utils'
+import { Compiler_translator} from './types'
+import { Compilers_translators} from './types'
 
 export const currentUser = generateSimpleQuery<types.CurrentUser, types.CurrentUser_currentUser>(
    currentUserGql,
@@ -132,7 +132,7 @@ export const problem = generateQuery<types.ProblemVariables, types.Problem, type
 
 // -------------------------------------------- inputOutputType --------------------------------------------------------
 
-export const inputOutputTypes = generateQuery<types.InputOutputTypesVariables, types.InputOutputTypes, {inputs: types.InputOutputTypes_programInputTypes | null, outputs: types.InputOutputTypes_programOutputTypes | null}>(
+export const inputOutputTypes = generateQuery<types.InputOutputTypesVariables, types.InputOutputTypes, { inputs: types.InputOutputTypes_programInputTypes | null, outputs: types.InputOutputTypes_programOutputTypes | null}>(
    inputOutputTypesGql,
    (data) => ({
       inputs: data.programInputTypes,

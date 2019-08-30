@@ -1,4 +1,4 @@
-import {StatusState} from './state'
+import { StatusState} from './state'
 import actions from './actions'
 import mutations from './mutations'
 import getters from './getters'

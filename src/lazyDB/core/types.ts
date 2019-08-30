@@ -1,7 +1,7 @@
-import {SymFor} from './utils'
-import {StateMemory} from './memory'
-import {Observable, Subject, Subscription} from 'rxjs'
-import {Payload} from 'vuex'
+import { SymFor} from './utils'
+import { StateMemory} from './memory'
+import { Observable, Subject, Subscription} from 'rxjs'
+import { Payload} from 'vuex'
 
 // This object can't be mapped tp producer
 export type AtomicObject =
@@ -82,7 +82,7 @@ export interface IProducerStore<T = AbstractData> extends ProducerStoreOptions<T
    stream: Observable<ModelEvent<any>> | undefined
 }
 
-export type EventReducer<T> = (store: IProducerStore, event: T) => boolean | undefined | void
+export type EventReducer<T> = (store: IProducerStore, event: T) => boolean | Promise<boolean | undefined | void> | undefined | void
 
 export interface EventReducersMap {
    [key: string]: EventReducer<any> | undefined

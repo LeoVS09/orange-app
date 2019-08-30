@@ -1,44 +1,44 @@
 import {
    ILazyReactiveDatabase,
    IEntityTypeSchema,
-   IEntityTypeSchemaStorage,
+   IEntityTypeSchemaStorage, IDatabaseProducerStore,
 } from '../../types'
-import {AbstractData, EventProducer, EventType, ModelAttributeType} from '@/lazyDB/core/types'
-import {getStore} from '@/lazyDB/core/common'
-import {DatabaseStorage} from '../../types'
-import {makeDatabaseStorage} from '../../storage'
-import {ModelEventDispatcher} from '@/lazyDB/core/dispatcher/model/base'
-import {extractEntityNameFromManyKey} from '@/lazyDB/utils'
-import {ProducerStore} from '@/lazyDB/core/producer/Store'
-import {asyncReceiveWithMemory} from '@/lazyDB/core/receiver'
-import {applyRepositoryControls} from '@/lazyDB/database/base/repository/controls'
+import { AbstractData, EventProducer, EventType, ModelAttributeType} from '@/lazyDB/core/types'
+import { getStore} from '@/lazyDB/core/common'
+import { DatabaseStorage} from '../../types'
+import { makeDatabaseStorage} from '../../storage'
+import { ModelEventDispatcher} from '@/lazyDB/core/dispatcher/model/base'
+import { extractEntityNameFromManyKey} from '@/lazyDB/utils'
+import { ProducerStore} from '@/lazyDB/core/producer/Store'
+import { asyncReceiveWithMemory} from '@/lazyDB/core/receiver'
+import { applyRepositoryControls} from '@/lazyDB/database/base/repository/controls'
 
 export interface LazyReactiveDatabaseOptions {
    storage?: DatabaseStorage
    schemas?: IEntityTypeSchemaStorage
-   excludeProperties?: string[]
+   excludeProperties?: Array<string>
 }
 
 export default class LazyReactiveDatabase implements ILazyReactiveDatabase {
 
    public storage: DatabaseStorage
    public schemas: IEntityTypeSchemaStorage
-   public excludeProperties: string[]
+   public excludeProperties: Array<string>
 
    constructor(
       {
          storage = makeDatabaseStorage(),
-         schemas = {},
+         schemas = { },
          excludeProperties = [],
-      }: LazyReactiveDatabaseOptions = {},
+      }: LazyReactiveDatabaseOptions = { },
    ) {
       this.storage = storage
       this.schemas = schemas
       this.excludeProperties = excludeProperties
    }
 
-   public get store(): ProducerStore {
-      return getStore(this.storage) as ProducerStore
+   public get store(): IDatabaseProducerStore {
+      return getStore(this.storage) as IDatabaseProducerStore
    }
 
    public get dispatcher(): ModelEventDispatcher {

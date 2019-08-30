@@ -1,4 +1,4 @@
-import {ProblemsState, ProblemFilter} from './state'
+import { ProblemsState, ProblemFilter} from './state'
 import actions from './actions'
 import mutations from './mutations'
 

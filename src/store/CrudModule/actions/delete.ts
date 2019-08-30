@@ -1,12 +1,12 @@
-import {CrudActionApi, Identical} from '@/store/CrudModule'
-import {StatusManipulation} from '@/store/modules/statuses/utils'
-import {ModelStatus} from '@/store/modules'
+import { CrudActionApi, Identical} from '@/store/CrudModule'
+import { StatusManipulation} from '@/store/modules/statuses/utils'
+import { ModelStatus} from '@/store/modules'
 
 export async function deleteAction<T extends Identical>(
-   items: T[],
+   items: Array<T>,
    id: string,
    deleteMutation: (id: string) => void,
-   {getStatus, setStatus, setReadState}: StatusManipulation,
+   { getStatus, setStatus, setReadState}: StatusManipulation,
    deleteRequest: (id: string) => Promise<T | undefined | null>,
 ): Promise<T | undefined> {
 

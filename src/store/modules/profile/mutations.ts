@@ -3,7 +3,7 @@ import {
    UserProfile,
 } from '@/models'
 import Vue from 'vue'
-import {ProfileState} from './state'
+import { ProfileState} from './state'
 
 export default {
    [mutationTypes.SET_PROFILE_DATA](state: ProfileState, user: UserProfile) {

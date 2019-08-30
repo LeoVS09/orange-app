@@ -108,7 +108,7 @@ export interface ISideHoverCallbacks {
    center?: (probability: number, event: MouseEvent) => void
 }
 
-export function onSideHover(elem: Element, limit: number = 0.2, {left = () => {}, right = () => {}, center = () => {}}: ISideHoverCallbacks) {
+export function onSideHover(elem: Element, limit: number = 0.2, { left = () => { }, right = () => { }, center = () => { }}: ISideHoverCallbacks) {
    const html = document.querySelector('html')
    if (!html) {
       return console.error('Unexpected error')

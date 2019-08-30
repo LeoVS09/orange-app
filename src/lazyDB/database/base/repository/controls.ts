@@ -1,14 +1,14 @@
-import {IEntityTypeSchema} from '@/lazyDB/database/types'
-import {IProducerStore, ModelAttributeType, ProducerStoreGetter, ProducerStoreSetter} from '@/lazyDB/core/types'
-import {getStore, isProducer} from '@/lazyDB/core/common'
-import {applyListControls, makeListSource, setter as listSetter} from './list'
+import { IEntityTypeSchema} from '@/lazyDB/database/types'
+import { IProducerStore, ModelAttributeType, ProducerStoreGetter, ProducerStoreSetter} from '@/lazyDB/core/types'
+import { getStore, isProducer} from '@/lazyDB/core/common'
+import { applyListControls, makeListSource, setter as listSetter} from './list'
 
 export const applyRepositoryControls = (store: IProducerStore, schema: IEntityTypeSchema) => {
    store.getter = getter(schema)
    store.setter = setter(schema)
 }
 
-export const getter = (schema: IEntityTypeSchema): ProducerStoreGetter => ({base}, name) => {
+export const getter = (schema: IEntityTypeSchema): ProducerStoreGetter => ({ base}, name) => {
    const value = base[name as string]
    if (typeof value !== 'undefined') {
       return value
@@ -20,7 +20,7 @@ export const getter = (schema: IEntityTypeSchema): ProducerStoreGetter => ({base
    }
 
    if (type === ModelAttributeType.OneToOne) {
-      return {}
+      return { }
    }
 
    if (type === ModelAttributeType.OneToMany) {
@@ -30,7 +30,7 @@ export const getter = (schema: IEntityTypeSchema): ProducerStoreGetter => ({base
    console.error('Unexpected model attribute type:', type)
 }
 
-export const setter = (schema: IEntityTypeSchema): ProducerStoreSetter => ({base}, name, value) => {
+export const setter = (schema: IEntityTypeSchema): ProducerStoreSetter => ({ base}, name, value) => {
    base[name as string] = value
 
    if (!isProducer(value)) {

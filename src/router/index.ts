@@ -1,8 +1,8 @@
-import {ROUTES} from '@/router/rotues'
+import { ROUTES} from '@/router/rotues'
 import Vue from 'vue'
 // @ts-ignore
 import Router from 'vue-router'
-import {Component} from 'vue-router/types/router'
+import { Component} from 'vue-router/types/router'
 import Home from '@/layouts/Home.vue'
 import Authorisation from '@/layouts/Authorisation.vue'
 import Contests from '@/pages/Contests.vue'
@@ -19,7 +19,7 @@ import ProgrammingLanguage from '@/pages/ProgrammingLanguage.vue'
 import SignIn from '@/pages/SignIn.vue'
 import SignUp from '@/pages/SignUp.vue'
 
-import guard, {contestMiddleware, problemMiddleware} from './middlewares'
+import guard, { contestMiddleware, problemMiddleware} from './middlewares'
 
 export {
    ROUTES,

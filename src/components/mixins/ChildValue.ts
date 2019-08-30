@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import {Component, Prop, Mixins} from 'vue-property-decorator'
+import { Component, Prop, Mixins} from 'vue-property-decorator'
 import Loadable from '@/components/mixins/loadable'
 
 @Component
@@ -33,7 +33,7 @@ export default class ChildValue extends Vue {
          return null
       }
 
-      const {text} = slot
+      const { text} = slot
       if (!text) {
          return null
       }

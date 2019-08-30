@@ -1,24 +1,22 @@
-import {debounceTime, filter, map} from "rxjs/operators";
-import {ModelEventReadPayload, ModelEventTypes} from "../events";
-import {isReading} from "../states";
-import {takeWhileThenContinue} from "./utils";
-import {IDatabaseProducerStore} from "../types";
-import {createDraft} from 'immer'
+import { debounceTime, filter, map} from 'rxjs/operators'
+import { ModelEventReadPayload, ModelEventTypes} from '../events'
+import { isReading} from '../states'
+import { takeWhileThenContinue} from './utils'
+import { IDatabaseProducerStore} from '../types'
+import { createDraft} from 'immer'
 
 // Need calc this dynamically
 const READ_TIME = 50
 
-export interface CanReadCallback {
-   (): boolean
-}
+export type CanReadCallback = () => boolean
 
 export function getsSpawnReadEvent(
    {
       memory,
       stream,
-      dispatcher
+      dispatcher,
    }: IDatabaseProducerStore,
-   canRead: CanReadCallback = () => true
+   canRead: CanReadCallback = () => true,
 ) {
 
    /*
@@ -33,7 +31,7 @@ export function getsSpawnReadEvent(
       .pipe(
          debounceTime(READ_TIME),
          map(() => {
-            const gets = memory!.filter(event => event.type === ModelEventTypes.GetProperty)
+            const gets = memory!.filter((event) => event.type === ModelEventTypes.GetProperty)
             console.log(memory!.memory.length, memory)
             return gets
          }),
@@ -41,15 +39,14 @@ export function getsSpawnReadEvent(
       )
       // TODO: need spawn read events in parallel of different models
       .subscribe((gets) => {
-         const {payload: {store}} = gets[0]
-         const {readSchema, base} = store
+         const { payload: { store}} = gets[0]
+         const { readSchema} = store
 
          const payload: ModelEventReadPayload = {
             gets,
             sets: [],
             readSchema: readSchema!,
-            draft: createDraft(base),
-            store
+            store,
          }
 
          dispatcher.dispatch(ModelEventTypes.Read, payload)

@@ -1,9 +1,9 @@
-import {CrudState, crudActions, crudMutations} from '@/store/CrudModule'
-import {University} from '@/models'
-import {UniversitiesOrderBy, UniversityInput} from '@/api/database/global-types'
+import { CrudState, crudActions, crudMutations} from '@/store/CrudModule'
+import { University} from '@/models'
+import { UniversitiesOrderBy, UniversityInput} from '@/api/database/global-types'
 import * as API from '@/api'
 import * as fragmentsTypes from '@/api/database/fragments/types'
-import {STATUS_SCOPES} from '@/store/statusScopes'
+import { STATUS_SCOPES} from '@/store/statusScopes'
 
 export default {
    namespaced: true,
@@ -22,9 +22,9 @@ export default {
       {
          readList: (variables) => API.universities(variables),
 
-         create: (university) => API.createUniversity({input: {university: universityToInput(university)}}),
+         create: (university) => API.createUniversity({ input: { university: universityToInput(university)}}),
 
-         read: async (id) => responseToUniversity(await API.university({id})),
+         read: async (id) => responseToUniversity(await API.university({ id})),
 
          update: (university) => API.updateUniversity({
             input: {
@@ -33,7 +33,7 @@ export default {
             },
          }),
 
-         delete: (id) => API.deleteUnviersity({input: {id}}),
+         delete: (id) => API.deleteUnviersity({ input: { id}}),
       },
    ),
 }

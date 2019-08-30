@@ -1,5 +1,5 @@
 import LazyReactiveRepository from '@/lazyDB/database/base/repository/Repository'
-import {IEntityTypeSchema, ILazyReactiveDatabase} from '@/lazyDB/database/types'
+import { IEntityTypeSchema, ILazyReactiveDatabase} from '@/lazyDB/database/types'
 
 export function makeConnectedRepositoryClass(db: ILazyReactiveDatabase) {
    // Connected to db entity repository by default
@@ -13,9 +13,8 @@ export function makeConnectedRepositoryClass(db: ILazyReactiveDatabase) {
             schema,
          })
 
-         if (schema) {
+         if (schema)
             db.setSchema(entity, schema)
-         }
 
          this.excludeProperties = db.excludeProperties
       }

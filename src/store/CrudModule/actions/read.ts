@@ -1,14 +1,14 @@
-import {CrudActionApi, Identical} from '@/store/CrudModule'
-import {StatusManipulation} from '@/store/modules/statuses/utils'
-import {findById} from '@/store/CrudModule/actions/utils'
-import {ModelStatus} from '@/store/modules'
-import {ModelReadState} from '@/store/modules/statuses/types'
+import { CrudActionApi, Identical} from '@/store/CrudModule'
+import { StatusManipulation} from '@/store/modules/statuses/utils'
+import { findById} from '@/store/CrudModule/actions/utils'
+import { ModelStatus} from '@/store/modules'
+import { ModelReadState} from '@/store/modules/statuses/types'
 
 export async function readAction<T extends Identical>(
-   items: T[],
+   items: Array<T>,
    id: string,
    setOrAddMutation: (model: T) => void,
-   {getStatus, setStatus, setReadState}: StatusManipulation,
+   { getStatus, setStatus, setReadState}: StatusManipulation,
    read: (id: string) => Promise<T | undefined | null>,
 ): Promise<T | undefined> {
    console.log('read', id)

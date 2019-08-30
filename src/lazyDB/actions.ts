@@ -22,22 +22,6 @@
 //
 //
 //
-// // TODO: multiple types of object schema, need better solution
-// export function schemaToQueryFields(schema: ModelReadSchema): Array<string | QueryField> {
-//    const keys = Object.keys(schema)
-//
-//    return keys.map((key) => {
-//       const field = schema[key]
-//       if (!isSchemaField(field))
-//          return key
-//
-//       return {
-//          entity: key,
-//          type: field.type,
-//          fields: schemaToQueryFields(field.fields as ModelReadSchema),
-//       }
-//    })
-// }
 //
 //
 // const ONE_TO_MANY_KEY = 'nodes'

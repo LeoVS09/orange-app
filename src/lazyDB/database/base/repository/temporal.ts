@@ -1,5 +1,5 @@
-import {SymFor} from '@/lazyDB/core/utils'
-import {isProducer} from '@/lazyDB/core/common'
+import { SymFor} from '@/lazyDB/core/utils'
+import { isProducer} from '@/lazyDB/core/common'
 
 export const TemporalTrap = SymFor('temporal trap')
 

@@ -11,8 +11,8 @@ import crudActions, {
    readListAction,
    createAction,
 } from './actions'
-import crudMutations, {ISetByIdPayload} from './mutations'
-import {Identical} from './types'
+import crudMutations, { ISetByIdPayload} from './mutations'
+import { Identical} from './types'
 import * as action from './actionTypes'
 import * as mutation from './mutationTypes'
 

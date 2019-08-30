@@ -1,26 +1,26 @@
-import {EventProducer, ModelEvent, ModelEventGetPropertyPayload, PropertyEventPayload} from '../core/types'
-import {ModelEventTypes} from './events'
-import {lastObjectPropertyName} from './utils'
+import { EventProducer, ModelEvent, ModelEventGetPropertyPayload, PropertyEventPayload} from '../core/types'
+import { ModelEventTypes} from './events'
+import { lastObjectPropertyName} from './utils'
 
 export const notHaveGetEventInMemory = (event: ModelEvent<ModelEventGetPropertyPayload>) => {
    if (event.type !== ModelEventTypes.GetProperty) {
       return true
    }
 
-   const {payload: {store}} = event
+   const { payload: { store}} = event
    if (!store || !store.memory) {
       return true
    }
 
-   const {memory} = store.memory
+   const { memory} = store.memory
 
-   return !memory.some(({payload, type}) =>
+   return !memory.some(({ payload, type}) =>
       type === ModelEventTypes.GetProperty &&
       getEventPayloadsEqual(event.payload, payload),
    )
 }
 
-export const excludePropertyEventWithNames = (excludeProperties: string[]) =>
+export const excludePropertyEventWithNames = (excludeProperties: Array<string>) =>
    (event: ModelEvent<PropertyEventPayload>) => {
       const { type } = event
 

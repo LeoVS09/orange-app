@@ -3,8 +3,8 @@ import {
    PartialProgramOutput,
    Tag,
 } from '@/models/problems'
-import {PartialUserProfile, UserType} from '@/models/user'
-import {randomId} from '@/components/utils'
+import { PartialUserProfile, UserType} from '@/models/user'
+import { randomId} from '@/components/utils'
 
 
 export function defaultPartialProfile(): PartialUserProfile {
@@ -29,7 +29,7 @@ export function mockTag(name: string): Tag {
    }
 }
 
-export function mockTags(): Tag[] {
+export function mockTags(): Array<Tag> {
    return [
       'implementation',
       'math',

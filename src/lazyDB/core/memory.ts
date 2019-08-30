@@ -1,15 +1,15 @@
-import {splitArray} from './utils'
+import { splitArray} from './utils'
 
 export class StateMemory<T> {
 
-   public memory: T[] = []
+   public memory: Array<T> = []
 
    public push(event: T) {
       this.memory.push(event)
    }
 
-   public remove(target: T) {
-      this.memory = this.memory.filter((event) => event !== target)
+   public remove(...target: Array<T>) {
+      this.memory = this.memory.filter((event) => !target.includes(event))
    }
 
    public exclude(predicat: (event: T) => boolean) {

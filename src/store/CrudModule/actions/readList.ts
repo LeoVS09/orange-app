@@ -1,18 +1,18 @@
-import {CrudActionApi, Identical, ReadListResponse, ReadListVariables} from '@/store/CrudModule'
-import {StatusManipulation} from '@/store/modules/statuses/utils'
-import {ModelStatus} from '@/store/modules'
-import {ModelReadState} from '@/store/modules/statuses/types'
-import {findById} from '@/store/CrudModule/actions/utils'
+import { CrudActionApi, Identical, ReadListResponse, ReadListVariables} from '@/store/CrudModule'
+import { StatusManipulation} from '@/store/modules/statuses/utils'
+import { ModelStatus} from '@/store/modules'
+import { ModelReadState} from '@/store/modules/statuses/types'
+import { findById} from '@/store/CrudModule/actions/utils'
 
 export async function readListAction<T extends Identical, OrderBy>(
-   items: T[],
+   items: Array<T>,
    setOrAddMutation: (model: T) => void,
-   {getStatus, setStatus, setReadState, setModelState, getRead}: StatusManipulation,
+   { getStatus, setStatus, setReadState, setModelState, getRead}: StatusManipulation,
    readList: (variables: ReadListVariables<OrderBy>) => Promise<ReadListResponse<T> | undefined | null>,
    setGlobalStatus: (status: ModelStatus) => void,
 ): Promise<boolean> {
 
-   const list = await readList({})
+   const list = await readList({ })
    if (!list) {
       setGlobalStatus(ModelStatus.ErrorReading)
       return false

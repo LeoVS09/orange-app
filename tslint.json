@@ -16,6 +16,9 @@
       "object-literal-sort-keys": false,
       "no-consecutive-blank-lines": false,
       "no-console": false,
-      "semicolon": [true, "never"]
+      "semicolon": [true, "never"],
+      "curly": [true, "as-needed"],
+      "array-type": [true, "generic"],
+      "whitespace": [true, "check-preblock", "check-postbrace", "check-operator", "check-separator", "check-decl"]
    }
 }

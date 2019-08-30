@@ -1,19 +1,19 @@
-import {Identical} from '../types'
+import { Identical} from '../types'
 import * as mutations from '../mutationTypes'
 import * as actionTypes from '../actionTypes'
 import CrudState from '../state'
-import {IActionContext} from '@/store/state'
+import { IActionContext} from '@/store/state'
 import {
    generateStatusManipulation,
    setStatus,
 } from '@/store/modules/statuses/utils'
-import {STATUS_SCOPES} from '@/store/statusScopes'
-import {readListAction} from '@/store/CrudModule/actions/readList'
-import {readAction} from './read'
-import {editAction} from './edit'
-import {updateAction} from './update'
-import {addModelForCreateAction, createAction} from './create'
-import {deleteAction} from './delete'
+import { STATUS_SCOPES} from '@/store/statusScopes'
+import { readListAction} from '@/store/CrudModule/actions/readList'
+import { readAction} from './read'
+import { editAction} from './edit'
+import { updateAction} from './update'
+import { addModelForCreateAction, createAction} from './create'
+import { deleteAction} from './delete'
 
 export {
    readListAction,
@@ -31,7 +31,7 @@ export interface ReadListVariables<T> {
    offset?: number | null
    before?: any | null
    after?: any | null
-   orderBy?: T[] | null
+   orderBy?: Array<T> | null
 }
 
 export interface ReadListResponse<T> {
@@ -58,7 +58,7 @@ export default function crudMutations<T extends Identical, OrderBy>(
    api: CrudActionApi<T, OrderBy>,
 ) {
    return {
-      [actionTypes.READ_LIST]({commit, rootGetters, state}: IActionContext<CrudState<T>>): Promise<boolean> {
+      [actionTypes.READ_LIST]({ commit, rootGetters, state}: IActionContext<CrudState<T>>): Promise<boolean> {
          return readListAction(
             state.data,
             (m) => commit(mutations.SET_OR_ADD, m),
@@ -69,7 +69,7 @@ export default function crudMutations<T extends Identical, OrderBy>(
       },
 
 
-      [actionTypes.READ]({commit, rootGetters, state}: IActionContext<CrudState<T>>, id: string): Promise<T | undefined> {
+      [actionTypes.READ]({ commit, rootGetters, state}: IActionContext<CrudState<T>>, id: string): Promise<T | undefined> {
          return readAction(
             state.data,
             id,
@@ -80,7 +80,7 @@ export default function crudMutations<T extends Identical, OrderBy>(
       },
 
       // ModelObserver in edit action can be partial
-      [actionTypes.EDIT]({commit, state, rootGetters}: IActionContext<CrudState<T>>, model: T): boolean {
+      [actionTypes.EDIT]({ commit, state, rootGetters}: IActionContext<CrudState<T>>, model: T): boolean {
          return editAction(
             state.data,
             model,
@@ -90,7 +90,7 @@ export default function crudMutations<T extends Identical, OrderBy>(
       },
 
 
-      [actionTypes.UPDATE]({commit, state, rootGetters}: IActionContext<CrudState<T>>, id: string): Promise<T | undefined> {
+      [actionTypes.UPDATE]({ commit, state, rootGetters}: IActionContext<CrudState<T>>, id: string): Promise<T | undefined> {
          return updateAction(
             state.data,
             id,
@@ -101,7 +101,7 @@ export default function crudMutations<T extends Identical, OrderBy>(
       },
 
 
-      [actionTypes.ADD_MODEL_FOR_CREATE]({commit, state, rootGetters}: IActionContext<CrudState<T>>, parentId?: string): T {
+      [actionTypes.ADD_MODEL_FOR_CREATE]({ commit, state, rootGetters}: IActionContext<CrudState<T>>, parentId?: string): T {
          return addModelForCreateAction(
             state.data,
             () => defaultModel(parentId),
@@ -111,7 +111,7 @@ export default function crudMutations<T extends Identical, OrderBy>(
       },
 
 
-      [actionTypes.CREATE]({commit, state, rootGetters}: IActionContext<CrudState<T>>, model: T): Promise<T | undefined> {
+      [actionTypes.CREATE]({ commit, state, rootGetters}: IActionContext<CrudState<T>>, model: T): Promise<T | undefined> {
          return createAction(
             state.data,
             model,
@@ -122,7 +122,7 @@ export default function crudMutations<T extends Identical, OrderBy>(
       },
 
 
-      [actionTypes.DELETE]({commit, state, rootGetters}: IActionContext<CrudState<T>>, id: string): Promise<T | undefined> {
+      [actionTypes.DELETE]({ commit, state, rootGetters}: IActionContext<CrudState<T>>, id: string): Promise<T | undefined> {
          return deleteAction(
             state.data,
             id,

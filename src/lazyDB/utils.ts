@@ -1,9 +1,9 @@
 import deepMap from 'deep-map'
-import {ILazyReactiveDatabase} from '@/lazyDB/database/types'
-import {ModelReadSchemaField} from '@/lazyDB/types'
-import {ModelAttributeType} from '@/lazyDB/core/types'
+import { ILazyReactiveDatabase} from '@/lazyDB/database/types'
+import { ModelReadSchemaField} from '@/lazyDB/types'
+import { ModelAttributeType} from '@/lazyDB/core/types'
 
-const keysForMapDays: string[] = []
+const keysForMapDays: Array<string> = []
 const keyMath = /.+(Date|At)$/gm
 
 // Transform to date types fields with matched names
@@ -39,7 +39,7 @@ export function extractEntityNameFromManyKey(key: string) {
    return key.slice(0, -1)
 }
 
-export function addOrUpdate(db: ILazyReactiveDatabase, entity: string, node: {id: string}) {
+export function addOrUpdate(db: ILazyReactiveDatabase, entity: string, node: { id: string}) {
    const success = db.update(entity, node.id, node)
    if (success) {
       return
