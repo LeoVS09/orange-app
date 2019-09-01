@@ -52,7 +52,12 @@ import { City, CountryRepository } from '@/models/country'
 import { RouterPush } from '@/components/decorators'
 
 import {
-  List, ListColumn, LazyProperty, LazyData, PageHeader, Breadcrumb,
+  List,
+  ListColumn,
+  LazyProperty,
+  LazyData,
+  PageHeader,
+  Breadcrumb,
 } from '@/containers'
 
 @Component({

@@ -1,5 +1,7 @@
 import {
-  AbstractData, EventReducersMap, EventType, ModelEvent, ModelEventGetPropertyPayload,
+  AbstractData,
+  EventReducersMap,
+  ModelEventGetPropertyPayload,
 } from '@/lazyDB/core/types'
 import { lastObjectPropertyName } from '@/lazyDB/database/utils'
 import { ModelReadSchema } from '@/lazyDB/types'
@@ -9,14 +11,13 @@ import {
   ModelEventTypes,
   ReadEventPayload,
   ReadFailureEventPayload,
-  ReadSuccessEventPayload,
 } from '@/lazyDB/database/events'
 import { isSchemaField, wait } from '@/lazyDB/utils'
 import { QueryField } from '@/lazyDB/connectors/queryMapper'
 
 const api = {
   async fetch(entity: string, id: string, readSchema: ModelReadSchema) {
-    await wait(10000)
+    await wait(1000)
 
     const cityNames = ['some', 'strange', 'day', 'of', 'time']
 
@@ -142,6 +143,10 @@ export const repositoryReducers: EventReducersMap = {
     if (isExcludeProperty(store as IDatabaseProducerStore, payload))
       return true
 
+    const { base } = store
+    if (typeof base[payload.name as string] !== 'undefined')
+      return true
+
     const readSchema = getOrCreateReadSchema(store as IDatabaseProducerStore)
     appendPropertyToSchema(readSchema, payload)
 
@@ -154,3 +159,4 @@ export const repositoryReducers: EventReducersMap = {
 
   [ModelEventTypes.DeleteProperty]: (store, payload) => false,
 }
+

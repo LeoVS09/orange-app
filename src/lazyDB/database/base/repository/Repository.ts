@@ -1,10 +1,12 @@
 import { filter } from 'rxjs/operators'
 import { makeDatabaseTable, TableListKey } from '../../storage/table'
-import { ModelEventDispatcher } from '@/lazyDB/core/dispatcher/model/base'
 import { getStore } from '@/lazyDB/core/common'
 import { AbstractData, EventProducer, ModelAttributeType } from '@/lazyDB/core/types'
 import {
-  DatabaseTable, IDatabaseProducerStore, IEntityTypeSchema, ListProducer,
+  DatabaseTable,
+  IDatabaseProducerStore,
+  IEntityTypeSchema,
+  ListProducer,
 } from '../../types'
 import { applyRepositoryControls } from './controls'
 import { asyncReceiveWithMemory } from '@/lazyDB/core/receiver'
@@ -66,7 +68,9 @@ export default class LazyReactiveRepository {
      const { stream } = store
      if (stream) {
        stream.pipe(
-         filter(event => event.type === ModelEventTypes.SetProperty || event.type === ModelEventTypes.ReadSuccess),
+         filter(event =>
+           event.type === ModelEventTypes.SetProperty
+           || event.type === ModelEventTypes.ReadSuccess),
        )
          .subscribe(() => onChange())
      }

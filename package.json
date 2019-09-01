@@ -83,15 +83,15 @@
    "license": "GPL-3.0",
    "lint-staged": {
       "*.ts": [
-         "vue-cli-service lint",
+         "yarn lint",
          "git add"
       ],
       "*.vue": [
-         "vue-cli-service lint",
+         "yarn lint",
          "git add"
       ],
       "*.{js,vue,ts}": [
-         "vue-cli-service lint",
+         "yarn lint",
          "git add"
       ]
    },

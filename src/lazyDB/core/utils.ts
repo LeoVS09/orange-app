@@ -1,4 +1,5 @@
 // TODO: use lodash
+
 export function splitArray<T>(arr: Array<T>, predicate: (v: T) => boolean) {
   const searching = new Array<T>()
   const other = new Array<T>()

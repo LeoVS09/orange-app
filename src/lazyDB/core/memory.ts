@@ -21,4 +21,8 @@ export class StateMemory<T> {
    public filter(predicat: (event: T) => boolean) {
      return this.memory.filter(predicat)
    }
+
+   public findIndex(predicate: (value: T, index: number, obj: T[]) => boolean): number {
+     return this.memory.findIndex(predicate)
+   }
 }

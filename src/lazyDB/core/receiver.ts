@@ -1,4 +1,4 @@
-import { share, tap } from 'rxjs/operators'
+import { filter, share, tap } from 'rxjs/operators'
 import {
   EventReducersMap,
   ModelEvent,
@@ -9,6 +9,7 @@ import {
 } from './types'
 import { StateMemory } from './memory'
 import { pushToParentIfCan } from '@/lazyDB/core/toParent'
+import { isHaveEventInMemory } from '@/lazyDB/core/events'
 
 export const unsubscribeStore = ({ subscription }: IProducerStore) => subscription && subscription.unsubscribe()
 
@@ -57,19 +58,16 @@ export function atomicReceiveWithMemory(prducerStore: IProducerStore, reducers: 
   // If event not handled (handler return false) and storage have memory
   // event adding to storage memory
   receive(prducerStore, (event) => {
-    const { payload } = event
-    if (!payload) {
-      console.error('Not have payload on event:', event)
-      throw new Error('Not have event payload')
-    }
-
-    const { store } = payload
+    if (isHaveEventInMemory(event))
+      return
 
     const reducer = getReducer(event)
     if (!reducer)
       return
 
     const handleResult = handleByReducer(event, reducer)
+
+    const store = getStoreFromEvent(event)
 
     sync(handleResult)
       .then((isHandled) => {
@@ -106,6 +104,7 @@ export function asyncReceiveWithMemory(store: IProducerStore, reducers: EventRed
   // event would remove from storage memory
   store.stream = dispatcher.eventsSubject
     .pipe(
+      filter(event => !isHaveEventInMemory(event)),
       tap(saveInMemoryIfCan),
       share(),
     )
