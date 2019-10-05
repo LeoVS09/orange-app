@@ -13,7 +13,7 @@
             <router-link
                v-if="step.link"
                class="page-header--breadcrumb-step link"
-               :key="step.link"
+               :key="step.label"
                :to="step.link"
             >{{step.label}}</router-link>
             <span

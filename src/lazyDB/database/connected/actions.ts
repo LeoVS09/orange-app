@@ -14,6 +14,7 @@ import {
 } from '@/lazyDB/database/events'
 import { isSchemaField, wait } from '@/lazyDB/utils'
 import { QueryField } from '@/lazyDB/connectors/queryMapper'
+import { randomItem } from '@/store/utils'
 
 const api = {
   async fetch(entity: string, id: string, readSchema: ModelReadSchema) {
@@ -27,13 +28,16 @@ const api = {
       code: 'some code',
       createdAt: new Date(),
       updatedAt: new Date(),
-      cities: new Array(7).fill(0).map(i => ({
-        id: i,
-        name: `city ${cityNames[Math.random()]}`,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-        countryId: id,
-      })),
+      cities: {
+        totalCount: 20,
+        nodes: new Array(7).fill(0).map(i => ({
+          id: i,
+          name: `city ${randomItem(cityNames)}`,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+          countryId: id,
+        })),
+      },
     }
   },
 }
@@ -99,7 +103,18 @@ export const databaseReducers: EventReducersMap = {
     const { base } = store
 
     Object.keys(data)
-      .forEach(key => base[key] = data[key])
+      .forEach((key) => {
+        if (typeof data[key] !== 'object') {
+          base[key] = data[key]
+          return
+        }
+
+        const value = data[key]
+        // TODO: add intellectual deep set
+        Object.keys(value).forEach((valueKey) => {
+          base[key][valueKey] = value[valueKey]
+        })
+      })
 
     console.log('ModelEventTypes.ReadSuccess', base, data)
 

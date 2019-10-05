@@ -38,7 +38,8 @@ module.exports = {
     'no-multi-assign': 'off',
     'no-restricted-syntax': 'off',
     'no-continue': 'off',
-    'no-plusplus': 'off'
+    'no-plusplus': 'off',
+    'padded-blocks': 'off'
   },
   parserOptions: {
     parser: '@typescript-eslint/parser',

@@ -79,7 +79,9 @@ import {
 })
 export default class CountryView extends Vue {
   get model() {
-    return CountryRepository.findOne(this.id, () => this.$forceUpdate())
+    const model = CountryRepository.findOne(this.id, () => this.$forceUpdate())
+    console.log('nodes', model.cities.nodes)
+    return model
   }
 
    @Prop({
