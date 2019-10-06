@@ -96,7 +96,9 @@ export default class ListItem extends Vue {
      if (!visibleProps)
        visibleProps = Object.keys(item)
 
-     return visibleProps.map(key => item[key])
+     const result = visibleProps.map(key => item[key])
+     console.log('list item', result)
+     return result
    }
 
    @Emit(ListItemEvents.move)

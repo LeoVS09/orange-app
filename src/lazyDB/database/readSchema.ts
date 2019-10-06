@@ -1,24 +1,62 @@
 import { ModelReadSchema } from '@/lazyDB/types'
 import { isSchemaField } from '@/lazyDB/utils'
-import { ModelEventGetPropertyPayload } from '@/lazyDB/core/types'
+import { ModelAttributeType, ModelEventGetPropertyPayload } from '@/lazyDB/core/types'
+import { nodesKey } from '@/lazyDB/database/types'
 
-export function appendPropertyToSchema(schema: ModelReadSchema, { name, inner, type }: ModelEventGetPropertyPayload): boolean {
-  if (!inner) {
-    if (schema[name as string])
+export function appendPropertyToSchema(
+  schema: ModelReadSchema,
+  {
+    name,
+    inner,
+    type,
+  }: ModelEventGetPropertyPayload,
+): boolean {
+  name = toNumberIfCan(name)
+
+  if (typeof name === 'number') {
+    if (!inner)
       return false
 
-    schema[name as string] = type
+    return appendPropertyToSchema(schema, inner)
+  }
+
+  if (!inner) {
+    if (schema[name])
+      return false
+
+    schema[name] = type
     return true
   }
 
-  let property = schema[name as string]
+  let property = schema[name]
 
   if (!property || !isSchemaField(property)) {
-    property = schema[name as string] = {
-      type,
-      fields: { },
+    property = schema[name] = {
+      // Hack for graphql
+      // TODO: remove
+      type: inner.name === nodesKey
+        ? ModelAttributeType.OneToMany
+        : ModelAttributeType.OneToOne,
+      fields: {},
     }
   }
 
-  return appendPropertyToSchema(property.fields, inner)
+  if (property.type !== ModelAttributeType.OneToMany)
+    return appendPropertyToSchema(property.fields, inner)
+
+  if (inner.inner)
+    return appendPropertyToSchema(property.fields, inner.inner)
+
+  return true
+}
+
+export function toNumberIfCan(name: string | number | symbol): string | number {
+  if (typeof name === 'number')
+    return name
+
+  const parsedNumber = Number.parseInt(name as string, 10)
+  if (Number.isInteger(parsedNumber))
+    return parsedNumber
+
+  return name as string
 }

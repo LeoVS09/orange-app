@@ -3,7 +3,10 @@ import { wrapInProducer } from '@/lazyDB/core/producer/wrap'
 import { getStore } from '@/lazyDB/core/common'
 import { SymFor } from '@/lazyDB/core/utils'
 import {
-  DatabaseTable, DatabaseTableMap, ListItemGetter, ListItemGetterReference,
+  DatabaseTable,
+  DatabaseTableMap,
+  ListItemGetter,
+  ListItemGetterReference,
 } from '@/lazyDB/database/types'
 import { applyListControls, makeListSource } from '@/lazyDB/database/base/repository/list'
 
@@ -38,7 +41,7 @@ export const getter: ProducerStoreGetter = ({ base }, name) => {
   const table = base[TableStoreReference] as DatabaseTableMap
   const model = table.get(name as string)
 
-  return model || { }
+  return model || {}
 }
 
 export const setter: ProducerStoreSetter = ({ base }, name, value) => {

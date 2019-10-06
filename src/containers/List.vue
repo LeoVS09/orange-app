@@ -279,7 +279,9 @@ export default class List extends Mixins(Loadable) {
        return result
 
      const start = (this.currentPage - 1) * this.itemsOnPage
-     return result.slice(start, start + this.itemsOnPage)
+     const resultItems = result.slice(start, start + this.itemsOnPage)
+     console.log('list', resultItems, 'headers', this.headers)
+     return resultItems
    }
 
    get pagesCount() {

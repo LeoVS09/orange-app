@@ -1,12 +1,11 @@
 import { IProducerStore, ProducerStoreGetter, ProducerStoreSetter } from '@/lazyDB/core/types'
 import { getStore, isProducer } from '@/lazyDB/core/common'
 import { makeTemporalTrapObject } from '@/lazyDB/database/base/repository/temporal'
-import { ListItemGetterReference, ListSource } from '@/lazyDB/database/types'
+import {
+  ListItemGetterReference, ListSource, nodesKey, NodesProducerReference,
+} from '@/lazyDB/database/types'
 import { SymFor } from '@/lazyDB/core/utils'
-import { isArrayProperty } from '@/lazyDB/database/utils'
-
-const nodesKey = 'nodes'
-const NodesProducerReference = SymFor(`${nodesKey} producer`)
+import { ArrayStringProperty, isArrayProperty } from '@/lazyDB/database/utils'
 
 export const makeListSource = (): ListSource => ({
   pageNumber: 1,
@@ -67,6 +66,12 @@ export const setter: ProducerStoreSetter = ({ base }, name, value) => {
 // TODO: add typescript support for arrays
 const nodesGetter = (source: ListSource): ProducerStoreGetter<Array<any>> =>
   ({ base }, index) => {
+    console.log('get nodes', index, 'base', base)
+
+    const parsedIndex = Number.parseInt(index as string, 10)
+    if (Number.isInteger(parsedIndex))
+      index = parsedIndex
+
     if (typeof index === 'string') {
 
       if (!isArrayProperty(index))
@@ -77,20 +82,37 @@ const nodesGetter = (source: ListSource): ProducerStoreGetter<Array<any>> =>
       if (typeof property !== 'function')
         return property
 
-      return (...args: Array<any>) =>
-        // @ts-ignore
-        base[index](...args)
+      return arrayMethodWrapper(source, base, index)
     }
 
-    if (!base.length && base)
+    if (!base.length && base) {
+      console.log('make trap in nodes')
       return makeTemporalTrapObject()
+    }
 
     const getItem = source[ListItemGetterReference]
     if (!getItem)
       return
 
-    // TODO: add support to string properties for array, like 'slice' and other
-
     return getItem(source, index as number)
   }
 
+const isNeedProduceTrapForSlice = (source: ListSource, base: Array<any>, args: Array<any>) =>
+  !base.length && Math.abs(args[0] - args[1]) > 0 && !!source[NodesProducerReference]
+
+const arrayMethodWrapper = (source: ListSource, base: Array<any>, index: ArrayStringProperty) =>
+  (...args: Array<any>) => {
+    console.log('nodes property', index, args)
+
+    if (index === 'slice' && isNeedProduceTrapForSlice(source, base, args)) {
+      console.log('slice from array', source[NodesProducerReference])
+
+      // @ts-ignore
+      const result = source[NodesProducerReference][0]
+      console.log('slice from array result', result)
+      return [result]
+    }
+
+    // @ts-ignore
+    return base[index](...args)
+  }

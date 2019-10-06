@@ -14,12 +14,11 @@ export function pushPropertyEventsToParent(child: IProducerStore, prop: Property
 }
 
 export function pushToParentIfCan(
-  child: IProducerStore,
+  { parent }: IProducerStore,
   prop: PropertyKey,
   event: ModelEvent<ModelEventPayload | undefined>,
   type: ModelAttributeType = ModelAttributeType.OneToOne,
 ) {
-  const { parent } = child
   if (!parent)
     return
 

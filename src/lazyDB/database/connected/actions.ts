@@ -12,33 +12,36 @@ import {
   ReadEventPayload,
   ReadFailureEventPayload,
 } from '@/lazyDB/database/events'
-import { isSchemaField, wait } from '@/lazyDB/utils'
-import { QueryField } from '@/lazyDB/connectors/queryMapper'
-import { randomItem } from '@/store/utils'
+import { dateToStringFormatter, isSchemaField, wait } from '@/lazyDB/utils'
+import { generateQueryEntityById, QueryField } from '@/lazyDB/connectors/queryMapper'
+import { databaseClient } from '@/api/database/utils'
 
 const api = {
   async fetch(entity: string, id: string, readSchema: ModelReadSchema) {
-    await wait(1000)
+    // TODO: schema not generated for internal nodes objects
+    console.log('read schema', readSchema)
 
-    const cityNames = ['some', 'strange', 'day', 'of', 'time']
+    const fields = schemaToQueryFields(readSchema)
+    console.log('read schema fields', fields)
 
-    return {
-      id,
-      name: `${entity} ${id}`,
-      code: 'some code',
-      createdAt: new Date(),
-      updatedAt: new Date(),
-      cities: {
-        totalCount: 20,
-        nodes: new Array(7).fill(0).map(i => ({
-          id: i,
-          name: `city ${randomItem(cityNames)}`,
-          createdAt: new Date(),
-          updatedAt: new Date(),
-          countryId: id,
-        })),
-      },
+    const query = generateQueryEntityById(entity, fields)
+    console.log('read schema query', query)
+
+    const { data, errors } = await databaseClient.query({
+      query,
+      variables: { id },
+    })
+
+    if (errors) {
+      console.error('Errors on read request to entity', entity, 'with returned data:', data, 'and errors', errors)
+      throw new Error(`Error on request${errors.toString()}`)
     }
+
+    console.log('data result fetched', data)
+
+    const formated = dateToStringFormatter(data)
+
+    return formated[entity]
   },
 }
 
@@ -159,7 +162,7 @@ export const repositoryReducers: EventReducersMap = {
       return true
 
     const { base } = store
-    if (typeof base[payload.name as string] !== 'undefined')
+    if (!payload.inner && typeof base[payload.name as string] !== 'undefined')
       return true
 
     const readSchema = getOrCreateReadSchema(store as IDatabaseProducerStore)

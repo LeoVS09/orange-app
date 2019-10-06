@@ -1,5 +1,4 @@
 import { Observable, Subject, Subscription } from 'rxjs'
-import { Payload } from 'vuex'
 import { SymFor } from './utils'
 import { StateMemory } from './memory'
 

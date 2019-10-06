@@ -14,6 +14,7 @@ const DEFAULT_EXCLUDE_PROPERTIES = [
   'catch',
   'function () { [native code] }',
   'slice',
+  'length',
 ]
 
 // Simple version of database

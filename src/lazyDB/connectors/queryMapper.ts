@@ -2,26 +2,28 @@ import gql from 'graphql-tag'
 import { ModelAttributeType } from '@/lazyDB/core/types'
 
 export interface QueryField {
-   entity: string
-   type: ModelAttributeType
-   fields: Array<string | QueryField>
+  entity: string
+  type: ModelAttributeType
+  fields: Array<string | QueryField>
 }
 
 const requiredFields = ['id', 'nodeId']
 
-function buildFieldsQuery(fields: Array<string | QueryField>): string {
+const makeSpaces = (count: number) => new Array(count).fill('\t').join('')
+
+function buildFieldsQuery(fields: Array<string | QueryField>, countSpaces = 1): string {
   const generateField = (field: string | QueryField) => {
     if (typeof field !== 'object')
       return field
 
     if (field.type === ModelAttributeType.OneToOne)
-      return `${field.entity} ${buildFieldsQuery(field.fields)}`
+      return `${field.entity} ${buildFieldsQuery(field.fields, countSpaces + 1)}`
 
     if (field.type === ModelAttributeType.OneToMany) {
-      return `${field.entity} {
-            totalCount
-            nodes ${buildFieldsQuery(field.fields)}
-         }`
+      return `${field.entity} {\n`
+        + `${makeSpaces(countSpaces + 1)}totalCount\n`
+        + `${makeSpaces(countSpaces + 1)}nodes ${buildFieldsQuery(field.fields, countSpaces + 2)}\n`
+        + `${makeSpaces(countSpaces)}}`
     }
 
     throw new Error(`Unexpected field type${field.type}`)
@@ -29,12 +31,13 @@ function buildFieldsQuery(fields: Array<string | QueryField>): string {
 
   const uniquely = removeEqual([...requiredFields, ...fields])
 
-  const values = uniquely.reduce((all, field) => `${all}
-      ${generateField(field)}`,
+  const values = uniquely.reduce((all, field) =>
+    `${all}\n${
+      makeSpaces(countSpaces)}${generateField(field)}`,
   '')
-  return `{
-      ${values}
-      }`
+
+  return `{${values}\n${
+    makeSpaces(countSpaces - 1)}}`
 }
 
 function removeEqual<T>(items: Array<T>): Array<T> {
@@ -51,11 +54,14 @@ function removeEqual<T>(items: Array<T>): Array<T> {
 export function generateQueryEntityById(entity: string, fields: Array<string | QueryField>): any {
   const queryName = firstToUpperCase(entity)
 
-  return gql(`
+  const query = `
       query ${queryName}($id: UUID!) {
-         ${entity}(id: $id) ${buildFieldsQuery(fields)}
+         ${entity}(id: $id) ${buildFieldsQuery(fields, 3)}
       }
-   `)
+   `
+
+  console.log('query', query)
+  return gql(query)
 }
 
 export function generateQueryList(listName: string, fields: Array<string | QueryField>): any {
