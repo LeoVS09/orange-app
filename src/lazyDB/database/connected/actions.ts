@@ -108,7 +108,7 @@ export const databaseReducers: EventReducersMap = {
 
     Object.keys(data)
       .forEach((key) => {
-        if (typeof data[key] !== 'object') {
+        if (!isObject(data[key]) || isDate(data[key])) {
           base[key] = data[key]
           return
         }
@@ -131,6 +131,9 @@ export const databaseReducers: EventReducersMap = {
     return false
   },
 }
+
+const isObject = (value: any): value is Object => typeof value === 'object'
+const isDate = (value: any): value is Date => value instanceof Date
 
 function getOrCreateReadSchema(store: IDatabaseProducerStore): ModelReadSchema {
   const { readSchema } = store
@@ -162,7 +165,7 @@ const isDefinedSimpleProperty = (
   { name, inner }: ModelEventGetPropertyPayload,
 ) =>
   !inner
-  && typeof base[name as string] === 'undefined'
+  && typeof base[name as string] !== 'undefined'
 
 export const repositoryReducers: EventReducersMap = {
   [ModelEventTypes.GetProperty]: (store, payload) => {
