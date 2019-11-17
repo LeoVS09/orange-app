@@ -1,9 +1,9 @@
 <template>
    <div class="city">
       <PageHeader
-         :createdAt="model && model.createdAt"
-         :modified="model && model.updatedAt"
-         v-model="model && model.name"
+         :createdAt="model.createdAt"
+         :modified="model.updatedAt"
+         v-model="model.name"
          :is-loading="model | isReading('name')"
       >
          <template #breadcrumbs>

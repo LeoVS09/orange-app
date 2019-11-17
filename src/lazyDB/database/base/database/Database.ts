@@ -53,6 +53,7 @@ export default class LazyReactiveDatabase implements ILazyReactiveDatabase {
 
   public setSchema(entity: string, schema: IEntityTypeSchema) {
     this.schemas[entity] = schema
+    console.log('database schema setted', entity, schema, this.schemas)
   }
 
   public findOne(entity: string, id: string): EventProducer {

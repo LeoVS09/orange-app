@@ -1,9 +1,9 @@
 <template>
    <div class="university">
       <PageHeader
-         :createdAt="model && model.createdAt"
-         :modified="model && model.updatedAt"
-         v-model="model && model.shortName"
+         :createdAt="model.createdAt"
+         :modified="model.updatedAt"
+         v-model="model.shortName"
          :is-loading="model | isReading('shortName')"
       >
          <template #breadcrumbs>

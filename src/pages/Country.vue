@@ -35,7 +35,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop } from 'vue-property-decorator'
+import { Component, Prop, Mixins } from 'vue-property-decorator'
 import { Getter } from 'vuex-class'
 import Vue from 'vue'
 import {
@@ -50,6 +50,7 @@ import {
 import { ROUTES } from '@/router'
 import { City, CountryRepository } from '@/models/country'
 import { RouterPush } from '@/components/decorators'
+import ReactiveUpdate, { reactiveUpdate } from '@/components/mixins/ReactiveUpdate'
 
 import {
   List,
@@ -77,11 +78,9 @@ import {
     ListColumn,
   },
 })
-export default class CountryView extends Vue {
+export default class CountryView extends Mixins(ReactiveUpdate) {
   get model() {
-    const model = CountryRepository.findOne(this.id, () => this.$forceUpdate())
-    console.log('nodes', model.cities.nodes)
-    return model
+    return CountryRepository.findOne(this.id, reactiveUpdate(this))
   }
 
    @Prop({

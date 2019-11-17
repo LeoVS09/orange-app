@@ -8,7 +8,7 @@ import {
   IEntityTypeSchema,
   ListProducer,
 } from '../../types'
-import { applyRepositoryControls } from './controls'
+import { applyRepositoryControls, IGetSchema } from './controls'
 import { asyncReceiveWithMemory } from '@/lazyDB/core/receiver'
 import { repositoryReducers } from '@/lazyDB/database/connected/actions'
 import { getsSpawnReadEvent } from '@/lazyDB/database/cycle/read'
@@ -28,6 +28,8 @@ export default class LazyReactiveRepository {
    public schema?: IEntityTypeSchema
 
    public excludeProperties: Array<string> = []
+
+   public getSchema?: IGetSchema
 
    constructor(
      entity: string,
@@ -56,7 +58,7 @@ export default class LazyReactiveRepository {
      const model = this.table[id]
      const store = getDatabaseStore(model)
 
-     applyRepositoryControls(store, this.schema)
+     applyRepositoryControls(store, this.schema, this.getSchema)
 
      store.excludeProperties = this.excludeProperties
      // TODO: remove requiring of order
