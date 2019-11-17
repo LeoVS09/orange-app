@@ -2,6 +2,7 @@ import {
   AbstractData,
   EventReducersMap,
   ModelEventGetPropertyPayload,
+  IProducerStore,
 } from '@/lazyDB/core/types'
 import { lastObjectPropertyName } from '@/lazyDB/database/utils'
 import { ModelReadSchema } from '@/lazyDB/types'
@@ -156,19 +157,27 @@ export function schemaToQueryFields(schema: ModelReadSchema): Array<string | Que
   })
 }
 
+const isDefinedSimpleProperty = (
+  { base }: IProducerStore<AbstractData>,
+  { name, inner }: ModelEventGetPropertyPayload,
+) =>
+  !inner
+  && typeof base[name as string] === 'undefined'
+
 export const repositoryReducers: EventReducersMap = {
   [ModelEventTypes.GetProperty]: (store, payload) => {
     if (isExcludeProperty(store as IDatabaseProducerStore, payload))
       return true
 
-    const { base } = store
-    if (!payload.inner && typeof base[payload.name as string] !== 'undefined')
+    if (isDefinedSimpleProperty(store, payload))
       return true
 
     const readSchema = getOrCreateReadSchema(store as IDatabaseProducerStore)
-    appendPropertyToSchema(readSchema, payload)
 
-    console.log('readSchema', readSchema)
+    const isAppended = appendPropertyToSchema(readSchema, payload)
+    console.log('readSchema:', readSchema, 'event:', payload, 'isAppended:', isAppended)
+    if (!isAppended)
+      return true
 
     return false
   },

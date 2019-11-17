@@ -31,7 +31,7 @@ export function getsSpawnReadEvent(
       debounceTime(READ_TIME),
       map(() => {
         const gets = memory!.filter(event => event.type === ModelEventTypes.GetProperty)
-        console.log(memory!.memory.length, memory)
+        console.log('get events spawn readd event', memory!.memory.length, memory)
         return gets
       }),
       filter(gets => !!gets.length),

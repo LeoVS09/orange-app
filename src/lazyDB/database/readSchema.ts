@@ -1,6 +1,6 @@
-import { ModelReadSchema } from '@/lazyDB/types'
+import { ModelReadSchema, ModelReadSchemaField } from '@/lazyDB/types'
 import { isSchemaField } from '@/lazyDB/utils'
-import { ModelAttributeType, ModelEventGetPropertyPayload } from '@/lazyDB/core/types'
+import { ModelAttributeType, ModelEventGetPropertyPayload, ModelEventInnerPayload } from '@/lazyDB/core/types'
 import { nodesKey } from '@/lazyDB/database/types'
 
 export function appendPropertyToSchema(
@@ -13,33 +13,13 @@ export function appendPropertyToSchema(
 ): boolean {
   name = toNumberIfCan(name)
 
-  if (typeof name === 'number') {
-    if (!inner)
-      return false
+  if (typeof name === 'number') 
+    return appendNumberPropertyToSchema(schema, name, inner)
 
-    return appendPropertyToSchema(schema, inner)
-  }
+  if (!inner) 
+    return appendSimplePropertyToSchema(schema, name, type)
 
-  if (!inner) {
-    if (schema[name])
-      return false
-
-    schema[name] = type
-    return true
-  }
-
-  let property = schema[name]
-
-  if (!property || !isSchemaField(property)) {
-    property = schema[name] = {
-      // Hack for graphql
-      // TODO: remove
-      type: inner.name === nodesKey
-        ? ModelAttributeType.OneToMany
-        : ModelAttributeType.OneToOne,
-      fields: {},
-    }
-  }
+  const { property, isCreated } = getOrCreateSchemaFieldProperty(schema, name, inner)
 
   if (property.type !== ModelAttributeType.OneToMany)
     return appendPropertyToSchema(property.fields, inner)
@@ -47,7 +27,55 @@ export function appendPropertyToSchema(
   if (inner.inner)
     return appendPropertyToSchema(property.fields, inner.inner)
 
+  return isCreated
+}
+
+function appendNumberPropertyToSchema(
+  schema: ModelReadSchema,
+  name: number, 
+  inner: ModelEventInnerPayload<any> | undefined
+): boolean {
+  if (!inner)
+    return false
+
+  return appendPropertyToSchema(schema, inner)
+}
+
+function appendSimplePropertyToSchema(
+  schema: ModelReadSchema,
+  name: string,
+  type: ModelAttributeType
+){
+  if (schema[name])
+    return false
+
+  schema[name] = type
   return true
+}
+
+export interface GetOrCreateSchemaFieldResult {
+  property: ModelReadSchemaField
+  isCreated: boolean
+}
+
+function getOrCreateSchemaFieldProperty(
+  schema: ModelReadSchema,
+  name: string,
+  inner: ModelEventInnerPayload<any>
+): GetOrCreateSchemaFieldResult {
+  let property = schema[name]
+  if (property && isSchemaField(property)) 
+    return { property, isCreated: false }
+
+  property = schema[name] = {
+    // Hack for graphql
+    // TODO: remove
+    type: inner.name === nodesKey
+      ? ModelAttributeType.OneToMany
+      : ModelAttributeType.OneToOne,
+    fields: {},
+  }
+  return { property, isCreated: true }
 }
 
 export function toNumberIfCan(name: string | number | symbol): string | number {

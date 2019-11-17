@@ -13,16 +13,24 @@ import { isHaveEventInMemory } from '@/lazyDB/core/events'
 
 export const unsubscribeStore = ({ subscription }: IProducerStore) => subscription && subscription.unsubscribe()
 
-export function receive(
-  store: IProducerStore,
-  subscriber: (event: ModelEvent<ModelEventPayload | undefined>) => void | Promise<void>,
-) {
-  unsubscribeStore(store)
+export interface ISubscriber {
+  (event: ModelEvent<ModelEventPayload | undefined>): void | Promise<void>
+}
 
+export const subscribeStore = (store: IProducerStore, subscriber: ISubscriber) => {
   const { dispatcher } = store
 
   store.subscription = dispatcher.eventsSubject
     .subscribe(subscriber)
+}
+
+export function receive(
+  store: IProducerStore,
+  subscriber: ISubscriber,
+) {
+  unsubscribeStore(store)
+
+  subscribeStore(store, subscriber)
 }
 
 export function atomicReceiveByReducers(store: IProducerStore, reducers: EventReducersMap) {

@@ -72,8 +72,8 @@ export default class LazyReactiveRepository {
            event.type === ModelEventTypes.SetProperty
            || event.type === ModelEventTypes.ReadSuccess),
        )
-         .subscribe(() => {
-           console.log('Update on change', this)
+         .subscribe((event) => {
+           console.log('Update on change', event, this)
            onChange()
          })
      }
