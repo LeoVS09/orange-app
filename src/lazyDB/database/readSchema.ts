@@ -13,10 +13,10 @@ export function appendPropertyToSchema(
 ): boolean {
   name = toNumberIfCan(name)
 
-  if (typeof name === 'number') 
+  if (typeof name === 'number')
     return appendNumberPropertyToSchema(schema, name, inner)
 
-  if (!inner) 
+  if (!inner)
     return appendSimplePropertyToSchema(schema, name, type)
 
   const { property, isCreated } = getOrCreateSchemaFieldProperty(schema, name, inner)
@@ -32,8 +32,8 @@ export function appendPropertyToSchema(
 
 function appendNumberPropertyToSchema(
   schema: ModelReadSchema,
-  name: number, 
-  inner: ModelEventInnerPayload<any> | undefined
+  name: number,
+  inner: ModelEventInnerPayload<any> | undefined,
 ): boolean {
   if (!inner)
     return false
@@ -44,8 +44,8 @@ function appendNumberPropertyToSchema(
 function appendSimplePropertyToSchema(
   schema: ModelReadSchema,
   name: string,
-  type: ModelAttributeType
-){
+  type: ModelAttributeType,
+) {
   if (schema[name])
     return false
 
@@ -61,10 +61,10 @@ export interface GetOrCreateSchemaFieldResult {
 function getOrCreateSchemaFieldProperty(
   schema: ModelReadSchema,
   name: string,
-  inner: ModelEventInnerPayload<any>
+  inner: ModelEventInnerPayload<any>,
 ): GetOrCreateSchemaFieldResult {
   let property = schema[name]
-  if (property && isSchemaField(property)) 
+  if (property && isSchemaField(property))
     return { property, isCreated: false }
 
   property = schema[name] = {
