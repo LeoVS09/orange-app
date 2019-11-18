@@ -11,33 +11,40 @@ const requiredFields = ['id', 'nodeId']
 
 const makeSpaces = (count: number) => new Array(count).fill('\t').join('')
 
+const generateOneToOneQueryFields = (field: QueryField, countSpaces: number) =>
+  `${field.entity} ${buildFieldsQuery(field.fields, countSpaces + 1)}`
+
+const generateOneToManyQueryFields = (field: QueryField, countSpaces: number) =>
+  `${field.entity} {\n`
+    + `${makeSpaces(countSpaces + 1)}totalCount\n`
+    + `${makeSpaces(countSpaces + 1)}nodes ${buildFieldsQuery(field.fields, countSpaces + 2)}\n`
+    + `${makeSpaces(countSpaces)}}`
+
+const generateField = (field: string | QueryField, countSpaces: number) => {
+  if (typeof field !== 'object')
+    return field
+
+  if (field.type === ModelAttributeType.OneToOne)
+    return generateOneToOneQueryFields(field, countSpaces)
+
+  if (field.type === ModelAttributeType.OneToMany)
+    return generateOneToManyQueryFields(field, countSpaces)
+
+  throw new Error(`Unexpected field type${field.type}`)
+}
+
 function buildFieldsQuery(fields: Array<string | QueryField>, countSpaces = 1): string {
-  const generateField = (field: string | QueryField) => {
-    if (typeof field !== 'object')
-      return field
-
-    if (field.type === ModelAttributeType.OneToOne)
-      return `${field.entity} ${buildFieldsQuery(field.fields, countSpaces + 1)}`
-
-    if (field.type === ModelAttributeType.OneToMany) {
-      return `${field.entity} {\n`
-        + `${makeSpaces(countSpaces + 1)}totalCount\n`
-        + `${makeSpaces(countSpaces + 1)}nodes ${buildFieldsQuery(field.fields, countSpaces + 2)}\n`
-        + `${makeSpaces(countSpaces)}}`
-    }
-
-    throw new Error(`Unexpected field type${field.type}`)
-  }
-
   const uniquely = removeEqual([...requiredFields, ...fields])
 
   const values = uniquely.reduce((all, field) =>
     `${all}\n${
-      makeSpaces(countSpaces)}${generateField(field)}`,
+      makeSpaces(countSpaces)}${generateField(field, countSpaces)
+    }`,
   '')
 
   return `{${values}\n${
-    makeSpaces(countSpaces - 1)}}`
+    makeSpaces(countSpaces - 1)
+  }}`
 }
 
 function removeEqual<T>(items: Array<T>): Array<T> {
@@ -50,6 +57,10 @@ function removeEqual<T>(items: Array<T>): Array<T> {
 
   return result
 }
+export interface QueryEntityByIdGenerated {
+  query: any,
+  name: string
+}
 
 export function generateQueryEntityById(entity: string, fields: Array<string | QueryField>): any {
   const queryName = firstToUpperCase(entity)
@@ -61,22 +72,41 @@ export function generateQueryEntityById(entity: string, fields: Array<string | Q
    `
 
   console.log('query', query)
-  return gql(query)
+  return { query: gql(query), name: entity }
 }
 
-export function generateQueryList(listName: string, fields: Array<string | QueryField>): any {
+export interface QueryListGenerated {
+  query: any,
+  name: string
+}
+
+export function generateQueryList(entity: string, fields: Array<string | QueryField>): QueryListGenerated {
+  const listName = entityToList(entity)
   const queryName = firstToUpperCase(listName)
 
-  return gql(`
-      query ${queryName} {
-         ${listName} {
-            totalCount
-            nodes ${buildFieldsQuery(fields)}
-         }
-      }
-   `)
+  const field = fields[0]
+
+  if (typeof field !== 'object')
+    throw new Error(`Cannot generate list for string field: ${entity}`)
+
+  field.entity = listName
+
+  const query = `
+    query ${queryName} {
+      ${generateOneToManyQueryFields(field, 1)}
+    }
+  `
+  console.log('query', query)
+  return { query: gql(query), name: listName }
 }
 
 function firstToUpperCase(str: string) {
   return str[0].toUpperCase() + str.slice(1)
+}
+
+function entityToList(entity: string): string {
+  if (entity.slice(-1) === 'y')
+    return `${entity.slice(0, -1)}ies`
+
+  return `${entity}s`
 }

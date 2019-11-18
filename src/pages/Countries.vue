@@ -23,16 +23,21 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import { Component } from 'vue-property-decorator'
+import { Component, Mixins } from 'vue-property-decorator'
 import { Getter } from 'vuex-class'
 import { Country } from '@/models'
 import {
-  Button, Tags, Section, PageHeaderAction, Filters,
+  Button, 
+  Tags, 
+  Section, 
+  PageHeaderAction, 
+  Filters,
 } from '@/components'
 import { ROUTES } from '@/router'
 import { RouterPush } from '@/components/decorators'
 import { CountryRepository } from '@/models/country'
 import { List, ListColumn, PageHeader } from '@/containers'
+import ReactiveUpdate, { reactiveUpdate } from '@/components/mixins/ReactiveUpdate'
 
 @Component({
   components: {
@@ -46,16 +51,16 @@ import { List, ListColumn, PageHeader } from '@/containers'
     Action: PageHeaderAction,
   },
 })
-export default class Countries extends Vue {
+export default class Countries extends Mixins(ReactiveUpdate) {
    @Getter public isTeacher!: boolean;
 
    @RouterPush(ROUTES.COUNTRY)
    public chooseItem!: (country: Country) => void;
 
-   public data() {
-     return {
-       list: CountryRepository.list(),
-     }
+   get list() {
+     const countries = CountryRepository.list(reactiveUpdate(this))
+     console.log('countries', countries)
+     return countries
    }
 
    public add() {

@@ -41,10 +41,10 @@
          <transition-group :name="listTransitionName" tag="div" mode="out-in">
 
             <list-item
-               v-for="item in visibleItems"
+               v-for="(item, index) in visibleItems"
                @click="onClickItem(item)"
                :visibleProps="headers.map(h => h.key)"
-               :key="hash(item)"
+               :key="item ? hash(item) : index"
                :item="item"
                :formatData="formatData"
                @list-item-over="onItemOver(item)"
@@ -254,6 +254,7 @@ export default class List extends Mixins(Loadable) {
 
    get visibleItems(): DataItem[] {
      let result = this.items
+     console.log('List component items', result)
 
      if (this.filter)
        result = result.filter(this.filter)

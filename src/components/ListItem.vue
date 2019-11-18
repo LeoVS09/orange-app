@@ -15,8 +15,8 @@
       <div class="list-item--content">
          <span
            class="list-item--property"
-               v-for="property in properties"
-           :key="`${property}`"
+           v-for="(property, index) in properties"
+           :key="typeof property !== 'undefined' ? `${property}` : index"
          >{{property | formatDate}}</span>
       </div>
    </div>

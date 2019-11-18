@@ -60,23 +60,38 @@ export default class LazyReactiveRepository {
 
      applyRepositoryControls(store, this.schema, this.getSchema)
 
-     store.excludeProperties = this.excludeProperties
-     // TODO: remove requiring of order
-     // Current logic require this order to call functions
-     asyncReceiveWithMemory(store, repositoryReducers, id, ModelAttributeType.OneToOne)
-     // spawn require to stream which generate only on async receive
-     getsSpawnReadEvent(store)
-
-     updateOnChange(store, onChange)
+     appendRepositoryLifeHooks(store, id, this.excludeProperties, onChange)
 
      return model
    }
 
-   public list<T = any>(): ListProducer<T> {
-     return this.table[TableListKey] as ListProducer<T>
+   public list<T = any>(onChange?: OnChangeCallback): ListProducer<T> {
+     const list = this.table[TableListKey] as ListProducer<T>
+
+     const store = getDatabaseStore(list)
+
+     appendRepositoryLifeHooks(store, TableListKey, this.excludeProperties, onChange)
+
+     return list
    }
 
    public set(id: string, data: AbstractData | EventProducer) {
      this.table[id] = data
    }
+}
+
+function appendRepositoryLifeHooks(
+  store: IDatabaseModelProducerStore,
+  id: string,
+  excludeProperties: Array<string>,
+  onChange?: OnChangeCallback,
+) {
+  store.excludeProperties = excludeProperties
+  // TODO: remove requiring of order
+  // Current logic require this order to call functions
+  asyncReceiveWithMemory(store, repositoryReducers, id, ModelAttributeType.OneToOne)
+  // spawn require to stream which generate only on async receive
+  getsSpawnReadEvent(store)
+
+  updateOnChange(store, onChange)
 }

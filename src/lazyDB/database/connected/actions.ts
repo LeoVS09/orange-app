@@ -12,10 +12,12 @@ import {
   ModelEventTypes,
   ReadEventPayload,
   ReadFailureEventPayload,
+  ModelEventReadPayload,
 } from '@/lazyDB/database/events'
 import { dateToStringFormatter, isSchemaField, wait } from '@/lazyDB/utils'
-import { generateQueryEntityById, QueryField } from '@/lazyDB/connectors/queryMapper'
+import { generateQueryEntityById, QueryField, generateQueryList } from '@/lazyDB/connectors/queryMapper'
 import { databaseClient } from '@/api/database/utils'
+import { TableListKey } from '../storage/table'
 
 const api = {
   async fetch(entity: string, id: string, readSchema: ModelReadSchema) {
@@ -25,7 +27,7 @@ const api = {
     const fields = schemaToQueryFields(readSchema)
     console.log('read schema fields', fields)
 
-    const query = generateQueryEntityById(entity, fields)
+    const { query, name } = generateQueryEntityById(entity, fields)
     console.log('read schema query', query)
 
     const { data, errors } = await databaseClient.query({
@@ -42,7 +44,33 @@ const api = {
 
     const formated = dateToStringFormatter(data)
 
-    return formated[entity]
+    return formated[name]
+  },
+
+  async list(entity: string, readSchema: ModelReadSchema) {
+    // TODO: schema not generated for internal nodes objects
+    console.log('read schema for list', readSchema)
+
+    const fields = schemaToQueryFields(readSchema)
+    console.log('read schema fields', fields)
+
+    const { query, name } = generateQueryList(entity, fields)
+    console.log('read schema query', query)
+
+    const { data, errors } = await databaseClient.query({
+      query,
+    })
+
+    if (errors) {
+      console.error('Errors on read request to entity', entity, 'with returned data:', data, 'and errors', errors)
+      throw new Error(`Error on request${errors.toString()}`)
+    }
+
+    console.log('data result fetched', data)
+
+    const formated = dateToStringFormatter(data)
+
+    return formated[name]
   },
 }
 
@@ -72,6 +100,13 @@ const dispatchReadFailure = ({ store }: ReadEventPayload, error: any) => {
   dispatcher.readFailure(error, store)
 }
 
+const fetchListOrEntity = (payload: any) => {
+  if (payload.inner.name === TableListKey)
+    return api.list(payload.name, payload.inner.inner.readSchema)
+
+  return api.fetch(payload.name, payload.inner.name, payload.inner.inner.readSchema)
+}
+
 export const databaseReducers: EventReducersMap = {
   [ModelEventTypes.GetProperty]: (store, payload) => {
     if (isExcludeProperty(store as IDatabaseModelProducerStore, payload))
@@ -90,7 +125,8 @@ export const databaseReducers: EventReducersMap = {
     try {
       console.log(getRequest, schemaToQueryFields(payload.inner.inner.readSchema))
 
-      const response = await api.fetch(payload.name, payload.inner.name, payload.inner.inner.readSchema)
+      const response = await fetchListOrEntity(payload)
+      console.log('read response', response)
 
       removeGetEventsFromMemory(payload.inner.inner)
 
@@ -105,6 +141,8 @@ export const databaseReducers: EventReducersMap = {
   [ModelEventTypes.ReadSuccess]: (_, payload) => {
     const { data, store } = payload.inner.inner
     const { base } = store
+
+    console.log('read success data', data)
 
     Object.keys(data)
       .forEach((key) => {
