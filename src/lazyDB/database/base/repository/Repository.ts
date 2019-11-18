@@ -1,19 +1,19 @@
-import { filter } from 'rxjs/operators'
 import { makeDatabaseTable, TableListKey } from '../../storage/table'
 import { getStore } from '@/lazyDB/core/common'
 import { AbstractData, EventProducer, ModelAttributeType } from '@/lazyDB/core/types'
 import {
   DatabaseTable,
-  IDatabaseProducerStore,
+  IDatabaseModelProducerStore,
   IEntityTypeSchema,
   ListProducer,
+  OnChangeCallback,
 } from '../../types'
 import { applyRepositoryControls, IGetSchema } from './controls'
 import { asyncReceiveWithMemory } from '@/lazyDB/core/receiver'
 import { repositoryReducers } from '@/lazyDB/database/connected/actions'
 import { getsSpawnReadEvent } from '@/lazyDB/database/cycle/read'
 import { DatabaseDispatcher, getDatabaseStore } from '@/lazyDB/database/dispatcher'
-import { ModelEventTypes } from '@/lazyDB/database/events'
+import { updateOnChange } from '../../cycle/change'
 
 export interface LazyReactiveRepositoryOptions {
    table?: DatabaseTable
@@ -43,15 +43,15 @@ export default class LazyReactiveRepository {
      this.schema = schema
    }
 
-   public get store(): IDatabaseProducerStore {
-     return getStore(this.table) as IDatabaseProducerStore
+   public get store(): IDatabaseModelProducerStore {
+     return getStore(this.table) as IDatabaseModelProducerStore
    }
 
    public get dispatcher(): DatabaseDispatcher {
      return this.store.dispatcher as DatabaseDispatcher
    }
 
-   public findOne(id: string, onChange: () => void = () => {}): EventProducer {
+   public findOne(id: string, onChange?: OnChangeCallback): EventProducer {
      if (!this.schema)
        return this.table[id]
 
@@ -67,18 +67,7 @@ export default class LazyReactiveRepository {
      // spawn require to stream which generate only on async receive
      getsSpawnReadEvent(store)
 
-     const { stream } = store
-     if (stream) {
-       stream.pipe(
-         filter(event =>
-           event.type === ModelEventTypes.SetProperty
-           || event.type === ModelEventTypes.ReadSuccess),
-       )
-         .subscribe((event) => {
-           console.log('Update on change', event, this)
-           onChange()
-         })
-     }
+     updateOnChange(store, onChange)
 
      return model
    }

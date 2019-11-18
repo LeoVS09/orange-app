@@ -9,15 +9,15 @@ import {
   ModelEventPayload,
 } from '@/lazyDB/core/types'
 import { ModelEventTypes, ReadFailureEventPayload, ReadSuccessEventPayload } from '@/lazyDB/database/events'
-import { IDatabaseProducerStore } from '@/lazyDB/database/types'
+import { IDatabaseModelProducerStore } from '@/lazyDB/database/types'
 import { getStore } from '@/lazyDB/core/common'
 
-export const readSuccessEventPayload = (data: AbstractData, store: IDatabaseProducerStore): ReadSuccessEventPayload => ({
+export const readSuccessEventPayload = (data: AbstractData, store: IDatabaseModelProducerStore): ReadSuccessEventPayload => ({
   data,
   store,
 })
 
-export const readFailureEventPayload = <T extends Error = any>(error: T, store: IDatabaseProducerStore): ReadFailureEventPayload<T> => ({
+export const readFailureEventPayload = <T extends Error = any>(error: T, store: IDatabaseModelProducerStore): ReadFailureEventPayload<T> => ({
   error,
   store,
 })
@@ -45,9 +45,9 @@ export class DatabaseDispatcher implements IModelEventDispatcher<ModelEventPaylo
      this.delete = (...args) => this.dispatcher.delete(...args)
    }
 
-   public readSuccess = (data: AbstractData, store: IDatabaseProducerStore) => this.dispatch(ModelEventTypes.ReadSuccess, readSuccessEventPayload(data, store))
+   public readSuccess = (data: AbstractData, store: IDatabaseModelProducerStore) => this.dispatch(ModelEventTypes.ReadSuccess, readSuccessEventPayload(data, store))
 
-   public readFailure = (error: Error, store: IDatabaseProducerStore) => this.dispatch(ModelEventTypes.ReadFailure, readFailureEventPayload(error, store))
+   public readFailure = (error: Error, store: IDatabaseModelProducerStore) => this.dispatch(ModelEventTypes.ReadFailure, readFailureEventPayload(error, store))
 }
 
 export function isDatabaseDispatcher(value: any): value is DatabaseDispatcher {
@@ -75,10 +75,10 @@ export function wrapToDatabaseDispatcher(store: IProducerStore) {
   store.dispatcher = new DatabaseDispatcher(store.dispatcher)
 }
 
-export function getDatabaseStore(model: AbstractData | EventProducer): IDatabaseProducerStore {
+export function getDatabaseStore(model: AbstractData | EventProducer): IDatabaseModelProducerStore {
   const store = getStore(model)
 
   wrapToDatabaseDispatcher(store)
 
-  return store as IDatabaseProducerStore
+  return store as IDatabaseModelProducerStore
 }

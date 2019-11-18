@@ -6,7 +6,7 @@ import {
   ModelEventPayload,
 } from '../core/types'
 import { ModelReadSchema } from '@/lazyDB/types'
-import { IDatabaseProducerStore, ListSource } from '@/lazyDB/database/types'
+import { IDatabaseModelProducerStore, ListSource } from '@/lazyDB/database/types'
 
 // ModelEventTypes extends EventType,
 // but currently ts not allow this behavior
@@ -44,7 +44,7 @@ export enum AsyncConnectorEventTypes {
 }
 
 export interface DatabaseModelPayload extends ModelEventPayload {
-   store: IDatabaseProducerStore
+   store: IDatabaseModelProducerStore
 }
 
 export interface ReadEventPayload extends DatabaseModelPayload {

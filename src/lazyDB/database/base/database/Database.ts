@@ -2,7 +2,7 @@ import {
   ILazyReactiveDatabase,
   IEntityTypeSchema,
   IEntityTypeSchemaStorage,
-  IDatabaseProducerStore,
+  IDatabaseModelProducerStore,
   DatabaseStorage,
 } from '../../types'
 import {
@@ -42,8 +42,8 @@ export default class LazyReactiveDatabase implements ILazyReactiveDatabase {
     this.excludeProperties = excludeProperties
   }
 
-  public get store(): IDatabaseProducerStore {
-    return getStore(this.storage) as IDatabaseProducerStore
+  public get store(): IDatabaseModelProducerStore {
+    return getStore(this.storage) as IDatabaseModelProducerStore
   }
 
   public get dispatcher(): ModelEventDispatcher {

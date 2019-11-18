@@ -7,7 +7,7 @@ import {
 import { lastObjectPropertyName } from '@/lazyDB/database/utils'
 import { ModelReadSchema } from '@/lazyDB/types'
 import { appendPropertyToSchema } from '@/lazyDB/database/readSchema'
-import { IDatabaseProducerStore } from '@/lazyDB/database/types'
+import { IDatabaseModelProducerStore } from '@/lazyDB/database/types'
 import {
   ModelEventTypes,
   ReadEventPayload,
@@ -46,7 +46,7 @@ const api = {
   },
 }
 
-export function isExcludeProperty({ excludeProperties }: IDatabaseProducerStore, payload: ModelEventGetPropertyPayload) {
+export function isExcludeProperty({ excludeProperties }: IDatabaseModelProducerStore, payload: ModelEventGetPropertyPayload) {
   if (!excludeProperties)
     return false
 
@@ -74,7 +74,7 @@ const dispatchReadFailure = ({ store }: ReadEventPayload, error: any) => {
 
 export const databaseReducers: EventReducersMap = {
   [ModelEventTypes.GetProperty]: (store, payload) => {
-    if (isExcludeProperty(store as IDatabaseProducerStore, payload))
+    if (isExcludeProperty(store as IDatabaseModelProducerStore, payload))
       return true
 
     return false
@@ -135,7 +135,7 @@ export const databaseReducers: EventReducersMap = {
 const isObject = (value: any): value is Object => typeof value === 'object'
 const isDate = (value: any): value is Date => value instanceof Date
 
-function getOrCreateReadSchema(store: IDatabaseProducerStore): ModelReadSchema {
+function getOrCreateReadSchema(store: IDatabaseModelProducerStore): ModelReadSchema {
   const { readSchema } = store
   if (readSchema)
     return readSchema
@@ -169,13 +169,13 @@ const isDefinedSimpleProperty = (
 
 export const repositoryReducers: EventReducersMap = {
   [ModelEventTypes.GetProperty]: (store, payload) => {
-    if (isExcludeProperty(store as IDatabaseProducerStore, payload))
+    if (isExcludeProperty(store as IDatabaseModelProducerStore, payload))
       return true
 
     if (isDefinedSimpleProperty(store, payload))
       return true
 
-    const readSchema = getOrCreateReadSchema(store as IDatabaseProducerStore)
+    const readSchema = getOrCreateReadSchema(store as IDatabaseModelProducerStore)
 
     const isAppended = appendPropertyToSchema(readSchema, payload)
     console.log('readSchema:', readSchema, 'event:', payload, 'isAppended:', isAppended)

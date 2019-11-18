@@ -1,5 +1,9 @@
 import {
-  AbstractData, EventProducer, IProducerStore, ModelAttributeType,
+  AbstractData, 
+  EventProducer, 
+  IProducerStore, 
+  ModelAttributeType,
+  ModelEvent
 } from '@/lazyDB/core/types'
 import { AsyncConnectorEventTypes, ModelEventReadPayload } from '@/lazyDB/database/events'
 
@@ -72,8 +76,13 @@ export interface ListProducer<T> {
    readonly maxPageNumber: number | null
 }
 
-export interface IDatabaseProducerStore extends IProducerStore {
+export interface OnChangeCallback {
+   (event: ModelEvent<any>): void
+}
+
+export interface IDatabaseModelProducerStore extends IProducerStore {
    excludeProperties?: Array<string>
    readSchema?: ModelReadSchema
    dispatcher: DatabaseDispatcher
+   onChange?: OnChangeCallback
 }

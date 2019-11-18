@@ -3,7 +3,7 @@ import { createDraft } from 'immer'
 import { ModelEventReadPayload, ModelEventTypes } from '../events'
 import { isReading } from '../states'
 import { takeWhileThenContinue } from './utils'
-import { IDatabaseProducerStore } from '../types'
+import { IDatabaseModelProducerStore } from '../types'
 
 // Need calc this dynamically
 const READ_TIME = 50
@@ -15,7 +15,7 @@ export function getsSpawnReadEvent(
     memory,
     stream,
     dispatcher,
-  }: IDatabaseProducerStore,
+  }: IDatabaseModelProducerStore,
   canRead: CanReadCallback = () => true,
 ) {
   /*
