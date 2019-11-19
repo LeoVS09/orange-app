@@ -1,9 +1,9 @@
 import {
-  AbstractData, 
-  EventProducer, 
-  IProducerStore, 
+  AbstractData,
+  EventProducer,
+  IProducerStore,
   ModelAttributeType,
-  ModelEvent
+  ModelEvent,
 } from '@/lazyDB/core/types'
 import { AsyncConnectorEventTypes, ModelEventReadPayload } from '@/lazyDB/database/events'
 

@@ -58,3 +58,13 @@ const ArrayProperties: Array<string> = [
 
 export const isArrayProperty = (property: string): property is ArrayStringProperty =>
   ArrayProperties.includes(property)
+
+export const appendToWindow = (varaiables: {[key: string]: any}) => {
+  if (typeof (window) !== 'undefined') {
+    for (const key of Object.keys(varaiables)) {
+      // @ts-ignore
+      window[key] = varaiables[key]
+      console.warn('Global', key, 'instance appended to window', varaiables[key])
+    }
+  }
+}

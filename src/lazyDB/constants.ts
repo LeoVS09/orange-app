@@ -10,4 +10,6 @@ export const defaultExcludeProperties = [
   'function () { [native code] }',
   'slice',
   'length',
+  'push',
+  'pop',
 ]

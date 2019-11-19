@@ -70,6 +70,8 @@ export default class LazyReactiveRepository {
 
      const store = getDatabaseStore(list)
 
+     onChange = listOnChangeWrapper(list, onChange)
+
      appendRepositoryLifeHooks(store, TableListKey, this.excludeProperties, onChange)
 
      return list
@@ -94,4 +96,14 @@ function appendRepositoryLifeHooks(
   getsSpawnReadEvent(store)
 
   updateOnChange(store, onChange)
+}
+
+const listOnChangeWrapper = (list: ListProducer<any>, onChange?: OnChangeCallback): OnChangeCallback => (event) => {
+
+  // Hack for vue to track changed nodes
+  // list.nodes.push(null)
+  // list.nodes.pop()
+
+  if (onChange)
+    onChange(event)
 }

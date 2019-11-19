@@ -90,7 +90,7 @@ export interface EventReducersMap {
    [EventType.DeleteProperty]?: EventReducer<ModelEventGetPropertyPayload>
 }
 
-export const ProducerStoreReference = SymFor('storage.ts')
+export const ProducerStoreReference = SymFor('storage')
 
 export interface ModelEventPayload {
    store: IProducerStore

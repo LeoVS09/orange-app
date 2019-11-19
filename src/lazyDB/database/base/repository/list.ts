@@ -114,5 +114,7 @@ const arrayMethodWrapper = (source: ListSource, base: Array<any>, index: ArraySt
     }
 
     // @ts-ignore
-    return base[index](...args)
+    const result = base[index](...args)
+    console.log('nodes property', index, args, 'result', result)
+    return result
   }

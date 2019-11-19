@@ -12,6 +12,7 @@
             :validateAdd="validate"
             @add="add"
             @choose-item="chooseItem"
+            :key="reactive"
          >
             <list-column>name</list-column>
             <list-column>code</list-column>
@@ -27,10 +28,10 @@ import { Component, Mixins } from 'vue-property-decorator'
 import { Getter } from 'vuex-class'
 import { Country } from '@/models'
 import {
-  Button, 
-  Tags, 
-  Section, 
-  PageHeaderAction, 
+  Button,
+  Tags,
+  Section,
+  PageHeaderAction,
   Filters,
 } from '@/components'
 import { ROUTES } from '@/router'
