@@ -25,7 +25,7 @@
   "homepage": "https://github.com/LeoVS09/orange-app#readme",
   "dependencies": {
     "apollo-boost": "^0.1.21",
-    "axios": "^0.18.0",
+    "axios": "^0.18.1",
     "vue": "^2.5.17",
     "vue-property-decorator": "^7.0.0",
     "vue-router": "^2.3.1",
