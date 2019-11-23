@@ -1,7 +1,5 @@
-import { IEntityTypeSchema } from '@/lazyDB/database/types'
 import {
   IProducerStore,
-  ModelAttributeType,
   ProducerStoreGetter,
   ProducerStoreSetter,
   EventProducer,
@@ -9,53 +7,54 @@ import {
 import { getStore, isProducer } from '@/lazyDB/core/common'
 import { getDatabaseStore } from '@/lazyDB/database/dispatcher'
 import { applyListControls, makeListSource, setter as listSetter } from './list'
+import { AosFieldType, isSimpleType, AosEntitySchema } from '@/abstractObjectScheme'
 
 export const applyRepositoryControls = (
   store: IProducerStore,
-  schema: IEntityTypeSchema,
+  schema: AosEntitySchema,
   getSchema?: IGetSchema,
 ) => {
   store.getter = getter(schema)
   store.setter = setter(schema, getSchema)
 }
 
-export const getter = (schema: IEntityTypeSchema): ProducerStoreGetter => ({ base }, name) => {
+export const getter = (schema: AosEntitySchema): ProducerStoreGetter => ({ base }, name) => {
   const value = base[name as string]
   if (typeof value !== 'undefined')
     return value
 
-  const type = schema[name as string]
-  if (!type || type === ModelAttributeType.Simple)
+  const type = schema.fields[name as string]
+  if (!type || isSimpleType(type))
     return
 
-  if (type === ModelAttributeType.OneToOne) {
+  if (type === AosFieldType.OneToOne) {
     console.log('Getter One to One', name)
     return { }
   }
-  if (type === ModelAttributeType.OneToMany)
+  if (type === AosFieldType.OneToMany)
     return makeListSource()
 
   console.error('Unexpected model attribute type:', type)
 }
 
-export const setter = (schema: IEntityTypeSchema, getSchema?: IGetSchema): ProducerStoreSetter =>
+export const setter = (schema: AosEntitySchema, getSchema?: IGetSchema): ProducerStoreSetter =>
   ({ base }, name, value) => {
     base[name as string] = value
 
     if (!isProducer(value))
       return true
 
-    const type = schema[name as string]
-    if (!type || type === ModelAttributeType.Simple)
+    const type = schema.fields[name as string]
+    if (!type || isSimpleType(type))
       return true
 
-    if (type === ModelAttributeType.OneToOne) {
+    if (type === AosFieldType.OneToOne) {
       console.log('Setter One to One', name, getSchema)
       applyControlsByInnerSchema(value, name as string, getSchema)
       return true
     }
 
-    if (type === ModelAttributeType.OneToMany) {
+    if (type === AosFieldType.OneToMany) {
       const store = getStore(value)
       applyListControls(store)
 
@@ -67,7 +66,7 @@ export const setter = (schema: IEntityTypeSchema, getSchema?: IGetSchema): Produ
   }
 
 export interface IGetSchema {
-  (entity: string): IEntityTypeSchema | undefined
+  (entity: string): AosEntitySchema | undefined
 }
 
 function applyControlsByInnerSchema(value: EventProducer, name: string, getSchema?: IGetSchema) {

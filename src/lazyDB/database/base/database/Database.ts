@@ -1,14 +1,11 @@
 import {
   ILazyReactiveDatabase,
-  IEntityTypeSchema,
-  IEntityTypeSchemaStorage,
   IDatabaseModelProducerStore,
   DatabaseStorage,
 } from '../../types'
 import {
   AbstractData,
   EventProducer,
-  ModelAttributeType,
 } from '@/lazyDB/core/types'
 import { getStore } from '@/lazyDB/core/common'
 
@@ -16,17 +13,18 @@ import { makeDatabaseStorage } from '../../storage'
 import { ModelEventDispatcher } from '@/lazyDB/core/dispatcher/model/base'
 import { extractEntityNameFromManyKey } from '@/lazyDB/utils'
 import { applyRepositoryControls } from '@/lazyDB/database/base/repository/controls'
+import { AosFieldType, AosEntitySchemaStorage, AosEntitySchema } from '@/abstractObjectScheme'
 
 export interface LazyReactiveDatabaseOptions {
   storage?: DatabaseStorage
-  schemas?: IEntityTypeSchemaStorage
+  schemas?: AosEntitySchemaStorage
   excludeProperties?: Array<string>
 }
 
 export default class LazyReactiveDatabase implements ILazyReactiveDatabase {
   public storage: DatabaseStorage
 
-  public schemas: IEntityTypeSchemaStorage
+  public schemas: AosEntitySchemaStorage
 
   public excludeProperties: Array<string>
 
@@ -51,7 +49,7 @@ export default class LazyReactiveDatabase implements ILazyReactiveDatabase {
     return store.dispatcher as ModelEventDispatcher
   }
 
-  public setSchema(entity: string, schema: IEntityTypeSchema) {
+  public setSchema(entity: string, schema: AosEntitySchema) {
     this.schemas[entity] = schema
     console.log('database schema setted', entity, schema, this.schemas)
   }
@@ -95,9 +93,9 @@ export default class LazyReactiveDatabase implements ILazyReactiveDatabase {
     return true
   }
 
-  public getSchemaByKey(key: string, type: ModelAttributeType) {
+  public getSchemaByKey(key: string, type: AosFieldType) {
     let fieldEntity = key
-    if (type === ModelAttributeType.OneToMany)
+    if (type === AosFieldType.OneToMany)
       fieldEntity = extractEntityNameFromManyKey(key)
 
     return this.schemas[fieldEntity]

@@ -5,7 +5,7 @@ import {
   defaultPartialProfile, mockInput, mockOutput, mockTag,
 } from '@/models/mock/mock'
 import { Repository } from '@/lazyDB'
-import { ModelAttributeType } from '@/lazyDB/core/types'
+import { AosFieldType } from '@/abstractObjectScheme'
 
 export {
   defaultPartialProfile,
@@ -26,27 +26,33 @@ export enum ProblemTestingStatus {
 export const TagRepository = new Repository(
   'tag',
   {
-    problemsTags: ModelAttributeType.OneToMany,
+    fields: {
+      problemsTags: AosFieldType.OneToMany,
+    },
   },
 )
 
 export const ProblemRepository = new Repository(
   'problem',
   {
-    author: ModelAttributeType.OneToOne,
-    tester: ModelAttributeType.OneToOne,
-    inputType: ModelAttributeType.OneToOne,
-    outputType: ModelAttributeType.OneToOne,
-    tests: ModelAttributeType.OneToMany,
-    problemsTags: ModelAttributeType.OneToMany,
+    fields: {
+      author: AosFieldType.OneToOne,
+      tester: AosFieldType.OneToOne,
+      inputType: AosFieldType.OneToOne,
+      outputType: AosFieldType.OneToOne,
+      tests: AosFieldType.OneToMany,
+      problemsTags: AosFieldType.OneToMany,
+    },
   },
 )
 
 export const ProblemsTagRepository = new Repository(
   'problemsTag',
   {
-    problem: ModelAttributeType.OneToOne,
-    tag: ModelAttributeType.OneToOne,
+    fields: {
+      problem: AosFieldType.OneToOne,
+      tag: AosFieldType.OneToOne,
+    },
   },
 )
 

@@ -3,9 +3,9 @@ import {
   EventReducersMap,
   ModelEventGetPropertyPayload,
   IProducerStore,
+  ModelEventInnerPayload,
 } from '@/lazyDB/core/types'
 import { lastObjectPropertyName } from '@/lazyDB/database/utils'
-import { ModelReadSchema } from '@/lazyDB/types'
 import { appendPropertyToSchema } from '@/lazyDB/database/readSchema'
 import { IDatabaseModelProducerStore } from '@/lazyDB/database/types'
 import {
@@ -14,17 +14,18 @@ import {
   ReadFailureEventPayload,
   ModelEventReadPayload,
 } from '@/lazyDB/database/events'
-import { dateToStringFormatter, isSchemaField, wait } from '@/lazyDB/utils'
+import { dateToStringFormatter } from '@/lazyDB/utils'
 import { generateQueryEntityById, QueryField, generateQueryList } from '@/lazyDB/connectors/queryMapper'
 import { databaseClient } from '@/api/database/utils'
 import { TableListKey } from '../storage/table'
+import { AosSchema, isSimpleAosField } from '@/abstractObjectScheme'
 
 const api = {
-  async fetch(entity: string, id: string, readSchema: ModelReadSchema) {
+  async fetch(entity: string, id: string, schema: AosSchema) {
     // TODO: schema not generated for internal nodes objects
-    console.log('read schema', readSchema)
+    console.log('read schema', schema)
 
-    const fields = schemaToQueryFields(readSchema)
+    const fields = schemaToQueryFields(schema)
     console.log('read schema fields', fields)
 
     const { query, name } = generateQueryEntityById(entity, fields)
@@ -47,11 +48,11 @@ const api = {
     return formated[name]
   },
 
-  async list(entity: string, readSchema: ModelReadSchema) {
+  async list(entity: string, schema: AosSchema) {
     // TODO: schema not generated for internal nodes objects
-    console.log('read schema for list', readSchema)
+    console.log('read schema for list', schema)
 
-    const fields = schemaToQueryFields(readSchema)
+    const fields = schemaToQueryFields(schema)
     console.log('read schema fields', fields)
 
     const { query, name } = generateQueryList(entity, fields)
@@ -120,19 +121,34 @@ export const databaseReducers: EventReducersMap = {
   [ModelEventTypes.DeleteProperty]: (store, payload) => false,
 
   // Add ts support for inner read payload
-  [ModelEventTypes.Read]: async ({ dispatcher }, payload) => {
-    const getRequest = `${payload.name}/${payload.inner.name}/`
+  [ModelEventTypes.Read]: async ({ dispatcher }, payload: ModelEventInnerPayload<ModelEventInnerPayload<ModelEventReadPayload>>) => {
+    // TODO: make guard
+    if (!payload.inner)
+      throw new Error('Not have inner payload')
+
+    // TODO: make guard
+    if (!payload.inner.inner)
+      throw new Error('Not have inner inner payload')
+
+    // TODO: make function
+    const readPayload = payload.inner.inner as ModelEventReadPayload
+    if (!readPayload.readSchema) {
+      console.error('read payload', readPayload)
+      throw new Error('Read payload not have read schema')
+    }
+    const getRequest = `${payload.name as string}/${payload.inner.name as string}/`
+
     try {
-      console.log(getRequest, schemaToQueryFields(payload.inner.inner.readSchema))
+      console.log(getRequest, schemaToQueryFields(readPayload.readSchema))
 
       const response = await fetchListOrEntity(payload)
       console.log('read response', response)
 
-      removeGetEventsFromMemory(payload.inner.inner)
+      removeGetEventsFromMemory(readPayload)
 
-      dispatchReadSuccess(payload.inner.inner, response)
+      dispatchReadSuccess(readPayload, response)
     } catch (err) {
-      dispatchReadFailure(payload.inner.inner, err)
+      dispatchReadFailure(readPayload, err)
     }
 
     return true
@@ -173,7 +189,7 @@ export const databaseReducers: EventReducersMap = {
 const isObject = (value: any): value is Object => typeof value === 'object'
 const isDate = (value: any): value is Date => value instanceof Date
 
-function getOrCreateReadSchema(store: IDatabaseModelProducerStore): ModelReadSchema {
+function getOrCreateReadSchema(store: IDatabaseModelProducerStore): AosSchema {
   const { readSchema } = store
   if (readSchema)
     return readSchema
@@ -182,18 +198,18 @@ function getOrCreateReadSchema(store: IDatabaseModelProducerStore): ModelReadSch
 }
 
 // TODO: multiple types of object schema, need better solution
-export function schemaToQueryFields(schema: ModelReadSchema): Array<string | QueryField> {
+export function schemaToQueryFields(schema: AosSchema): Array<string | QueryField> {
   const keys = Object.keys(schema)
 
   return keys.map((key) => {
     const field = schema[key]
-    if (!isSchemaField(field))
+    if (isSimpleAosField(field))
       return key
 
     return {
       entity: key,
       type: field.type,
-      fields: schemaToQueryFields(field.fields as ModelReadSchema),
+      fields: schemaToQueryFields(field.schema),
     }
   })
 }

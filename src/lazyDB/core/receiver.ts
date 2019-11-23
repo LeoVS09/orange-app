@@ -4,12 +4,12 @@ import {
   ModelEvent,
   ModelEventPayload,
   IProducerStore,
-  ModelAttributeType,
   EventReducer,
 } from './types'
 import { StateMemory } from './memory'
 import { pushToParentIfCan } from '@/lazyDB/core/toParent'
 import { isHaveEventInMemory } from '@/lazyDB/core/events'
+import { AosFieldType } from '@/abstractObjectScheme'
 
 export const unsubscribeStore = ({ subscription }: IProducerStore) => subscription && subscription.unsubscribe()
 
@@ -99,7 +99,12 @@ function sync<T>(value: T | PromiseLike<T>): PromiseLike<T> {
   } as PromiseLike<T>
 }
 
-export function asyncReceiveWithMemory(store: IProducerStore, reducers: EventReducersMap, prop?: PropertyKey, type?: ModelAttributeType) {
+export function asyncReceiveWithMemory(
+  store: IProducerStore,
+  reducers: EventReducersMap,
+  prop?: PropertyKey,
+  type?: AosFieldType,
+) {
   unsubscribeStore(store)
 
   const { dispatcher } = store

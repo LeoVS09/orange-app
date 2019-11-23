@@ -2,14 +2,15 @@ import {
   AbstractData,
   EventProducer,
   IProducerStore,
-  ModelAttributeType,
   ModelEvent,
 } from '@/lazyDB/core/types'
 import { AsyncConnectorEventTypes, ModelEventReadPayload } from '@/lazyDB/database/events'
 
 import { SymFor } from '@/lazyDB/core/utils'
-import { ModelReadSchema } from '@/lazyDB/types'
 import { DatabaseDispatcher } from '@/lazyDB/database/dispatcher'
+import {
+  AosEntitySchemaStorage, AosEntitySchema, AosSchema, AosFieldType,
+} from '@/abstractObjectScheme'
 
 export type AsyncConnectorReducer<T, R> = (store: IProducerStore, event: T) => Promise<R>
 
@@ -29,23 +30,15 @@ export interface DatabaseStorage {
    [entity: string]: DatabaseTable
 }
 
-export interface IEntityTypeSchema {
-   [key: string]: ModelAttributeType
-}
-
-export interface IEntityTypeSchemaStorage {
-   [entity: string]: IEntityTypeSchema
-}
-
 export interface ILazyReactiveDatabase {
    storage: DatabaseStorage
-   schemas: IEntityTypeSchemaStorage
+   schemas: AosEntitySchemaStorage
    findOne: (entity: string, id: string, wrapped?: boolean) => AbstractData | undefined
    set: (entity: string, id: string, data: AbstractData | EventProducer) => void
    update: (entity: string, id: string, data: AbstractData) => boolean
    add: (entity: string, id: string, data: AbstractData) => void
-   getSchemaByKey: (key: string, type: ModelAttributeType) => IEntityTypeSchema | undefined
-   setSchema: (entity: string, schema: IEntityTypeSchema) => void
+   getSchemaByKey: (key: string, type: AosFieldType) => AosEntitySchema | undefined
+   setSchema: (entity: string, schema: AosEntitySchema) => void
    excludeProperties: Array<string>
 }
 
@@ -82,7 +75,7 @@ export interface OnChangeCallback {
 
 export interface IDatabaseModelProducerStore extends IProducerStore {
    excludeProperties?: Array<string>
-   readSchema?: ModelReadSchema
+   readSchema?: AosSchema
    dispatcher: DatabaseDispatcher
    onChange?: OnChangeCallback
 }

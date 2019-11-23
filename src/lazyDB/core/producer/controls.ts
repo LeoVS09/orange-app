@@ -1,11 +1,11 @@
 import {
   IProducerStore,
-  ModelAttributeType,
   ProducerStoreReference,
 } from '../types'
 import { getStore, isProducerable } from '../common'
 import { pushPropertyEventsToParent } from '../toParent'
 import { wrapInProducerIfNot } from './wrap'
+import { AosFieldType } from '@/abstractObjectScheme'
 
 export function get(store: IProducerStore, prop: PropertyKey) {
   if (
@@ -46,8 +46,8 @@ export function get(store: IProducerStore, prop: PropertyKey) {
     valueStore,
     prop,
     !Array.isArray(base)
-      ? ModelAttributeType.OneToOne
-      : ModelAttributeType.OneToMany,
+      ? AosFieldType.OneToOne
+      : AosFieldType.OneToMany,
   )
 
   return producer

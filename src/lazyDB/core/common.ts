@@ -1,12 +1,12 @@
 import {
   AbstractData,
   EventProducer,
-  ModelAttributeType,
   ModelEventGetPropertyPayload,
   ModelEventSetPropertyPayload,
   IProducerStore,
   ProducerStoreReference,
 } from './types'
+import { AosFieldType } from '@/abstractObjectScheme'
 
 export interface GetStore<T = AbstractData> {
    (producer: EventProducer): IProducerStore<T>
@@ -41,7 +41,7 @@ export function isProducerable(value: any): value is AbstractData {
 export const getEventPayload = (
   name: PropertyKey,
   store: IProducerStore,
-  type: ModelAttributeType = ModelAttributeType.Simple,
+  type: AosFieldType = AosFieldType.Any,
   inner?: ModelEventGetPropertyPayload,
 ): ModelEventGetPropertyPayload => ({
   store,
@@ -55,7 +55,7 @@ export const setEventPayload = (
   oldValue: any,
   newValue: any,
   store: IProducerStore,
-  type: ModelAttributeType = ModelAttributeType.Simple,
+  type: AosFieldType = AosFieldType.Any,
   inner?: ModelEventSetPropertyPayload,
 ): ModelEventSetPropertyPayload => ({
   store,

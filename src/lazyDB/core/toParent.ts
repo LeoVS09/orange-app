@@ -1,6 +1,5 @@
 import {
   IProducerStore,
-  ModelAttributeType,
   ModelEvent,
   ModelEventGetPropertyPayload,
   ModelEventInnerPayload, ModelEventPayload,
@@ -8,8 +7,13 @@ import {
 } from './types'
 import { receive } from './receiver'
 import { getEventPayload, setEventPayload } from './common'
+import { AosFieldType } from '@/abstractObjectScheme'
 
-export function pushPropertyEventsToParent(child: IProducerStore, prop: PropertyKey, type: ModelAttributeType = ModelAttributeType.OneToOne) {
+export function pushPropertyEventsToParent(
+  child: IProducerStore,
+  prop: PropertyKey,
+  type: AosFieldType = AosFieldType.OneToOne,
+) {
   receive(child, event => pushToParentIfCan(child, prop, event, type))
 }
 
@@ -17,7 +21,7 @@ export function pushToParentIfCan(
   { parent }: IProducerStore,
   prop: PropertyKey,
   event: ModelEvent<ModelEventPayload | undefined>,
-  type: ModelAttributeType = ModelAttributeType.OneToOne,
+  type: AosFieldType = AosFieldType.OneToOne,
 ) {
   if (!parent)
     return
@@ -30,7 +34,7 @@ export function pushToParentIfCan(
 
 export const wrapEventToNestingLevel = <T = ModelEventGetPropertyPayload>(
   name: PropertyKey,
-  type: ModelAttributeType,
+  type: AosFieldType,
   store: IProducerStore,
   event: ModelEvent<T>,
 ): ModelEvent<ModelEventInnerPayload<T>> => ({
@@ -48,7 +52,7 @@ export const wrapEventToNestingLevel = <T = ModelEventGetPropertyPayload>(
 
 export function wrapGetEventToNestingLevel(
   name: PropertyKey,
-  type: ModelAttributeType,
+  type: AosFieldType,
   store: IProducerStore,
   event: ModelEvent<ModelEventGetPropertyPayload>,
 ): ModelEvent<ModelEventGetPropertyPayload> {
@@ -64,7 +68,7 @@ export function wrapGetEventToNestingLevel(
 
 export function wrapSetEventToNestingLevel(
   name: PropertyKey,
-  type: ModelAttributeType,
+  type: AosFieldType,
   store: IProducerStore,
   event: ModelEvent<ModelEventSetPropertyPayload>,
 ): ModelEvent<ModelEventSetPropertyPayload> {

@@ -26,13 +26,13 @@ export interface AosSimpleField {
 
 export interface AosRelationsField {
     type : AosFieldType.OneToOne | AosFieldType.OneToMany
-    scheme: AosScheme
+    schema: AosSchema
 }
 
 export type AosField = AosSimpleField | AosRelationsField
 
 // Recursive scheme of object and relations to other objects
-export interface AosScheme {
+export interface AosSchema {
     [keys: string]: AosField
 }
 
@@ -46,4 +46,9 @@ export interface AosEntitySchema {
 // Map of entity fields
 export interface AosEntityFields {
     [key: string]: AosFieldType
+}
+
+// Describe database relations scheme
+export interface AosEntitySchemaStorage {
+    [entity: string]: AosEntitySchema
 }

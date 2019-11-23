@@ -1,6 +1,6 @@
 import { University } from '@/models/university'
 import { Repository } from '@/lazyDB'
-import { ModelAttributeType } from '@/lazyDB/core/types'
+import { AosFieldType } from '@/abstractObjectScheme'
 
 export interface Country {
    id: string
@@ -23,14 +23,18 @@ export interface City {
 export const CountryRepository = new Repository(
   'country',
   {
-    cities: ModelAttributeType.OneToMany,
+    fields: {
+      cities: AosFieldType.OneToMany,
+    },
   },
 )
 
 export const CityRepository = new Repository(
   'city',
   {
-    country: ModelAttributeType.OneToOne,
-    universities: ModelAttributeType.OneToMany,
+    fields: {
+      country: AosFieldType.OneToOne,
+      universities: AosFieldType.OneToMany,
+    },
   },
 )

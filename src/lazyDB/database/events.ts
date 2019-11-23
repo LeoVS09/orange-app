@@ -5,8 +5,8 @@ import {
   AbstractData,
   ModelEventPayload,
 } from '../core/types'
-import { ModelReadSchema } from '@/lazyDB/types'
 import { IDatabaseModelProducerStore, ListSource } from '@/lazyDB/database/types'
+import { AosSchema } from '@/abstractObjectScheme'
 
 // ModelEventTypes extends EventType,
 // but currently ts not allow this behavior
@@ -48,7 +48,7 @@ export interface DatabaseModelPayload extends ModelEventPayload {
 }
 
 export interface ReadEventPayload extends DatabaseModelPayload {
-   readSchema: ModelReadSchema
+   readSchema: AosSchema
    gets: Array<ModelEvent<ModelEventGetPropertyPayload>>
    sets: Array<ModelEvent<ModelEventSetPropertyPayload>>
 }

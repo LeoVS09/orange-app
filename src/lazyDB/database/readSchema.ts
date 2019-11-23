@@ -1,10 +1,11 @@
-import { ModelReadSchema, ModelReadSchemaField } from '@/lazyDB/types'
-import { isSchemaField } from '@/lazyDB/utils'
-import { ModelAttributeType, ModelEventGetPropertyPayload, ModelEventInnerPayload } from '@/lazyDB/core/types'
+import { ModelEventGetPropertyPayload, ModelEventInnerPayload } from '@/lazyDB/core/types'
 import { nodesKey } from '@/lazyDB/database/types'
+import {
+  AosSchema, AosFieldType, isRelationsAosField, isSimpleType, AosSimpleField, AosField, AosRelationsField,
+} from '@/abstractObjectScheme'
 
 export function appendPropertyToSchema(
-  schema: ModelReadSchema,
+  schema: AosSchema,
   {
     name,
     inner,
@@ -21,17 +22,17 @@ export function appendPropertyToSchema(
 
   const { property, isCreated } = getOrCreateSchemaFieldProperty(schema, name, inner)
 
-  if (property.type !== ModelAttributeType.OneToMany)
-    return appendPropertyToSchema(property.fields, inner)
+  if (property.type !== AosFieldType.OneToMany)
+    return appendPropertyToSchema(property.schema, inner)
 
   if (inner.inner)
-    return appendPropertyToSchema(property.fields, inner.inner)
+    return appendPropertyToSchema(property.schema, inner.inner)
 
   return isCreated
 }
 
 function appendNumberPropertyToSchema(
-  schema: ModelReadSchema,
+  schema: AosSchema,
   name: number,
   inner: ModelEventInnerPayload<any> | undefined,
 ): boolean {
@@ -42,38 +43,43 @@ function appendNumberPropertyToSchema(
 }
 
 function appendSimplePropertyToSchema(
-  schema: ModelReadSchema,
+  schema: AosSchema,
   name: string,
-  type: ModelAttributeType,
-) {
+  type: AosFieldType,
+): boolean {
   if (schema[name])
     return false
 
-  schema[name] = type
-  return true
+  if (isSimpleType(type)) {
+    const field: AosSimpleField = { type }
+    schema[name] = field
+    return true
+  }
+
+  return false
 }
 
 export interface GetOrCreateSchemaFieldResult {
-  property: ModelReadSchemaField
+  property: AosRelationsField
   isCreated: boolean
 }
 
 function getOrCreateSchemaFieldProperty(
-  schema: ModelReadSchema,
+  schema: AosSchema,
   name: string,
   inner: ModelEventInnerPayload<any>,
 ): GetOrCreateSchemaFieldResult {
   let property = schema[name]
-  if (property && isSchemaField(property))
+  if (property && isRelationsAosField(property))
     return { property, isCreated: false }
 
   property = schema[name] = {
     // Hack for graphql
     // TODO: remove
     type: inner.name === nodesKey
-      ? ModelAttributeType.OneToMany
-      : ModelAttributeType.OneToOne,
-    fields: {},
+      ? AosFieldType.OneToMany
+      : AosFieldType.OneToOne,
+    schema: {},
   }
   return { property, isCreated: true }
 }

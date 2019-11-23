@@ -1,23 +1,23 @@
 import LazyReactiveRepository from '@/lazyDB/database/base/repository/Repository'
-import { IEntityTypeSchema, ILazyReactiveDatabase } from '@/lazyDB/database/types'
-import { ModelAttributeType } from '@/lazyDB/core/types'
+import { ILazyReactiveDatabase } from '@/lazyDB/database/types'
+import { AosFieldType, AosEntitySchema } from '@/abstractObjectScheme'
 
 export function makeConnectedRepositoryClass(db: ILazyReactiveDatabase) {
-  const getSchema = (entity: string) => db.getSchemaByKey(entity, ModelAttributeType.OneToOne)
+  const getSchema = (entity: string) => db.getSchemaByKey(entity, AosFieldType.OneToOne)
 
   // Connected to db entity repository by default
   return class Repository extends LazyReactiveRepository {
     constructor(
       entity: string,
-      schema?: IEntityTypeSchema,
+      schema?: Partial<AosEntitySchema>,
     ) {
       super(entity, {
         table: db.storage[entity],
         schema,
       })
 
-      if (schema)
-        db.setSchema(entity, schema)
+      if (this.schema)
+        db.setSchema(entity, this.schema)
 
       this.getSchema = getSchema
 

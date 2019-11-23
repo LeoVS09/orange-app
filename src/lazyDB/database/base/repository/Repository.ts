@@ -1,10 +1,9 @@
 import { makeDatabaseTable, TableListKey } from '../../storage/table'
 import { getStore } from '@/lazyDB/core/common'
-import { AbstractData, EventProducer, ModelAttributeType } from '@/lazyDB/core/types'
+import { AbstractData, EventProducer } from '@/lazyDB/core/types'
 import {
   DatabaseTable,
   IDatabaseModelProducerStore,
-  IEntityTypeSchema,
   ListProducer,
   OnChangeCallback,
 } from '../../types'
@@ -14,18 +13,20 @@ import { repositoryReducers } from '@/lazyDB/database/connected/actions'
 import { getsSpawnReadEvent } from '@/lazyDB/database/cycle/read'
 import { DatabaseDispatcher, getDatabaseStore } from '@/lazyDB/database/dispatcher'
 import { updateOnChange } from '../../cycle/change'
+import { AosEntitySchema, AosFieldType } from '@/abstractObjectScheme'
 
 export interface LazyReactiveRepositoryOptions {
    table?: DatabaseTable
-   schema?: IEntityTypeSchema
+   schema?: Partial<AosEntitySchema>
 }
 
+const defaultPrimaryKey = 'id'
 export default class LazyReactiveRepository {
    public entity: string
 
    public table: DatabaseTable
 
-   public schema?: IEntityTypeSchema
+   public schema?: AosEntitySchema
 
    public excludeProperties: Array<string> = []
 
@@ -40,7 +41,13 @@ export default class LazyReactiveRepository {
    ) {
      this.entity = entity
      this.table = table
-     this.schema = schema
+     if (schema) {
+       this.schema = {
+         primaryKey: schema.primaryKey || defaultPrimaryKey,
+         foreignKeys: schema.foreignKeys || [],
+         fields: schema.fields || {},
+       }
+     }
    }
 
    public get store(): IDatabaseModelProducerStore {
@@ -91,7 +98,7 @@ function appendRepositoryLifeHooks(
   store.excludeProperties = excludeProperties
   // TODO: remove requiring of order
   // Current logic require this order to call functions
-  asyncReceiveWithMemory(store, repositoryReducers, id, ModelAttributeType.OneToOne)
+  asyncReceiveWithMemory(store, repositoryReducers, id, AosFieldType.OneToOne)
   // spawn require to stream which generate only on async receive
   getsSpawnReadEvent(store)
 

@@ -1,6 +1,7 @@
 import { Observable, Subject, Subscription } from 'rxjs'
 import { SymFor } from './utils'
 import { StateMemory } from './memory'
+import { AosFieldType } from '@/abstractObjectScheme'
 
 // This object can't be mapped tp producer
 export type AtomicObject =
@@ -38,14 +39,6 @@ export interface ModelEvent<T> {
    type: EventType | string
    date: number
    payload: T
-}
-
-// Type of connection between entities,
-// without database used only "Simple"
-export enum ModelAttributeType {
-   Simple = 'Simple',
-   OneToMany = 'OneToMany',
-   OneToOne = 'OneToOne',
 }
 
 export interface IEventDispatcher<Payload> {
@@ -97,7 +90,7 @@ export interface ModelEventPayload {
 }
 
 export interface PropertyEventPayload {
-   type: ModelAttributeType
+   type: AosFieldType
    name: PropertyKey
 }
 

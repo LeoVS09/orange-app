@@ -1,9 +1,9 @@
 import gql from 'graphql-tag'
-import { ModelAttributeType } from '@/lazyDB/core/types'
+import { AosFieldType } from '@/abstractObjectScheme'
 
 export interface QueryField {
   entity: string
-  type: ModelAttributeType
+  type: AosFieldType
   fields: Array<string | QueryField>
 }
 
@@ -24,10 +24,10 @@ const generateField = (field: string | QueryField, countSpaces: number) => {
   if (typeof field !== 'object')
     return field
 
-  if (field.type === ModelAttributeType.OneToOne)
+  if (field.type === AosFieldType.OneToOne)
     return generateOneToOneQueryFields(field, countSpaces)
 
-  if (field.type === ModelAttributeType.OneToMany)
+  if (field.type === AosFieldType.OneToMany)
     return generateOneToManyQueryFields(field, countSpaces)
 
   throw new Error(`Unexpected field type${field.type}`)
