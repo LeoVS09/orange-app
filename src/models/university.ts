@@ -15,6 +15,6 @@ export const UniversityRepository = new Repository(
   {
     fields: {
       city: AosFieldType.OneToOne,
-    }
+    },
   },
 )
