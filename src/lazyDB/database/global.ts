@@ -2,6 +2,7 @@ import { Database } from './connected/Database'
 import { makeConnectedRepositoryClass } from '@/lazyDB/database/connected/Repository'
 import { getStore } from '@/lazyDB/core/common'
 import { appendToWindow } from './utils'
+import { AbstractData } from '../core/types'
 
 // Global default database
 // Only for simplified usage of library
@@ -13,7 +14,8 @@ export default db
 appendToWindow({ db })
 
 // Connected to global db entity repository
-class Repository extends makeConnectedRepositoryClass(db) {
+// TODO: rewirite extending
+class Repository<T extends AbstractData = AbstractData> extends makeConnectedRepositoryClass(db) {
 
 }
 

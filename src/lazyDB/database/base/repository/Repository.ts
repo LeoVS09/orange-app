@@ -21,7 +21,7 @@ export interface LazyReactiveRepositoryOptions {
 }
 
 const defaultPrimaryKey = 'id'
-export default class LazyReactiveRepository {
+export default class LazyReactiveRepository<T extends AbstractData = AbstractData> {
    public entity: string
 
    public table: DatabaseTable
@@ -58,9 +58,10 @@ export default class LazyReactiveRepository {
      return this.store.dispatcher as DatabaseDispatcher
    }
 
-   public findOne(id: string, onChange?: OnChangeCallback): EventProducer {
+   // TODO: Add typesafe table
+   public findOne(id: string, onChange?: OnChangeCallback): T {
      if (!this.schema)
-       return this.table[id]
+       return this.table[id] as T
 
      const model = this.table[id]
      const store = getDatabaseStore(model)
@@ -69,10 +70,10 @@ export default class LazyReactiveRepository {
 
      appendRepositoryLifeHooks(store, id, this.excludeProperties, onChange)
 
-     return model
+     return model as T
    }
 
-   public list<T = any>(onChange?: OnChangeCallback): ListProducer<T> {
+   public list(onChange?: OnChangeCallback): ListProducer<T> {
      const list = this.table[TableListKey] as ListProducer<T>
 
      const store = getDatabaseStore(list)

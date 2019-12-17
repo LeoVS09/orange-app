@@ -39,6 +39,7 @@ import { RouterPush } from '@/components/decorators'
 import { CountryRepository } from '@/models/country'
 import { List, ListColumn, PageHeader } from '@/containers'
 import ReactiveUpdate, { reactiveUpdate } from '@/components/mixins/ReactiveUpdate'
+import { ListProducer } from '@/lazyDB/database/types'
 
 @Component({
   components: {
@@ -58,10 +59,8 @@ export default class Countries extends Mixins(ReactiveUpdate) {
    @RouterPush(ROUTES.COUNTRY)
    public chooseItem!: (country: Country) => void;
 
-   get list() {
-     const countries = CountryRepository.list(reactiveUpdate(this))
-     console.log('countries', countries)
-     return countries
+   get list(): ListProducer<Country> {
+     return CountryRepository.list(reactiveUpdate(this)) as ListProducer<Country>
    }
 
    public add() {
