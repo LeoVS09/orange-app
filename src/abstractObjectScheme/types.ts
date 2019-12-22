@@ -45,7 +45,12 @@ export interface AosEntitySchema {
 
 // Map of entity fields
 export interface AosEntityFields {
-    [key: string]: AosFieldType
+    [key: string]: AosFieldType | AosEntityField
+}
+
+export interface AosEntityField {
+    type: AosFieldType
+    table?: string
 }
 
 // Describe database relations scheme

@@ -84,17 +84,11 @@ const exptractAuthourName = (problem: Problem, fallback: string): string => {
     return fallback
   }
 
-  const initials = profileInitials(author)
-  if (!initials)
+  const { user } = author
+  if (!user)
     return fallback
 
-  return initials
-  // TODO: make by username display
-  // const { user } = author
-  // if(!user)
-  //   return fallback
-
-  // return user.name || user.username
+  return user.name || user.username
 }
 
 @Component({

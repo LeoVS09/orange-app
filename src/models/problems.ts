@@ -36,8 +36,14 @@ export const ProblemRepository = new Repository(
   'problem',
   {
     fields: {
-      author: AosFieldType.OneToOne,
-      tester: AosFieldType.OneToOne,
+      author: {
+        type: AosFieldType.OneToOne,
+        table: 'profile',
+      },
+      tester: {
+        type: AosFieldType.OneToOne,
+        table: 'profile',
+      },
       inputType: AosFieldType.OneToOne,
       outputType: AosFieldType.OneToOne,
       tests: AosFieldType.OneToMany,

@@ -27,7 +27,9 @@ import { FullProblem, PartialProblem } from '@/models'
 import * as actions from '@/store/actionTypes'
 import { PageHeaderAction, Section } from '@/components'
 import { ROUTES } from '@/router'
-import { Tag, ProblemRepository, Problem, TagRepository } from '@/models/problems'
+import {
+  Tag, ProblemRepository, Problem, TagRepository,
+} from '@/models/problems'
 import { RouterPush } from '@/components/decorators'
 import ProblemsList from '@/containers/ProblemsList.vue'
 import { List, ListColumn, PageHeader } from '@/containers'
@@ -58,7 +60,7 @@ export default class Problems extends Mixins(ReactiveUpdate) {
   }
 
   get tags(): ListProducer<Tag> {
-     return TagRepository.list(reactiveUpdate(this)) as ListProducer<Tag>
+    return TagRepository.list(reactiveUpdate(this)) as ListProducer<Tag>
   }
 
    @Getter public isTeacher!: boolean;
@@ -66,7 +68,7 @@ export default class Problems extends Mixins(ReactiveUpdate) {
    // @Action(actionName(MODULES.PROBLEMS, actions.READ_LIST))
    public loadItems = () => console.log('try load items')
 
-   // @Action(actionName(MODULES.TAGS, actions.READ_LIST)) 
+   // @Action(actionName(MODULES.TAGS, actions.READ_LIST))
    public loadTags = () => console.log('try load tags')
 
    @RouterPush(ROUTES.CREATE_PROBLEM)

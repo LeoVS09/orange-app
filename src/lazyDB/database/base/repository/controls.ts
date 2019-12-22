@@ -8,7 +8,9 @@ import {
 import { getStore, isProducer } from '@/lazyDB/core/common'
 import { getDatabaseStore } from '@/lazyDB/database/dispatcher'
 import { applyListControls, makeListSource, setter as listSetter } from './list'
-import { AosFieldType, isSimpleType, AosEntitySchema } from '@/abstractObjectScheme'
+import {
+  AosFieldType, isSimpleType, AosEntitySchema, AosEntityFields,
+} from '@/abstractObjectScheme'
 
 export const applyRepositoryControls = (
   store: IProducerStore,
@@ -19,12 +21,30 @@ export const applyRepositoryControls = (
   store.setter = setter(schema, getSchema)
 }
 
+const getFieldType = (fields: AosEntityFields, name: string): AosFieldType => {
+  const field = fields[name]
+
+  if (typeof field === 'object')
+    return field.type
+
+  return field
+}
+
+const getTableNameByField = (fields: AosEntityFields, name: string): string => {
+  const field = fields[name]
+
+  if (typeof field === 'object')
+    return field.table || name
+
+  return name
+}
+
 export const getter = (schema: AosEntitySchema): ProducerStoreGetter => ({ base }, name) => {
   const value = base[name as string]
   if (typeof value !== 'undefined')
     return value
 
-  const type = schema.fields[name as string]
+  const type = getFieldType(schema.fields, name as string)
   if (!type || isSimpleType(type))
     return
 
@@ -45,19 +65,20 @@ export const setter = (schema: AosEntitySchema, getSchema?: IGetSchema): Produce
     if (!isProducer(value))
       return true
 
-    const type = schema.fields[name as string]
+    const type = getFieldType(schema.fields, name as string)
     if (!type || isSimpleType(type))
       return true
 
     if (type === AosFieldType.OneToOne) {
-      console.log('Setter One to One', name, getSchema)
-      applyControlsByInnerSchema(value, name as string, getSchema)
+      const tableName = getTableNameByField(schema.fields, name as string)
+      console.log('Setter One to One, name:', name, 'table:', tableName, 'getSchema:', getSchema)
+      applyControlsByInnerSchema(value, tableName, getSchema)
       return true
     }
 
     if (type === AosFieldType.OneToMany) {
       const store = getStore(value)
-      store.extendTemporalTrap = applyControlsToTrap(schema, getSchema)
+      store.extendTemporalTrap = applyControlsForTrap({ schema, getSchema })
       applyListControls(store)
 
       return true
@@ -67,15 +88,20 @@ export const setter = (schema: AosEntitySchema, getSchema?: IGetSchema): Produce
     return true
   }
 
+export interface ApplyControlsForTrapOptions {
+  schema: AosEntitySchema
+  getSchema?: IGetSchema
+}
+
 // make temporal trap in list work as repository object
 // This must be setted for repository and table, they all create list in differrent situations
-export const applyControlsToTrap = (schema: AosEntitySchema, getSchema?: IGetSchema): ExtendTemporalTrap =>
+export const applyControlsForTrap = (options: ApplyControlsForTrapOptions): ExtendTemporalTrap =>
   (trap) => {
 
     console.log('applyControlsToTrap', trap)
     const store = getStore(trap)
 
-    applyRepositoryControls(store, schema, getSchema)
+    applyRepositoryControls(store, options.schema, options.getSchema)
   }
 
 export interface IGetSchema {

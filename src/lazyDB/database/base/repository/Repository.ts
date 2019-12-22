@@ -7,7 +7,9 @@ import {
   ListProducer,
   OnChangeCallback,
 } from '../../types'
-import { applyRepositoryControls, IGetSchema, applyControlsToTrap } from './controls'
+import {
+  applyRepositoryControls, IGetSchema, applyControlsForTrap, ApplyControlsForTrapOptions,
+} from './controls'
 import { asyncReceiveWithMemory } from '@/lazyDB/core/receiver'
 import { repositoryReducers } from '@/lazyDB/database/connected/actions'
 import { getsSpawnReadEvent } from '@/lazyDB/database/cycle/read'
@@ -41,16 +43,18 @@ export default class LazyReactiveRepository<T extends AbstractData = AbstractDat
    ) {
      this.entity = entity
      this.table = table
-     if (schema) {
-       this.schema = {
-         primaryKey: schema.primaryKey || defaultPrimaryKey,
-         foreignKeys: schema.foreignKeys || [],
-         fields: schema.fields || {},
-       }
+     if (!schema)
+       return
 
-       const tableStore = getStore(this.table)
-       tableStore.extendTemporalTrap = applyControlsToTrap(this.schema, this.getSchema)
+     this.schema = {
+       primaryKey: schema.primaryKey || defaultPrimaryKey,
+       foreignKeys: schema.foreignKeys || [],
+       fields: schema.fields || {},
      }
+
+     const tableStore = getStore(this.table)
+     // as unknown required, because typescript cannot track repository now have schema field
+     tableStore.extendTemporalTrap = applyControlsForTrap(this as unknown as ApplyControlsForTrapOptions)
    }
 
    public get store(): IDatabaseModelProducerStore {

@@ -62,7 +62,11 @@ export default class LazyReactiveDatabase implements ILazyReactiveDatabase {
     const store = getStore(model)
     const schema = this.schemas[entity]
 
-    applyRepositoryControls(store, schema)
+    applyRepositoryControls(
+      store,
+      schema,
+      (key: string) => this.getSchemaByKey(key, AosFieldType.OneToOne),
+    )
 
     return model
   }
