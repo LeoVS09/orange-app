@@ -1,4 +1,4 @@
-import { PartialUserProfile, UserType } from './user'
+import { PartialUserProfile, UserType, Profile } from './user'
 import { Test } from '@/models/tests'
 import { ModelReadState, ModelStatus } from '@/store/modules/statuses/types'
 import {
@@ -46,6 +46,24 @@ export const ProblemRepository = new Repository(
   },
 )
 
+export const ProgramInputType = new Repository(
+  'programInputType',
+  {
+    fields: {
+      problemsByInputTypeId: AosFieldType.OneToMany,
+    },
+  },
+)
+
+export const ProgramOutputType = new Repository(
+  'programOutputType',
+  {
+    fields: {
+      problemsByOutputTypeId: AosFieldType.OneToMany,
+    },
+  },
+)
+
 export const ProblemsTagRepository = new Repository(
   'problemsTag',
   {
@@ -55,6 +73,52 @@ export const ProblemsTagRepository = new Repository(
     },
   },
 )
+
+export interface Problem {
+  id: string
+  name: string | null
+
+  description: string | null
+  inputDescription: string | null
+  outputDescription: string | null
+
+  note: string // TODO: make nullable
+
+  inputTypeId: string
+  outputTypeId: string
+  limitTime: number
+  limitMemory: number
+
+  difficulty: number
+
+  createdAt: Date
+  updatedAt: Date
+  publicationDate: Date | null
+
+  authorId: string
+  testerId: string | null
+
+  inputType: ProgramInputType
+  outputType: ProgramOutputType
+
+  author: Profile
+  tester: Profile | null
+
+  problemsTags: {
+    nodes: Array<ProblemsTag>
+    totalCount: number
+  }
+}
+
+export interface ProgramInputType {
+  id: string
+  name: string
+  code: string
+  createdAt: Date
+  updatedAt: Date
+}
+
+export type ProgramOutputType = ProgramInputType
 
 export interface PartialProblem {
    id: string
@@ -72,6 +136,7 @@ export interface PartialProblem {
    testingStatus: ProblemTestingStatus
    problemsTags: {
      nodes: Array<ProblemsTag>
+     totalCount: number
    }
 }
 
@@ -165,6 +230,7 @@ export function defaultProblem(): FullProblem {
 
     problemsTags: {
       nodes: [],
+      totalCount: 0,
     },
 
     // tags: [mockTag('some'), mockTag('tags')],

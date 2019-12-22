@@ -28,7 +28,7 @@
          >
             <list-column>name</list-column>
             <list-column>difficulty</list-column>
-            
+
             <list-column name="updatedAt">updated</list-column>
          </list>
       </Section>
@@ -62,16 +62,16 @@ const { MODULES, actionName } = actions
     Action: PageHeaderAction,
     List,
     ListColumn,
-    Section
+    Section,
   },
 })
 export default class Problems extends Mixins(ReactiveUpdate) {
 
-   get list(): ListProducer<PartialProblem> {
-      const list =  ProblemRepository.list(reactiveUpdate(this)) as ListProducer<PartialProblem> 
-      console.log('Problems list:', list)
-      return list
-   }
+  get list(): ListProducer<PartialProblem> {
+    const list = ProblemRepository.list(reactiveUpdate(this)) as ListProducer<PartialProblem>
+    console.log('Problems list:', list)
+    return list
+  }
 
    @Getter public isTeacher!: boolean;
 
