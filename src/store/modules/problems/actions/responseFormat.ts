@@ -23,7 +23,7 @@ export function responseToPartialProblem(p: fragmentTypes.PartialProblem | null 
     publicationDate: p.publicationDate,
     author: responseToPartialUserProfile(p.author) as PartialUserProfile,
     tester: p.tester && responseToPartialUserProfile(p.tester) as PartialUserProfile,
-    tags: tags.map(t => ({ ...t.tag })) as Array<fragmentTypes.PartialProblem_problemsTags_nodes_tag>,
+    problemsTags: p.problemsTags as unknown as PartialProblem['problemsTags'], // use generated api types
     testingStatus: ProblemTestingStatus.NotTested, // TODO: make testing in database
   }
 }

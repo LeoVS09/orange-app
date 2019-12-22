@@ -70,7 +70,19 @@ export interface PartialProblem {
    tester: PartialUserProfile | null
 
    testingStatus: ProblemTestingStatus
-   tags: Array<Tag>
+   problemsTags: {
+     nodes: Array<ProblemsTag>
+   }
+}
+
+export interface ProblemsTag {
+  id: string
+  createdAt: Date
+  updatedAt: Date
+
+  tag: Tag
+
+  problem: FullProblem
 }
 
 export interface FullProblem extends PartialProblem {
@@ -97,15 +109,9 @@ export interface Tag {
    createdAt: Date
    updatedAt: Date
 
-   problemsTags?: Array<ProblemTag>
-}
-
-export interface ProblemTag {
-   nodeId: string
-   createdAt: Date
-   updatedAt: Date
-
-   problem: PartialProblem
+   problemsTags?: {
+     nodes: Array<ProblemsTag>
+   }
 }
 
 // TODO: refactor to solution
@@ -157,7 +163,11 @@ export function defaultProblem(): FullProblem {
       type: UserType.TEACHER,
     },
 
-    tags: [mockTag('some'), mockTag('tags')],
+    problemsTags: {
+      nodes: [],
+    },
+
+    // tags: [mockTag('some'), mockTag('tags')],
 
     limits: {
       time: 30000,

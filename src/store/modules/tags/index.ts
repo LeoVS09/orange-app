@@ -42,16 +42,7 @@ function responseToTag(result?: fragmentsTypes.FullTag | null): Tag | undefined 
   if (!result)
     return result
 
-  const problems = result.problemsTags.nodes as Array<fragmentsTypes.FullTag_problemsTags_nodes>
-
-  return {
-    ...result,
-
-    problemsTags: problems.map(n => ({
-      ...n,
-      problem: responseToPartialProblem(n.problem) as PartialProblem,
-    })),
-  }
+  return result as unknown as Tag
 }
 
 function tagToInput(tag: Tag): TagInput {

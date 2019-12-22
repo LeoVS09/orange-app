@@ -49,26 +49,32 @@ import { ProblemFilter } from '../store/modules/problems'
 import List from './List.vue'
 import ListColumn from './ListColumn.vue'
 
-function filterProblemsByPublication(filter: ProblemFilter, data: Array<PartialProblem | FullProblem>) {
-  const now = new Date()
+const isProblemPublicated = ({ publicationDate: date }: PartialProblem, now = new Date()): boolean =>
+  !!date && date <= now
 
+function filterProblemsByPublication(filter: ProblemFilter, data: Array<PartialProblem>) {
   if (filter === ProblemFilter.All)
     return data
 
+  const now = new Date()
+
   if (filter === ProblemFilter.Public)
-    return data.filter(p => p.publicationDate && p.publicationDate <= now)
+    return data.filter(p => isProblemPublicated(p, now))
 
   if (filter === ProblemFilter.NotPublic)
-    return data.filter(p => !p.publicationDate || p.publicationDate > now)
+    return data.filter(p => !isProblemPublicated(p, now))
 
   return data
 }
 
-function filterProblemsByTags(tags: Tag[], data: Array<PartialProblem | FullProblem>) {
+const isProblemContainAnyTag = ({ problemsTags }: PartialProblem, tags: Tag[]): boolean =>
+  tags.every(tag => problemsTags.nodes.some(({ tag: { id } }) => tag.id === id))
+
+function filterProblemsByTags(tags: Tag[], data: Array<PartialProblem>) {
   if (!tags.length)
     return data
 
-  return data.filter(p => tags.every(tag => p.tags.some(({ id }) => tag.id === id)))
+  return data.filter(p => isProblemContainAnyTag(p, tags))
 }
 
 @Component({
@@ -82,7 +88,7 @@ function filterProblemsByTags(tags: Tag[], data: Array<PartialProblem | FullProb
   },
 })
 export default class ProblemsList extends Vue {
-   @Prop(Array) public problems!: Array<PartialProblem | FullProblem>;
+   @Prop(Array) public problems!: Array<PartialProblem>;
 
    @Prop(Array) public tags!: Tag[];
 
