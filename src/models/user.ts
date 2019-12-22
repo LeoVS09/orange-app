@@ -60,6 +60,21 @@ export interface Profile {
    university: University | null
 }
 
+// return user initials in format LastName F.M.
+export const profileInitials = (profile: Profile): string | null => {
+  if (!profile.firstName || !profile.lastName)
+    return null
+
+  const lastName = profile.lastName.slice(0, 1).toUpperCase() + profile.lastName.slice(1)
+  const firstNameLetter = profile.firstName.slice(0, 1).toUpperCase()
+  const middleNameLetter = (profile.middleName || '').slice(0, 1).toUpperCase()
+
+  if (!middleNameLetter)
+    return `${lastName} ${firstNameLetter}.`
+
+  return `${lastName} ${firstNameLetter}. ${middleNameLetter}.`
+}
+
 export interface User {
    id: string
    username: string

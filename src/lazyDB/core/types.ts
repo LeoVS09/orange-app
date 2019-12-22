@@ -66,8 +66,15 @@ export interface ProducerStoreOptions<T = AbstractData> {
    memory?: StateMemory<ModelEvent<any>>
    parent?: IProducerStore
    subscription?: Subscription
+
    getter?: ProducerStoreGetter<T>
    setter?: ProducerStoreSetter<T>
+
+   extendTemporalTrap?: ExtendTemporalTrap
+}
+
+export interface ExtendTemporalTrap {
+   (trapProducer: EventProducer): void
 }
 
 export interface IProducerStore<T = AbstractData> extends ProducerStoreOptions<T> {

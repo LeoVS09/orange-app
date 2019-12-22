@@ -7,7 +7,7 @@ import {
   ListProducer,
   OnChangeCallback,
 } from '../../types'
-import { applyRepositoryControls, IGetSchema } from './controls'
+import { applyRepositoryControls, IGetSchema, applyControlsToTrap } from './controls'
 import { asyncReceiveWithMemory } from '@/lazyDB/core/receiver'
 import { repositoryReducers } from '@/lazyDB/database/connected/actions'
 import { getsSpawnReadEvent } from '@/lazyDB/database/cycle/read'
@@ -47,6 +47,9 @@ export default class LazyReactiveRepository<T extends AbstractData = AbstractDat
          foreignKeys: schema.foreignKeys || [],
          fields: schema.fields || {},
        }
+
+       const tableStore = getStore(this.table)
+       tableStore.extendTemporalTrap = applyControlsToTrap(this.schema, this.getSchema)
      }
    }
 

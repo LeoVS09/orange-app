@@ -44,13 +44,14 @@ export const getter: ProducerStoreGetter = ({ base }, name) => {
   return model || {}
 }
 
-export const setter: ProducerStoreSetter = ({ base }, name, value) => {
+export const setter: ProducerStoreSetter = ({ base, extendTemporalTrap }, name, value) => {
   const table = base[TableStoreReference] as DatabaseTableMap
 
   if (name === TableListKey) {
     base[TableListKey] = value
 
     const store = getStore(value)
+    store.extendTemporalTrap = extendTemporalTrap
     applyListControls(store)
 
     value[ListItemGetterReference] = listItemGetter(table)

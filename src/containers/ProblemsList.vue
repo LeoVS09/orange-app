@@ -4,7 +4,6 @@
          :values="tags"
          @choose="toggleFilterTag"
          :activeTags="activeTags"
-         :load="loadTags"
       />
 
       <Section>
@@ -24,7 +23,6 @@
             :isCanAdd="isTeacher"
             @add="add"
             @choose-item="chooseItem"
-            :load="loadProblems"
          >
             <list-column>name</list-column>
             <list-column>difficulty</list-column>
@@ -48,11 +46,13 @@ import { FullProblem, PartialProblem, Tag } from '../models'
 import { ProblemFilter } from '../store/modules/problems'
 import List from './List.vue'
 import ListColumn from './ListColumn.vue'
+import { Problem } from '@/models/problems'
+import { profileInitials } from '@/models/user'
 
-const isProblemPublicated = ({ publicationDate: date }: PartialProblem, now = new Date()): boolean =>
+const isProblemPublicated = ({ publicationDate: date }: Problem, now = new Date()): boolean =>
   !!date && date <= now
 
-function filterProblemsByPublication(filter: ProblemFilter, data: Array<PartialProblem>) {
+function filterProblemsByPublication(filter: ProblemFilter, data: Array<Problem>): Array<Problem> {
   if (filter === ProblemFilter.All)
     return data
 
@@ -67,14 +67,34 @@ function filterProblemsByPublication(filter: ProblemFilter, data: Array<PartialP
   return data
 }
 
-const isProblemContainAnyTag = ({ problemsTags }: PartialProblem, tags: Tag[]): boolean =>
+const isProblemContainAnyTag = ({ problemsTags }: Problem, tags: Tag[]): boolean =>
   tags.every(tag => problemsTags.nodes.some(({ tag: { id } }) => tag.id === id))
 
-function filterProblemsByTags(tags: Tag[], data: Array<PartialProblem>) {
+function filterProblemsByTags(tags: Tag[], data: Array<Problem>): Array<Problem> {
   if (!tags.length)
     return data
 
   return data.filter(p => isProblemContainAnyTag(p, tags))
+}
+
+const exptractAuthourName = (problem: Problem, fallback: string): string => {
+  const { author } = problem
+  if (!author) {
+    console.error('Problem not have author')
+    return fallback
+  }
+
+  const initials = profileInitials(author)
+  if (!initials)
+    return fallback
+
+  return initials
+  // TODO: make by username display
+  // const { user } = author
+  // if(!user)
+  //   return fallback
+
+  // return user.name || user.username
 }
 
 @Component({
@@ -88,7 +108,7 @@ function filterProblemsByTags(tags: Tag[], data: Array<PartialProblem>) {
   },
 })
 export default class ProblemsList extends Vue {
-   @Prop(Array) public problems!: Array<PartialProblem>;
+   @Prop(Array) public problems!: Array<Problem>;
 
    @Prop(Array) public tags!: Tag[];
 
@@ -105,9 +125,6 @@ export default class ProblemsList extends Vue {
    public activeTags: Tag[] = [];
 
    get filteredProblems() {
-     if (!this.problems || !this.problems.length)
-       return []
-
      const publicated = filterProblemsByPublication(this.activeFilter, this.problems)
 
      return filterProblemsByTags(this.activeTags, publicated)
@@ -119,7 +136,7 @@ export default class ProblemsList extends Vue {
    }
 
    @Emit('choose-item')
-   public chooseItem(value: PartialProblem | FullProblem): PartialProblem | FullProblem {
+   public chooseItem(value: Problem): Problem {
      return value
    }
 
@@ -141,12 +158,21 @@ export default class ProblemsList extends Vue {
      return this.activeTags
    }
 
-   public formatItem(item: PartialProblem) {
+   public formatItem(item: Problem) {
      return {
-       ...item,
-       date: item.updatedAt ? item.updatedAt : item.createdAt,
-       author: item.author.login,
+       name: item.name,
+       difficulty: item.difficulty,
+       updatedAt: item.updatedAt,
+       author: exptractAuthourName(item, this.translate('Anonymous')),
      }
+   }
+
+   // Translate text if can i18n translation connected to vue
+   private translate(text: string): string {
+     if (this.$t)
+       return this.$t(text) as unknown as string
+
+     return text
    }
 }
 </script>

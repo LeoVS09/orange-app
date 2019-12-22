@@ -3,6 +3,7 @@ import {
   ProducerStoreGetter,
   ProducerStoreSetter,
   EventProducer,
+  ExtendTemporalTrap,
 } from '@/lazyDB/core/types'
 import { getStore, isProducer } from '@/lazyDB/core/common'
 import { getDatabaseStore } from '@/lazyDB/database/dispatcher'
@@ -56,6 +57,7 @@ export const setter = (schema: AosEntitySchema, getSchema?: IGetSchema): Produce
 
     if (type === AosFieldType.OneToMany) {
       const store = getStore(value)
+      store.extendTemporalTrap = applyControlsToTrap(schema, getSchema)
       applyListControls(store)
 
       return true
@@ -63,6 +65,17 @@ export const setter = (schema: AosEntitySchema, getSchema?: IGetSchema): Produce
 
     console.error('Unexpected model attribute type:', type)
     return true
+  }
+
+// make temporal trap in list work as repository object
+// This must be setted for repository and table, they all create list in differrent situations
+export const applyControlsToTrap = (schema: AosEntitySchema, getSchema?: IGetSchema): ExtendTemporalTrap =>
+  (trap) => {
+
+    console.log('applyControlsToTrap', trap)
+    const store = getStore(trap)
+
+    applyRepositoryControls(store, schema, getSchema)
   }
 
 export interface IGetSchema {

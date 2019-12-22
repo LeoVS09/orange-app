@@ -1,6 +1,8 @@
-import { IProducerStore, ProducerStoreGetter, ProducerStoreSetter } from '@/lazyDB/core/types'
+import {
+  IProducerStore, ProducerStoreGetter, ProducerStoreSetter, EventProducer, ExtendTemporalTrap,
+} from '@/lazyDB/core/types'
 import { getStore, isProducer } from '@/lazyDB/core/common'
-import { makeTemporalTrapObject } from '@/lazyDB/database/base/repository/temporal'
+import { makeTemporalTrapObject, isTemporalTrap } from '@/lazyDB/database/base/repository/temporal'
 import {
   ListItemGetterReference, ListSource, nodesKey, NodesProducerReference,
 } from '@/lazyDB/database/types'
@@ -43,7 +45,7 @@ export const getter: ProducerStoreGetter = ({ base }, name) => {
   return base[name]
 }
 
-export const setter: ProducerStoreSetter = ({ base }, name, value) => {
+export const setter: ProducerStoreSetter = ({ base, extendTemporalTrap }, name, value) => {
   if (name !== nodesKey)
     base[name as string] = value
   else
@@ -56,15 +58,17 @@ export const setter: ProducerStoreSetter = ({ base }, name, value) => {
     return true
 
   const nodesStore = getStore(value) as unknown as IProducerStore<Array<any>>
+  nodesStore.extendTemporalTrap = extendTemporalTrap
 
-  nodesStore.getter = nodesGetter(base as ListSource)
+  nodesStore.getter = nodesGetter(base as ListSource, nodesStore)
+  nodesStore.setter = nodesSetter(base as ListSource, nodesStore)
 
   return true
 }
 
 // Getter for array
 // TODO: add typescript support for arrays
-const nodesGetter = (source: ListSource): ProducerStoreGetter<Array<any>> =>
+const nodesGetter = (source: ListSource, _: IProducerStore<Array<any>>): ProducerStoreGetter<Array<any>> =>
   ({ base }, index) => {
     console.log('get nodes', index, 'base', base)
 
@@ -95,6 +99,21 @@ const nodesGetter = (source: ListSource): ProducerStoreGetter<Array<any>> =>
       return
 
     return getItem(source, index as number)
+  }
+
+const nodesSetter = (_: ListSource, store: IProducerStore<Array<any>>): ProducerStoreSetter<Array<any>> =>
+  ({ base }, name, value) => {
+    base[name as unknown as number] = value
+
+    if (!isTemporalTrap(value))
+      return true
+
+    const { extendTemporalTrap } = store
+    // This hack allow make temporal trap work as repository object
+    if (extendTemporalTrap)
+      extendTemporalTrap(value)
+
+    return true
   }
 
 const isNeedProduceTrapForSlice = (source: ListSource, base: Array<any>, args: Array<any>) =>
