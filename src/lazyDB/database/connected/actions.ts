@@ -139,10 +139,10 @@ export const databaseReducers: EventReducersMap = {
     const getRequest = `${payload.name as string}/${payload.inner.name as string}/`
 
     try {
-      console.log(getRequest, schemaToQueryFields(readPayload.readSchema))
+      console.log('databaseReducers', getRequest, schemaToQueryFields(readPayload.readSchema))
 
       const response = await fetchListOrEntity(payload)
-      console.log('read response', response)
+      console.log('databaseReducers', 'read response', response)
 
       removeGetEventsFromMemory(readPayload)
 
@@ -158,7 +158,7 @@ export const databaseReducers: EventReducersMap = {
     const { data, store } = payload.inner.inner
     const { base } = store
 
-    console.log('read success data', data)
+    console.log('databaseReducers', 'read success data', data)
 
     Object.keys(data)
       .forEach((key) => {
@@ -174,7 +174,7 @@ export const databaseReducers: EventReducersMap = {
         })
       })
 
-    console.log('ModelEventTypes.ReadSuccess', base, data)
+    console.log('databaseReducers', 'ModelEventTypes.ReadSuccess', base, data)
 
     return true
   },
@@ -223,6 +223,7 @@ const isDefinedSimpleProperty = (
 
 export const repositoryReducers: EventReducersMap = {
   [ModelEventTypes.GetProperty]: (store, payload) => {
+    console.log('repositoryReducers', 'GetProperty', 'payload:', payload, 'store:', store)
     if (isExcludeProperty(store as IDatabaseModelProducerStore, payload))
       return true
 
@@ -232,7 +233,7 @@ export const repositoryReducers: EventReducersMap = {
     const readSchema = getOrCreateReadSchema(store as IDatabaseModelProducerStore)
 
     const isAppended = appendPropertyToSchema(readSchema, payload)
-    console.log('readSchema:', readSchema, 'event:', payload, 'isAppended:', isAppended)
+    console.log('repositoryReducers', 'readSchema:', readSchema, 'event:', payload, 'isAppended:', isAppended)
     if (!isAppended)
       return true
 

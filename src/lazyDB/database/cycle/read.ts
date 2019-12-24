@@ -5,7 +5,7 @@ import { isReading } from '../states'
 import { takeWhileThenContinue } from './utils'
 import { IDatabaseModelProducerStore } from '../types'
 
-// Need calc this dynamically
+// TODO: Need calc this dynamically
 const READ_TIME = 50
 
 export type CanReadCallback = () => boolean
@@ -31,10 +31,15 @@ export function getsSpawnReadEvent(
       debounceTime(READ_TIME),
       map(() => {
         const gets = memory!.filter(event => event.type === ModelEventTypes.GetProperty)
-        console.log('get events spawn readd event', memory!.memory.length, memory)
         return gets
       }),
-      filter(gets => !!gets.length),
+      filter(gets =>
+        !!gets.length
+        // TODO: inspect
+        // strange bug when have multple repositories on page,
+        // may spawn read events while have read event in memmory,
+        // possible caused by read success event and rerender by other repository
+        && !isReading(memory!)),
     )
   // TODO: need spawn read events in parallel of different models
     .subscribe((gets) => {
@@ -47,6 +52,7 @@ export function getsSpawnReadEvent(
         readSchema: readSchema!,
         store,
       }
+      console.log('get events spawn read event', 'gets.length:', gets.length, 'memory.length:', memory!.memory.length, memory)
 
       dispatcher.dispatch(ModelEventTypes.Read, payload)
     })

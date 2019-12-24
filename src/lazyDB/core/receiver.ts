@@ -77,7 +77,7 @@ export function atomicReceiveWithMemory(prducerStore: IProducerStore, reducers: 
 
     const store = getStoreFromEvent(event)
 
-    sync(handleResult)
+    async(handleResult)
       .then((isHandled) => {
         if (isHandled || !store.memory)
           return
@@ -88,15 +88,11 @@ export function atomicReceiveWithMemory(prducerStore: IProducerStore, reducers: 
 }
 
 // TODO: rewrite, code must write without this strange behavior
-function sync<T>(value: T | PromiseLike<T>): PromiseLike<T> {
+function async<T>(value: T | Promise<T>): Promise<T> {
   if (isPromise(value))
     return value
 
-  return {
-    then(handler: (value: T) => any) {
-      handler(value)
-    },
-  } as PromiseLike<T>
+  return Promise.resolve(value)
 }
 
 export function asyncReceiveWithMemory(
@@ -133,7 +129,7 @@ export function asyncReceiveWithMemory(
     }
 
     const handlerResult = handleByReducer(event, reducer)
-    const isHandled = await sync(handlerResult)
+    const isHandled = await async(handlerResult)
 
     if (!isHandled || !store.memory)
       return

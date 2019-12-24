@@ -9,6 +9,7 @@ export const defaultExcludeProperties = [
   'catch',
   'function () { [native code] }',
   'slice',
+  'map',
   'length',
   'push',
   'pop',

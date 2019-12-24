@@ -2,12 +2,12 @@
    <div
       :class="{tags: true, 'scrollable-horizontal': scrollable}"
    >
-      <div class="tags--separator" v-if="values && values.length"><span> </span></div>
-      <span class="tags--left-gradient" v-if="scrollable && values && values.length"> </span>
+      <div class="tags--separator" v-if="values"><span> </span></div>
+      <span class="tags--left-gradient" v-if="scrollable && values"> </span>
       <div :id="id" class="tags--content-wrapper" >
          <ButtonGroup
             class="tags--content"
-            v-if="values && values.length"
+            v-if="values"
             :secondary="true"
             :meta="{
                   attributes: {
@@ -37,7 +37,6 @@ import { onSideHover } from '@/components/predictive'
 import Loadable from '@/components/mixins/loadable'
 
 export interface BaseTag {
-   [key: string]: any;
    name: string;
 }
 
@@ -64,7 +63,6 @@ export default class Tags extends Mixins(Loadable) {
 
    @Prop({
      type: Array,
-     default: () => [],
    }) public values!: BaseTag[];
 
    @Prop({

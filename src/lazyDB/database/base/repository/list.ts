@@ -132,6 +132,16 @@ const arrayMethodWrapper = (source: ListSource, base: Array<any>, index: ArraySt
       return [result]
     }
 
+    if (index === 'map' && !base.length) {
+      console.log('produce trap for map')
+
+      // @ts-ignore
+      const trap = source[NodesProducerReference][0]
+
+      // @ts-ignore
+      return [trap].map(...args)
+    }
+
     // @ts-ignore
     const result = base[index](...args)
     console.log('nodes property', index, args, 'result', result)
