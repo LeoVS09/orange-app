@@ -1,6 +1,6 @@
 import { ModelEventInnerPayload } from '@/lazyDB/core/types'
 
-// TODO: his inner check descibe more big problem with current not plain type system
+// TODO: this inner check describe more big problem with current not plain type system
 // There only two ways to fix it, complitely rewrite all by using typescript hacks
 // Or use other language with better type support (like Dart)
 
