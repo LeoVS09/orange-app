@@ -1,31 +1,18 @@
 import {
-  ModelEventTypes, ReadFailureEventPayload, ModelEventReadPayload, ReadEventPayload,
+  ModelEventTypes,
+  ReadFailureEventPayload,
+  ModelEventReadPayload,
 } from '../../events'
-import { schemaToQueryFields } from '.'
 import {
-  ModelEventInnerPayload, EventReducersMap, AbstractData, ModelEventGetPropertyPayload,
+  ModelEventInnerPayload,
+  EventReducersMap,
 } from '@/lazyDB/core/types'
 import { IDatabaseModelProducerStore } from '../../types'
 import { TableListKey } from '../../storage/table'
-import { api } from './api.'
-import { isExcludeProperty } from './utils'
-
-const removeGetEventsFromMemory = ({ store, gets }: ReadEventPayload) => {
-  const { memory } = store
-
-  if (memory)
-    memory.remove(...gets)
-}
-
-const dispatchReadSuccess = ({ store }: ReadEventPayload, responseData: AbstractData) => {
-  const { dispatcher } = store
-  dispatcher.readSuccess(responseData, store)
-}
-
-const dispatchReadFailure = ({ store }: ReadEventPayload, error: any) => {
-  const { dispatcher } = store
-  dispatcher.readFailure(error, store)
-}
+import { api } from './api'
+import {
+  isExcludeProperty, schemaToQueryFields, removeGetEventsFromMemory, dispatchReadSuccess, dispatchReadFailure,
+} from './utils'
 
 const fetchListOrEntity = (payload: any) => {
   if (payload.inner.name === TableListKey)
@@ -42,9 +29,9 @@ export const databaseReducers: EventReducersMap = {
     return false
   },
 
-  [ModelEventTypes.SetProperty]: (store, payload) => false,
+  [ModelEventTypes.SetProperty]: () => false,
 
-  [ModelEventTypes.DeleteProperty]: (store, payload) => false,
+  [ModelEventTypes.DeleteProperty]: () => false,
 
   // Add ts support for inner read payload
   [ModelEventTypes.Read]: async ({ dispatcher }, payload: ModelEventInnerPayload<ModelEventInnerPayload<ModelEventReadPayload>>) => {

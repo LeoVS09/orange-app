@@ -1,5 +1,4 @@
-import { isSimpleAosField, AosSchema } from '@/abstractObjectScheme'
-import { QueryField } from '@/lazyDB/connectors/queryMapper'
+import { AosSchema } from '@/abstractObjectScheme'
 import { IDatabaseModelProducerStore } from '../../types'
 import {
   IProducerStore, AbstractData, ModelEventGetPropertyPayload, EventReducersMap,
@@ -14,23 +13,6 @@ function getOrCreateReadSchema(store: IDatabaseModelProducerStore): AosSchema {
     return readSchema
 
   return store.readSchema = {}
-}
-
-// TODO: multiple types of object schema, need better solution
-export function schemaToQueryFields(schema: AosSchema): Array<string | QueryField> {
-  const keys = Object.keys(schema)
-
-  return keys.map((key) => {
-    const field = schema[key]
-    if (isSimpleAosField(field))
-      return key
-
-    return {
-      entity: key,
-      type: field.type,
-      fields: schemaToQueryFields(field.schema),
-    }
-  })
 }
 
 const isDefinedSimpleProperty = (
@@ -59,7 +41,7 @@ export const repositoryReducers: EventReducersMap = {
     return false
   },
 
-  [ModelEventTypes.SetProperty]: (store, payload) => false,
+  [ModelEventTypes.SetProperty]: () => false,
 
-  [ModelEventTypes.DeleteProperty]: (store, payload) => false,
+  [ModelEventTypes.DeleteProperty]: () => false,
 }
