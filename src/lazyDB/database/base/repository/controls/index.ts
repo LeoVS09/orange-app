@@ -52,8 +52,14 @@ const defaultSetLinkedEntity = (schema: AosEntitySchema, getSchema?: IGetSchema)
 
     if (type === AosFieldType.OneToOne) {
 
+      if (!getSchema) {
+        console.log('Setter one to one', name, 'not have getSchema method')
+        return true
+      }
+
       const tableName = getTableNameByField(schema.fields, name as string)
       console.log('Setter One to One, name:', name, 'table:', tableName, 'getSchema:', getSchema)
+
       applyControlsByInnerSchema(value, tableName, getSchema)
 
       return true
@@ -72,10 +78,7 @@ const defaultSetLinkedEntity = (schema: AosEntitySchema, getSchema?: IGetSchema)
     return true
   }
 
-function applyControlsByInnerSchema(value: EventProducer, name: string, getSchema?: IGetSchema) {
-  if (!getSchema)
-    return
-
+function applyControlsByInnerSchema(value: EventProducer, name: string, getSchema: IGetSchema) {
   const schema = getSchema(name)
   if (!schema)
     return
