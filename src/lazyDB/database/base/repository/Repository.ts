@@ -8,7 +8,10 @@ import {
   OnChangeCallback,
 } from '../../types'
 import {
-  applyRepositoryControls, IGetSchema, applyControlsForTrap, ApplyControlsForTrapOptions,
+  applyRepositoryControls,
+  IGetSchema,
+  applyControlsForTrap,
+  ApplyControlsForTrapOptions,
 } from './controls'
 import { asyncReceiveWithMemory } from '@/lazyDB/core/receiver'
 import { repositoryReducers } from '@/lazyDB/database/connected/actions'
