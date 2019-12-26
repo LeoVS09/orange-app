@@ -1,4 +1,9 @@
-import { EventReducer, ModelEventInnerPayload, AbstractData, EventProducer } from '@/lazyDB/core/types'
+import {
+  EventReducer,
+  ModelEventInnerPayload,
+  AbstractData,
+  EventProducer,
+} from '@/lazyDB/core/types'
 import { ReadSuccessEventPayload } from '@/lazyDB/database/events'
 import { isObject, isDate } from './utils'
 import { getInnerInnerPayload } from './types'
@@ -33,7 +38,7 @@ export default readSuccess
 
 // TODO: set entity must work this way
 const setEntity = (received: AbstractData, model: EventProducer) => {
-    for(const key of Object.keys(received)) 
-        model[key] = received[key]
-    
+  for (const key of Object.keys(received))
+    model[key] = received[key]
+
 }
