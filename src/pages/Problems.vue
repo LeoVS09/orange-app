@@ -28,7 +28,10 @@ import * as actions from '@/store/actionTypes'
 import { PageHeaderAction, Section } from '@/components'
 import { ROUTES } from '@/router'
 import {
-  Tag, ProblemRepository, Problem, TagRepository,
+  Tag,
+  ProblemRepository,
+  Problem,
+  TagRepository,
 } from '@/models/problems'
 import { RouterPush } from '@/components/decorators'
 import ProblemsList from '@/containers/ProblemsList.vue'

@@ -1,18 +1,16 @@
 <template>
   <div class="footer">
-    <p>Made with <span class="heart" v-html="heart"></span> in Saint-Petersburg</p>
+    <p>Made with <span class="heart"> </span> in Saint-Petersburg</p>
   </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
 import { Component } from 'vue-property-decorator'
-// @ts-ignore
-import heartImage from '../static/heart.svg'
 
-  @Component
+@Component
 export default class Footer extends Vue {
-    heart = heartImage
+
 }
 </script>
 
@@ -50,11 +48,10 @@ export default class Footer extends Vue {
 
   .heart {
     animation: 2s heartbeat ease-in-out infinite;
-    .svg-inline--fa {
-      height: 0.8rem;
-      path {
-        fill: #e75225;
-      }
-    }
+    height: 0.8rem;
+    width: 0.8rem;
+    mask: url(../static/heart.svg) no-repeat center;
+    background: #e75225;
+    display: inline-block;
   }
 </style>

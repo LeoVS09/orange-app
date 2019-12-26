@@ -52,6 +52,7 @@ export const getter = (schema: AosEntitySchema): ProducerStoreGetter => ({ base 
     console.log('Getter One to One', name)
     return { }
   }
+
   if (type === AosFieldType.OneToMany)
     return makeListSource()
 
