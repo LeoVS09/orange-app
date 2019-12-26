@@ -11,7 +11,6 @@ import {
   applyRepositoryControls,
   IGetSchema,
   applyControlsForTrap,
-  ApplyControlsForTrapOptions,
 } from './controls'
 import { asyncReceiveWithMemory } from '@/lazyDB/core/receiver'
 import { repositoryReducers } from '@/lazyDB/database/connected/actions'
@@ -56,8 +55,10 @@ export default class LazyReactiveRepository<T extends AbstractData = AbstractDat
      }
 
      const tableStore = getStore(this.table)
-     // as unknown required, because typescript cannot track repository now have schema field
-     tableStore.extendTemporalTrap = applyControlsForTrap(this as unknown as ApplyControlsForTrapOptions)
+
+     // this hack allow change schema and set getSchema after constructor execution
+     tableStore.extendTemporalTrap = (...args) =>
+       applyControlsForTrap(this.schema!, this.getSchema)(...args)
    }
 
    public get store(): IDatabaseModelProducerStore {

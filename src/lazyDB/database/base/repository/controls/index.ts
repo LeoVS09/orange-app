@@ -68,7 +68,7 @@ const defaultSetLinkedEntity = (schema: AosEntitySchema, getSchema?: IGetSchema)
     if (type === AosFieldType.OneToMany) {
 
       const store = getStore(value)
-      store.extendTemporalTrap = applyControlsForTrap({ schema, getSchema })
+      store.extendTemporalTrap = applyControlsForTrap(schema, getSchema)
       applyListControls(store)
 
       return true
@@ -89,12 +89,12 @@ function applyControlsByInnerSchema(value: EventProducer, name: string, getSchem
 
 // make temporal trap in list work as repository object
 // This must be setted for repository and table, they all create list in differrent situations
-export const applyControlsForTrap = (options: ApplyControlsForTrapOptions): ExtendTemporalTrap =>
+export const applyControlsForTrap = (schema: AosEntitySchema, getSchema?: IGetSchema): ExtendTemporalTrap =>
   (trap) => {
 
     console.log('applyControlsToTrap', trap)
     const store = getStore(trap)
 
-    applyRepositoryControls(store, options.schema, options.getSchema)
+    applyRepositoryControls(store, schema, getSchema)
   }
 
