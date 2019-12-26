@@ -14,7 +14,6 @@ import setter from './setter'
 import {
   IGetSchema,
   ISetLinkedEntity,
-  ApplyControlsForTrapOptions,
   IGetLinkedEntity,
 } from './types'
 import { getTableNameByField } from './utils'
