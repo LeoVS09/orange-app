@@ -8,9 +8,7 @@ import {
   OnChangeCallback,
 } from '../../types'
 import {
-  applyRepositoryControls,
-  IGetSchema,
-  applyControlsForTrap,
+  applyRepositoryControls, ApplyRepositoryControlsOptions,
 } from './controls'
 import { asyncReceiveWithMemory } from '@/lazyDB/core/receiver'
 import { repositoryReducers } from '@/lazyDB/database/connected/actions'
@@ -22,6 +20,7 @@ import { AosEntitySchema, AosFieldType } from '@/abstractObjectScheme'
 export interface LazyReactiveRepositoryOptions {
    table?: DatabaseTable
    schema?: Partial<AosEntitySchema>
+  applyRepositoryControlsOptions?: ApplyRepositoryControlsOptions
 }
 
 const defaultPrimaryKey = 'id'
@@ -30,75 +29,75 @@ export default class LazyReactiveRepository<T extends AbstractData = AbstractDat
 
    public table: DatabaseTable
 
-   public schema?: AosEntitySchema
+   public schema: AosEntitySchema
 
    public excludeProperties: Array<string> = []
 
-   public getSchema?: IGetSchema
+  public applyRepositoryControlsOptions: ApplyRepositoryControlsOptions
 
-   constructor(
-     entity: string,
-     {
-       table = makeDatabaseTable(),
-       schema,
-     }: LazyReactiveRepositoryOptions = {},
-   ) {
-     this.entity = entity
-     this.table = table
-     if (!schema)
-       return
+  constructor(
+    entity: string,
+    {
+      table = makeDatabaseTable(),
+      schema = {},
+      applyRepositoryControlsOptions = {},
+    }: LazyReactiveRepositoryOptions = {},
+  ) {
+    this.entity = entity
+    this.table = table
+    this.applyRepositoryControlsOptions = applyRepositoryControlsOptions
 
-     this.schema = {
-       primaryKey: schema.primaryKey || defaultPrimaryKey,
-       foreignKeys: schema.foreignKeys || [],
-       fields: schema.fields || {},
-     }
+    this.schema = {
+      primaryKey: schema.primaryKey || defaultPrimaryKey,
+      foreignKeys: schema.foreignKeys || [],
+      fields: schema.fields || {},
+    }
 
-     const tableStore = getStore(this.table)
+    const tableStore = getStore(this.table)
 
-     // this hack allow change schema and set getSchema after constructor execution
-     tableStore.extendTemporalTrap = (...args) =>
-       applyControlsForTrap(this.schema!, this.getSchema)(...args)
-   }
+    // this hack allow change schema after constructor execution
+    tableStore.extendTemporalTrap = trapStore =>
+      applyRepositoryControls(trapStore, this.schema, this.applyRepositoryControlsOptions)
+  }
 
-   public get store(): IDatabaseModelProducerStore {
-     return getStore(this.table) as IDatabaseModelProducerStore
-   }
+  public get store(): IDatabaseModelProducerStore {
+    return getStore(this.table) as IDatabaseModelProducerStore
+  }
 
-   public get dispatcher(): DatabaseDispatcher {
-     return this.store.dispatcher as DatabaseDispatcher
-   }
+  public get dispatcher(): DatabaseDispatcher {
+    return this.store.dispatcher as DatabaseDispatcher
+  }
 
-   // TODO: Add typesafe table
-   public findOne(id: string, onChange?: OnChangeCallback): T {
-     if (!this.schema)
-       return this.table[id] as T
+  // TODO: Add typesafe table
+  public findOne(id: string, onChange?: OnChangeCallback): T {
+    if (!this.schema)
+      return this.table[id] as T
 
-     const model = this.table[id]
-     const store = getDatabaseStore(model)
+    const model = this.table[id]
+    const store = getDatabaseStore(model)
 
-     applyRepositoryControls(store, this.schema, this.getSchema)
+    applyRepositoryControls(store, this.schema, this.applyRepositoryControlsOptions)
 
-     appendRepositoryLifeHooks(store, id, this.excludeProperties, onChange)
+    appendRepositoryLifeHooks(store, id, this.excludeProperties, onChange)
 
-     return model as T
-   }
+    return model as T
+  }
 
-   public list(onChange?: OnChangeCallback): ListProducer<T> {
-     const list = this.table[TableListKey] as ListProducer<T>
+  public list(onChange?: OnChangeCallback): ListProducer<T> {
+    const list = this.table[TableListKey] as ListProducer<T>
 
-     const store = getDatabaseStore(list)
+    const store = getDatabaseStore(list)
 
-     onChange = listOnChangeWrapper(list, onChange)
+    onChange = listOnChangeWrapper(list, onChange)
 
-     appendRepositoryLifeHooks(store, TableListKey, this.excludeProperties, onChange)
+    appendRepositoryLifeHooks(store, TableListKey, this.excludeProperties, onChange)
 
-     return list
-   }
+    return list
+  }
 
-   public set(id: string, data: AbstractData | EventProducer) {
-     this.table[id] = data
-   }
+  public set(id: string, data: AbstractData | EventProducer) {
+    this.table[id] = data
+  }
 }
 
 function appendRepositoryLifeHooks(

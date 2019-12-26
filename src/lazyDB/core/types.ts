@@ -74,11 +74,11 @@ export interface ProducerStoreOptions<T = AbstractData> {
 }
 
 export interface ExtendTemporalTrap {
-   (trapProducer: EventProducer): void
+   (trapStore: IProducerStore<AbstractData>): void
 }
 
 export interface IProducerStore<T = AbstractData> extends ProducerStoreOptions<T> {
-   stream: Observable<ModelEvent<any>> | undefined
+   stream?: Observable<ModelEvent<any>>
 }
 
 export type EventReducer<T> = (store: IProducerStore, event: T) => boolean | Promise<boolean | undefined | void> | undefined | void

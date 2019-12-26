@@ -1,11 +1,12 @@
-import { AosEntitySchema, isSimpleType } from '@/abstractObjectScheme'
+import { AosEntitySchema, isSimpleType, AosFieldType } from '@/abstractObjectScheme'
 import { IGetLinkedEntity } from './types'
 import { ProducerStoreGetter } from '@/lazyDB/core/types'
 import { getFieldType } from './utils'
+import { makeListSource } from '../list'
 
 export const getter = (
   schema: AosEntitySchema,
-  getLinkedEntity: IGetLinkedEntity,
+  getLinkedEntity: IGetLinkedEntity = defaultGetLinkedEntity,
 ): ProducerStoreGetter =>
   (store, name) => {
     const { base } = store
@@ -21,3 +22,15 @@ export const getter = (
   }
 
 export default getter
+
+const defaultGetLinkedEntity: IGetLinkedEntity = (store, name, type) => {
+  if (type === AosFieldType.OneToOne) {
+    console.log('Getter One to One', name)
+    return {}
+  }
+
+  if (type === AosFieldType.OneToMany)
+    return makeListSource()
+
+  console.error('Unexpected model attribute type:', name, type)
+}

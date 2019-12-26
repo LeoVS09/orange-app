@@ -1,11 +1,13 @@
-import { AosEntitySchema, isSimpleType } from '@/abstractObjectScheme'
+import { AosEntitySchema, isSimpleType, AosFieldType } from '@/abstractObjectScheme'
 import { ISetLinkedEntity } from './types'
 import { ProducerStoreSetter } from '@/lazyDB/core/types'
 import { getFieldType } from './utils'
+import { isProducer, getStore } from '@/lazyDB/core/common'
+import { applyListControls } from '../list'
 
 export const setter = (
   schema: AosEntitySchema,
-  setLinkedEntity: ISetLinkedEntity,
+  setLinkedEntity: ISetLinkedEntity = defaultSetLinkedEntity,
 ): ProducerStoreSetter =>
   (store, name, value) => {
     const { base } = store
@@ -20,3 +22,28 @@ export const setter = (
   }
 
 export default setter
+
+const defaultSetLinkedEntity: ISetLinkedEntity = ({ base, extendTemporalTrap }, name, type, value) => {
+
+  base[name] = value
+
+  if (type === AosFieldType.OneToOne)
+    return true
+
+  if (!isProducer(value))
+    return true
+
+  if (type === AosFieldType.OneToMany) {
+
+    const store = getStore(value)
+    if (extendTemporalTrap)
+      store.extendTemporalTrap = extendTemporalTrap
+
+    applyListControls(store)
+
+    return true
+  }
+
+  console.error('Unexpected model attribute type:', type)
+  return true
+}

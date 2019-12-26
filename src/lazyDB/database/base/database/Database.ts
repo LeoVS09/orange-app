@@ -11,9 +11,8 @@ import { getStore } from '@/lazyDB/core/common'
 
 import { makeDatabaseStorage } from '../../storage'
 import { ModelEventDispatcher } from '@/lazyDB/core/dispatcher/model/base'
-import { extractEntityNameFromManyKey } from '@/lazyDB/utils'
-import { applyRepositoryControls } from '@/lazyDB/database/base/repository/controls'
 import { AosFieldType, AosEntitySchemaStorage, AosEntitySchema } from '@/abstractObjectScheme'
+import { applyDatabaseControls, getSchemaByKey } from './controls'
 
 export interface LazyReactiveDatabaseOptions {
   storage?: DatabaseStorage
@@ -51,7 +50,7 @@ export default class LazyReactiveDatabase implements ILazyReactiveDatabase {
 
   public setSchema(entity: string, schema: AosEntitySchema) {
     this.schemas[entity] = schema
-    console.log('database schema setted', entity, schema, this.schemas)
+    console.log('database schema was set', entity, schema, this.schemas)
   }
 
   public findOne(entity: string, id: string): EventProducer {
@@ -62,11 +61,8 @@ export default class LazyReactiveDatabase implements ILazyReactiveDatabase {
     const store = getStore(model)
     const schema = this.schemas[entity]
 
-    applyRepositoryControls(
-      store,
-      schema,
-      (key: string) => this.getSchemaByKey(key, AosFieldType.OneToOne),
-    )
+    const getSchema = (key: string) => getSchemaByKey(this.schemas, key, AosFieldType.OneToOne)
+    applyDatabaseControls(store, schema, getSchema)
 
     return model
   }
@@ -98,10 +94,7 @@ export default class LazyReactiveDatabase implements ILazyReactiveDatabase {
   }
 
   public getSchemaByKey(key: string, type: AosFieldType) {
-    let fieldEntity = key
-    if (type === AosFieldType.OneToMany)
-      fieldEntity = extractEntityNameFromManyKey(key)
-
-    return this.schemas[fieldEntity]
+    return getSchemaByKey(this.schemas, key, type)
   }
+
 }

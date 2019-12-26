@@ -110,8 +110,10 @@ const nodesSetter = (_: ListSource, store: IProducerStore<Array<any>>): Producer
 
     const { extendTemporalTrap } = store
     // This hack allow make temporal trap work as repository object
-    if (extendTemporalTrap)
-      extendTemporalTrap(value)
+    if (extendTemporalTrap) {
+      const valueStore = getStore(value)
+      extendTemporalTrap(valueStore)
+    }
 
     return true
   }

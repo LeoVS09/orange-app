@@ -9,6 +9,11 @@ export interface ISetLinkedEntity {
     (store: IProducerStore<AbstractData>, name: string, type: string, value: any): boolean
 }
 
+export interface ApplyRepositoryControlsOptions {
+    getLinkedEntity?: IGetLinkedEntity
+    setLinkedEntity?: ISetLinkedEntity
+}
+
 export interface IGetSchema {
     (entity: string): AosEntitySchema | undefined
 }
