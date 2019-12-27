@@ -12,7 +12,7 @@ import { genSetLinkedEntity, getSchemaByKey } from '@/lazyDB/database/base/datab
 // TODO: must have base lifecycle handlers and debug tools
 export class Database extends LazyReactiveDatabase {
 
-  Repository: IRepository
+  public Repository: typeof Repository = Repository
 
   constructor() {
     super({
@@ -27,31 +27,30 @@ export class Database extends LazyReactiveDatabase {
 
     connectDebugToActionsStream(this.store)
 
-    const db = this
-
     // TODO: not plain, need create more readble solution for connect Repository to database
-    this.Repository = class Repository<T> extends LazyReactiveRepository<T> {
-      constructor(
-        entity: string,
-        schema?: Partial<AosEntitySchema>,
-      ) {
-        super(entity, {
-          table: db.storage[entity],
-          schema,
-        })
-
-        db.setSchema(entity, this.schema)
-
-        this.excludeProperties = db.excludeProperties
-
-        const getSchema = (key: string) => getSchemaByKey(db.schemas, key, AosFieldType.OneToOne)
-        this.applyRepositoryControlsOptions.setLinkedEntity = genSetLinkedEntity(this.schema, getSchema)
-
-      }
-    } as IRepository
+    this.Repository.db = this
   }
 }
 
-export interface IRepository<T extends AbstractData = AbstractData> extends LazyReactiveRepository<T> {
-  new (entity: string, schema?: Partial<AosEntitySchema>): LazyReactiveRepository<T>
+class Repository<T> extends LazyReactiveRepository<T> {
+
+  static db: Database
+
+  constructor(
+    entity: string,
+    schema?: Partial<AosEntitySchema>,
+  ) {
+    super(entity, {
+      table: Repository.db.storage[entity],
+      schema,
+    })
+
+    Repository.db.setSchema(entity, this.schema)
+
+    this.excludeProperties = Repository.db.excludeProperties
+
+    const getSchema = (key: string) => getSchemaByKey(Repository.db.schemas, key, AosFieldType.OneToOne)
+    this.applyRepositoryControlsOptions.setLinkedEntity = genSetLinkedEntity(this.schema, getSchema)
+
+  }
 }

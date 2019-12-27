@@ -18,6 +18,7 @@ export interface City {
    updatedAt: Date
    countryId: string
    universities?: Array<University>
+  country?: Country
 }
 
 export const CountryRepository = new Repository<Country>(
@@ -29,7 +30,7 @@ export const CountryRepository = new Repository<Country>(
   },
 )
 
-export const CityRepository = new Repository(
+export const CityRepository = new Repository<City>(
   'city',
   {
     fields: {
