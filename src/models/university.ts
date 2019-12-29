@@ -1,6 +1,6 @@
-import {Repository} from '@/lazyDB'
-import {AosFieldType} from '@/abstractObjectScheme'
-import {City} from "@/models/country";
+import { Repository } from '@/lazyDB'
+import { AosFieldType } from '@/abstractObjectScheme'
+import { City } from '@/models/country'
 
 export interface University {
   id: string

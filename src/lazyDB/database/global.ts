@@ -13,11 +13,11 @@ appendToWindow({ db })
 
 // Connected to global db entity repository
 // TODO: rewirite extending
-const Repository = db.Repository
+const { Repository } = db
 
 export {
   db,
-  Repository
+  Repository,
 }
 
 const store = getStore(db.storage)
