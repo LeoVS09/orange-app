@@ -6,7 +6,9 @@ export interface Country {
    id: string
    name: string
    code: string
-   cities?: Array<City>
+   cities?: {
+     nodes: Array<City>
+   }
    createdAt: Date
    updatedAt: Date
 }

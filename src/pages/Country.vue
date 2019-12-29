@@ -20,7 +20,7 @@
 
       <Section>
          <list
-            :items="model.cities.nodes"
+            :items="cities"
             :isCanAdd="isTeacher"
             inlineAdd
             :validateAdd="validate"
@@ -80,7 +80,17 @@ import {
 })
 export default class CountryView extends Mixins(ReactiveUpdate) {
   get model() {
-    return CountryRepository.findOne(this.id, reactiveUpdate(this))
+    const country = CountryRepository.findOne(this.id, reactiveUpdate(this))
+    console.log('Country', country)
+    return country
+    // return CountryRepository.findOne(this.id, reactiveUpdate(this))
+  }
+
+  get cities(): Array<City> {
+    const cities = this.model.cities!.nodes
+    console.log('Country cities', cities)
+    // TODO: temporal hack, need investigate why vue not rerender without map
+    return cities.map(node => node)
   }
 
    @Prop({

@@ -1,7 +1,7 @@
 import {
   ILazyReactiveDatabase,
   IDatabaseModelProducerStore,
-  DatabaseStorage,
+  DatabaseStorage, ListItemGetterReference, ListItemGetter,
 } from '../../types'
 import {
   AbstractData,
@@ -12,7 +12,12 @@ import { getStore } from '@/lazyDB/core/common'
 import { makeDatabaseStorage } from '../../storage'
 import { ModelEventDispatcher } from '@/lazyDB/core/dispatcher/model/base'
 import { AosFieldType, AosEntitySchemaStorage, AosEntitySchema } from '@/abstractObjectScheme'
-import { applyDatabaseControls, getSchemaByKey } from './controls'
+import {
+  applyDatabaseControls, getSchemaByKey, IGetSchema, ISetEntity,
+} from './controls'
+import { getEntityPrimaryKey } from '@/lazyDB/database/base/repository/Repository'
+import { isListSourceData } from '@/lazyDB/database/base/repository/list'
+import { extractEntityNameFromManyKey } from '@/lazyDB/utils'
 
 export interface LazyReactiveDatabaseOptions {
   storage?: DatabaseStorage
@@ -61,10 +66,72 @@ export default class LazyReactiveDatabase implements ILazyReactiveDatabase {
     const store = getStore(model)
     const schema = this.schemas[entity]
 
-    const getSchema = (key: string) => getSchemaByKey(this.schemas, key, AosFieldType.OneToOne)
-    applyDatabaseControls(store, schema, getSchema)
+    applyDatabaseControls(store, schema, this.getSchemaByKey, this.setEntity)
 
     return model
+  }
+
+  public setEntity: ISetEntity = ({ base }, entity, type, data) => {
+    console.log('[Database] Try set entity', base, entity, type, data)
+    const entitySchema = this.getSchemaByKey(entity, type)
+
+    if (type === AosFieldType.OneToMany) {
+      if (!isListSourceData(data))
+        throw new Error('Try set not list source to OneToMany field')
+
+      const list = base[entity]
+      const { base: listSource } = getStore(list)
+      const entityName = extractEntityNameFromManyKey(entity)
+
+      // Clear array of nodes before start
+      listSource.nodes.splice(0, listSource.nodes.length)
+
+      for (let i = 0; i < data.nodes.length; i++) {
+        const node = data.nodes[i]
+        const id = getEntityPrimaryKey(entitySchema, node)
+        if (typeof id !== 'string') {
+          console.error('Not have primary key id in data', node, 'entity', entity, 'schema', entitySchema)
+          throw new Error('Not have primary key id in data')
+        }
+
+        this.storage[entityName][id] = node
+        listSource.nodes[i] = id
+      }
+
+      listSource.totalCount = data.totalCount
+
+      // List may not have getter which must return data by id
+      if (!listSource[ListItemGetterReference]) {
+        const listItemGetter: ListItemGetter = ({ nodes }, index) => {
+          const id = nodes[index]
+          if (!id)
+            return
+
+          const node = this.storage[entityName][id]
+          console.log('[Database] list item getter', nodes, index, node)
+          return node
+        }
+        listSource[ListItemGetterReference] = listItemGetter
+      }
+
+      console.log('[Database] listSource.nodes', listSource.nodes)
+
+      return list
+    }
+
+    if (type !== AosFieldType.OneToOne)
+      console.log('Unexpected data type for', entity, 'type', type, 'data', data, 'will work as OneToOne')
+
+    const id = getEntityPrimaryKey(entitySchema, data)
+
+    if (typeof id !== 'string') {
+      console.error('Not have primary key id in data', data, 'entity', entity, 'schema', entitySchema)
+      throw new Error('Not have primary key id in data')
+    }
+
+    this.storage[entity][id] = data
+
+    return this.storage[entity][id]
   }
 
   public set(entity: string, id: string, data: AbstractData | EventProducer) {
@@ -93,8 +160,6 @@ export default class LazyReactiveDatabase implements ILazyReactiveDatabase {
     return true
   }
 
-  public getSchemaByKey(key: string, type: AosFieldType) {
-    return getSchemaByKey(this.schemas, key, type)
-  }
+  public getSchemaByKey = (entity: string, type: AosFieldType) => getSchemaByKey(this.schemas, entity, type)
 
 }

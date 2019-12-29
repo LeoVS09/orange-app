@@ -1,15 +1,23 @@
 import {
-  IProducerStore, ProducerStoreGetter, ProducerStoreSetter, EventProducer, ExtendTemporalTrap,
+  AbstractData,
+  IProducerStore,
+  ProducerStoreGetter,
+  ProducerStoreSetter,
 } from '@/lazyDB/core/types'
 import { getStore, isProducer } from '@/lazyDB/core/common'
 import { makeTemporalTrapObject, isTemporalTrap } from '@/lazyDB/database/base/repository/temporal'
 import {
-  ListItemGetterReference, ListSource, nodesKey, NodesProducerReference,
+  ListItemGetterReference,
+  ListSource,
+  nodesKey,
+  NodesProducerReference,
 } from '@/lazyDB/database/types'
 import { SymFor } from '@/lazyDB/core/utils'
 import { ArrayStringProperty, isArrayProperty } from '@/lazyDB/database/utils'
 
 export const makeListSource = (): ListSource => ({
+  // page number and on page is synthetic
+  // TODO: create more clean pagination logic
   pageNumber: 1,
   onPage: 10,
 
@@ -95,8 +103,10 @@ const nodesGetter = (source: ListSource, _: IProducerStore<Array<any>>): Produce
     }
 
     const getItem = source[ListItemGetterReference]
-    if (!getItem)
+    if (!getItem) {
+      console.error('LIst not have get item hook')
       return
+    }
 
     return getItem(source, index as number)
   }
@@ -123,29 +133,61 @@ const isNeedProduceTrapForSlice = (source: ListSource, base: Array<any>, args: A
 
 const arrayMethodWrapper = (source: ListSource, base: Array<any>, index: ArrayStringProperty) =>
   (...args: Array<any>) => {
-    console.log('nodes property', index, args)
+    console.log('nodes property', index, args, base)
 
-    if (index === 'slice' && isNeedProduceTrapForSlice(source, base, args)) {
-      console.log('slice from array', source[NodesProducerReference])
+    if (index === 'slice' && isNeedProduceTrapForSlice(source, base, args))
+      return mockSliceArrayTrap(source)
 
-      // @ts-ignore
-      const result = source[NodesProducerReference][0]
-      console.log('slice from array result', result)
-      return [result]
-    }
+    if (index === 'map' && !base.length)
+      return mockMapArrayTrap(source, args)
 
-    if (index === 'map' && !base.length) {
-      console.log('produce trap for map')
+    // traps for defined function is end
+    // down wrappers for real working function
 
-      // @ts-ignore
-      const trap = source[NodesProducerReference][0]
+    let realDataArray = base
 
-      // @ts-ignore
-      return [trap].map(...args)
-    }
+    const getItem = source[ListItemGetterReference]
+    if (getItem)
+      realDataArray = base.map((_, i) => getItem(source, i))
+    else
+      console.warn('List not have getItem hook', source, base, index)
 
     // @ts-ignore
-    const result = base[index](...args)
+    const result = realDataArray[index](...args)
     console.log('nodes property', index, args, 'result', result)
     return result
   }
+
+const mockSliceArrayTrap = (source: ListSource) => {
+  console.log('slice from array', source[NodesProducerReference])
+
+  // @ts-ignore
+  const result = source[NodesProducerReference][0]
+  console.log('slice from array result', result)
+  return [result]
+}
+
+const mockMapArrayTrap = (source: ListSource, args: Array<any>) => {
+  console.log('produce trap for map')
+
+  // @ts-ignore
+  const trap = source[NodesProducerReference][0]
+
+  // @ts-ignore
+  return [trap].map(...args)
+}
+
+export interface ListSourceData {
+  nodes: Array<AbstractData>
+  totalCount: number | null
+}
+
+export const isListSourceData = (source: any): source is ListSourceData => {
+  if (typeof source !== 'object')
+    return false
+
+  if (!source.nodes || !Array.isArray(source.nodes))
+    return false
+
+  return typeof source.totalCount === 'number'
+}

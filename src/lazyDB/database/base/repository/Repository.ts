@@ -116,12 +116,19 @@ function appendRepositoryLifeHooks(
   updateOnChange(store, onChange)
 }
 
-const listOnChangeWrapper = (list: ListProducer<any>, onChange?: OnChangeCallback): OnChangeCallback => (event) => {
+const listOnChangeWrapper = (list: ListProducer<any>, onChange?: OnChangeCallback): OnChangeCallback =>
+  (event) => {
 
-  // Hack for vue to track changed nodes
-  // list.nodes.push(null)
-  // list.nodes.pop()
+    // Hack for vue to track changed nodes
+    // list.nodes.push(null)
+    // list.nodes.pop()
 
-  if (onChange)
-    onChange(event)
-}
+    if (onChange)
+      onChange(event)
+  }
+
+export const getEntityPrimaryKey = (
+  { primaryKey }: AosEntitySchema,
+  entity: AbstractData,
+): string | undefined =>
+  entity[primaryKey]

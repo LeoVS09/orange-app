@@ -11,23 +11,11 @@ import { getInnerInnerPayload } from './types'
 const readSuccess: EventReducer<ModelEventInnerPayload<ModelEventInnerPayload<ReadSuccessEventPayload>>> = (_, payload) => {
 
   const { data, store } = getInnerInnerPayload(payload)
-  const { base } = store
+  const { base, proxy } = store
 
   console.log('[databaseReducers]', 'read success data', data)
 
-  Object.keys(data)
-    .forEach((key) => {
-      if (!isObject(data[key]) || isDate(data[key])) {
-        base[key] = data[key]
-        return
-      }
-
-      const value = data[key]
-      // TODO: add intellectual deep set
-      Object.keys(value).forEach((valueKey) => {
-        base[key][valueKey] = value[valueKey]
-      })
-    })
+  setEntity(proxy!, data)
 
   console.log('[databaseReducers]', 'ModelEventTypes.ReadSuccess', base, data)
 
@@ -36,8 +24,7 @@ const readSuccess: EventReducer<ModelEventInnerPayload<ModelEventInnerPayload<Re
 
 export default readSuccess
 
-// TODO: set entity must work this way
-const setEntity = (received: AbstractData, model: EventProducer) => {
+const setEntity = (model: EventProducer, received: AbstractData) => {
   for (const key of Object.keys(received))
     model[key] = received[key]
 

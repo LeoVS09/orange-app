@@ -27,7 +27,8 @@ export class Database extends LazyReactiveDatabase {
 
     connectDebugToActionsStream(this.store)
 
-    // TODO: not plain, need create more readble solution for connect Repository to database
+    // TODO: not plain, need create more readable solution for connect Repository to database,
+    //  this will not work with multiple databases
     this.Repository.db = this
   }
 }
@@ -49,8 +50,11 @@ class Repository<T> extends LazyReactiveRepository<T> {
 
     this.excludeProperties = Repository.db.excludeProperties
 
-    const getSchema = (key: string) => getSchemaByKey(Repository.db.schemas, key, AosFieldType.OneToOne)
-    this.applyRepositoryControlsOptions.setLinkedEntity = genSetLinkedEntity(this.schema, getSchema)
+    this.applyRepositoryControlsOptions.setLinkedEntity = genSetLinkedEntity(
+      this.schema,
+      Repository.db.getSchemaByKey,
+      Repository.db.setEntity,
+    )
 
   }
 }

@@ -1,4 +1,4 @@
-import { IProducerStore } from '@/lazyDB/core/types'
+import { AbstractData, EventProducer, IProducerStore } from '@/lazyDB/core/types'
 import { AosEntitySchemaStorage, AosEntitySchema, AosFieldType } from '@/abstractObjectScheme'
 import { ISetLinkedEntity, applyRepositoryControls } from '../repository/controls'
 import { isProducer, getStore } from '@/lazyDB/core/common'
@@ -11,32 +11,43 @@ export const applyDatabaseControls = (
   store: IProducerStore,
   schema: AosEntitySchema,
   getSchema: IGetSchema,
+  setEntity: ISetEntity,
 ) => {
 
-  const setLinkedEntity = genSetLinkedEntity(schema, getSchema)
+  const setLinkedEntity = genSetLinkedEntity(schema, getSchema, setEntity)
 
   applyRepositoryControls(store, schema, { setLinkedEntity })
 }
 
 export interface IGetSchema {
-  (key: string): AosEntitySchema
+  (entity: string, type: AosFieldType): AosEntitySchema
 }
 
-export const genSetLinkedEntity = (schema: AosEntitySchema, getSchema: IGetSchema): ISetLinkedEntity =>
-  ({ base }, name, type, value) => {
-    base[name] = value
-    if (!isProducer(value))
-      return true
+export interface ISetEntity {
+  (store: IProducerStore<AbstractData>, entity: string, type: AosFieldType, data: AbstractData): EventProducer
+}
 
-    // TODO: make more plain recursion, this make overflow call stack limit
-    const setLinkedEntity = genSetLinkedEntity(schema, getSchema)
+export const genSetLinkedEntity = (
+  schema: AosEntitySchema,
+  getSchema: IGetSchema,
+  setEntity: ISetEntity,
+): ISetLinkedEntity => {
+  const setLinkedEntity: ISetLinkedEntity = (store, name, type, value) => {
+    console.log('set linked entity', store, name, type, value)
+    const { base } = store
+    const tableName = getTableNameByField(schema.fields, name as string)
+
+    if (!isProducer(value)) {
+      // There mean, added new entity, possible on read success
+      value = setEntity(store, tableName, type as AosFieldType, value)
+    }
+
+    base[name] = value
 
     if (type === AosFieldType.OneToOne) {
-
-      const tableName = getTableNameByField(schema.fields, name as string)
       console.log('Setter One to One, name:', name, 'table:', tableName, 'getSchema:', getSchema)
 
-      const entitySchema = getSchema(tableName)
+      const entitySchema = getSchema(tableName, type)
       if (!entitySchema)
         return true
 
@@ -60,6 +71,9 @@ export const genSetLinkedEntity = (schema: AosEntitySchema, getSchema: IGetSchem
     console.error('Unexpected model attribute type:', type)
     return true
   }
+
+  return setLinkedEntity
+}
 
 export const getSchemaByKey = (schemas: AosEntitySchemaStorage, key: string, type: AosFieldType): AosEntitySchema => {
   let fieldEntity = key
