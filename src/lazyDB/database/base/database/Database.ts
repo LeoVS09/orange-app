@@ -104,9 +104,10 @@ export default class LazyReactiveDatabase implements ILazyReactiveDatabase {
       if (!listSource[ListItemGetterReference]) {
         const listItemGetter: ListItemGetter = ({ nodes }, index) => {
           const id = nodes[index]
-          if (!id)
+          if (!id) {
+            console.log('[Database] WARN: list item getter not foind id', nodes, index)
             return
-
+          }
           const node = this.storage[entityName][id]
           console.log('[Database] list item getter', nodes, index, node)
           return node

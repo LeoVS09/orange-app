@@ -43,7 +43,9 @@ function responseToCountry(result: fragmentsTypes.FullCountry | undefined | null
 
   return {
     ...result,
-    cities: result.cities.nodes as Array<fragmentsTypes.FullCountry_cities_nodes>,
+    cities: {
+      nodes: result.cities.nodes as Array<fragmentsTypes.FullCountry_cities_nodes>,
+    },
   }
 }
 

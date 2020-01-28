@@ -7,6 +7,8 @@ import {
   DatabaseTableMap,
   ListItemGetter,
   ListItemGetterReference,
+  ListItemSetterReference,
+  ListItemSetter,
 } from '@/lazyDB/database/types'
 import { applyListControls, makeListSource } from '@/lazyDB/database/base/repository/list'
 
@@ -55,6 +57,7 @@ export const setter: ProducerStoreSetter = ({ base, extendTemporalTrap }, name, 
     applyListControls(store)
 
     value[ListItemGetterReference] = listItemGetter(table)
+    value[ListItemSetterReference] = listItemSetter(table)
   }
 
   table.set(name as string, value)
@@ -63,8 +66,36 @@ export const setter: ProducerStoreSetter = ({ base, extendTemporalTrap }, name, 
 
 const listItemGetter = (table: DatabaseTableMap): ListItemGetter => ({ nodes }, index) => {
   const id = nodes[index as number]
-  if (!id)
+  if (!id) {
+    console.log('[Table] WARN: list item getter not foind id', nodes, index)
+    return
+  }
+
+  const node = table.get(id)
+  console.log('[Table] list item getter', nodes, index, node)
+  return node
+}
+
+export interface IGetEntityId {
+  (value: any): string | undefined
+}
+
+// TODO: must not be used .id property, create getEntityId generator
+const defaultGetEntityId: IGetEntityId = (value: any): string | undefined => {
+  if (typeof value !== 'object')
     return
 
-  return table.get(id)
+  // @ts-ignore
+  return value.id
 }
+
+const listItemSetter = (table: DatabaseTableMap, getEntityId: IGetEntityId = defaultGetEntityId): ListItemSetter =>
+  (_, __, value) => {
+    const id = getEntityId(value)
+    if (!id)
+      return null
+
+    table.set(id, value)
+
+    return id
+  }

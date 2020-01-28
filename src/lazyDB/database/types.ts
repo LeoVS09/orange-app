@@ -43,10 +43,12 @@ export interface ILazyReactiveDatabase {
 }
 
 export const ListItemGetterReference = SymFor('list item getter') as 'list item getter'
+export const ListItemSetterReference = SymFor('list item setter') as 'list item setter'
 export const nodesKey = 'nodes'
 export const NodesProducerReference = SymFor(`${nodesKey} producer`) as 'nodes producer'
 
 export type ListItemGetter = (source: ListSource, index: number) => any
+export type ListItemSetter = (source: ListSource, index: number, value: any) => string | null // value id
 
 export interface ListSource {
    // nodes list storing only id
@@ -56,9 +58,13 @@ export interface ListSource {
    pageNumber: number
    readonly maxPageNumber: number | null
 
-  'nodes producer': IProducerStore<Array<any>> | null
+   // NodesProducerReference
+   'nodes producer': IProducerStore<Array<any>> | null
 
-   'list item getter': ListItemGetter| null
+   // ListItemGetterReference
+   'list item getter': ListItemGetter | null
+   // ListItemSetterReference
+   'list item setter': ListItemSetter | null
 }
 
 export interface ListProducer<T> {
