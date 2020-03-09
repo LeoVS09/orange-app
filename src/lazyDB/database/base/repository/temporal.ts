@@ -6,7 +6,7 @@ export const TemporalTrap = SymFor('temporal trap')
 export const makeTemporalTrapObject = () => {
   console.log('make temporal trap')
   return {
-    [TemporalTrap]: true,
+    [TemporalTrap]: true
   }
 }
 

@@ -46,13 +46,13 @@
 import Vue from 'vue'
 import { Component, Watch } from 'vue-property-decorator'
 import { Action } from 'vuex-class'
-import {
-  Logo, Input, Button, Checkbox, MaterialIcon,
-} from '../components'
-import * as actions from '../store/actionTypes'
 import { ROUTES } from '@/router'
 import { IRegisterProfilePayload } from '@/store/modules/profile/types'
 import eventBus, { AuthorisationEventPayload, AuthorisationEventState, BusEventTypes } from '@/pages/eventBus'
+import * as actions from '../store/actionTypes'
+import {
+  Logo, Input, Button, Checkbox, MaterialIcon
+} from '../components'
 
 @Component({
   components: {
@@ -60,8 +60,8 @@ import eventBus, { AuthorisationEventPayload, AuthorisationEventState, BusEventT
     Input,
     Button,
     Checkbox,
-    Icon: MaterialIcon,
-  },
+    Icon: MaterialIcon
+  }
 })
 export default class SignUp extends Vue {
    @Action(actions.SET_SIGN_UP_PAGE) public setSignUpPage!: () => void;
@@ -143,12 +143,12 @@ export default class SignUp extends Vue {
        lastName: this.lastName,
        password: this.password,
        email: this.email,
-       username: this.login,
+       username: this.login
      }).then((result) => {
        this.isDisabled = false
        if (result) {
          const payload: AuthorisationEventPayload = {
-           state: AuthorisationEventState.Completed,
+           state: AuthorisationEventState.Completed
          }
          eventBus.$emit(BusEventTypes.Authorisation, payload)
        }

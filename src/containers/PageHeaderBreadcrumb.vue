@@ -7,9 +7,9 @@
 <script lang="ts">
 import Vue from 'vue'
 import { Component, Prop, Mixins } from 'vue-property-decorator'
-import { Header, Breadcrumb } from '../components/types'
 import ChildValue from '@/components/mixins/ChildValue'
 import { randomId } from '@/components/utils'
+import { Header, Breadcrumb } from '../components/types'
 
    @Component
 export default class PageHeaderBreadcrumb extends Mixins(ChildValue) {
@@ -42,12 +42,12 @@ export default class PageHeaderBreadcrumb extends Mixins(ChildValue) {
         if (!label)
           return
 
-        const have = breadcrumbs.find(b => b.id === this.breadcrumbId)
+        const have = breadcrumbs.find((b) => b.id === this.breadcrumbId)
         if (!have) {
           return breadcrumbs.push({
             id: this.breadcrumbId,
             label,
-            link,
+            link
           })
         }
 

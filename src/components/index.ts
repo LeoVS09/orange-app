@@ -39,5 +39,5 @@ export {
   Tags,
   PageHeaderAction,
   Filters,
-  ModelInfo,
+  ModelInfo
 }

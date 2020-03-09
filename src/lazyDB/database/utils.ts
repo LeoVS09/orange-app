@@ -53,7 +53,7 @@ const ArrayProperties: Array<string> = [
   'map',
   'filter',
   'reduce',
-  'reduceRight',
+  'reduceRight'
 ]
 
 export const isArrayProperty = (property: string): property is ArrayStringProperty =>

@@ -2,7 +2,7 @@ import ui, { UIState, Platform } from './ui'
 import profile, { ProfileState } from './profile'
 import problems, { ProblemsState, ProblemFilter } from './problems'
 import statuses, {
-  StatusState, StatusScopes, StatusScope, ModelStatus, ISetStatusPayload,
+  StatusState, StatusScopes, StatusScope, ModelStatus, ISetStatusPayload
 } from './statuses'
 import countries from './countries'
 import cities from './cities'
@@ -19,7 +19,7 @@ export default {
   cities,
   tags,
   universities,
-  contests,
+  contests
 }
 
 export {
@@ -32,5 +32,5 @@ export {
   StatusScopes,
   StatusScope,
   ModelStatus,
-  ISetStatusPayload,
+  ISetStatusPayload
 }

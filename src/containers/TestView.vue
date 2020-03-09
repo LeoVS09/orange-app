@@ -28,19 +28,19 @@ const { MODULES, actionName } = actions
 @Component({
   components: {
     SourceView,
-    Icon: MaterialIcon,
-  },
+    Icon: MaterialIcon
+  }
 })
 export default class TestView extends Vue {
    @Prop({
      type: Object,
-     required: true,
+     required: true
    })
    public testData!: Test;
 
    @Prop({
      type: Boolean,
-     default: false,
+     default: false
    })
    public editable!: boolean;
 
@@ -75,14 +75,14 @@ export default class TestView extends Vue {
    public updateInput(input: string) {
      this.editTest({
        ...this.testData,
-       input,
+       input
      })
    }
 
    public updateOutput(output: string) {
      this.editTest({
        ...this.testData,
-       output,
+       output
      })
    }
 }

@@ -11,14 +11,14 @@ export const applyRepositoryControls = (
   schema: AosEntitySchema,
   {
     getLinkedEntity,
-    setLinkedEntity,
-  }: ApplyRepositoryControlsOptions = {},
+    setLinkedEntity
+  }: ApplyRepositoryControlsOptions = {}
 ) => {
   store.getter = getter(schema, getLinkedEntity)
   store.setter = setter(schema, setLinkedEntity)
 
   // make temporal trap in list work as repository object
   // This must be setted for repository and table, they all create list in differrent situations
-  store.extendTemporalTrap = trapStore =>
+  store.extendTemporalTrap = (trapStore) =>
     applyRepositoryControls(trapStore, schema)
 }

@@ -7,11 +7,11 @@ export function addModelForCreateAction<T extends Identical>(
   items: Array<T>,
   defaultModel: () => T,
   setOrAddMutation: (model: T) => void,
-  { setStatus }: StatusManipulation,
+  { setStatus }: StatusManipulation
 ): T {
   const model = {
     ...defaultModel(),
-    id: randomId(),
+    id: randomId()
   }
   setOrAddMutation(model)
 
@@ -25,9 +25,9 @@ export async function createAction<T extends Identical, OrderBy>(
   model: T,
   setByIdMutation: (payload: ISetByIdPayload<T>) => void,
   {
-    getStatus, setStatus, setReadState, setModelState, getRead,
+    getStatus, setStatus, setReadState, setModelState, getRead
   }: StatusManipulation,
-  create: (model: T) => Promise<T | undefined | null>,
+  create: (model: T) => Promise<T | undefined | null>
 ): Promise<T | undefined> {
   const status = getStatus(model.id)
   if (
@@ -45,7 +45,7 @@ export async function createAction<T extends Identical, OrderBy>(
 
   setByIdMutation({
     id: model.id,
-    model: result,
+    model: result
   })
   setStatus(result.id, ModelStatus.Synced)
 

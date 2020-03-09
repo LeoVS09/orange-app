@@ -13,7 +13,7 @@ import { Component, Emit, Prop } from 'vue-property-decorator'
 export default class Logo extends Vue {
    @Prop({
      type: Boolean,
-     default: false,
+     default: false
    })
    public isAuth!: boolean;
 

@@ -16,13 +16,13 @@ import Button from '../components/Button.vue'
 
 @Component({
   components: {
-    Button,
-  },
+    Button
+  }
 })
 export default class PageHeaderAction extends Vue {
    @Prop({
      type: String,
-     required: true,
+     required: true
    })
    public icon!: string;
 

@@ -177,19 +177,17 @@ import {
   FloatingButton,
   MaterialIcon,
   TextareaAutoresize,
-  TextSection,
+  TextSection
 } from '@/components'
-import Tags from '../components/Tags.vue'
 import LdrLove from '@/components/icons/LdrLove.vue'
 import LdrX from '@/components/icons/LdrX.vue'
 import LdrRobot from '@/components/icons/LdrRobot.vue'
-import { TestView, PageHeader, Breadcrumb } from '../containers'
 import { formatDate } from '@/components/utils'
 import {
   PartialProgramInput,
   PartialProgramOutput,
   ProblemError,
-  ProblemTestingStatus,
+  ProblemTestingStatus
 } from '@/models/problems'
 import { IUploadCodePayload } from '@/store/modules/problems/actions'
 import { ROUTES } from '@/router'
@@ -197,13 +195,15 @@ import { ModelStatus } from '@/store/modules'
 import { ModelReadState } from '@/store/modules/statuses/types'
 import { GET_READ_STATE, GET_STATUS } from '@/store/modules/statuses/getters'
 import { STATUS_SCOPES } from '@/store/statusScopes'
+import { TestView, PageHeader, Breadcrumb } from '../containers'
+import Tags from '../components/Tags.vue'
 
 const { actionName, MODULES } = actions
 
 // TODO: examples and description on one screen
 
 Component.registerHooks([
-  'beforeRouteUpdate',
+  'beforeRouteUpdate'
 ])
 
 @Component({
@@ -220,13 +220,13 @@ Component.registerHooks([
     FloatingButton,
     LdrLove,
     LdrX,
-    LdrRobot,
-  },
+    LdrRobot
+  }
 })
 export default class ProblemView extends Vue {
    @Prop({
      type: String,
-     required: true,
+     required: true
    })
    public id!: string;
 
@@ -365,7 +365,7 @@ export default class ProblemView extends Vue {
 
      this.uploadCode({
        problemId: this.model.id,
-       text: this.solutionCode,
+       text: this.solutionCode
      })
    }
 

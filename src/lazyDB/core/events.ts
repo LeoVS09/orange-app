@@ -3,7 +3,7 @@ import {
   ModelEvent,
   ModelEventGetPropertyPayload,
   ModelEventSetPropertyPayload,
-  ModelEventPayload,
+  ModelEventPayload
 } from '@/lazyDB/core/types'
 
 export function isHaveEventInMemory(modelEvent: ModelEvent<any>) {

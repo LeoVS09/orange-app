@@ -1,18 +1,12 @@
 import { ActionContext } from 'vuex'
 import {
-  ProblemsState,
-  ProfileState,
-  UIState,
-  Platform,
-} from './modules'
-import {
   City,
   Country,
   FullProblem,
   PartialContest,
   PartialProblem,
   University,
-  UserProfile,
+  UserProfile
 } from '@/models'
 import { ProblemError, Tag } from '@/models/problems'
 import { ModelStatus, StatusState } from '@/store/modules/statuses'
@@ -21,6 +15,12 @@ import { CrudState } from '@/store/CrudModule'
 import TagsState from '@/store/modules/tags/state'
 import { Translation } from '@/store/modules/ui/state'
 import { FullContest } from '@/models/contest'
+import {
+  ProblemsState,
+  ProfileState,
+  UIState,
+  Platform
+} from './modules'
 
 export interface RootState {
    ui: UIState

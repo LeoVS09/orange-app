@@ -1,13 +1,13 @@
 import {
-  ModelEventTypes,
-  ReadFailureEventPayload,
-} from '../../../events'
-import {
-  EventReducersMap,
+  EventReducersMap
 } from '@/lazyDB/core/types'
+import {
+  ModelEventTypes,
+  ReadFailureEventPayload
+} from '../../../events'
 import { IDatabaseModelProducerStore } from '../../../types'
 import {
-  isExcludeProperty,
+  isExcludeProperty
 } from '../utils'
 
 import read from './read'
@@ -34,6 +34,6 @@ export const databaseReducers: EventReducersMap = {
     console.error(base, error)
     // TODO: handle error
     return false
-  },
+  }
 }
 

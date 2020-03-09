@@ -83,3 +83,5 @@ typings/
 .stignore
 .stfolder
 .stversions
+
+/live/

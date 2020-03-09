@@ -1,8 +1,8 @@
 import Vue from 'vue'
-import * as mutationTypes from './mutationTypes'
 import {
-  UserProfile,
+  UserProfile
 } from '@/models'
+import * as mutationTypes from './mutationTypes'
 import { ProfileState } from './state'
 
 export default {
@@ -12,5 +12,5 @@ export default {
 
   [mutationTypes.LOGOUT_FROM_PROFILE](state: ProfileState) {
     Vue.set(state, 'data', undefined)
-  },
+  }
 }

@@ -7,7 +7,7 @@ export function editAction<T extends Identical>(
   items: Array<T>,
   model: T,
   setOrAddMutation: (model: T) => void,
-  { getStatus, setStatus }: StatusManipulation,
+  { getStatus, setStatus }: StatusManipulation
 ): boolean {
   const status = getStatus(model.id)
   if (status === ModelStatus.Reading)
@@ -21,7 +21,7 @@ export function editAction<T extends Identical>(
 
   setOrAddMutation({
     ...have,
-    ...model,
+    ...model
   })
 
   setStatus(model.id, ModelStatus.Changed)

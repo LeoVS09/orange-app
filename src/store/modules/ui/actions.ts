@@ -1,11 +1,11 @@
+import { IActionContext } from '@/store/state'
+import loadable from '@/components/mixins/loadable'
 import {
   Platform, Translation,
-  UIState,
+  UIState
 } from './state'
 import * as mutations from './mutationTypes'
 import * as actionTypes from './actionTypes'
-import { IActionContext } from '@/store/state'
-import loadable from '@/components/mixins/loadable'
 
 // const DEBUG = process.env.NODE_ENV !== 'production'
 const DEBUG = false
@@ -32,5 +32,5 @@ export default {
   [actionTypes.SET_LOCALE]({ commit, dispatch }: IActionContext<UIState>, locale: Translation) {
     commit(mutations.SET_LOCALE, locale)
     dispatch(SET_LOCALE_TRANSLATION, { locale }, { root: true })
-  },
+  }
 }

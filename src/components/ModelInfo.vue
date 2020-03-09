@@ -44,19 +44,19 @@ function isArrayOfObjects(arr: any[]): arr is Array<{[key: string]: string}> {
 @Component({
   components: {
     Section,
-    DataView,
-  },
+    DataView
+  }
 })
 export default class ModelInfo extends Vue {
    @Prop({
      type: Object,
-     required: true,
+     required: true
    })
    public value!: {[key: string]: any};
 
    @Prop({
      type: Boolean,
-     default: false,
+     default: false
    })
    public editable!: boolean;
 
@@ -70,14 +70,14 @@ export default class ModelInfo extends Vue {
        'nodeId',
        'name',
        'createdAt',
-       'updatedAt',
-     ],
+       'updatedAt'
+     ]
    })
    public excludeDefaults!: string[];
 
    @Prop({
      type: Array,
-     default: () => [],
+     default: () => []
    })
    public exclude!: string[];
 
@@ -92,7 +92,7 @@ export default class ModelInfo extends Vue {
        keys = Object.keys(this.value)
        const exclude = [...this.excludeDefaults, ...this.exclude]
 
-       keys = keys.filter(k => k[0] !== '_'
+       keys = keys.filter((k) => k[0] !== '_'
             && exclude.indexOf(k) === -1)
      } else if (isArrayOfObjects(this.properties)) {
        keys = []
@@ -108,7 +108,7 @@ export default class ModelInfo extends Vue {
        keys = this.properties as string[]
 
      if (!this.properties || typeof this.properties[0] !== 'object')
-       keys.forEach(key => labels[key] = normaliseName(key))
+       keys.forEach((key) => labels[key] = normaliseName(key))
 
      const result: {[key: string]: any} = {}
 

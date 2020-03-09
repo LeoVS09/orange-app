@@ -15,7 +15,7 @@ export const mockCountry = (entity: string, id: string) => ({
       name: `city ${randomItem(cityNames)}`,
       createdAt: new Date(),
       updatedAt: new Date(),
-      countryId: id,
-    })),
-  },
+      countryId: id
+    }))
+  }
 })

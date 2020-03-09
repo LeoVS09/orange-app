@@ -31,7 +31,7 @@ import {
   Tag,
   ProblemRepository,
   Problem,
-  TagRepository,
+  TagRepository
 } from '@/models/problems'
 import { RouterPush } from '@/components/decorators'
 import ProblemsList from '@/containers/ProblemsList.vue'
@@ -51,8 +51,8 @@ const { MODULES, actionName } = actions
     Action: PageHeaderAction,
     List,
     ListColumn,
-    Section,
-  },
+    Section
+  }
 })
 export default class Problems extends Mixins(ReactiveUpdate) {
 

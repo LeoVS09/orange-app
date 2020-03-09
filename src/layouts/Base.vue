@@ -15,14 +15,14 @@
 <script lang="ts">
 import Vue from 'vue'
 import { Component } from 'vue-property-decorator'
-import TopBar from '../containers/TopBar.vue'
 import { Footer } from '@/components'
+import TopBar from '../containers/TopBar.vue'
 
   @Component({
     components: {
       TopBar,
-      'footer-view': Footer,
-    },
+      'footer-view': Footer
+    }
   })
 export default class Home extends Vue {
     showProfileActions = false

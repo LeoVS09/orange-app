@@ -1,13 +1,13 @@
 import {
   IProducerStore,
   ProducerStoreGetter,
-  ProducerStoreSetter,
+  ProducerStoreSetter
 } from '@/lazyDB/core/types'
 import { getStore, isProducer } from '@/lazyDB/core/common'
 import {
   ListSource,
   nodesKey,
-  NodesProducerReference,
+  NodesProducerReference
 } from '@/lazyDB/database/types'
 import { nodesGetter, nodesSetter } from './nodes'
 import { isListSource } from './source'

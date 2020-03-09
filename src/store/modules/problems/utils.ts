@@ -15,6 +15,6 @@ export function responseToPartialUserProfile(p: fragmentTypes.PartialProfile | u
     login: p.user.name,
     firstName: p.firstName || '',
     lastName: p.lastName || '',
-    type: p.isTeacher ? UserType.TEACHER : UserType.CONTESTANT,
+    type: p.isTeacher ? UserType.TEACHER : UserType.CONTESTANT
   }
 }

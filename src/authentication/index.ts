@@ -1,10 +1,10 @@
 import crypto from 'crypto-js'
-import { UserProfile, UserType } from '../models'
-import { login, currentUser, register } from '../api'
 // @ts-ignore
 import * as mutationTypes from '@/api/database/mutations/types'
 import * as fragmentsTypes from '@/api/database/fragments/types'
 import { Email } from '@/models/email'
+import { login, currentUser, register } from '../api'
+import { UserProfile, UserType } from '../models'
 
 const TOKEN_NAME = 'token'
 const TOKEN_KEY = 'key' // TODO
@@ -25,14 +25,14 @@ export async function signin(username: string, password: string, isRemember: boo
 
   const result = await login({
     username,
-    password,
+    password
   })
   return handleLoginResult(isRemember, result)
 }
 
 export async function signup(input: mutationTypes.RegisterVariables) {
   const {
-    username, password, email, firstName,
+    username, password, email, firstName
   } = input
   if (!username.length || !password.length || !email.length || !firstName.length) {
     console.error('Not have login or password')
@@ -87,7 +87,7 @@ function toUser(userData: mutationTypes.Login_login_user): UserProfile {
     phone: profile.phone,
     languages: [],
     codeEditors: [],
-    travels: [],
+    travels: []
   }
 }
 
@@ -119,7 +119,7 @@ export function checkIsLogin(): checkResultOk | checkResultFalse {
 
   return {
     userId: decryptId(token),
-    ok: true,
+    ok: true
   }
 }
 
@@ -136,12 +136,12 @@ export async function currentUserIfHave(): Promise<currentUserOk | currentUserFa
   const userData = await currentUser()
   if (!userData) {
     return {
-      ok: false,
+      ok: false
     }
   }
 
   return {
     user: toUser(userData),
-    ok: true,
+    ok: true
   }
 }

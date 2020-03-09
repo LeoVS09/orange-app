@@ -15,20 +15,20 @@
 <script lang="ts">
 import Vue from 'vue'
 import {
-  Component, Watch, Prop, Mixins,
+  Component, Watch, Prop, Mixins
 } from 'vue-property-decorator'
 import ButtonBase from './mixins/inputs/baseButton'
 import Button from './Button.vue'
 
 @Component({
   components: {
-    Button,
-  },
+    Button
+  }
 })
 export default class FloatingButton extends Mixins(ButtonBase) {
    @Prop({
      type: Boolean,
-     default: true,
+     default: true
    })
    public visible!: boolean;
 

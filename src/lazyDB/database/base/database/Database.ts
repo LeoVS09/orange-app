@@ -1,23 +1,28 @@
 import {
-  ILazyReactiveDatabase,
-  IDatabaseModelProducerStore,
-  DatabaseStorage, ListItemGetterReference, ListItemGetter,
-} from '../../types'
-import {
   AbstractData,
-  EventProducer,
+  EventProducer
 } from '@/lazyDB/core/types'
 import { getStore } from '@/lazyDB/core/common'
 
-import { makeDatabaseStorage } from '../../storage'
 import { ModelEventDispatcher } from '@/lazyDB/core/dispatcher/model/base'
 import { AosFieldType, AosEntitySchemaStorage, AosEntitySchema } from '@/abstractObjectScheme'
-import {
-  applyDatabaseControls, getSchemaByKey, IGetSchema, ISetEntity,
-} from './controls'
 import { getEntityPrimaryKey } from '@/lazyDB/database/base/repository/Repository'
 import { isListSourceData } from '@/lazyDB/database/base/repository/list'
 import { extractEntityNameFromManyKey } from '@/lazyDB/utils'
+import {
+  applyDatabaseControls,
+  getSchemaByKey,
+  IGetSchema,
+  ISetEntity
+} from './controls'
+import { makeDatabaseStorage } from '../../storage'
+import {
+  ILazyReactiveDatabase,
+  IDatabaseModelProducerStore,
+  DatabaseStorage,
+  ListItemGetterReference,
+  ListItemGetter
+} from '../../types'
 
 export interface LazyReactiveDatabaseOptions {
   storage?: DatabaseStorage
@@ -36,8 +41,8 @@ export default class LazyReactiveDatabase implements ILazyReactiveDatabase {
     {
       storage = makeDatabaseStorage(),
       schemas = {},
-      excludeProperties = [],
-    }: LazyReactiveDatabaseOptions = {},
+      excludeProperties = []
+    }: LazyReactiveDatabaseOptions = {}
   ) {
     this.storage = storage
     this.schemas = schemas
@@ -156,7 +161,7 @@ export default class LazyReactiveDatabase implements ILazyReactiveDatabase {
       return false
 
     Object.keys(data)
-      .forEach(key => model[key] = data[key])
+      .forEach((key) => model[key] = data[key])
 
     return true
   }

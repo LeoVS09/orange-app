@@ -54,36 +54,36 @@ export default class ListItem extends Vue {
 
    @Prop({
      type: Object,
-     required: true,
+     required: true
    })
    public item!: DataItem;
 
    @Prop({
      type: Array,
-     default: [],
+     default: []
    })
    public visibleProps!: string[];
 
    @Prop({
-     type: Function,
+     type: Function
    })
    public formatData?: (a: DataItem) => DataItem;
 
    @Prop({
      type: Boolean,
-     default: false,
+     default: false
    })
    public gradientBackground!: boolean;
 
    @Prop({
      type: Boolean,
-     default: true,
+     default: true
    })
    public bordered!: boolean;
 
    @Prop({
      type: Boolean,
-     default: true,
+     default: true
    })
    public hoverShadow!: boolean;
 
@@ -96,7 +96,7 @@ export default class ListItem extends Vue {
      if (!visibleProps)
        visibleProps = Object.keys(item)
 
-     const result = visibleProps.map(key => item[key])
+     const result = visibleProps.map((key) => item[key])
      console.log('list item', result)
      return result
    }

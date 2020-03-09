@@ -1,7 +1,7 @@
 import { Observable, Subject, Subscription } from 'rxjs'
+import { AosFieldType } from '@/abstractObjectScheme'
 import { SymFor } from './utils'
 import { StateMemory } from './memory'
-import { AosFieldType } from '@/abstractObjectScheme'
 
 // This object can't be mapped tp producer
 export type AtomicObject =

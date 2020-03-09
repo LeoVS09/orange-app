@@ -1,6 +1,6 @@
+import { removeById, setById, setByIdOrPush } from '@/store/utils'
 import * as mutationTypes from './mutationTypes'
 import CrudState from './state'
-import { removeById, setById, setByIdOrPush } from '@/store/utils'
 import { Identical } from './types'
 
 export interface ISetByIdPayload<T> {
@@ -24,6 +24,6 @@ export default function crudMutations<T extends Identical>() {
 
     [mutationTypes.SET_BY_ID](state: CrudState<T>, { id, model }: ISetByIdPayload<T>) {
       setById(state.data, id, model)
-    },
+    }
   }
 }

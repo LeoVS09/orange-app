@@ -47,19 +47,19 @@ export interface PropertiesStore {
 
 @Component({
   components: {
-    Section,
-  },
+    Section
+  }
 })
 export default class LazyData extends Vue {
    @Prop({
      type: Object,
-     required: true,
+     required: true
    })
    public value!: {[key: string]: any};
 
    @Prop({
      type: Boolean,
-     default: false,
+     default: false
    })
    public editable!: boolean;
 
@@ -70,9 +70,9 @@ export default class LazyData extends Vue {
    get dataItems(): DataItem[] {
      console.log('LazyData slots', this.$slots)
 
-     const properties = Object.keys(this.properties).map(key => ({
+     const properties = Object.keys(this.properties).map((key) => ({
        key,
-       label: this.properties[key],
+       label: this.properties[key]
      }))
      console.log('LazyData properties', properties)
      return properties

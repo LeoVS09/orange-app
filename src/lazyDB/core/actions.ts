@@ -12,5 +12,5 @@ export const changeTrackableReducersMap: EventReducersMap = {
 
   [EventType.DeleteProperty]: (store, event) =>
   // Store all delete events
-    false,
+    false
 }

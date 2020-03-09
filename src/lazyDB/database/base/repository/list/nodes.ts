@@ -1,14 +1,14 @@
 import {
-  ListSource, ListItemGetterReference, NodesProducerReference, ListItemSetterReference,
+  ListSource, ListItemGetterReference, NodesProducerReference, ListItemSetterReference
 } from '@/lazyDB/database/types'
 import {
   IProducerStore,
   ProducerStoreGetter,
-  ProducerStoreSetter,
+  ProducerStoreSetter
 } from '@/lazyDB/core/types'
 import { isArrayProperty } from '@/lazyDB/database/utils'
-import { makeTemporalTrapObject, isTemporalTrap } from '../temporal'
 import { getStore } from '@/lazyDB/core/common'
+import { makeTemporalTrapObject, isTemporalTrap } from '../temporal'
 import { arrayMethodWrapper } from './arrayMethodWrapper'
 
 // Getter for array
@@ -50,7 +50,7 @@ export const nodesGetter = (source: ListSource, _: IProducerStore<Array<any>>): 
 
 export const nodesSetter = (
   source: ListSource,
-  store: IProducerStore<Array<any>>,
+  store: IProducerStore<Array<any>>
 ): ProducerStoreSetter<Array<any>> =>
   ({ base }, name, value) => {
 

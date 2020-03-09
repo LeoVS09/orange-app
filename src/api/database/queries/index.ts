@@ -1,3 +1,6 @@
+import { mockCountries, mockCities, mockCountry } from '@/models/mock/countries'
+import { mockTags } from '@/models/mock/mock'
+import { generateQuery, generateSimpleQuery } from '@/api/database/utils'
 import currentUserGql from './currentUser.graphql'
 import searchCountriesGql from './searchCountries.graphql'
 import countriesGql from './countries.graphql'
@@ -23,47 +26,44 @@ import programmingLanguageGql from './programmingLanguage.graphql'
 import programmingLanguagesGql from './programmingLanguages.graphql'
 import teamGql from './team.graphql'
 import teamsGql from './teams.graphql'
-import { mockCountries, mockCities, mockCountry } from '@/models/mock/countries'
 import * as types from './types'
-import { mockTags } from '@/models/mock/mock'
-import { generateQuery, generateSimpleQuery } from '@/api/database/utils'
 
 export const currentUser = generateSimpleQuery<types.CurrentUser, types.CurrentUser_currentUser>(
   currentUserGql,
-  data => data.currentUser,
+  (data) => data.currentUser
 )
 
 // ------------------------------------------------ Country ------------------------------------------------------------
 
 export const searchCountries = generateQuery<types.SearchCountriesVariables, types.SearchCountries, types.SearchCountries_searchCountries>(
   searchCountriesGql,
-  data => data.searchCountries,
+  (data) => data.searchCountries
 )
 
 export const countries = generateQuery<types.CountriesVariables, types.Countries, types.Countries_countries>(
   countriesGql,
-  data => data.countries,
-  () => new Promise<types.Countries_countries>(resolve => setTimeout(() => {
+  (data) => data.countries,
+  () => new Promise<types.Countries_countries>((resolve) => setTimeout(() => {
     const nodes = mockCountries()
-      .map(c => ({
+      .map((c) => ({
         ...c,
         createdAt: c.createdAt.toDateString(),
-        updatedAt: c.updatedAt.toDateString(),
+        updatedAt: c.updatedAt.toDateString()
       }))
 
     // @ts-ignore
     resolve({
       totalCount: nodes.length,
-      nodes,
+      nodes
     })
   },
-  1000)),
+  1000))
 )
 
 export const country = generateQuery<types.CountryVariables, types.Country, types.Country_country>(
   countryGql,
-  data => data.country,
-  id => new Promise<types.Country_country>(resolve =>
+  (data) => data.country,
+  (id) => new Promise<types.Country_country>((resolve) =>
   // @ts-ignore
     setTimeout(() => resolve({
       ...mockCountry(),
@@ -71,152 +71,152 @@ export const country = generateQuery<types.CountryVariables, types.Country, type
       createdAt: new Date().toDateString(),
       updatedAt: new Date().toDateString(),
       cities: {
-        nodes: mockCities().map(c => ({
+        nodes: mockCities().map((c) => ({
           ...c,
           createdAt: c.createdAt.toDateString(),
           updatedAt: c.updatedAt.toDateString(),
-          countryId: id,
-        })),
-      },
+          countryId: id
+        }))
+      }
     }),
-    1000)),
+    1000))
 )
 
 // -------------------------------------------------- City -------------------------------------------------------------
 
 export const cities = generateQuery<types.CitiesVariables, types.Cities, types.Cities_cities>(
   citiesGql,
-  data => data.cities,
+  (data) => data.cities
 )
 
 export const city = generateQuery<types.CityVariables, types.City, types.City_city>(
   cityGql,
-  data => data.city,
+  (data) => data.city
 )
 
 // ----------------------------------------------- University ----------------------------------------------------------
 
 export const universities = generateQuery<types.UniversitiesVariables, types.Universities, types.Universities_universities>(
   universitiesGql,
-  data => data.universities,
+  (data) => data.universities
 )
 
 export const university = generateQuery<types.UniversityVariables, types.University, types.University_university>(
   universityGql,
-  data => data.university,
+  (data) => data.university
 )
 
 // ----------------------------------------------- Problem -------------------------------------------------------------
 
 export const problems = generateQuery<types.ProblemsVariables, types.Problems, types.Problems_problems>(
   problemsGql,
-  data => data.problems,
+  (data) => data.problems
 )
 
 // TODO: mock problem
 export const problem = generateQuery<types.ProblemVariables, types.Problem, types.Problem_problem>(
   problemGql,
-  data => data.problem,
+  (data) => data.problem
 )
 
 // -------------------------------------------- inputOutputType --------------------------------------------------------
 
 export const inputOutputTypes = generateQuery<types.InputOutputTypesVariables, types.InputOutputTypes, { inputs: types.InputOutputTypes_programInputTypes | null, outputs: types.InputOutputTypes_programOutputTypes | null}>(
   inputOutputTypesGql,
-  data => ({
+  (data) => ({
     inputs: data.programInputTypes,
-    outputs: data.programOutputTypes,
-  }),
+    outputs: data.programOutputTypes
+  })
 )
 
 // ------------------------------------------------ Tag ----------------------------------------------------------------
 
 export const tags = generateQuery<types.TagsVariables, types.Tags, types.Tags_tags>(
   tagsGql,
-  data => data.tags,
-  () => new Promise(resolve => setTimeout(() => {
+  (data) => data.tags,
+  () => new Promise((resolve) => setTimeout(() => {
     const nodes = mockTags()
     return {
       totalCount: nodes.length,
-      nodes,
+      nodes
     }
   },
-  1000)),
+  1000))
 )
 
 export const tag = generateQuery<types.TagVariables, types.Tag, types.Tag_tag>(
   tagGql,
-  data => data.tag,
+  (data) => data.tag
 )
 
 // ------------------------------------------------ CodeEditor ---------------------------------------------------------
 
 export const codeEditor = generateQuery<types.CodeEditorVariables, types.CodeEditor, types.CodeEditor_codeEditor>(
   codeEditorGql,
-  data => data.codeEditor,
+  (data) => data.codeEditor
 )
 
 export const codeEditors = generateQuery<types.CodeEditorsVariables, types.CodeEditors, types.CodeEditors_codeEditors>(
   codeEditorsGql,
-  data => data.codeEditors,
+  (data) => data.codeEditors
 )
 
 // ------------------------------------------------ Compiler -----------------------------------------------------------
 
 export const compiler = generateQuery<types.CompilerVariables, types.Compiler, types.Compiler_translator>(
   compilerGql,
-  data => data.translator,
+  (data) => data.translator
 )
 
 export const compilers = generateQuery<types.CompilersVariables, types.Compilers, types.Compilers_translators>(
   compilersGql,
-  data => data.translators,
+  (data) => data.translators
 )
 
 // ------------------------------------------------ Profile ------------------------------------------------------------
 
 export const profile = generateQuery<types.ProfileVariables, types.Profile, types.Profile_profile>(
   profileGql,
-  data => data.profile,
+  (data) => data.profile
 )
 
 export const profiles = generateQuery<types.ProfilesVariables, types.Profiles, types.Profiles_profiles>(
   profilesGql,
-  data => data.profiles,
+  (data) => data.profiles
 )
 
 // ------------------------------------------ ProgrammingLanguage ------------------------------------------------------
 
 export const programmingLanguage = generateQuery<types.ProgrammingLanguageVariables, types.ProgrammingLanguage, types.ProgrammingLanguage_programmingLanguage>(
   programmingLanguageGql,
-  data => data.programmingLanguage,
+  (data) => data.programmingLanguage
 )
 
 export const programmingLanguages = generateQuery<types.ProgrammingLanguagesVariables, types.ProgrammingLanguages, types.ProgrammingLanguages_programmingLanguages>(
   programmingLanguagesGql,
-  data => data.programmingLanguages,
+  (data) => data.programmingLanguages
 )
 
 // --------------------------------------------------- Team ------------------------------------------------------------
 
 export const team = generateQuery<types.TeamVariables, types.Team, types.Team_team>(
   teamGql,
-  data => data.team,
+  (data) => data.team
 )
 
 export const teams = generateQuery<types.TeamsVariables, types.Teams, types.Teams_teams>(
   teamsGql,
-  data => data.teams,
+  (data) => data.teams
 )
 
 // ------------------------------------------------- Contest -----------------------------------------------------------
 
 export const contest = generateQuery<types.ContestVariables, types.Contest, types.Contest_contest>(
   contestGql,
-  data => data.contest,
+  (data) => data.contest
 )
 
 export const contests = generateQuery<types.ContestsVariables, types.Contests, types.Contests_contests>(
   contestsGql,
-  data => data.contests,
+  (data) => data.contests
 )

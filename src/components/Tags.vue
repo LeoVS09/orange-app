@@ -29,7 +29,7 @@
 <script lang="ts">
 import Vue from 'vue'
 import {
-  Component, Prop, Emit, Mixins,
+  Component, Prop, Emit, Mixins
 } from 'vue-property-decorator'
 import { ButtonGroup } from '@/components/index'
 import { onWheel, randomId } from '@/components/utils'
@@ -43,7 +43,7 @@ export interface BaseTag {
 const scrollLeft = (el: Element, left = 100) => el.scrollBy({
   top: 0,
   left: -left,
-  behavior: 'smooth',
+  behavior: 'smooth'
 })
 const scrollRight = (el: Element, left = 100) => el.scrollLeft += left
 
@@ -55,25 +55,25 @@ enum ScroolTo {
 
 @Component({
   components: {
-    ButtonGroup,
-  },
+    ButtonGroup
+  }
 })
 export default class Tags extends Mixins(Loadable) {
    public id = `tags-${randomId()}`;
 
    @Prop({
-     type: Array,
+     type: Array
    }) public values!: BaseTag[];
 
    @Prop({
      type: Boolean,
-     default: true,
+     default: true
    })
    public scrollable!: boolean;
 
    @Prop({
      type: Array,
-     default: () => [],
+     default: () => []
    })
    public activeTags!: BaseTag[];
 
@@ -93,7 +93,7 @@ export default class Tags extends Mixins(Loadable) {
 
      onWheel(el, {
        up: () => scrollLeft(el),
-       down: () => scrollRight(el),
+       down: () => scrollRight(el)
      })
 
      const infiniteScroll = () => {
@@ -119,7 +119,7 @@ export default class Tags extends Mixins(Loadable) {
        },
        center: async () => {
          this.scrollTo = ScroolTo.NONE
-       },
+       }
      })
 
      el.addEventListener('mouseleave', (event) => {

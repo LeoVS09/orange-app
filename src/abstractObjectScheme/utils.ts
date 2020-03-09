@@ -1,5 +1,5 @@
 import {
-  AosField, AosFieldType, AosSimpleField, AosRelationsField,
+  AosField, AosFieldType, AosSimpleField, AosRelationsField
 } from './types'
 
 export const isSimpleAosField = (field: AosField): field is AosSimpleField =>

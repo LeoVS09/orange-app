@@ -8,7 +8,7 @@ export NODE_ENV=development
 # CONFIG
 # ---------------------------------------------------------------------------------------------------------------------
 
-DOCKER_IMAGE_VERSION=0.1.0
+DOCKER_IMAGE_VERSION=0.1.1
 DOCKER_IMAGE_TAG=leovs09/orange-app:$(DOCKER_IMAGE_VERSION)
 
 # ---------------------------------------------------------------------------------------------------------------------
@@ -59,9 +59,12 @@ docker-build:
 	@docker build -t $(DOCKER_IMAGE_TAG) .
 
 docker-console:
-	docker-compose run -p 8080:8080 orange-app /bin/bash
+	docker-compose run --service-ports orange-app /bin/bash
 
 console: docker-console
+
+docker-console-sudo:
+	docker run --privileged -p 8080:8080 -u 0 -v ${pwd}:/ws/. -it leovs09/orange-app:0.1.0 /bin/bash
 
 build-console: docker-build docker-console
 

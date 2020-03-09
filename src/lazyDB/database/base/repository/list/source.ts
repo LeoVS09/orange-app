@@ -3,7 +3,7 @@ import {
   nodesKey,
   NodesProducerReference,
   ListItemGetterReference,
-  ListItemSetterReference,
+  ListItemSetterReference
 } from '@/lazyDB/database/types'
 import { AbstractData } from '@/lazyDB/core/types'
 
@@ -28,7 +28,7 @@ export const makeListSource = (): ListSource => ({
       return null
 
     return this.totalCount / this.onPage
-  },
+  }
 })
 
 export function isListSource(data: AbstractData): data is ListSource {

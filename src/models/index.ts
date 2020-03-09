@@ -7,13 +7,13 @@ export {
   ProblemTestingStatus,
   PartialProblem,
   ProblemError,
-  Tag,
+  Tag
 } from './problems'
 export {
   Test,
   ResultOfProblem,
   ResultOfTest,
-  defaultTest,
+  defaultTest
 } from './tests'
 export { PartialContest, Requirements } from './contest'
 export { Country, City } from './country'

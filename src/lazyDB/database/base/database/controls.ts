@@ -1,17 +1,17 @@
 import { AbstractData, EventProducer, IProducerStore } from '@/lazyDB/core/types'
 import { AosEntitySchemaStorage, AosEntitySchema, AosFieldType } from '@/abstractObjectScheme'
-import { ISetLinkedEntity, applyRepositoryControls } from '../repository/controls'
 import { isProducer, getStore } from '@/lazyDB/core/common'
+import { extractEntityNameFromManyKey } from '@/lazyDB/utils'
+import { ISetLinkedEntity, applyRepositoryControls } from '../repository/controls'
 import { getTableNameByField } from './utils'
 import { getDatabaseStore } from '../../dispatcher'
 import { applyListControls } from '../repository/list'
-import { extractEntityNameFromManyKey } from '@/lazyDB/utils'
 
 export const applyDatabaseControls = (
   store: IProducerStore,
   schema: AosEntitySchema,
   getSchema: IGetSchema,
-  setEntity: ISetEntity,
+  setEntity: ISetEntity
 ) => {
 
   const setLinkedEntity = genSetLinkedEntity(schema, getSchema, setEntity)
@@ -30,7 +30,7 @@ export interface ISetEntity {
 export const genSetLinkedEntity = (
   schema: AosEntitySchema,
   getSchema: IGetSchema,
-  setEntity: ISetEntity,
+  setEntity: ISetEntity
 ): ISetLinkedEntity => {
   const setLinkedEntity: ISetLinkedEntity = (store, name, type, value) => {
     console.log('set linked entity', store, name, type, value)
@@ -60,7 +60,7 @@ export const genSetLinkedEntity = (
     if (type === AosFieldType.OneToMany) {
 
       const listStore = getStore(value)
-      listStore.extendTemporalTrap = trapStore =>
+      listStore.extendTemporalTrap = (trapStore) =>
         applyRepositoryControls(trapStore, schema, { setLinkedEntity })
 
       applyListControls(listStore)

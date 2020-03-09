@@ -1,13 +1,13 @@
 import { AosEntitySchema, isSimpleType, AosFieldType } from '@/abstractObjectScheme'
-import { ISetLinkedEntity } from './types'
 import { ProducerStoreSetter } from '@/lazyDB/core/types'
-import { getFieldType } from './utils'
 import { isProducer, getStore } from '@/lazyDB/core/common'
+import { ISetLinkedEntity } from './types'
+import { getFieldType } from './utils'
 import { applyListControls } from '../list'
 
 export const setter = (
   schema: AosEntitySchema,
-  setLinkedEntity: ISetLinkedEntity = defaultSetLinkedEntity,
+  setLinkedEntity: ISetLinkedEntity = defaultSetLinkedEntity
 ): ProducerStoreSetter =>
   (store, name, value) => {
     const { base } = store

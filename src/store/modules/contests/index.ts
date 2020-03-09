@@ -3,7 +3,7 @@ import {
   PartialContest,
   UserType,
   PartialProblem,
-  Team,
+  Team
 } from '@/models'
 import { ContestInput, ContestsOrderBy } from '@/api/database/global-types'
 import * as API from '@/api'
@@ -21,7 +21,7 @@ export default {
   mutations: crudMutations<PartialContest | FullContest>(),
   actions: crudActions<PartialContest | FullContest, ContestsOrderBy>(
     STATUS_SCOPES.CONTESTS,
-    creatorId => ({
+    (creatorId) => ({
       id: '',
       name: '',
       text: '',
@@ -30,7 +30,7 @@ export default {
         ...defaultPartialProfile(),
         id: creatorId as string,
         login: 'Author',
-        type: UserType.TEACHER,
+        type: UserType.TEACHER
       },
       teams: null,
       problems: null,
@@ -42,7 +42,7 @@ export default {
       endPublicationDate: null,
 
       createdAt: new Date(),
-      updatedAt: new Date(),
+      updatedAt: new Date()
     }),
     {
       readList: async (variables) => {
@@ -52,28 +52,28 @@ export default {
 
         return {
           ...response,
-          nodes: response.nodes.map(n => responseToPartialContest(n) as PartialContest),
+          nodes: response.nodes.map((n) => responseToPartialContest(n) as PartialContest)
         }
       },
 
-      create: async contest => responseToFullContest(await API.createContest({
+      create: async (contest) => responseToFullContest(await API.createContest({
         input: {
-          contest: contestToInput(contest as FullContest),
-        },
+          contest: contestToInput(contest as FullContest)
+        }
       })),
 
-      read: async id => responseToFullContest(await API.contest({ id })),
+      read: async (id) => responseToFullContest(await API.contest({ id })),
 
-      update: async contest => responseToFullContest(await API.updateContest({
+      update: async (contest) => responseToFullContest(await API.updateContest({
         input: {
           id: contest.id,
-          patch: contestToInput(contest as FullContest),
-        },
+          patch: contestToInput(contest as FullContest)
+        }
       })),
 
-      delete: async id => responseToPartialContest(await API.deleteContest({ input: { id } })),
-    },
-  ),
+      delete: async (id) => responseToPartialContest(await API.deleteContest({ input: { id } }))
+    }
+  )
 }
 
 function responseToPartialContest(result: fragmentsTypes.PartialContest | undefined | null): PartialContest | undefined | null {
@@ -82,7 +82,7 @@ function responseToPartialContest(result: fragmentsTypes.PartialContest | undefi
 
   return {
     ...result,
-    creator: responseToPartialUserProfile(result.creator) as PartialUserProfile,
+    creator: responseToPartialUserProfile(result.creator) as PartialUserProfile
   }
 }
 
@@ -93,9 +93,9 @@ function responseToFullContest(result: fragmentsTypes.FullContest | undefined | 
   return {
     ...result,
     creator: responseToPartialUserProfile(result.creator) as PartialUserProfile,
-    problems: result.contestsProblems.nodes.map(n => responseToPartialProblem(n && n.problem) as PartialProblem),
-    profiles: result.contestsProfiles.nodes.map(n => responseToPartialUserProfile(n && n.profile) as PartialUserProfile),
-    teams: result.contestsTeams.nodes.map(n => responseToPartialTeam(n && n.team) as Team),
+    problems: result.contestsProblems.nodes.map((n) => responseToPartialProblem(n && n.problem) as PartialProblem),
+    profiles: result.contestsProfiles.nodes.map((n) => responseToPartialUserProfile(n && n.profile) as PartialUserProfile),
+    teams: result.contestsTeams.nodes.map((n) => responseToPartialTeam(n && n.team) as Team)
   }
 }
 
@@ -107,7 +107,7 @@ function contestToInput(contest: FullContest): ContestInput {
     startDate: contest.startDate,
     endDate: contest.endDate,
     startPublicationDate: contest.startPublicationDate,
-    endPublicationDate: contest.endPublicationDate,
+    endPublicationDate: contest.endPublicationDate
   }
 }
 
@@ -118,6 +118,6 @@ function responseToPartialTeam(result: fragmentsTypes.PartialTeam | undefined | 
   return {
     ...result,
     profiles: [],
-    count: result.teamsProfiles.totalCount || 0,
+    count: result.teamsProfiles.totalCount || 0
   }
 }

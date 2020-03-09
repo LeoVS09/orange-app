@@ -1,5 +1,5 @@
-import { Database } from './connected/Database'
 import { getStore } from '@/lazyDB/core/common'
+import { Database } from './connected/Database'
 import { appendToWindow } from './utils'
 
 // Global default database
@@ -17,9 +17,9 @@ const { Repository } = db
 
 export {
   db,
-  Repository,
+  Repository
 }
 
 const store = getStore(db.storage)
 
-store.stream!.subscribe(event => console.log('global store debug', event))
+store.stream!.subscribe((event) => console.log('global store debug', event))

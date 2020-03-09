@@ -27,7 +27,7 @@ export const RouterPush = (decoratorOptions: RouterPushOptions | string) => crea
 
     return this.$router.push({
       name,
-      params: resultParams,
+      params: resultParams
     })
   }
 })

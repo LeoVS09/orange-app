@@ -22,18 +22,18 @@ import { ButtonGroupMetaItem } from './types'
 
 @Component({
   components: {
-    ButtonGroup,
-  },
+    ButtonGroup
+  }
 })
 export default class Filters extends Vue {
    @Prop({
      type: Array,
-     required: true,
+     required: true
    })
    public buttons!: ButtonGroupMetaItem[];
 
    @Prop({
-     type: [Object, String, Number, Array],
+     type: [Object, String, Number, Array]
    })
    public active: any;
 

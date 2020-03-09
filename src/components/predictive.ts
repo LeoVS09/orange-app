@@ -23,7 +23,7 @@ export function onMouseOutOfWindow(callback: () => void): IListener {
   return {
     destroy() {
       document.removeEventListener('mouseout', mousemoveListener)
-    },
+    }
   }
 }
 
@@ -59,7 +59,7 @@ export function onPredictiveHover(start: () => boolean, end: () => boolean): ILi
     destroy() {
       mouseOut.destroy()
       document.removeEventListener('mousemove', mousemoveListener)
-    },
+    }
   }
 }
 
@@ -90,7 +90,7 @@ function getCoords(elem: Element) {
     right: box.right,
     bottom: box.bottom,
     height: box.height,
-    width: box.width,
+    width: box.width
   }
 }
 

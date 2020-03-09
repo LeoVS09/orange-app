@@ -2,7 +2,7 @@ import * as mutationTypes from './mutationTypes'
 import {
   Platform,
   Translation,
-  UIState,
+  UIState
 } from './state'
 
 export default {
@@ -17,5 +17,5 @@ export default {
   },
   [mutationTypes.SET_LOCALE](state: UIState, locale: Translation) {
     state.locale = locale
-  },
+  }
 }

@@ -9,9 +9,9 @@ export async function updateAction<T extends Identical>(
   id: string,
   setOrAddMutation: (model: T) => void,
   {
-    getStatus, setStatus, setReadState, setModelState, getRead,
+    getStatus, setStatus, setReadState, setModelState, getRead
   }: StatusManipulation,
-  update: (model: T) => Promise<T | undefined | null>,
+  update: (model: T) => Promise<T | undefined | null>
 ): Promise<T | undefined> {
   let status = getStatus(id)
   if (status !== ModelStatus.Changed && status !== ModelStatus.ErrorUpdating)
@@ -35,7 +35,7 @@ export async function updateAction<T extends Identical>(
   if (status === ModelStatus.Updating || status === ModelStatus.ErrorUpdating) {
     setOrAddMutation({
       ...model,
-      ...response,
+      ...response
     })
     setStatus(id, ModelStatus.Synced)
   }

@@ -9,7 +9,7 @@ export async function readAction<T extends Identical>(
   id: string,
   setOrAddMutation: (model: T) => void,
   { getStatus, setStatus, setReadState }: StatusManipulation,
-  read: (id: string) => Promise<T | undefined | null>,
+  read: (id: string) => Promise<T | undefined | null>
 ): Promise<T | undefined> {
   console.log('read', id)
 

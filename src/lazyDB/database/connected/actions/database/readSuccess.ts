@@ -2,7 +2,7 @@ import {
   EventReducer,
   ModelEventInnerPayload,
   AbstractData,
-  EventProducer,
+  EventProducer
 } from '@/lazyDB/core/types'
 import { ReadSuccessEventPayload } from '@/lazyDB/database/events'
 import { isObject, isDate } from './utils'

@@ -1,11 +1,11 @@
+import { AosFieldType } from '@/abstractObjectScheme'
 import {
   IProducerStore,
-  ProducerStoreReference,
+  ProducerStoreReference
 } from '../types'
 import { getStore, isProducerable } from '../common'
 import { pushPropertyEventsToParent } from '../toParent'
 import { wrapInProducerIfNot } from './wrap'
-import { AosFieldType } from '@/abstractObjectScheme'
 
 export function get(store: IProducerStore, prop: PropertyKey) {
   if (
@@ -17,7 +17,7 @@ export function get(store: IProducerStore, prop: PropertyKey) {
     return store
 
   const {
-    dispatcher, base, getter, setter,
+    dispatcher, base, getter, setter
   } = store
 
   dispatcher.get(prop, store)
@@ -47,7 +47,7 @@ export function get(store: IProducerStore, prop: PropertyKey) {
     prop,
     !Array.isArray(base)
       ? AosFieldType.OneToOne
-      : AosFieldType.OneToMany,
+      : AosFieldType.OneToMany
   )
 
   return producer
@@ -55,7 +55,7 @@ export function get(store: IProducerStore, prop: PropertyKey) {
 
 export function set(store: IProducerStore, prop: PropertyKey, value: any) {
   const {
-    base, dispatcher, setter, getter,
+    base, dispatcher, setter, getter
   } = store
   if (typeof prop === 'symbol') {
     base[prop as unknown as string] = value

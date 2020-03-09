@@ -1,7 +1,7 @@
 import { EventReducer, ModelEventInnerPayload } from '@/lazyDB/core/types'
 import { ModelEventReadPayload } from '@/lazyDB/database/events'
 import {
-  schemaToQueryFields, removeGetEventsFromMemory, dispatchReadSuccess, dispatchReadFailure,
+  schemaToQueryFields, removeGetEventsFromMemory, dispatchReadSuccess, dispatchReadFailure
 } from './utils'
 import { fetchListOrEntity } from './api'
 import { getInnerInnerPayload, getInnerPayload } from './types'

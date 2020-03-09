@@ -1,5 +1,5 @@
-import { IDatabaseModelProducerStore } from '../../types'
 import { ModelEventGetPropertyPayload } from '@/lazyDB/core/types'
+import { IDatabaseModelProducerStore } from '../../types'
 import { lastObjectPropertyName } from '../../utils'
 
 export function isExcludeProperty({ excludeProperties }: IDatabaseModelProducerStore, payload: ModelEventGetPropertyPayload) {

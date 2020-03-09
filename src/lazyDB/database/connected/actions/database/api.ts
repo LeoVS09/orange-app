@@ -17,7 +17,7 @@ export const fetch = async (entity: string, id: string, schema: AosSchema) => {
 
   const { data, errors } = await databaseClient.query({
     query,
-    variables: { id },
+    variables: { id }
   })
 
   if (errors) {
@@ -43,7 +43,7 @@ export const list = async (entity: string, schema: AosSchema) => {
   console.log('read schema query', query)
 
   const { data, errors } = await databaseClient.query({
-    query,
+    query
   })
 
   if (errors) {

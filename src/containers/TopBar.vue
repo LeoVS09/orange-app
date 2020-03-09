@@ -81,8 +81,8 @@ let mousemoveListener: IListener
   components: {
     Icon: MaterialIcon,
     Logo,
-    Button,
-  },
+    Button
+  }
 })
 export default class TopBar extends Vue {
   get profileText() {
@@ -112,7 +112,7 @@ export default class TopBar extends Vue {
 
    @Prop({
      type: Boolean,
-     default: false,
+     default: false
    })
    public showProfileActions!: boolean;
 
@@ -152,12 +152,12 @@ export default class TopBar extends Vue {
    public created() {
      mousemoveListener = onPredictiveHover(
        () => this.startHoverProfile(),
-       () => this.endHoverProfile(),
+       () => this.endHoverProfile()
      )
 
      onScroll(
-       top => this.startScroll(top),
-       top => this.endScroll(top),
+       (top) => this.startScroll(top),
+       (top) => this.endScroll(top)
      )
    }
 

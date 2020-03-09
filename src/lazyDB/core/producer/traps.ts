@@ -22,7 +22,7 @@ export const objectTraps: ProxyHandler<IProducerStore> = {
   },
   setPrototypeOf() {
     throw new Error('Object.defineProperty() cannot be used on an LazyDb event producer')
-  },
+  }
 }
 
 export const arrayTraps: ProxyHandler<Array<IProducerStore>> = {
@@ -50,5 +50,5 @@ export const arrayTraps: ProxyHandler<Array<IProducerStore>> = {
 
     // @ts-ignore
     return objectTraps.deleteProperty.call(this, store, prop)
-  },
+  }
 }

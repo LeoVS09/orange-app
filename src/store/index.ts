@@ -17,5 +17,5 @@ export default new Vuex.Store({
   modules,
   getters,
   plugins: [],
-  strict: true,
+  strict: true
 })

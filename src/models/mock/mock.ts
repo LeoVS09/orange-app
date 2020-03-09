@@ -1,7 +1,7 @@
 import {
   PartialProgramInput,
   PartialProgramOutput,
-  Tag,
+  Tag
 } from '@/models/problems'
 import { PartialUserProfile, UserType } from '@/models/user'
 import { randomId } from '@/components/utils'
@@ -13,7 +13,7 @@ export function defaultPartialProfile(): PartialUserProfile {
     login: 'SomeUser',
     firstName: 'First',
     lastName: 'Last',
-    type: UserType.CONTESTANT,
+    type: UserType.CONTESTANT
   }
 }
 
@@ -22,7 +22,7 @@ export function mockTag(name: string): Tag {
     id: `test-${name}`,
     name,
     createdAt: new Date(),
-    updatedAt: new Date(),
+    updatedAt: new Date()
   }
 }
 
@@ -58,20 +58,20 @@ export function mockTags(): Array<Tag> {
     'meet-in-the-middle',
     '2-set',
     'chinese remainder theorem',
-    'schedules',
+    'schedules'
   ].map(mockTag)
 }
 
 export function mockInput(name: string): PartialProgramInput {
   return {
     id: `tests.ts${name}`,
-    name,
+    name
   }
 }
 
 export function mockOutput(name: string): PartialProgramOutput {
   return {
     id: `tests.ts${name}`,
-    name,
+    name
   }
 }

@@ -15,7 +15,7 @@ export function schemaToQueryFields(schema: AosSchema): Array<string | QueryFiel
     return {
       entity: key,
       type: field.type,
-      fields: schemaToQueryFields(field.schema),
+      fields: schemaToQueryFields(field.schema)
     }
   })
 }

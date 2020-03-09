@@ -6,7 +6,7 @@ import Loadable from '@/components/mixins/loadable'
 export default class ModelById extends Loadable {
    @Prop({
      type: String,
-     required: true,
+     required: true
    })
    public id!: string
 

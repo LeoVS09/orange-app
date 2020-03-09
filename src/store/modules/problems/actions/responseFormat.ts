@@ -1,6 +1,6 @@
 import * as fragmentTypes from '@/api/database/fragments/types'
 import {
-  FullProblem, PartialProblem, ProblemTestingStatus, Test,
+  FullProblem, PartialProblem, ProblemTestingStatus, Test
 } from '@/models'
 import { responseToPartialUserProfile } from '@/store/modules/problems/utils'
 import { PartialUserProfile } from '@/models/user'
@@ -24,7 +24,7 @@ export function responseToPartialProblem(p: fragmentTypes.PartialProblem | null 
     author: responseToPartialUserProfile(p.author) as PartialUserProfile,
     tester: p.tester && responseToPartialUserProfile(p.tester) as PartialUserProfile,
     problemsTags: p.problemsTags as unknown as PartialProblem['problemsTags'], // use generated api types
-    testingStatus: ProblemTestingStatus.NotTested, // TODO: make testing in database
+    testingStatus: ProblemTestingStatus.NotTested // TODO: make testing in database
   }
 }
 
@@ -42,13 +42,13 @@ export function responseToFullProblem(p: fragmentTypes.FullProblem | null | unde
     note: p.note,
     limits: {
       time: p.limitTime,
-      memory: p.limitMemory,
+      memory: p.limitMemory
     },
     io: {
       input: p.inputType,
-      output: p.outputType,
+      output: p.outputType
     },
-    tests: (p.tests.nodes as Array<fragmentTypes.FullProblem_tests_nodes>).map(responseToTest),
+    tests: (p.tests.nodes as Array<fragmentTypes.FullProblem_tests_nodes>).map(responseToTest)
   }
 }
 
@@ -57,6 +57,6 @@ export function responseToTest(t: fragmentTypes.Test): Test {
     ...t,
     input: t.input.split('\\n').join(String.fromCharCode(13, 10)),
     output: t.output.split('\\n').join(String.fromCharCode(13, 10)),
-    isPublic: t.isPublic || false,
+    isPublic: t.isPublic || false
   }
 }

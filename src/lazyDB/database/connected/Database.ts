@@ -1,4 +1,3 @@
-import LazyReactiveDatabase from '../base/database/Database'
 import { connectDebugToActionsStream } from '@/lazyDB/debug/actions'
 import { asyncReceiveWithMemory } from '@/lazyDB/core/receiver'
 import { databaseReducers } from '@/lazyDB/database/connected/actions'
@@ -7,6 +6,7 @@ import LazyReactiveRepository from '@/lazyDB/database/base/repository/Repository
 import { AosEntitySchema, AosFieldType } from '@/abstractObjectScheme'
 import { AbstractData } from '@/lazyDB/core/types'
 import { genSetLinkedEntity, getSchemaByKey } from '@/lazyDB/database/base/database/controls'
+import LazyReactiveDatabase from '../base/database/Database'
 
 // Simple version of database
 // TODO: must have base lifecycle handlers and debug tools
@@ -17,7 +17,7 @@ export class Database extends LazyReactiveDatabase {
   constructor() {
     super({
       // TODO: part of properties can be computed to exclude
-      excludeProperties: [...defaultExcludeProperties],
+      excludeProperties: [...defaultExcludeProperties]
     })
 
     // TODO: refactor, need another way to put properties to action
@@ -39,11 +39,11 @@ class Repository<T> extends LazyReactiveRepository<T> {
 
   constructor(
     entity: string,
-    schema?: Partial<AosEntitySchema>,
+    schema?: Partial<AosEntitySchema>
   ) {
     super(entity, {
       table: Repository.db.storage[entity],
-      schema,
+      schema
     })
 
     Repository.db.setSchema(entity, this.schema)
@@ -53,7 +53,7 @@ class Repository<T> extends LazyReactiveRepository<T> {
     this.applyRepositoryControlsOptions.setLinkedEntity = genSetLinkedEntity(
       this.schema,
       Repository.db.getSchemaByKey,
-      Repository.db.setEntity,
+      Repository.db.setEntity
     )
 
   }

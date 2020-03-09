@@ -5,16 +5,16 @@ import { sample, skipWhile, takeWhile } from 'rxjs/operators'
 export function takeWhileThenContinue<T>(
   stream: Observable<T>,
   predicate: (v: T) => boolean,
-  sampler: Observable<any>,
+  sampler: Observable<any>
 ) {
   const whileTrue = stream.pipe(takeWhile(predicate))
   const lastWhenFalse = stream.pipe(
     skipWhile(predicate),
-    sample(sampler),
+    sample(sampler)
   )
 
   return merge(
     whileTrue,
-    lastWhenFalse,
+    lastWhenFalse
   )
 }

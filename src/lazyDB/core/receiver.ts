@@ -1,15 +1,15 @@
 import { filter, share, tap } from 'rxjs/operators'
+import { pushToParentIfCan } from '@/lazyDB/core/toParent'
+import { isHaveEventInMemory } from '@/lazyDB/core/events'
+import { AosFieldType } from '@/abstractObjectScheme'
+import { StateMemory } from './memory'
 import {
   EventReducersMap,
   ModelEvent,
   ModelEventPayload,
   IProducerStore,
-  EventReducer,
+  EventReducer
 } from './types'
-import { StateMemory } from './memory'
-import { pushToParentIfCan } from '@/lazyDB/core/toParent'
-import { isHaveEventInMemory } from '@/lazyDB/core/events'
-import { AosFieldType } from '@/abstractObjectScheme'
 
 export const unsubscribeStore = ({ subscription }: IProducerStore) => subscription && subscription.unsubscribe()
 
@@ -26,7 +26,7 @@ export const subscribeStore = (store: IProducerStore, subscriber: ISubscriber) =
 
 export function receive(
   store: IProducerStore,
-  subscriber: ISubscriber,
+  subscriber: ISubscriber
 ) {
   unsubscribeStore(store)
 
@@ -99,7 +99,7 @@ export function asyncReceiveWithMemory(
   store: IProducerStore,
   reducers: EventReducersMap,
   prop?: PropertyKey,
-  type?: AosFieldType,
+  type?: AosFieldType
 ) {
   unsubscribeStore(store)
 
@@ -113,9 +113,9 @@ export function asyncReceiveWithMemory(
   // event would remove from storage memory
   store.stream = dispatcher.eventsSubject
     .pipe(
-      filter(event => !isHaveEventInMemory(event)),
+      filter((event) => !isHaveEventInMemory(event)),
       tap(saveInMemoryIfCan),
-      share(),
+      share()
     )
 
   store.subscription = store.stream!.subscribe(async (event) => {

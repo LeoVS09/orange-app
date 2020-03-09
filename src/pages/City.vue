@@ -45,7 +45,7 @@ import {
   List,
   ListColumn,
   PageHeader,
-  Breadcrumb,
+  Breadcrumb
 } from '@/containers'
 
 @Component({
@@ -56,8 +56,8 @@ import {
     Section,
     Action: PageHeaderAction,
     ModelInfo,
-    Breadcrumb,
-  },
+    Breadcrumb
+  }
 })
 export default class CityView extends Mixins(ReactiveUpdate) {
   get model() {
@@ -70,7 +70,7 @@ export default class CityView extends Mixins(ReactiveUpdate) {
 
    @Prop({
      type: String,
-     required: true,
+     required: true
    })
    public id!: string;
 

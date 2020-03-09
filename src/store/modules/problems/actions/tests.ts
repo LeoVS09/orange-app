@@ -1,5 +1,5 @@
 import {
-  defaultTest, FullProblem, PartialProblem, Test,
+  defaultTest, FullProblem, PartialProblem, Test
 } from '@/models'
 import { IActionContext, RootGetters } from '@/store/state'
 import { findById } from '@/store/CrudModule/actions/utils'
@@ -12,7 +12,7 @@ import { ProblemsState } from '@/store/modules'
 import { generateStatusManipulation } from '@/store/modules/statuses/utils'
 import * as mutations from '@/store/modules/problems/mutationTypes'
 import {
-  addModelForCreateAction, createAction, deleteAction, editAction, updateAction,
+  addModelForCreateAction, createAction, deleteAction, editAction, updateAction
 } from '@/store/CrudModule'
 import * as API from '@/api'
 import { TestInput } from '@/api/database/global-types'
@@ -39,7 +39,7 @@ export default {
       return false
 
     const { tests } = problem as FullProblem
-    const old = tests.find(t => t.id === test.id)
+    const old = tests.find((t) => t.id === test.id)
     if (!old)
       return false
 
@@ -54,7 +54,7 @@ export default {
 
         edit({
           ...t,
-          index: t.index - 1,
+          index: t.index - 1
         })
       })
     }
@@ -66,7 +66,7 @@ export default {
 
         edit({
           ...t,
-          index: t.index + 1,
+          index: t.index + 1
         })
       })
     }
@@ -90,7 +90,7 @@ export default {
 
       edit({
         ...t,
-        index: t.index + 1,
+        index: t.index + 1
       })
     })
 
@@ -99,10 +99,10 @@ export default {
       () => ({
         ...defaultTest(),
         index,
-        problemId,
+        problemId
       }),
-      m => commit(mutations.SET_OR_ADD_TEST, m),
-      statusManipulations,
+      (m) => commit(mutations.SET_OR_ADD_TEST, m),
+      statusManipulations
     )
   },
 
@@ -114,9 +114,9 @@ export default {
     return await createAction(
       problem.tests,
       test,
-      payload => commit(mutations.SET_BY_ID_TEST, payload),
+      (payload) => commit(mutations.SET_BY_ID_TEST, payload),
       generateStatusManipulation(STATUS_SCOPES.TESTS, commit, rootGetters),
-      async t => responseToTest(await API.createTest({ input: { test: testToInput(t) } })),
+      async (t) => responseToTest(await API.createTest({ input: { test: testToInput(t) } }))
     )
   },
 
@@ -128,14 +128,14 @@ export default {
     return await updateAction(
       problem.tests,
       testId,
-      m => commit(mutations.SET_BY_ID_TEST, m),
+      (m) => commit(mutations.SET_BY_ID_TEST, m),
       generateStatusManipulation(STATUS_SCOPES.TESTS, commit, rootGetters),
-      async test => responseToTest(await API.updateTest({
+      async (test) => responseToTest(await API.updateTest({
         input: {
           id: test.id,
-          patch: testToInput(test),
-        },
-      })),
+          patch: testToInput(test)
+        }
+      }))
     )
   },
 
@@ -147,11 +147,11 @@ export default {
     return await deleteAction(
       problem.tests,
       testId,
-      id => commit(mutations.DELETE_TEST, problem.tests.find(t => t.id === id)),
+      (id) => commit(mutations.DELETE_TEST, problem.tests.find((t) => t.id === id)),
       generateStatusManipulation(STATUS_SCOPES.TESTS, commit, rootGetters),
-      async id => responseToTest(await API.deleteTest({ input: { id } })),
+      async (id) => responseToTest(await API.deleteTest({ input: { id } }))
     )
-  },
+  }
 
 }
 
@@ -173,7 +173,7 @@ function responseToTest(response: fragments.Test | null | undefined): Test | nul
 
   return {
     ...response,
-    isPublic: response.isPublic || false,
+    isPublic: response.isPublic || false
   }
 }
 
@@ -183,6 +183,6 @@ function testToInput(test: Test): TestInput {
     input: test.input,
     output: test.output,
     isPublic: test.isPublic,
-    problemId: test.problemId,
+    problemId: test.problemId
   }
 }

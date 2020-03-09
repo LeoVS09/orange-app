@@ -2,18 +2,18 @@ import * as API from '@/api'
 import * as queryTypes from '@/api/database/queries/types'
 import {
   University,
-  UserProfile,
+  UserProfile
 } from '@/models'
+import {
+  checkIsLogin, currentUserIfHave, signin, signout, signup
+} from '@/authentication'
+import { City, Country } from '@/models/country'
+import { IActionContext } from '@/store/state'
+import * as fragmentsTypes from '@/api/database/fragments/types'
 import { IRegisterProfilePayload } from './types'
 import * as mutations from './mutationTypes'
 import * as actionTypes from './actionTypes'
-import {
-  checkIsLogin, currentUserIfHave, signin, signout, signup,
-} from '@/authentication'
-import { City, Country } from '@/models/country'
 import { ProfileState } from './state'
-import { IActionContext } from '@/store/state'
-import * as fragmentsTypes from '@/api/database/fragments/types'
 
 // const DEBUG = process.env.NODE_ENV !== 'production'
 const DEBUG = false
@@ -69,7 +69,7 @@ export default {
       firstName: user.firstName,
       middleName: user.middleName,
       lastName: user.lastName,
-      avatarUrl: user.avatarUrl,
+      avatarUrl: user.avatarUrl
     })
     if (!result)
       return false
@@ -93,7 +93,7 @@ export default {
 
     commit(mutations.SET_PROFILE_DATA, current.user)
     return true
-  },
+  }
 }
 
 export function handleReadError(description: string, id?: string) {

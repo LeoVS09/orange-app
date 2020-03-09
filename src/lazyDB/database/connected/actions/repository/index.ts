@@ -8,5 +8,5 @@ export const repositoryReducers: EventReducersMap = {
 
   [ModelEventTypes.SetProperty]: () => false,
 
-  [ModelEventTypes.DeleteProperty]: () => false,
+  [ModelEventTypes.DeleteProperty]: () => false
 }

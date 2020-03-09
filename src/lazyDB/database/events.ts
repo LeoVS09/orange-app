@@ -1,12 +1,12 @@
+import { IDatabaseModelProducerStore, ListSource } from '@/lazyDB/database/types'
+import { AosSchema } from '@/abstractObjectScheme'
 import {
   ModelEvent,
   ModelEventGetPropertyPayload,
   ModelEventSetPropertyPayload,
   AbstractData,
-  ModelEventPayload,
+  ModelEventPayload
 } from '../core/types'
-import { IDatabaseModelProducerStore, ListSource } from '@/lazyDB/database/types'
-import { AosSchema } from '@/abstractObjectScheme'
 
 // ModelEventTypes extends EventType,
 // but currently ts not allow this behavior

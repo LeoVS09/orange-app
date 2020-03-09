@@ -2,14 +2,14 @@ import {
   AbstractData,
   EventProducer,
   IProducerStore,
-  ModelEvent,
+  ModelEvent
 } from '@/lazyDB/core/types'
 import { AsyncConnectorEventTypes, ModelEventReadPayload } from '@/lazyDB/database/events'
 
 import { SymFor } from '@/lazyDB/core/utils'
 import { DatabaseDispatcher } from '@/lazyDB/database/dispatcher'
 import {
-  AosEntitySchemaStorage, AosEntitySchema, AosSchema, AosFieldType,
+  AosEntitySchemaStorage, AosEntitySchema, AosSchema, AosFieldType
 } from '@/abstractObjectScheme'
 
 export type AsyncConnectorReducer<T, R> = (store: IProducerStore, event: T) => Promise<R>

@@ -1,11 +1,11 @@
+import { Repository } from '@/lazyDB'
+import { AosFieldType } from '@/abstractObjectScheme'
 import { City, Country } from './country'
 import { University } from './university'
 import { Language } from './language'
 import { CodeEditor } from './codeEditor'
 import { Travel } from './travel'
 import { Email } from './email'
-import { Repository } from '@/lazyDB'
-import { AosFieldType } from '@/abstractObjectScheme'
 
 export enum UserType {
    CONTESTANT = 'CONTESTANT',
@@ -18,27 +18,27 @@ export const ProfileRepository = new Repository(
     fields: {
       user: AosFieldType.OneToOne,
       city: AosFieldType.OneToOne,
-      university: AosFieldType.OneToOne,
-    },
-  },
+      university: AosFieldType.OneToOne
+    }
+  }
 )
 
 export const UserRepository = new Repository(
   'user',
   {
     fields: {
-      userEmails: AosFieldType.OneToMany,
-    },
-  },
+      userEmails: AosFieldType.OneToMany
+    }
+  }
 )
 
 export const UserEmail = new Repository(
   'userEmail',
   {
     fields: {
-      user: AosFieldType.OneToOne,
-    },
-  },
+      user: AosFieldType.OneToOne
+    }
+  }
 )
 export interface Profile {
    id: string

@@ -1,20 +1,20 @@
-import {
-  AbstractData,
-  EventProducer,
-  IModelEventDispatcher,
-} from '../types'
 import { AsyncModelEventDispatcher } from '@/lazyDB/core/dispatcher/model/async'
 import { ProducerStore } from '@/lazyDB/core/producer/Store'
 import { isProducer } from '@/lazyDB/core/common'
 import { arrayTraps, objectTraps } from '@/lazyDB/core/producer/traps'
+import {
+  AbstractData,
+  EventProducer,
+  IModelEventDispatcher
+} from '../types'
 
 export function wrapInProducer<T extends AbstractData = AbstractData>(
   base: T = { } as T,
-  dispatcher: IModelEventDispatcher = new AsyncModelEventDispatcher(),
+  dispatcher: IModelEventDispatcher = new AsyncModelEventDispatcher()
 ): EventProducer {
   const store = new ProducerStore({
     base,
-    dispatcher,
+    dispatcher
   })
 
   const { proxy, revoke } = !Array.isArray(base)

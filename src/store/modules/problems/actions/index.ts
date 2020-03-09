@@ -3,19 +3,19 @@ import {
   defaultProblem,
   FullProblem,
   PartialProblem,
-  ResultRunProgram,
+  ResultRunProgram
 } from '@/models'
 import { IActionContext } from '@/store/state'
-import { ProblemsState } from '../state'
-import * as mutations from '../mutationTypes'
-import * as actionTypes from '../actionTypes'
-import { IStartTestingSolutionPayload } from '../mutations'
 import {
-  crudActions,
+  crudActions
 } from '@/store/CrudModule'
 import { ProblemInput, ProblemsOrderBy } from '@/api/database/global-types'
 import { responseToFullProblem, responseToPartialProblem } from '@/store/modules/problems/actions/responseFormat'
 import { STATUS_SCOPES } from '@/store/statusScopes'
+import { ProblemsState } from '../state'
+import * as mutations from '../mutationTypes'
+import * as actionTypes from '../actionTypes'
+import { IStartTestingSolutionPayload } from '../mutations'
 
 // const DEBUG = process.env.NODE_ENV !== 'production'
 const DEBUG = false
@@ -29,7 +29,7 @@ export interface IUploadCodePayload {
 export {
   IAddForCreateTestActionPayload,
   IDeleteTestActionPayload,
-  IUpdateTestActionPayload,
+  IUpdateTestActionPayload
 } from './tests'
 
 export default {
@@ -45,33 +45,33 @@ export default {
 
         return {
           ...response,
-          nodes: response.nodes.map(p => responseToPartialProblem(p) as PartialProblem),
+          nodes: response.nodes.map((p) => responseToPartialProblem(p) as PartialProblem)
         }
       },
 
-      read: async id => responseToFullProblem(await API.problem({ id })),
+      read: async (id) => responseToFullProblem(await API.problem({ id })),
 
       create: async (problem: FullProblem) => responseToFullProblem(
         await API.createProblem({
           input: {
-            problem: problemToInput(problem),
-          },
-        }),
+            problem: problemToInput(problem)
+          }
+        })
       ),
 
       update: async (problem: FullProblem) => responseToFullProblem(
         await API.updateProblem({
           input: {
             id: problem.id,
-            patch: problemToInput(problem),
-          },
-        }),
+            patch: problemToInput(problem)
+          }
+        })
       ),
 
-      delete: async id => responseToPartialProblem(
-        await API.deleteProblem({ input: { id } }),
-      ),
-    },
+      delete: async (id) => responseToPartialProblem(
+        await API.deleteProblem({ input: { id } })
+      )
+    }
   ),
 
   async [actionTypes.UPLOAD_CODE]({ commit }: IActionContext<ProblemsState>, { problemId, text }: IUploadCodePayload) {
@@ -91,10 +91,10 @@ export default {
         failedTest: 0,
         isCompilationSuccessful: true,
         isUnexpectedError: true,
-        status: 0,
+        status: 0
       } as ResultRunProgram)
     }
-  },
+  }
 
 }
 
@@ -109,6 +109,6 @@ function problemToInput(problem: FullProblem): ProblemInput {
     limitMemory: problem.limits.memory,
     publicationDate: problem.publicationDate,
     authorId: problem.author.id,
-    testerId: problem.tester && problem.tester.id,
+    testerId: problem.tester && problem.tester.id
   }
 }

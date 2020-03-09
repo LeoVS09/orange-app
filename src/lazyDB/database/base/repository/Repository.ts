@@ -1,21 +1,21 @@
-import { makeDatabaseTable, TableListKey } from '../../storage/table'
 import { getStore } from '@/lazyDB/core/common'
 import { AbstractData, EventProducer } from '@/lazyDB/core/types'
-import {
-  DatabaseTable,
-  IDatabaseModelProducerStore,
-  ListProducer,
-  OnChangeCallback,
-} from '../../types'
-import {
-  applyRepositoryControls, ApplyRepositoryControlsOptions,
-} from './controls'
 import { asyncReceiveWithMemory } from '@/lazyDB/core/receiver'
 import { repositoryReducers } from '@/lazyDB/database/connected/actions'
 import { getsSpawnReadEvent } from '@/lazyDB/database/cycle/read'
 import { DatabaseDispatcher, getDatabaseStore } from '@/lazyDB/database/dispatcher'
-import { updateOnChange } from '../../cycle/change'
 import { AosEntitySchema, AosFieldType } from '@/abstractObjectScheme'
+import { updateOnChange } from '../../cycle/change'
+import {
+  applyRepositoryControls, ApplyRepositoryControlsOptions
+} from './controls'
+import {
+  DatabaseTable,
+  IDatabaseModelProducerStore,
+  ListProducer,
+  OnChangeCallback
+} from '../../types'
+import { makeDatabaseTable, TableListKey } from '../../storage/table'
 
 export interface LazyReactiveRepositoryOptions {
    table?: DatabaseTable
@@ -40,8 +40,8 @@ export default class LazyReactiveRepository<T extends AbstractData = AbstractDat
     {
       table = makeDatabaseTable(),
       schema = {},
-      applyRepositoryControlsOptions = {},
-    }: LazyReactiveRepositoryOptions = {},
+      applyRepositoryControlsOptions = {}
+    }: LazyReactiveRepositoryOptions = {}
   ) {
     this.entity = entity
     this.table = table
@@ -50,13 +50,13 @@ export default class LazyReactiveRepository<T extends AbstractData = AbstractDat
     this.schema = {
       primaryKey: schema.primaryKey || defaultPrimaryKey,
       foreignKeys: schema.foreignKeys || [],
-      fields: schema.fields || {},
+      fields: schema.fields || {}
     }
 
     const tableStore = getStore(this.table)
 
     // this hack allow change schema after constructor execution
-    tableStore.extendTemporalTrap = trapStore =>
+    tableStore.extendTemporalTrap = (trapStore) =>
       applyRepositoryControls(trapStore, this.schema, this.applyRepositoryControlsOptions)
   }
 
@@ -104,7 +104,7 @@ function appendRepositoryLifeHooks(
   store: IDatabaseModelProducerStore,
   id: string,
   excludeProperties: Array<string>,
-  onChange?: OnChangeCallback,
+  onChange?: OnChangeCallback
 ) {
   store.excludeProperties = excludeProperties
   // TODO: remove requiring of order
@@ -129,6 +129,6 @@ const listOnChangeWrapper = (list: ListProducer<any>, onChange?: OnChangeCallbac
 
 export const getEntityPrimaryKey = (
   { primaryKey }: AosEntitySchema,
-  entity: AbstractData,
+  entity: AbstractData
 ): string | undefined =>
   entity[primaryKey]

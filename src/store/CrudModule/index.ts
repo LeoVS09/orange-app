@@ -9,7 +9,7 @@ import crudActions, {
   editAction,
   readAction,
   readListAction,
-  createAction,
+  createAction
 } from './actions'
 import crudMutations, { ISetByIdPayload } from './mutations'
 import { Identical } from './types'
@@ -33,5 +33,5 @@ export {
   editAction,
   readListAction,
   readAction,
-  createAction,
+  createAction
 }

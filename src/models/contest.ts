@@ -1,7 +1,7 @@
+import { Team } from '@/models/team'
 import { FullProblem, PartialProblem } from './problems'
 import { ResultOfProblem } from './tests'
 import { PartialUserProfile } from './user'
-import { Team } from '@/models/team'
 
 export interface Requirements {
    course?: number

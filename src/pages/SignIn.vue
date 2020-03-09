@@ -32,7 +32,7 @@ import Vue from 'vue'
 import { Component } from 'vue-property-decorator'
 import { Action } from 'vuex-class'
 import {
-  Button, Checkbox, MaterialIcon, Input, Logo,
+  Button, Checkbox, MaterialIcon, Input, Logo
 } from '@/components'
 import * as actions from '@/store/actionTypes'
 import { ROUTES } from '@/router'
@@ -47,8 +47,8 @@ import eventBus, { AuthorisationEventPayload, AuthorisationEventState, BusEventT
     Input,
     Button,
     Checkbox,
-    Icon: MaterialIcon,
-  },
+    Icon: MaterialIcon
+  }
 })
 export default class SignIn extends Vue {
    public isRemember = true;
@@ -112,7 +112,7 @@ export default class SignIn extends Vue {
          this.isSubmitDisabled = false
          if (result) {
            const payload: AuthorisationEventPayload = {
-             state: AuthorisationEventState.Completed,
+             state: AuthorisationEventState.Completed
            }
            eventBus.$emit(BusEventTypes.Authorisation, payload)
          }

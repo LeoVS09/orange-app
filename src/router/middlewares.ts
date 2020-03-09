@@ -1,6 +1,5 @@
 // @ts-ignore
 import * as Router from 'vue-router'
-import { ROUTES } from './rotues'
 import { checkIsLogin } from '@/authentication'
 import store from '@/store'
 import * as actions from '@/store/actionTypes'
@@ -9,6 +8,7 @@ import { ModelReadState } from '@/store/modules/statuses/types'
 import { GET_READ_STATE } from '@/store/modules/statuses/getters'
 import { STATUS_SCOPES } from '@/store/statusScopes'
 import { FullContest } from '@/models/contest'
+import { ROUTES } from './rotues'
 
 const { actionName, MODULES } = actions
 

@@ -7,7 +7,7 @@ export const GET_READ_STATE = 'statuses/read'
 
 const getters: GetterTree<StatusState, any> = {
 
-  status: state => (scope: string, id: string) => {
+  status: (state) => (scope: string, id: string) => {
     const result = state.scopes[scope] && state.scopes[scope][id]
     if (!result)
       return ModelStatus.None
@@ -15,13 +15,13 @@ const getters: GetterTree<StatusState, any> = {
     return result.status
   },
 
-  read: state => (scope: string, id: string) => {
+  read: (state) => (scope: string, id: string) => {
     const result = state.scopes[scope] && state.scopes[scope][id]
     if (!result)
       return ModelReadState.None
 
     return result.read
-  },
+  }
 }
 
 export default getters

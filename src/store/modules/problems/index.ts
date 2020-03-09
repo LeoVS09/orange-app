@@ -6,10 +6,10 @@ export default {
   namespaced: true,
   state: new ProblemsState(),
   actions,
-  mutations,
+  mutations
 }
 
 export {
   ProblemsState,
-  ProblemFilter,
+  ProblemFilter
 }

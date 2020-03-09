@@ -33,64 +33,64 @@ export interface DataViewValues {
 
 @Component({
   components: {
-    Icon,
-  },
+    Icon
+  }
 })
 export default class DataView extends Vue {
    @Prop({
      type: Object,
-     required: true,
+     required: true
    })
    public values!: DataViewValues;
 
    @Prop({
-     type: Function,
+     type: Function
    })
    public formatValue!: (value: any) => any;
 
    @Prop({
      type: Boolean,
-     default: true,
+     default: true
    })
    public compact!: boolean;
 
    @Prop({
      type: Boolean,
-     default: false,
+     default: false
    })
    public inRow!: boolean;
 
    @Prop({
      type: Boolean,
-     default: false,
+     default: false
    })
    public modelInfo!: boolean;
 
    @Prop({
-     type: Array,
+     type: Array
    })
    public order!: string[];
 
    @Prop({
-     type: Array,
+     type: Array
    })
    public exclude!: string[];
 
    @Prop({
      type: Object,
-     default: () => ({}),
+     default: () => ({})
    })
    public icons!: {[key: string]: string};
 
    @Prop({
      type: Boolean,
-     default: false,
+     default: false
    })
    public contrast!: boolean;
 
    @Prop({
      type: Boolean,
-     default: false,
+     default: false
    })
    public small!: boolean;
 
@@ -98,17 +98,17 @@ export default class DataView extends Vue {
      let keys = Object.keys(this.values)
 
      if (this.order) {
-       const notOrdered = keys.filter(k => this.order.indexOf(k) === -1)
-       const have = this.order.filter(k => keys.indexOf(k) !== -1)
+       const notOrdered = keys.filter((k) => this.order.indexOf(k) === -1)
+       const have = this.order.filter((k) => keys.indexOf(k) !== -1)
 
        keys = [
          ...have,
-         ...notOrdered,
+         ...notOrdered
        ]
      }
 
      if (this.exclude)
-       keys = keys.filter(k => this.exclude.indexOf(k) === -1)
+       keys = keys.filter((k) => this.exclude.indexOf(k) === -1)
 
      return keys.map((label) => {
        const value = this.values[label]

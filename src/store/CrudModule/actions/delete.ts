@@ -7,7 +7,7 @@ export async function deleteAction<T extends Identical>(
   id: string,
   deleteMutation: (id: string) => void,
   { getStatus, setStatus, setReadState }: StatusManipulation,
-  deleteRequest: (id: string) => Promise<T | undefined | null>,
+  deleteRequest: (id: string) => Promise<T | undefined | null>
 ): Promise<T | undefined> {
   const status = getStatus(id)
   if (status !== ModelStatus.Synced)

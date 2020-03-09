@@ -8,26 +8,26 @@ export function mockCountry(): Country {
     ...randomItem(baseCountries),
     id: `country-${randomId()}`,
     createdAt: new Date(),
-    updatedAt: new Date(),
+    updatedAt: new Date()
   }
 }
 
 export function mockCountries(): Array<Country> {
-  return baseCountries.map(country => ({
+  return baseCountries.map((country) => ({
     ...country,
     id: `country-${randomId()}`,
     createdAt: new Date(),
-    updatedAt: new Date(),
+    updatedAt: new Date()
   }))
 }
 
 export function mockCities(): Array<City> {
-  return baseCities.map(city => ({
+  return baseCities.map((city) => ({
     id: `city-${randomId()}`,
     name: city.name,
     createdAt: new Date(),
     updatedAt: new Date(),
-    countryId: `country-${randomId()}`,
+    countryId: `country-${randomId()}`
   }))
 }
 
@@ -276,7 +276,7 @@ const baseCountries = [
   { name: 'Western Sahara', code: 'EH' },
   { name: 'Yemen', code: 'YE' },
   { name: 'Zambia', code: 'ZM' },
-  { name: 'Zimbabwe', code: 'ZW' },
+  { name: 'Zimbabwe', code: 'ZW' }
 ]
 
 const baseCities = [
@@ -284,546 +284,546 @@ const baseCities = [
     country: 'AD',
     name: 'Sant Julià de Lòria',
     lat: '42.46372',
-    lng: '1.49129',
+    lng: '1.49129'
   },
   {
     country: 'AD',
     name: 'Pas de la Casa',
     lat: '42.54277',
-    lng: '1.73361',
+    lng: '1.73361'
   },
   {
     country: 'AD',
     name: 'Ordino',
     lat: '42.55623',
-    lng: '1.53319',
+    lng: '1.53319'
   },
   {
     country: 'AD',
     name: 'les Escaldes',
     lat: '42.50729',
-    lng: '1.53414',
+    lng: '1.53414'
   },
   {
     country: 'AD',
     name: 'la Massana',
     lat: '42.54499',
-    lng: '1.51483',
+    lng: '1.51483'
   },
   {
     country: 'AD',
     name: 'Encamp',
     lat: '42.53474',
-    lng: '1.58014',
+    lng: '1.58014'
   },
   {
     country: 'AD',
     name: 'Canillo',
     lat: '42.5676',
-    lng: '1.59756',
+    lng: '1.59756'
   },
   {
     country: 'AD',
     name: 'Arinsal',
     lat: '42.57205',
-    lng: '1.48453',
+    lng: '1.48453'
   },
   {
     country: 'AD',
     name: 'Andorra la Vella',
     lat: '42.50779',
-    lng: '1.52109',
+    lng: '1.52109'
   },
   {
     country: 'AE',
     name: 'Umm al Qaywayn',
     lat: '25.56473',
-    lng: '55.55517',
+    lng: '55.55517'
   },
   {
     country: 'AE',
     name: 'Ras al-Khaimah',
     lat: '25.78953',
-    lng: '55.9432',
+    lng: '55.9432'
   },
   {
     country: 'AE',
     name: 'Muzayri‘',
     lat: '23.14355',
-    lng: '53.7881',
+    lng: '53.7881'
   },
   {
     country: 'AE',
     name: 'Murbaḩ',
     lat: '25.27623',
-    lng: '56.36256',
+    lng: '56.36256'
   },
   {
     country: 'AE',
     name: 'Khawr Fakkān',
     lat: '25.33132',
-    lng: '56.34199',
+    lng: '56.34199'
   },
   {
     country: 'AE',
     name: 'Dubai',
     lat: '25.0657',
-    lng: '55.17128',
+    lng: '55.17128'
   },
   {
     country: 'AE',
     name: 'Dibba Al-Fujairah',
     lat: '25.59246',
-    lng: '56.26176',
+    lng: '56.26176'
   },
   {
     country: 'AE',
     name: 'Dibba Al-Hisn',
     lat: '25.61955',
-    lng: '56.27291',
+    lng: '56.27291'
   },
   {
     country: 'AE',
     name: 'Sharjah',
     lat: '25.33737',
-    lng: '55.41206',
+    lng: '55.41206'
   },
   {
     country: 'AE',
     name: 'Ar Ruways',
     lat: '24.11028',
-    lng: '52.73056',
+    lng: '52.73056'
   },
   {
     country: 'AE',
     name: 'Al Fujayrah',
     lat: '25.11641',
-    lng: '56.34141',
+    lng: '56.34141'
   },
   {
     country: 'AE',
     name: 'Al Ain',
     lat: '24.19167',
-    lng: '55.76056',
+    lng: '55.76056'
   },
   {
     country: 'AE',
     name: 'Ajman',
     lat: '25.41111',
-    lng: '55.43504',
+    lng: '55.43504'
   },
   {
     country: 'AE',
     name: 'Adh Dhayd',
     lat: '25.28812',
-    lng: '55.88157',
+    lng: '55.88157'
   },
   {
     country: 'AE',
     name: 'Abu Dhabi',
     lat: '24.46667',
-    lng: '54.36667',
+    lng: '54.36667'
   },
   {
     country: 'AF',
     name: 'Zorkot',
     lat: '33.54149',
-    lng: '69.73446',
+    lng: '69.73446'
   },
   {
     country: 'AF',
     name: 'Wulêswālī Bihsūd',
     lat: '34.3436',
-    lng: '67.90567',
+    lng: '67.90567'
   },
   {
     country: 'AF',
     name: 'Kuhsān',
     lat: '34.65389',
-    lng: '61.19778',
+    lng: '61.19778'
   },
   {
     country: 'AF',
     name: 'Lāsh',
     lat: '35.3782',
-    lng: '64.77457',
+    lng: '64.77457'
   },
   {
     country: 'AF',
     name: 'Tukzār',
     lat: '35.94831',
-    lng: '66.42132',
+    lng: '66.42132'
   },
   {
     country: 'AF',
     name: 'Mīray',
     lat: '33.32462',
-    lng: '68.44068',
+    lng: '68.44068'
   },
   {
     country: 'AF',
     name: 'Āq Kupruk',
     lat: '36.08352',
-    lng: '66.84029',
+    lng: '66.84029'
   },
   {
     country: 'AF',
     name: 'Zurmat',
     lat: '33.43778',
-    lng: '69.02774',
+    lng: '69.02774'
   },
   {
     country: 'AF',
     name: 'Zaybāk',
     lat: '36.52947',
-    lng: '71.3441',
+    lng: '71.3441'
   },
   {
     country: 'AF',
     name: 'Zīārat-e Shāh Maqşūd',
     lat: '31.9848',
-    lng: '65.4736',
+    lng: '65.4736'
   },
   {
     country: 'AF',
     name: 'Zindah Jān',
     lat: '34.34264',
-    lng: '61.74675',
+    lng: '61.74675'
   },
   {
     country: 'AF',
     name: 'Zarghūn Shahr',
     lat: '32.84734',
-    lng: '68.44573',
+    lng: '68.44573'
   },
   {
     country: 'AF',
     name: 'Zaṟah Sharan',
     lat: '33.14641',
-    lng: '68.79213',
+    lng: '68.79213'
   },
   {
     country: 'AF',
     name: 'Zaranj',
     lat: '30.95962',
-    lng: '61.86037',
+    lng: '61.86037'
   },
   {
     country: 'AF',
     name: 'Zamtō Kêlay',
     lat: '32.3726',
-    lng: '66.17708',
+    lng: '66.17708'
   },
   {
     country: 'AF',
     name: 'Yangī Qal‘ah',
     lat: '37.46572',
-    lng: '69.61131',
+    lng: '69.61131'
   },
   {
     country: 'AF',
     name: 'Yaḩyá Khēl',
     lat: '32.93742',
-    lng: '68.64622',
+    lng: '68.64622'
   },
   {
     country: 'AF',
     name: 'Wāshēr',
     lat: '32.25122',
-    lng: '63.85553',
+    lng: '63.85553'
   },
   {
     country: 'AF',
     name: 'Tōrmay',
     lat: '33.68847',
-    lng: '68.40205',
+    lng: '68.40205'
   },
   {
     country: 'AF',
     name: 'Tūlak',
     lat: '33.97509',
-    lng: '63.72868',
+    lng: '63.72868'
   },
   {
     country: 'AF',
     name: 'Tītān',
     lat: '33.69032',
-    lng: '63.86361',
+    lng: '63.86361'
   },
   {
     country: 'AF',
     name: 'Tīr Pul',
     lat: '34.59431',
-    lng: '61.26895',
+    lng: '61.26895'
   },
   {
     country: 'AF',
     name: 'Taywarah',
     lat: '33.52118',
-    lng: '64.42116',
+    lng: '64.42116'
   },
   {
     country: 'AF',
     name: 'Bāzār-e Tashkān',
     lat: '36.88168',
-    lng: '70.27674',
+    lng: '70.27674'
   },
   {
     country: 'AF',
     name: 'Tarinkot',
     lat: '32.62998',
-    lng: '65.87806',
+    lng: '65.87806'
   },
   {
     country: 'AF',
     name: 'Taloqan',
     lat: '36.73605',
-    lng: '69.53451',
+    lng: '69.53451'
   },
   {
     country: 'AF',
     name: 'Tagāw-Bāy',
     lat: '35.69941',
-    lng: '66.06164',
+    lng: '66.06164'
   },
   {
     country: 'AF',
     name: 'Tagāb',
     lat: '34.85501',
-    lng: '69.64917',
+    lng: '69.64917'
   },
   {
     country: 'AF',
     name: 'Markaz-e Ḩukūmat-e Sulţān-e Bakwāh',
     lat: '32.24139',
-    lng: '62.94936',
+    lng: '62.94936'
   },
   {
     country: 'AF',
     name: 'Spīn Bōldak',
     lat: '31.00575',
-    lng: '66.40001',
+    lng: '66.40001'
   },
   {
     country: 'AF',
     name: 'Spērah',
     lat: '33.20204',
-    lng: '69.5152',
+    lng: '69.5152'
   },
   {
     country: 'AF',
     name: 'Sōzmah Qal‘ah',
     lat: '36.09916',
-    lng: '66.20823',
+    lng: '66.20823'
   },
   {
     country: 'AF',
     name: 'Siyāhgird',
     lat: '35.00553',
-    lng: '68.85578',
+    lng: '68.85578'
   },
   {
     country: 'AF',
     name: 'Sheywah',
     lat: '34.57169',
-    lng: '70.58859',
+    lng: '70.58859'
   },
   {
     country: 'AF',
     name: 'Shīnḏanḏ',
     lat: '33.30294',
-    lng: '62.1474',
+    lng: '62.1474'
   },
   {
     country: 'AF',
     name: 'Shaykh Amīr Kêlay',
     lat: '33.28744',
-    lng: '69.91283',
+    lng: '69.91283'
   },
   {
     country: 'AF',
     name: 'Qāshqāl',
     lat: '35.03975',
-    lng: '69.00685',
+    lng: '69.00685'
   },
   {
     country: 'AF',
     name: 'Shibirghān',
     lat: '36.66757',
-    lng: '65.7529',
+    lng: '65.7529'
   },
   {
     country: 'AF',
     name: 'Shwāk',
     lat: '33.42386',
-    lng: '69.37684',
+    lng: '69.37684'
   },
   {
     country: 'AF',
     name: 'Shahr-e Şafā',
     lat: '31.80347',
-    lng: '66.32376',
+    lng: '66.32376'
   },
   {
     country: 'AF',
     name: 'Shahrān',
     lat: '36.97984',
-    lng: '70.73928',
+    lng: '70.73928'
   },
   {
     country: 'AF',
     name: 'Shahrak',
     lat: '34.10737',
-    lng: '64.3052',
+    lng: '64.3052'
   },
   {
     country: 'AF',
     name: '‘Alāqahdārī Shāh Jōy',
     lat: '32.52154',
-    lng: '67.41315',
+    lng: '67.41315'
   },
   {
     country: 'AF',
     name: 'Wulêswālī Sayyid Karam',
     lat: '33.69056',
-    lng: '69.36881',
+    lng: '69.36881'
   },
   {
     country: 'AF',
     name: 'Markaz-e Sayyidābād',
     lat: '34.00037',
-    lng: '68.71346',
+    lng: '68.71346'
   },
   {
     country: 'AF',
     name: 'Şayād',
     lat: '36.13529',
-    lng: '65.8297',
+    lng: '65.8297'
   },
   {
     country: 'AF',
     name: 'Sidqābād',
     lat: '35.02298',
-    lng: '69.35112',
+    lng: '69.35112'
   },
   {
     country: 'AF',
     name: 'Sāyagaz',
     lat: '32.56521',
-    lng: '67.03324',
+    lng: '67.03324'
   },
   {
     country: 'AF',
     name: 'Sar-e Tayghān',
     lat: '33.50998',
-    lng: '65.67632',
+    lng: '65.67632'
   },
   {
     country: 'AF',
     name: 'Sarōbī',
     lat: '34.58962',
-    lng: '69.76005',
+    lng: '69.76005'
   },
   {
     country: 'AF',
     name: 'Sar Kāṉī',
     lat: '34.79023',
-    lng: '71.10962',
+    lng: '71.10962'
   },
   {
     country: 'AF',
     name: 'Sarfirāz Kalā',
     lat: '32.98333',
-    lng: '67.96517',
+    lng: '67.96517'
   },
   {
     country: 'AF',
     name: 'Sar-e Pul',
     lat: '36.21544',
-    lng: '65.93249',
+    lng: '65.93249'
   },
   {
     country: 'AF',
     name: 'Sar Chakān',
     lat: '35.70177',
-    lng: '65.23055',
+    lng: '65.23055'
   },
   {
     country: 'AF',
     name: 'Sangīn',
     lat: '32.07275',
-    lng: '64.8359',
+    lng: '64.8359'
   },
   {
     country: 'AF',
     name: 'Sang-e Māshah',
     lat: '33.1396',
-    lng: '67.44046',
+    lng: '67.44046'
   },
   {
     country: 'AF',
     name: 'Sang-e Chārak',
     lat: '35.84972',
-    lng: '66.43694',
+    lng: '66.43694'
   },
   {
     country: 'AF',
     name: 'Sang Atesh',
     lat: '35.248',
-    lng: '63.0044',
+    lng: '63.0044'
   },
   {
     country: 'AF',
     name: 'Sangar Sarāy',
     lat: '34.40744',
-    lng: '70.63937',
+    lng: '70.63937'
   },
   {
     country: 'AF',
     name: 'Aībak',
     lat: '36.26468',
-    lng: '68.01551',
+    lng: '68.01551'
   },
   {
     country: 'AF',
     name: 'Rū-ye Sang',
     lat: '35.31999',
-    lng: '67.63387',
+    lng: '67.63387'
   },
   {
     country: 'AF',
     name: 'Rūdbār',
     lat: '30.15',
-    lng: '62.6',
+    lng: '62.6'
   },
   {
     country: 'AF',
     name: 'Rustāq',
     lat: '37.12604',
-    lng: '69.83045',
+    lng: '69.83045'
   },
   {
     country: 'AF',
     name: 'Rabāţ-e Sangī-ye Pā’īn',
     lat: '34.79951',
-    lng: '62.13917',
+    lng: '62.13917'
   },
   {
     country: 'AF',
     name: 'Rāmak',
     lat: '33.52234',
-    lng: '68.6264',
+    lng: '68.6264'
   },
   {
     country: 'AF',
     name: 'Qurghān',
     lat: '36.91939',
-    lng: '65.0649',
+    lng: '65.0649'
   },
   {
     country: 'AF',
     name: 'Quchanghī',
     lat: '34.06183',
-    lng: '66.27801',
-  },
+    lng: '66.27801'
+  }
 ]

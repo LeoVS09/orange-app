@@ -38,8 +38,8 @@ interface ReflectedButton {
 
 @Component({
   components: {
-    Button,
-  },
+    Button
+  }
 })
 export default class ButtonGroup extends Vue {
   get reflectedButtons(): ReflectedButton[] | undefined {
@@ -50,7 +50,7 @@ export default class ButtonGroup extends Vue {
       if (!Array.isArray(active))
         return active === value
 
-      return active.some(item => item === value)
+      return active.some((item) => item === value)
     }
 
     return this.meta.buttons.map((b) => {
@@ -63,43 +63,43 @@ export default class ButtonGroup extends Vue {
       return {
         label,
         value,
-        isActive: isActive(this.meta.active, value),
+        isActive: isActive(this.meta.active, value)
       }
     })
   }
 
    @Prop({
-     type: Object,
+     type: Object
    })
    public meta!: ButtonGroupMeta;
 
    @Prop({
      type: Boolean,
-     default: true,
+     default: true
    })
    public hoverAnimation!: boolean;
 
    @Prop({
      type: Boolean,
-     default: true,
+     default: true
    })
    public horizontal!: boolean;
 
    @Prop({
      type: Boolean,
-     default: false,
+     default: false
    })
    public vertical!: boolean;
 
    @Prop({
      type: Boolean,
-     default: false,
+     default: false
    })
    public secondary!: boolean;
 
    @Prop({
      type: Boolean,
-     default: false,
+     default: false
    })
    public bordered!: boolean;
 

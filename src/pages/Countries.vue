@@ -32,7 +32,7 @@ import {
   Tags,
   Section,
   PageHeaderAction,
-  Filters,
+  Filters
 } from '@/components'
 import { ROUTES } from '@/router'
 import { RouterPush } from '@/components/decorators'
@@ -50,8 +50,8 @@ import { ListProducer } from '@/lazyDB/database/types'
     ListColumn,
     Tags,
     Section,
-    Action: PageHeaderAction,
-  },
+    Action: PageHeaderAction
+  }
 })
 export default class Countries extends Mixins(ReactiveUpdate) {
    @Getter public isTeacher!: boolean;

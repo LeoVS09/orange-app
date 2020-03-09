@@ -8,8 +8,8 @@ import { Component } from 'vue-property-decorator'
 
    @Component({
      props: {
-       type: String,
-     },
+       type: String
+     }
    })
 export default class MaterialIcon extends Vue {
 

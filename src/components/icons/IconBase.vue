@@ -22,22 +22,22 @@ import { Component, Prop } from 'vue-property-decorator'
 export default class IconBase extends Vue {
    @Prop({
      type: String,
-     default: 'box',
+     default: 'box'
    }) public iconName!: string;
 
    @Prop({
      type: [Number, String],
-     default: 48,
+     default: 48
    }) public width!: number | string;
 
    @Prop({
      type: [Number, String],
-     default: 48,
+     default: 48
    }) public height!: number | string;
 
    @Prop({
      type: String,
-     default: 'currentColor',
+     default: 'currentColor'
    }) public iconColor!: string;
 
    public onClick(event: any) {

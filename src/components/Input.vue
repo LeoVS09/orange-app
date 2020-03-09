@@ -17,7 +17,7 @@
 <script lang="ts">
 import Vue from 'vue'
 import {
-  Component, Prop, Watch, Mixins,
+  Component, Prop, Watch, Mixins
 } from 'vue-property-decorator'
 import Focusable from './mixins/inputs/focusable'
 import { toStringWhenDefined } from './utils'
@@ -49,7 +49,7 @@ export default class Input extends Mixins(Focusable) {
 
    @Prop({
      type: [Boolean, String],
-     default: false,
+     default: false
    })
    public error!: boolean | string;
 

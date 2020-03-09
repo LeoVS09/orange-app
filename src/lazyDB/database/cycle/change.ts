@@ -13,10 +13,10 @@ export const updateOnChange = (store: IDatabaseModelProducerStore, onChangeCallb
     return
 
   stream.pipe(
-    filter(event =>
+    filter((event) =>
       event.type === ModelEventTypes.SetProperty
       || event.type === ModelEventTypes.ReadSuccess),
-    debounceTime(CHANGE_TIME),
+    debounceTime(CHANGE_TIME)
   )
     .subscribe((event) => {
       console.log('Update on change', event, store, memory, base)

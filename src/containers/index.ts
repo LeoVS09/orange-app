@@ -15,5 +15,5 @@ export {
   TopBar,
   TestView,
   PageHeader,
-  Breadcrumb,
+  Breadcrumb
 }

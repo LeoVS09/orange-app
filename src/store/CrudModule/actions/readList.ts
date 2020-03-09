@@ -1,5 +1,5 @@
 import {
-  CrudActionApi, Identical, ReadListResponse, ReadListVariables,
+  CrudActionApi, Identical, ReadListResponse, ReadListVariables
 } from '@/store/CrudModule'
 import { StatusManipulation } from '@/store/modules/statuses/utils'
 import { ModelStatus } from '@/store/modules'
@@ -10,10 +10,10 @@ export async function readListAction<T extends Identical, OrderBy>(
   items: Array<T>,
   setOrAddMutation: (model: T) => void,
   {
-    getStatus, setStatus, setReadState, setModelState, getRead,
+    getStatus, setStatus, setReadState, setModelState, getRead
   }: StatusManipulation,
   readList: (variables: ReadListVariables<OrderBy>) => Promise<ReadListResponse<T> | undefined | null>,
-  setGlobalStatus: (status: ModelStatus) => void,
+  setGlobalStatus: (status: ModelStatus) => void
 ): Promise<boolean> {
   const list = await readList({ })
   if (!list) {

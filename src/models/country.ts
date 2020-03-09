@@ -27,9 +27,9 @@ export const CountryRepository = new Repository<Country>(
   'country',
   {
     fields: {
-      cities: AosFieldType.OneToMany,
-    },
-  },
+      cities: AosFieldType.OneToMany
+    }
+  }
 )
 
 export const CityRepository = new Repository<City>(
@@ -37,7 +37,7 @@ export const CityRepository = new Repository<City>(
   {
     fields: {
       country: AosFieldType.OneToOne,
-      universities: AosFieldType.OneToMany,
-    },
-  },
+      universities: AosFieldType.OneToMany
+    }
+  }
 )

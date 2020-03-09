@@ -119,9 +119,11 @@
 
 <script lang="ts">
 import {
-  Component, Prop, Emit, Mixins,
+  Component, Prop, Emit, Mixins
 } from 'vue-property-decorator'
 import crypto from 'crypto-js'
+import Loadable from '@/components/mixins/loadable'
+import { randomId } from '@/components/utils'
 import ListItem from '../components/ListItem.vue'
 import Button from '../components/Button.vue'
 import {
@@ -129,11 +131,9 @@ import {
   DataItem,
   Header,
   ListMeta,
-  ListSortEvent,
+  ListSortEvent
 } from '../components/types'
 // @ts-ignore
-import Loadable from '@/components/mixins/loadable'
-import { randomId } from '@/components/utils'
 
 export interface ListSortHeader {
    by: string;
@@ -145,7 +145,7 @@ function toHeaders(headers: any[]): Header[] {
     if (typeof header === 'string') {
       return {
         key: header,
-        label: header.slice(0, 1).toUpperCase() + header.slice(1),
+        label: header.slice(0, 1).toUpperCase() + header.slice(1)
       }
     }
 
@@ -155,7 +155,7 @@ function toHeaders(headers: any[]): Header[] {
 
     return {
       key: keys[0],
-      label: header[keys[0]],
+      label: header[keys[0]]
     }
   })
 }
@@ -178,56 +178,56 @@ interface IPageNumbers {
 @Component({
   components: {
     ListItem,
-    Button,
-  },
+    Button
+  }
 })
 export default class List extends Mixins(Loadable) {
    @Prop({
      type: Array,
-     required: true,
+     required: true
    })
    public items!: Array<DataItem>;
 
    @Prop({
-     type: Array,
+     type: Array
    })
    public exceptions?: Array<string>;
 
    @Prop({
-     type: Object,
+     type: Object
    })
    public meta!: ListMeta;
 
    @Prop({
-     type: Function,
+     type: Function
    })
    public filter?: (item: DataItem) => boolean;
 
    @Prop({
-     type: Function,
+     type: Function
    })
    public formatData?: (a: DataItem) => DataItem;
 
    @Prop({
-     type: Boolean,
+     type: Boolean
    })
    public isCanAdd?: boolean;
 
    @Prop({
      type: Boolean,
-     default: true,
+     default: true
    })
    public pagination!: boolean;
 
    @Prop({
      type: Number,
-     default: 10,
+     default: 10
    })
    public itemsOnPage!: number;
 
    @Prop({
      type: Number,
-     default: 5,
+     default: 5
    })
    public maxPageNumbers!: number;
 
@@ -308,8 +308,8 @@ export default class List extends Mixins(Loadable) {
          center: allPages.slice(0, max),
          right: count > max ? {
            n: lastPage,
-           points: true,
-         } : undefined,
+           points: true
+         } : undefined
        }
      }
 
@@ -317,11 +317,11 @@ export default class List extends Mixins(Loadable) {
        return {
          left: count > max ? {
            n: firstPage,
-           points: true,
+           points: true
          } : undefined,
          center: max >= allPages.length
            ? allPages.slice(0, allPages.length)
-           : allPages.slice(allPages.length - max),
+           : allPages.slice(allPages.length - max)
        }
      }
 
@@ -333,7 +333,7 @@ export default class List extends Mixins(Loadable) {
      if (firstPage !== start) {
        left = {
          n: firstPage,
-         points: false,
+         points: false
        }
 
        if (start - firstPage > 1)
@@ -345,7 +345,7 @@ export default class List extends Mixins(Loadable) {
      if (lastPage !== end) {
        right = {
          n: lastPage,
-         points: false,
+         points: false
        }
 
        if (lastPage - end > 1)
@@ -355,7 +355,7 @@ export default class List extends Mixins(Loadable) {
      return {
        left,
        center: allPages.slice(start - 1, end),
-       right,
+       right
      }
    }
 
@@ -395,7 +395,7 @@ export default class List extends Mixins(Loadable) {
 
      return {
        old,
-       next,
+       next
      }
    }
 
@@ -414,13 +414,13 @@ export default class List extends Mixins(Loadable) {
      if (this.sortHeader && this.sortHeader.by === header.key) {
        return this.sortHeader = {
          ...this.sortHeader,
-         ascending: !this.sortHeader.ascending,
+         ascending: !this.sortHeader.ascending
        } as ListSortEvent
      }
 
      return this.sortHeader = {
        by: header.key,
-       ascending: false,
+       ascending: false
      } as ListSortEvent
    }
 

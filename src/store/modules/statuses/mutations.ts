@@ -6,14 +6,14 @@ import {
   ISetStatusPayload,
   ModelReadState,
   ModelState,
-  ModelStatus,
+  ModelStatus
 } from './types'
 
 function defaultModelState(): ModelState {
   return {
     status: ModelStatus.None,
     read: ModelReadState.None,
-    changedAt: new Date(),
+    changedAt: new Date()
   }
 }
 
@@ -37,7 +37,7 @@ export default {
     modelState.status = model.status
     modelState.read = model.read
     modelState.changedAt = new Date()
-  },
+  }
 }
 
 function getModelStateOrCreate(state: StatusState, scope: string, id: string) {

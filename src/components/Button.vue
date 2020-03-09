@@ -71,8 +71,8 @@ import ButtonBase from './mixins/inputs/baseButton'
    @Component({
      components: {
        Spinner,
-       Icon,
-     },
+       Icon
+     }
    })
 export default class Button extends Mixins(ButtonBase) {
       key = randomId()

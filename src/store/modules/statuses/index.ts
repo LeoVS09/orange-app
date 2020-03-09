@@ -8,16 +8,16 @@ export default {
   state: new StatusState(),
   actions,
   getters,
-  mutations,
+  mutations
 }
 
 export {
-  StatusState,
+  StatusState
 }
 
 export {
   StatusScope,
   StatusScopes,
   ModelStatus,
-  ISetStatusPayload,
+  ISetStatusPayload
 } from './types'

@@ -12,7 +12,7 @@ export function shuffleProblem<T>(array: Array<T>): Array<T> {
 }
 
 export function setByIdOrPush<T extends Identical>(items: Array<T>, newItem: T) {
-  const index = items.findIndex(item => item.id === newItem.id)
+  const index = items.findIndex((item) => item.id === newItem.id)
   if (index === -1)
     items.push(newItem)
 
@@ -20,7 +20,7 @@ export function setByIdOrPush<T extends Identical>(items: Array<T>, newItem: T) 
 }
 
 export function setById<T extends Identical>(items: Array<T>, id: string, newItem: T): T | undefined {
-  const index = items.findIndex(item => item.id === id)
+  const index = items.findIndex((item) => item.id === id)
   if (index === -1) {
     console.error('Cannot findOne model to set by id:', id, 'newValue data:', newItem)
     return
@@ -31,7 +31,7 @@ export function setById<T extends Identical>(items: Array<T>, id: string, newIte
 }
 
 export function updateById<T extends Identical>(items: Array<T>, id: string, handler: (model: T) => void) {
-  const item = items.find(it => it.id === id)
+  const item = items.find((it) => it.id === id)
   if (!item) {
     console.error('Cannot findOne model to set by id:', id)
     return
@@ -41,7 +41,7 @@ export function updateById<T extends Identical>(items: Array<T>, id: string, han
 }
 
 export function removeById<T extends Identical>(items: Array<T>, id: string): Array<T> {
-  const index = items.findIndex(item => item.id === id)
+  const index = items.findIndex((item) => item.id === id)
   if (index) {
     console.error('Not findOne item', id)
     return items

@@ -51,7 +51,7 @@ function removeEqual<T>(items: Array<T>): Array<T> {
   const result: Array<T> = []
 
   for (const item of items) {
-    if (!result.some(v => v === item))
+    if (!result.some((v) => v === item))
       result.push(item)
   }
 

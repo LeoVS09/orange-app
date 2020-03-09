@@ -31,6 +31,6 @@ export function defaultTest(): Test {
     problemId: '',
     createdAt: new Date(),
     updatedAt: new Date(),
-    isPublic: false,
+    isPublic: false
   }
 }

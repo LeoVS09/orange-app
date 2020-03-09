@@ -45,7 +45,7 @@ import {
   TextSection,
   PageHeaderAction,
   Filters,
-  DataView,
+  DataView
 } from '@/components'
 import { ROUTES } from '@/router'
 import { City, CountryRepository } from '@/models/country'
@@ -58,7 +58,7 @@ import {
   LazyProperty,
   LazyData,
   PageHeader,
-  Breadcrumb,
+  Breadcrumb
 } from '@/containers'
 
 @Component({
@@ -75,8 +75,8 @@ import {
     DataView,
     LazyData,
     LazyProperty,
-    ListColumn,
-  },
+    ListColumn
+  }
 })
 export default class CountryView extends Mixins(ReactiveUpdate) {
   get model() {
@@ -90,12 +90,12 @@ export default class CountryView extends Mixins(ReactiveUpdate) {
     const cities = this.model.cities!.nodes
     console.log('Country cities', cities)
     // TODO: temporal hack, need investigate why vue not rerender without map
-    return cities.map(node => node)
+    return cities.map((node) => node)
   }
 
    @Prop({
      type: String,
-     required: true,
+     required: true
    })
    public id!: string;
 

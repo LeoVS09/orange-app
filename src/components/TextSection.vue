@@ -23,31 +23,31 @@ import TextareaAutoresize from './TextareaAutoresize.vue'
 
    @Component({
      components: {
-       TextareaAutoresize,
-     },
+       TextareaAutoresize
+     }
    })
 export default class TextSection extends Vue {
       @Prop({
         type: Boolean,
-        default: false,
+        default: false
       }) editable?: boolean
 
       @Prop({
-        type: String,
+        type: String
       }) value?: string
 
       @Prop({
-        type: String,
+        type: String
       }) placeholder?: string
 
       @Prop({
         type: Boolean,
-        default: false,
+        default: false
       }) highlight?: boolean
 
       @Prop({
         type: Boolean,
-        default: true,
+        default: true
       }) textWidth?: boolean
 
       @Emit('input')

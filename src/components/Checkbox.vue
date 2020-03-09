@@ -16,7 +16,7 @@ import { Component, Prop, Emit } from 'vue-property-decorator'
 export default class Checkbox extends Vue {
    @Prop({
      type: Boolean,
-     required: true,
+     required: true
    })
    public value!: boolean;
 

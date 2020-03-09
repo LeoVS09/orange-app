@@ -7,7 +7,7 @@ import {
   IProducerStore,
   ModelEvent,
   ProducerStoreOptions,
-  ProxyRevoke,
+  ProxyRevoke
 } from '@/lazyDB/core/types'
 import { StateMemory } from '@/lazyDB/core/memory'
 

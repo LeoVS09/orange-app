@@ -5,10 +5,10 @@ import mutations from './mutations'
 export default {
   state: new UIState(),
   actions,
-  mutations,
+  mutations
 }
 
 export {
   UIState,
-  Platform,
+  Platform
 }

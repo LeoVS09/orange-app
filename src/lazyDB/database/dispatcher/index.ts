@@ -6,7 +6,7 @@ import {
   IModelEventDispatcher,
   IProducerStore,
   ModelEvent,
-  ModelEventPayload,
+  ModelEventPayload
 } from '@/lazyDB/core/types'
 import { ModelEventTypes, ReadFailureEventPayload, ReadSuccessEventPayload } from '@/lazyDB/database/events'
 import { IDatabaseModelProducerStore } from '@/lazyDB/database/types'
@@ -14,12 +14,12 @@ import { getStore } from '@/lazyDB/core/common'
 
 export const readSuccessEventPayload = (data: AbstractData, store: IDatabaseModelProducerStore): ReadSuccessEventPayload => ({
   data,
-  store,
+  store
 })
 
 export const readFailureEventPayload = <T extends Error = any>(error: T, store: IDatabaseModelProducerStore): ReadFailureEventPayload<T> => ({
   error,
-  store,
+  store
 })
 
 export class DatabaseDispatcher implements IModelEventDispatcher<ModelEventPayload> {

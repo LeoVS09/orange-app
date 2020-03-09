@@ -1,8 +1,8 @@
+import { IActionContext } from '@/store/state'
+import { ISetModelStatePayload, ISetReadStatePayload, ISetStatusPayload } from '@/store/modules/statuses/types'
 import * as actionTypes from './actionTypes'
 import * as mutations from './mutationTypes'
 import { StatusState } from './state'
-import { IActionContext } from '@/store/state'
-import { ISetModelStatePayload, ISetReadStatePayload, ISetStatusPayload } from '@/store/modules/statuses/types'
 
 const DEBUG = process.env.NODE_ENV !== 'production'
 
@@ -27,5 +27,5 @@ export default {
       console.log('Set model state', payload)
 
     commit(mutations.SET_MODEL_STATE, payload)
-  },
+  }
 }

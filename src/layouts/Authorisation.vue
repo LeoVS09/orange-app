@@ -23,8 +23,8 @@ import { ROUTES } from '@/router'
   components: {
     Logo,
     Input,
-    Button,
-  },
+    Button
+  }
 })
 export default class Authorisation extends Vue {
    @Getter('isSignInPage') public isSignInPage!: boolean;

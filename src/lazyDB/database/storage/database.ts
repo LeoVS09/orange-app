@@ -1,7 +1,7 @@
 import { SymFor } from '@/lazyDB/core/utils'
 import {
   ProducerStoreGetter,
-  ProducerStoreSetter,
+  ProducerStoreSetter
 } from '@/lazyDB/core/types'
 import { DatabaseStorage, DatabaseStorageMap, DatabaseTableMap } from '@/lazyDB/database/types'
 import { wrapInProducer } from '@/lazyDB/core/producer/wrap'
@@ -12,7 +12,7 @@ export const DatabaseStoreReference = SymFor('database storage')
 
 export function makeDatabaseStorage(database: DatabaseStorageMap = new Map()): DatabaseStorage {
   const producer = wrapInProducer({
-    [DatabaseStoreReference]: database,
+    [DatabaseStoreReference]: database
   })
 
   const store = getStore(producer)

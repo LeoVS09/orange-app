@@ -18,23 +18,23 @@ import IconBase from './IconBase.vue'
 
 @Component({
   components: {
-    IconBase,
-  },
+    IconBase
+  }
 })
 export default class LdrX extends Vue {
    @Prop({
      type: [Number, String],
-     default: 18,
+     default: 18
    }) public width!: number | string;
 
    @Prop({
      type: [Number, String],
-     default: 18,
+     default: 18
    }) public height!: number | string;
 
    @Prop({
      type: String,
-     default: 'currentColor',
+     default: 'currentColor'
    }) public iconColor!: string;
 
    public onClick(value: any) {

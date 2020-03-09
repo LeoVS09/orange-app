@@ -18,8 +18,8 @@ import TextareaAutoresize from './TextareaAutoresize.vue'
 
 @Component({
   components: {
-    TextareaAutoresize,
-  },
+    TextareaAutoresize
+  }
 })
 export default class SourceView extends Vue {
    @Prop(String)

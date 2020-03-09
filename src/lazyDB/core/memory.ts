@@ -8,7 +8,7 @@ export class StateMemory<T> {
    }
 
    public remove(...target: Array<T>) {
-     this.memory = this.memory.filter(event => !target.includes(event))
+     this.memory = this.memory.filter((event) => !target.includes(event))
    }
 
    public exclude(predicat: (event: T) => boolean) {

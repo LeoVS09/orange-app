@@ -14,32 +14,32 @@ export function getsSpawnReadEvent(
   {
     memory,
     stream,
-    dispatcher,
+    dispatcher
   }: IDatabaseModelProducerStore,
-  canRead: CanReadCallback = () => true,
+  canRead: CanReadCallback = () => true
 ) {
   /*
    * Take all get events, when pause spawn read event
    * If when reading was get events, after read success spawn another read event
    * */
   takeWhileThenContinue(
-      stream!.pipe(filter(event => event.type === ModelEventTypes.GetProperty)),
+      stream!.pipe(filter((event) => event.type === ModelEventTypes.GetProperty)),
       () => canRead() && !isReading(memory!),
-      stream!.pipe(filter(event => event.type === ModelEventTypes.ReadSuccess)),
+      stream!.pipe(filter((event) => event.type === ModelEventTypes.ReadSuccess))
   )
     .pipe(
       debounceTime(READ_TIME),
       map(() => {
-        const gets = memory!.filter(event => event.type === ModelEventTypes.GetProperty)
+        const gets = memory!.filter((event) => event.type === ModelEventTypes.GetProperty)
         return gets
       }),
-      filter(gets =>
+      filter((gets) =>
         !!gets.length
         // TODO: inspect
         // strange bug when have multple repositories on page,
         // may spawn read events while have read event in memmory,
         // possible caused by read success event and rerender by other repository
-        && !isReading(memory!)),
+        && !isReading(memory!))
     )
   // TODO: need spawn read events in parallel of different models
     .subscribe((gets) => {
@@ -50,7 +50,7 @@ export function getsSpawnReadEvent(
         gets,
         sets: [],
         readSchema: readSchema!,
-        store,
+        store
       }
       console.log('get events spawn read event', 'gets.length:', gets.length, 'memory.length:', memory!.memory.length, memory)
 

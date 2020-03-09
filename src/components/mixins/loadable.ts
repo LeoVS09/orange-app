@@ -6,7 +6,7 @@ export const loadEvent = 'load'
 @Component
 export default class Loadable extends Vue {
    @Prop({
-     type: Function,
+     type: Function
    })
    public load!: () => Promise<boolean>
 

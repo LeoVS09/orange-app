@@ -38,7 +38,7 @@ import {
   Tags,
   Section,
   PageHeaderAction,
-  Filters,
+  Filters
 } from '@/components'
 import { ROUTES } from '@/router'
 import { ProblemFilter } from '@/store/modules'
@@ -49,7 +49,7 @@ import {
   List,
   ListColumn,
   PageHeader,
-  Breadcrumb,
+  Breadcrumb
 } from '@/containers'
 
 const { MODULES, actionName } = actions
@@ -64,8 +64,8 @@ const { MODULES, actionName } = actions
     ListColumn,
     Tags,
     Section,
-    Action: PageHeaderAction,
-  },
+    Action: PageHeaderAction
+  }
 })
 export default class Contests extends Vue {
    @Getter('contests') public items!: Array<PartialContest | FullContest>;
@@ -89,7 +89,7 @@ export default class Contests extends Vue {
      return {
        ...item,
        date: item.updatedAt ? item.updatedAt : item.createdAt,
-       author: item.creator.login,
+       author: item.creator.login
      }
    }
 }

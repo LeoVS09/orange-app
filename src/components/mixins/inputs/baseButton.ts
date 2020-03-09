@@ -7,7 +7,7 @@ export default class BaseButton extends Vue {
 
    @Prop({
      type: Boolean,
-     default: false,
+     default: false
    })
    public disabled!: boolean
 
@@ -15,144 +15,144 @@ export default class BaseButton extends Vue {
 
    @Prop({
      type: Boolean,
-     default: false,
+     default: false
    })
    public shadow!: boolean
 
    @Prop({
      type: Boolean,
-     default: false,
+     default: false
    })
    public simple!: boolean
 
    @Prop({
      type: Boolean,
-     default: false,
+     default: false
    })
    public biggerFont!: boolean
 
    @Prop({
      type: Boolean,
-     default: false,
+     default: false
    })
    public active!: boolean
 
    @Prop({
      type: Boolean,
-     default: false,
+     default: false
    })
    public primary!: boolean
 
    @Prop({
      type: Boolean,
-     default: false,
+     default: false
    })
    public maxWidth!: boolean
 
    @Prop({
      type: Boolean,
-     default: false,
+     default: false
    })
    public maxHeight!: boolean
 
    @Prop({
      type: Boolean,
-     default: true,
+     default: true
    })
    public gradientHighlight!: boolean
 
    @Prop({
      type: Boolean,
-     default: false,
+     default: false
    })
    public borderHighlight!: boolean
 
    @Prop({
-     type: String,
+     type: String
    })
    public hovered!: string
 
    @Prop({
      type: Boolean,
-     default: false,
+     default: false
    })
    public fadeText!: boolean
 
    @Prop({
      type: Boolean,
-     default: false,
+     default: false
    })
    public textCanFade!: boolean
 
    @Prop({
      type: Boolean,
-     default: false,
+     default: false
    })
    public circle!: boolean
 
    @Prop({
      type: Boolean,
-     default: false,
+     default: false
    })
    public secondary!: boolean
 
    @Prop({
      type: Boolean,
-     default: false,
+     default: false
    })
    public bold!: boolean
 
    @Prop({
      type: Boolean,
-     default: false,
+     default: false
    })
    public noActiveBold!: boolean
 
    @Prop({
      type: Boolean,
-     default: false,
+     default: false
    })
    public simpleActive!: boolean
 
    @Prop({
      type: Boolean,
-     default: true,
+     default: true
    })
    public iconLeft!: boolean
 
    @Prop({
      type: Boolean,
-     default: false,
+     default: false
    })
    public contrast!: boolean
 
    @Prop({
      type: Boolean,
-     default: false,
+     default: false
    })
    public textOnHover!: boolean
 
    @Prop({
      type: Boolean,
-     default: false,
+     default: false
    })
    public staticSize!: boolean
 
    @Prop({
      type: Boolean,
-     default: false,
+     default: false
    })
    public onlyIcon!: boolean
 
    @Prop({
      type: Boolean,
-     default: false,
+     default: false
    })
    public ghost!: boolean
 
    @Prop({
      type: Boolean,
-     default: false,
+     default: false
    })
    public leftAlign!: boolean
 }

@@ -46,13 +46,13 @@ import { PageHeader, Breadcrumb } from '@/containers'
     Section,
     Action: PageHeaderAction,
     LazyData,
-    LazyProperty,
-  },
+    LazyProperty
+  }
 })
 export default class UniversityView extends Mixins(ReactiveUpdate) {
    @Prop({
      type: String,
-     required: true,
+     required: true
    })
    public id!: string;
 

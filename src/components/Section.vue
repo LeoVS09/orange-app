@@ -21,29 +21,29 @@ import { Component, Prop } from 'vue-property-decorator'
 export default class Section extends Vue {
    @Prop({
      type: Boolean,
-     default: false,
+     default: false
    }) public highlight!: boolean;
 
    @Prop({
      type: Boolean,
-     default: false,
+     default: false
    }) public textWidth!: boolean;
 
    @Prop({
      type: Boolean,
-     default: false,
+     default: false
    })
    public withoutMargin!: boolean;
 
    @Prop({
      type: Boolean,
-     default: false,
+     default: false
    })
    public borderBottom!: boolean;
 
    @Prop({
      type: Boolean,
-     default: false,
+     default: false
    })
    public borderTop!: boolean;
 }

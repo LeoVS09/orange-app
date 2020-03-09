@@ -1,7 +1,7 @@
 import { ModelEventGetPropertyPayload, ModelEventInnerPayload } from '@/lazyDB/core/types'
 import { nodesKey } from '@/lazyDB/database/types'
 import {
-  AosSchema, AosFieldType, isRelationsAosField, isSimpleType, AosSimpleField, AosField, AosRelationsField,
+  AosSchema, AosFieldType, isRelationsAosField, isSimpleType, AosSimpleField, AosField, AosRelationsField
 } from '@/abstractObjectScheme'
 
 export function appendPropertyToSchema(
@@ -9,8 +9,8 @@ export function appendPropertyToSchema(
   {
     name,
     inner,
-    type,
-  }: ModelEventGetPropertyPayload,
+    type
+  }: ModelEventGetPropertyPayload
 ): boolean {
   name = toNumberIfCan(name)
 
@@ -34,7 +34,7 @@ export function appendPropertyToSchema(
 function appendNumberPropertyToSchema(
   schema: AosSchema,
   name: number,
-  inner: ModelEventInnerPayload<any> | undefined,
+  inner: ModelEventInnerPayload<any> | undefined
 ): boolean {
   if (!inner)
     return false
@@ -45,7 +45,7 @@ function appendNumberPropertyToSchema(
 function appendSimplePropertyToSchema(
   schema: AosSchema,
   name: string,
-  type: AosFieldType,
+  type: AosFieldType
 ): boolean {
   if (schema[name])
     return false
@@ -67,7 +67,7 @@ export interface GetOrCreateSchemaFieldResult {
 function getOrCreateSchemaFieldProperty(
   schema: AosSchema,
   name: string,
-  inner: ModelEventInnerPayload<any>,
+  inner: ModelEventInnerPayload<any>
 ): GetOrCreateSchemaFieldResult {
   let property = schema[name]
   if (property && isRelationsAosField(property))
@@ -79,7 +79,7 @@ function getOrCreateSchemaFieldProperty(
     type: inner.name === nodesKey
       ? AosFieldType.OneToMany
       : AosFieldType.OneToOne,
-    schema: {},
+    schema: {}
   }
   return { property, isCreated: true }
 }

@@ -1,5 +1,5 @@
 export * from './database'
 
 export {
-  runProgram,
+  runProgram
 } from './judge'

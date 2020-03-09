@@ -27,14 +27,14 @@ import { Component, Prop, Mixins } from 'vue-property-decorator'
 import { Getter, Action, State } from 'vuex-class'
 import Vue from 'vue'
 import {
-  Button, Tags, Input, ModelInfo, Section, TextSection, PageHeaderAction, Filters, DataView,
+  Button, Tags, Input, ModelInfo, Section, TextSection, PageHeaderAction, Filters, DataView
 } from '@/components'
 import { ROUTES } from '@/router'
 import { ProgrammingLanguageRepository } from '@/models/programmingLanguage'
 import LazyData from '@/containers/LazyData.vue'
 import LazyProperty from '@/containers/LazyProperty.vue'
 import {
-  List, ListColumn, PageHeader, Breadcrumb,
+  List, ListColumn, PageHeader, Breadcrumb
 } from '@/containers'
 
 @Component({
@@ -52,13 +52,13 @@ import {
     DataView,
     ModelInfo,
     LazyData,
-    LazyProperty,
-  },
+    LazyProperty
+  }
 })
 export default class ProgrammingLanguageView extends Vue {
    @Prop({
      type: String,
-     required: true,
+     required: true
    })
    public id!: string;
 

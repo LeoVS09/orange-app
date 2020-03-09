@@ -11,7 +11,7 @@ export default function<T extends { [key: string]: unknown}, P extends string, R
     },
     set(value) {
       define(value)
-    },
+    }
   })
 
   return object as T & { [K in P]: P}

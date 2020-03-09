@@ -13,11 +13,11 @@ import { Component, Prop } from 'vue-property-decorator'
   @Component
 export default class TextareaAutoresize extends Vue {
      @Prop({
-       type: String,
+       type: String
      }) value?: string
 
      @Prop({
-       type: String,
+       type: String
      }) placeholder?: string
 
      updateValue(event: any) {

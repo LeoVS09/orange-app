@@ -4,19 +4,21 @@ import Vue from 'vue'
 import { sync } from 'vuex-router-sync'
 import vClickOutside from 'v-click-outside'
 import throttle from 'lodash.throttle'
+import Filters from '@/components/filter'
+import { LazyDBFilters } from '@/lazyDB/vue'
 import App from './App.vue'
 import store from './store'
 import setTranslations from './translations'
 import router from './router'
 import { UIEventEmitter, UIEvents } from './utils/UIEventEmitter'
 // @ts-ignore
-import Filters from '@/components/filter'
-import { LazyDBFilters } from '@/lazyDB/vue'
 
 // TODO lodash types
 // @ts-ignore
 
 import * as actionTypes from './store/actionTypes'
+
+import { createProvider } from './vue-apollo'
 
 Vue.use(vClickOutside)
 
@@ -59,6 +61,7 @@ window.debugState = () => (() => JSON.parse(JSON.stringify(store.state)))()
 new Vue({
   store,
   router,
-  render: h => h(App),
-  components: { App },
+  render: (h) => h(App),
+  apolloProvider: createProvider(),
+  components: { App }
 }).$mount('#app')

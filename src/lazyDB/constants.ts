@@ -12,5 +12,5 @@ export const defaultExcludeProperties = [
   'map',
   'length',
   'push',
-  'pop',
+  'pop'
 ]

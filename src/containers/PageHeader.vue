@@ -77,8 +77,8 @@
 import Vue from 'vue'
 import { Component, Prop, Emit } from 'vue-property-decorator'
 import ColorLine from '@/components/ColorLine.vue'
-import { formatDate, randomId } from '../components/utils'
 import { ColorLineType, Breadcrumb } from '@/components/types'
+import { formatDate, randomId } from '../components/utils'
 import DataView from '../components/DataView.vue'
 
 export interface IVisibleBreadcrumbs {
@@ -89,41 +89,41 @@ export interface IVisibleBreadcrumbs {
 @Component({
   components: {
     ColorLine,
-    DataView,
-  },
+    DataView
+  }
 })
 export default class PageHeader extends Vue {
    @Prop({
      type: Boolean,
-     default: true,
+     default: true
    })
    public highlight?: boolean;
 
    @Prop({
      type: Boolean,
-     default: false,
+     default: false
    })
    public editable?: boolean;
 
    @Prop({
      type: String,
-     default: '',
+     default: ''
    })
    public value?: string;
 
    @Prop({
-     type: [String, Boolean],
+     type: [String, Boolean]
    })
    public colorLine?: ColorLineType;
 
    @Prop({
      type: Boolean,
-     default: false,
+     default: false
    })
    public textWidth?: boolean;
 
    @Prop({
-     type: String,
+     type: String
    })
    public placeholder?: string;
 

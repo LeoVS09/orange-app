@@ -36,7 +36,7 @@ import {
   Button,
   ModelInfo,
   PageHeaderAction,
-  DataView,
+  DataView
 } from '@/components'
 import { ROUTES } from '@/router'
 import ModelById from '@/components/mixins/ModelById'
@@ -55,8 +55,8 @@ const { actionName, MODULES } = actions
     ProblemsList,
     Action: PageHeaderAction,
     DataView,
-    ModelInfo,
-  },
+    ModelInfo
+  }
 })
 export default class ContestView extends Mixins(ModelById) {
   get items() {

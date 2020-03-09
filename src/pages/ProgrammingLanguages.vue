@@ -32,7 +32,7 @@ import {
   Tags,
   Section,
   PageHeaderAction,
-  Filters,
+  Filters
 } from '@/components'
 import { ROUTES } from '@/router'
 import { RouterPush } from '@/components/decorators'
@@ -48,8 +48,8 @@ import { List, ListColumn, PageHeader } from '@/containers'
     Tags,
     Section,
     Action: PageHeaderAction,
-    ListColumn,
-  },
+    ListColumn
+  }
 })
 export default class ProgrammingLanguages extends Vue {
    @Getter public isTeacher!: boolean;
@@ -59,7 +59,7 @@ export default class ProgrammingLanguages extends Vue {
 
    public data() {
      return {
-       list: ProgrammingLanguageRepository.list(),
+       list: ProgrammingLanguageRepository.list()
      }
    }
 

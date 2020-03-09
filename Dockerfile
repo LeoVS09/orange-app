@@ -4,6 +4,12 @@ FROM node:11.14-stretch as base
 RUN apt update && apt upgrade -y && \
    apt install -y bash bash-completion make curl
 
+# install yarn
+RUN npm install -g yarn
+
+# install vue
+RUN yarn global add @vue/cli
+
 WORKDIR /ws
 
 COPY package*.json /ws/
@@ -14,7 +20,7 @@ FROM base
 
 COPY . /ws
 
-RUN yarn build
+# RUN yarn build
 
 EXPOSE 8080
 

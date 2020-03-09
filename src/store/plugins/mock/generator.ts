@@ -1,11 +1,11 @@
 import * as Vuex from 'vuex'
+import {
+  FullProblem, Test, UserProfile, UserType
+} from '@/models'
+import { mockInput, mockOutput, mockTag } from '@/models/problems'
 import * as actionTypes from '../../actionTypes'
 import staticUserData from './user.json'
 import staticProblemData from './problem.json'
-import {
-  FullProblem, Test, UserProfile, UserType,
-} from '@/models'
-import { mockInput, mockOutput, mockTag } from '@/models/problems'
 
 const USE_STATIC_ID = true
 const STATIC_ID = 'do5n32edbzsjb0ynz3b7i'
@@ -23,7 +23,8 @@ export function createProblem(): FullProblem {
   let name = `${PROBLEM_NAME[random(0, PROBLEM_NAME.length)]} ${PROBLEM_NAME[random(0, PROBLEM_NAME.length)]}`
   name = name.substr(0, 1).toUpperCase() + name.substr(1)
 
-  return Object.assign({ }, staticProblemData, {
+  return {
+    ...staticProblemData,
     id: randomString(),
     name,
     uploadDate: Date.now() - random(0, 10000000000),
@@ -34,16 +35,16 @@ export function createProblem(): FullProblem {
     isOpen: !!random(0, 2),
     io: {
       input: mockInput('stdin'),
-      output: mockOutput('stdout'),
+      output: mockOutput('stdout')
     },
     tests: [...staticProblemData.examples, {
       id: '',
       input: '',
       output: '',
-      isPublic: false,
+      isPublic: false
     } as Test],
-    synced: true,
-  })
+    synced: true
+  }
 }
 
 export function createUser(login: string, password: string, type: UserType): UserProfile {
@@ -69,8 +70,8 @@ export function createUser(login: string, password: string, type: UserType): Use
       email: login,
       updatedAt: new Date(),
       createdAt: new Date(),
-      isVerified: true,
-    }],
+      isVerified: true
+    }]
   }
 }
 

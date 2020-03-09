@@ -11,6 +11,15 @@ services:
          - ./dist/.:/usr/share/nginx/html/.
          - ./nginx.conf:/etc/nginx/nginx.conf
 
+   orange-app:
+      image: leovs09/orange-app:0.1.1
+      container_name: orange-app
+      ports:
+         - 8080:8080
+         - 4000:4000
+      volumes:
+         - .:/ws/.
+
 #   orange-database:
 #      image: leovs09/orange-database:0.1.0
 #      container_name: orange-database

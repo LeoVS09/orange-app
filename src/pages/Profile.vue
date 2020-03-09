@@ -41,6 +41,9 @@
 import Vue from 'vue'
 import { Component } from 'vue-property-decorator'
 import { Getter, Action } from 'vuex-class'
+import { City, Country } from '@/models/country'
+import { Email } from '@/models/email'
+import { PageHeader } from '@/containers'
 import { UserProfile } from '../models'
 import * as actions from '../store/actionTypes'
 import {
@@ -48,11 +51,8 @@ import {
   Input,
   SourceView,
   Button,
-  Select,
+  Select
 } from '../components'
-import { City, Country } from '@/models/country'
-import { Email } from '@/models/email'
-import { PageHeader } from '@/containers'
 
 const { actionName, MODULES } = actions
 
@@ -61,7 +61,7 @@ function capitalise(s: string): string {
 }
 
 Component.registerHooks([
-  'beforeRouteUpdate',
+  'beforeRouteUpdate'
 ])
 
 @Component({
@@ -71,8 +71,8 @@ Component.registerHooks([
     Input,
     PageHeader,
     Button,
-    Select,
-  },
+    Select
+  }
 })
 export default class Profile extends Vue {
    // TODO: add loading profile skeleton
@@ -144,7 +144,7 @@ export default class Profile extends Vue {
      this.city = this.userData.city || null
      if (this.city) {
        this.getOrLoadCountry(this.city.countryId)
-         .then(country => this.country = country || null)
+         .then((country) => this.country = country || null)
      }
 
      this.initialiseProfileData()

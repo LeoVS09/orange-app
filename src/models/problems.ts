@@ -1,18 +1,18 @@
-import { PartialUserProfile, UserType, Profile } from './user'
 import { Test } from '@/models/tests'
 import { ModelReadState, ModelStatus } from '@/store/modules/statuses/types'
 import {
-  defaultPartialProfile, mockInput, mockOutput, mockTag,
+  defaultPartialProfile, mockInput, mockOutput, mockTag
 } from '@/models/mock/mock'
 import { Repository } from '@/lazyDB'
 import { AosFieldType } from '@/abstractObjectScheme'
+import { PartialUserProfile, UserType, Profile } from './user'
 
 export {
   defaultPartialProfile,
   mockTag,
   mockOutput,
   mockInput,
-  mockTags,
+  mockTags
 } from './mock/mock'
 
 export enum ProblemTestingStatus {
@@ -27,9 +27,9 @@ export const TagRepository = new Repository(
   'tag',
   {
     fields: {
-      problemsTags: AosFieldType.OneToMany,
-    },
-  },
+      problemsTags: AosFieldType.OneToMany
+    }
+  }
 )
 
 export const ProblemRepository = new Repository(
@@ -38,36 +38,36 @@ export const ProblemRepository = new Repository(
     fields: {
       author: {
         type: AosFieldType.OneToOne,
-        table: 'profile',
+        table: 'profile'
       },
       tester: {
         type: AosFieldType.OneToOne,
-        table: 'profile',
+        table: 'profile'
       },
       inputType: AosFieldType.OneToOne,
       outputType: AosFieldType.OneToOne,
       tests: AosFieldType.OneToMany,
-      problemsTags: AosFieldType.OneToMany,
-    },
-  },
+      problemsTags: AosFieldType.OneToMany
+    }
+  }
 )
 
 export const ProgramInputType = new Repository(
   'programInputType',
   {
     fields: {
-      problemsByInputTypeId: AosFieldType.OneToMany,
-    },
-  },
+      problemsByInputTypeId: AosFieldType.OneToMany
+    }
+  }
 )
 
 export const ProgramOutputType = new Repository(
   'programOutputType',
   {
     fields: {
-      problemsByOutputTypeId: AosFieldType.OneToMany,
-    },
-  },
+      problemsByOutputTypeId: AosFieldType.OneToMany
+    }
+  }
 )
 
 export const ProblemsTagRepository = new Repository(
@@ -75,9 +75,9 @@ export const ProblemsTagRepository = new Repository(
   {
     fields: {
       problem: AosFieldType.OneToOne,
-      tag: AosFieldType.OneToOne,
-    },
-  },
+      tag: AosFieldType.OneToOne
+    }
+  }
 )
 
 export interface Problem {
@@ -225,34 +225,34 @@ export function defaultProblem(): FullProblem {
     author: {
       ...defaultPartialProfile(),
       login: 'Author',
-      type: UserType.TEACHER,
+      type: UserType.TEACHER
     },
 
     tester: {
       ...defaultPartialProfile(),
       login: 'Tester',
-      type: UserType.TEACHER,
+      type: UserType.TEACHER
     },
 
     problemsTags: {
       nodes: [],
-      totalCount: 0,
+      totalCount: 0
     },
 
     // tags: [mockTag('some'), mockTag('tags')],
 
     limits: {
       time: 30000,
-      memory: 2048,
+      memory: 2048
     },
 
     io: {
       input: mockInput('stdin'),
-      output: mockOutput('stdout'),
+      output: mockOutput('stdout')
     },
 
     testingStatus: ProblemTestingStatus.NotTested,
 
-    tests: [],
+    tests: []
   }
 }

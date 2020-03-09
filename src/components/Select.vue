@@ -43,7 +43,7 @@
 <script lang="ts">
 import Vue from 'vue'
 import {
-  Component, Prop, Watch, Mixins, Emit,
+  Component, Prop, Watch, Mixins, Emit
 } from 'vue-property-decorator'
 import { toStringWhenDefined } from '@/components/utils'
 import Focusable from './mixins/inputs/focusable'
@@ -63,7 +63,7 @@ interface Options {
 export default class Select extends Mixins(Focusable) {
    @Prop({
      type: Array,
-     default: [],
+     default: []
    })
    public items!: any[];
 
@@ -77,7 +77,7 @@ export default class Select extends Mixins(Focusable) {
 
    @Prop({
      type: String,
-     default: 'text',
+     default: 'text'
    })
    public textField!: string;
 
@@ -89,7 +89,7 @@ export default class Select extends Mixins(Focusable) {
 
    @Prop({
      type: Boolean,
-     default: false,
+     default: false
    })
    public error!: boolean;
 

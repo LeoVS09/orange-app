@@ -8,7 +8,7 @@ import {
   ListItemGetter,
   ListItemGetterReference,
   ListItemSetterReference,
-  ListItemSetter,
+  ListItemSetter
 } from '@/lazyDB/database/types'
 import { applyListControls, makeListSource } from '@/lazyDB/database/base/repository/list'
 
@@ -18,7 +18,7 @@ export const TableStoreReference = SymFor('table storage')
 export const TableListKey = '__list__'
 
 export const makeTableSource = (table: DatabaseTableMap) => ({
-  [TableStoreReference]: table,
+  [TableStoreReference]: table
 })
 
 export function makeDatabaseTable(table: DatabaseTableMap = new Map()): DatabaseTable {

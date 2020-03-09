@@ -11,11 +11,11 @@ interface RunProgramRequestBody {
 export function runProgram(problemId: string, code: string): Promise<ResultRunProgram> {
   const body: RunProgramRequestBody = {
     problemId,
-    code,
+    code
   }
   return fetch(urls.ORANGE_MANAGER_SERVER + urls.RUN_PROGRAM, {
     method: 'POST',
     credentials,
-    body: JSON.stringify(body),
-  }).then(response => response.json())
+    body: JSON.stringify(body)
+  }).then((response) => response.json())
 }

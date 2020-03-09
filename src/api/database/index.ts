@@ -8,7 +8,7 @@ export * from './queries'
 export const types = {
   globalTypes,
   queriesTypes,
-  mutationsTypes,
+  mutationsTypes
 }
 
 // TODO: add pre-compiling queries when build project

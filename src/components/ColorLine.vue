@@ -29,7 +29,7 @@ import { ColorLineType } from '@/components/types'
 export default class ColorLine extends Vue {
       @Prop({
         type: String,
-        default: ColorLineType.success,
+        default: ColorLineType.success
       }) type?: ColorLineType
 
       ColorLineType = ColorLineType

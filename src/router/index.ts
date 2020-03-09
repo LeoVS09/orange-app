@@ -23,7 +23,7 @@ import SignUp from '@/pages/SignUp.vue'
 import guard, { contestMiddleware, problemMiddleware } from './middlewares'
 
 export {
-  ROUTES,
+  ROUTES
 }
 
 const authPath = '/signin'
@@ -41,80 +41,80 @@ const router = new Router({
         {
           name: ROUTES.HOME,
           path: '',
-          component: Problems as Component,
+          component: Problems as Component
         },
         {
           name: ROUTES.CONTESTS,
           path: '/contests',
-          component: Contests as Component,
+          component: Contests as Component
         },
         {
           name: ROUTES.CONTEST,
           path: '/contests/:id',
           component: Contest as Component,
-          props: true,
+          props: true
         },
         {
           name: ROUTES.CREATE_CONTEST,
           path: '/contests/create',
           component: Contest as Component,
           beforeEnter: contestMiddleware,
-          props: true,
+          props: true
         },
         {
           path: '/problems/create',
           name: ROUTES.CREATE_PROBLEM,
           component: Problem as Component,
           beforeEnter: problemMiddleware,
-          props: true,
+          props: true
         },
         {
           path: '/problems/:id',
           name: ROUTES.PROBLEM,
           component: Problem as Component,
           beforeEnter: problemMiddleware,
-          props: true,
+          props: true
         },
         {
           path: '/profile',
           name: ROUTES.PROFILE,
-          component: Profile as Component,
+          component: Profile as Component
         },
         {
           path: '/countries',
           name: ROUTES.COUNTRIES,
-          component: Countries as Component,
+          component: Countries as Component
         },
         {
           path: '/countries/:id',
           name: ROUTES.COUNTRY,
           component: Country as Component,
-          props: true,
+          props: true
         },
         {
           path: '/cities/:id',
           name: ROUTES.CITY,
           component: City as Component,
-          props: true,
+          props: true
         },
         {
           path: '/universities/:id',
           name: ROUTES.UNIVERSITY,
           component: University as Component,
-          props: true,
+          props: true
         },
         {
           path: '/programming-languages',
           name: ROUTES.PROGRAMMING_LANGUAGES,
-          component: ProgrammingLanguages as Component,
+          component: ProgrammingLanguages as Component
         },
         {
           path: '/programming-languages/:id',
           name: ROUTES.PROGRAMMING_LANGUAGE,
           component: ProgrammingLanguage as Component,
-          props: true,
-        },
-      ],
+          props: true
+        }
+      ]
     },
     {
       path: '/authorisation',
@@ -124,16 +124,16 @@ const router = new Router({
         {
           name: ROUTES.SIGNIN,
           path: authPath,
-          component: SignIn as Component,
+          component: SignIn as Component
         },
         {
           name: ROUTES.SIGNUP,
           path: '/signup',
-          component: SignUp as Component,
-        },
-      ],
-    },
-  ],
+          component: SignUp as Component
+        }
+      ]
+    }
+  ]
 })
 
 // TODO: go to main page from sign-in if have profile data

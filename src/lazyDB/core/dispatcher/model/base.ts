@@ -5,7 +5,7 @@ import {
   IModelEventDispatcher,
   ModelEvent,
   ModelEventPayload,
-  IProducerStore,
+  IProducerStore
 } from '@/lazyDB/core/types'
 import { getEventPayload, setEventPayload } from '@/lazyDB/core/common'
 

@@ -5,9 +5,9 @@ import mutations from './mutations'
 export default {
   state: new ProfileState(),
   actions,
-  mutations,
+  mutations
 }
 
 export {
-  ProfileState,
+  ProfileState
 }
