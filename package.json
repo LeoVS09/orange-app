@@ -10,15 +10,15 @@
     "test:unit": "vue-cli-service test:unit",
     "test:e2e": "vue-cli-service test:e2e",
     "lint": "vue-cli-service lint --fix",
-    "apollo": "vue-cli-service apollo:dev --host='0.0.0.0' --generate-schema",
+    "apollo": "vue-cli-service apollo:dev --host='0.0.0.0'",
     "apollo:schema:generate": "vue-cli-service apollo:schema:generate",
     "apollo:schema:publish": "vue-cli-service apollo:schema:publish",
-    "apollo:start": "vue-cli-service apollo:start",
+    "apollo:start": "vue-cli-service apollo:start --host='0.0.0.0'",
     "dev": "yarn serve",
     "generate-api-types": "yarn run apollo codegen:generate --localSchemaFile=graphql.schema.json --target=typescript --includes=src/**/*.graphql --tagName=gql --globalTypesFile=src/api/database/global-types.ts types",
     "mock": "yarn run mock:server",
     "mock:once": "yarn run run-graphql-api",
-    "mock:server": "yarn run apollo",
+    "mock:server": "yarn run apollo:start",
     "update-schema": "yarn run apollo schema:download --endpoint=http://localhost:8765/graphql graphql.schema.json"
   },
   "dependencies": {
@@ -50,14 +50,14 @@
     "vue": "^2.6.10",
     "vue-apollo": "^3.0.0-beta.11",
     "vue-class-component": "^7.0.2",
+    "vue-cli-plugin-apollo": "~0.21.3",
     "vue-property-decorator": "^8.1.0",
     "vue-router": "^3.0.3",
     "vuex": "^3.0.1",
     "vuex-class": "^0.3.1",
     "vuex-i18n": "^1.11.0",
     "vuex-module-decorators": "^0.3.1",
-    "vuex-router-sync": "^5.0.0",
-    "vue-cli-plugin-apollo": "~0.21.3"
+    "vuex-router-sync": "^5.0.0"
   },
   "devDependencies": {
     "@types/graphql": "^14.2.0",
@@ -77,6 +77,7 @@
     "autoprefixer": "^9.6.1",
     "babel-core": "7.0.0-bridge.0",
     "babel-eslint": "^10.0.1",
+    "casual": "^1.6.2",
     "eslint": "^6.7.2",
     "eslint-plugin-graphql": "^2.1.1",
     "eslint-plugin-import": "^2.20.1",
