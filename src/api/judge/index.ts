@@ -1,5 +1,5 @@
 import { ResultRunProgram } from '../../models'
-import urls from '../urls.json'
+import urls from '../urls'
 
 const credentials: RequestCredentials = 'same-origin'
 

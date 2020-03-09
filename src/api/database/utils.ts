@@ -1,6 +1,6 @@
 import deepMap from 'deep-map'
 import { APIClient, makeClient } from './client'
-import urls from '../urls.json'
+import urls from '../urls'
 
 // const DEBUG = process.env.NODE_ENV !== 'production'
 const DEBUG = false

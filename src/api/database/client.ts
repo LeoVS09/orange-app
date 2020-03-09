@@ -1,12 +1,10 @@
 import {
-  ApolloClient,
   MutationOptions,
   OperationVariables,
   QueryOptions
 } from 'apollo-client'
-import { InMemoryCache } from 'apollo-cache-inmemory'
-import { HttpLink } from 'apollo-link-http'
 import { ExecutionResult } from 'graphql'
+import { createApolloClient } from 'vue-cli-plugin-apollo/graphql-client'
 
 export interface APIClient {
    mutate<T, TVariables = OperationVariables>(options: MutationOptions<T, TVariables>): Promise<ExecutionResult<T>>
@@ -23,12 +21,16 @@ function extractRealError(e: any) {
 }
 
 export function makeClient(uri: string): APIClient {
-  const client = new ApolloClient({
-    cache: new InMemoryCache(),
-    link: new HttpLink({
-      uri,
-      credentials: 'include'
-    })
+  const { apolloClient: client } = createApolloClient({
+    httpEndpoint: uri,
+    // Enable Automatic Query persisting with Apollo Engine
+    persisting: false,
+    // Use websockets for everything (no HTTP)
+    // You need to pass a `wsEndpoint` for this to work
+    websocketsOnly: false,
+    // Is being rendered on the server?
+    ssr: false
+
   })
 
   return {

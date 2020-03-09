@@ -1,9 +1,11 @@
 import Vue from 'vue'
 import VueApollo from 'vue-apollo'
 import { createApolloClient, restartWebsockets } from 'vue-cli-plugin-apollo/graphql-client'
+import { ApolloClient } from 'apollo-client'
+import { SubscriptionClient } from 'subscriptions-transport-ws'
 
 // Install the vue plugin
-Vue.use(VueApollo)
+// Vue.use(VueApollo)
 
 // Name of the localStorage item
 const AUTH_TOKEN = 'apollo-token'
@@ -50,13 +52,24 @@ const defaultOptions = {
   // clientState: { resolvers: { ... }, defaults: { ... } }
 }
 
+// Typedefs in 'vue-cli-plugin-apollo/graphql-client' need rewirite
+export interface WsApolloClient<TCacheShape> extends ApolloClient<TCacheShape> {
+  wsClient: SubscriptionClient
+}
+
+export interface ICreateApolloClientResult<TCacheShape> {
+  apolloClient: WsApolloClient<TCacheShape>
+    wsClient: SubscriptionClient
+}
+
 // Call this in the Vue app file
 export function createProvider(options = {}) {
   // Create apollo client
   const { apolloClient, wsClient } = createApolloClient({
     ...defaultOptions,
     ...options
-  })
+  }) as ICreateApolloClientResult<unknown>
+
   apolloClient.wsClient = wsClient
 
   // Create vue apollo provider
@@ -77,7 +90,7 @@ export function createProvider(options = {}) {
 }
 
 // Manually call this when user log in
-export async function onLogin(apolloClient, token) {
+export async function onLogin(apolloClient: WsApolloClient<unknown>, token: string) {
   if (typeof localStorage !== 'undefined' && token)
     localStorage.setItem(AUTH_TOKEN, token)
 
@@ -92,7 +105,7 @@ export async function onLogin(apolloClient, token) {
 }
 
 // Manually call this when user log out
-export async function onLogout(apolloClient) {
+export async function onLogout(apolloClient: WsApolloClient<unknown>) {
   if (typeof localStorage !== 'undefined')
     localStorage.removeItem(AUTH_TOKEN)
 

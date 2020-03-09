@@ -1,5 +1,0 @@
-{
-  "ORANGE_MANAGER_SERVER": "/judge",
-  "DATABASE_SERVER": "http://localhost:8765/graphql",
-  "RUN_PROGRAM": "/run"
-}
