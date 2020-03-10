@@ -39,6 +39,7 @@
 <script lang="ts">
 import Vue from 'vue'
 import { Component, Prop, Emit } from 'vue-property-decorator'
+import moment from 'moment'
 import {
   Button, Tags, Section, Filters
 } from '@/components'
@@ -156,7 +157,7 @@ export default class ProblemsList extends Vue {
      return {
        name: item.name,
        difficulty: item.difficulty,
-       updatedAt: item.updatedAt,
+       updatedAt: moment(item.updatedAt).fromNow(),
        author: exptractAuthourName(item, this.translate('Anonymous'))
      }
    }

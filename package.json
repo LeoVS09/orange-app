@@ -58,7 +58,8 @@
     "vuex-class": "^0.3.1",
     "vuex-i18n": "^1.11.0",
     "vuex-module-decorators": "^0.3.1",
-    "vuex-router-sync": "^5.0.0"
+    "vuex-router-sync": "^5.0.0",
+    "moment": "^2.24.0"
   },
   "devDependencies": {
     "@types/graphql": "^14.2.0",

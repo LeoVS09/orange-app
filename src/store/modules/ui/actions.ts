@@ -1,5 +1,5 @@
 import { IActionContext } from '@/store/state'
-import loadable from '@/components/mixins/loadable'
+import moment from 'moment'
 import {
   Platform, Translation,
   UIState
@@ -31,6 +31,7 @@ export default {
   },
   [actionTypes.SET_LOCALE]({ commit, dispatch }: IActionContext<UIState>, locale: Translation) {
     commit(mutations.SET_LOCALE, locale)
+    moment.locale(locale)
     dispatch(SET_LOCALE_TRANSLATION, { locale }, { root: true })
   }
 }

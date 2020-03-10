@@ -10,7 +10,7 @@ const translationsRu = {
   Contests: 'Соревнования',
   Name: 'Название',
   Author: 'Автор',
-  Updated: 'Обновлено',
+  Updated: 'Изменено',
   Profile: 'Профиль',
   Countries: 'Страны',
   Country: 'Страна',
