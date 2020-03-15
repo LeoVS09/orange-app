@@ -70,11 +70,22 @@ module.exports = {
     // ]
   },
 
+  // plugins: [
+  //   'graphql'
+  // ]
   parserOptions: {
     parser: '@typescript-eslint/parser',
   },
 
-  // plugins: [
-  //   'graphql'
-  // ]
+  overrides: [
+    {
+      files: [
+        '**/__tests__/*.{j,t}s?(x)',
+        '**/tests/unit/**/*.spec.{j,t}s?(x)'
+      ],
+      env: {
+        jest: true
+      }
+    }
+  ]
 }
