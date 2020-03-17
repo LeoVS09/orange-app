@@ -16,7 +16,7 @@ module.exports = {
   },
 
   transformIgnorePatterns: [
-    '/node_modules/'
+    // '/node_modules/'
   ],
 
   moduleNameMapper: {
