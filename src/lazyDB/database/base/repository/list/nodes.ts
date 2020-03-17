@@ -57,22 +57,27 @@ export const nodesSetter = (
     console.log('[ListNodes] set value for nodes:', base, name, value)
 
     if (isTemporalTrap(value)) {
+
       base[name as unknown as number] = value
       const { extendTemporalTrap } = store
+
       // This hack allow make temporal trap work as repository object
       if (extendTemporalTrap) {
         const valueStore = getStore(value)
         extendTemporalTrap(valueStore)
       }
+
+    } else {
+
+      const setItem = source[ListItemSetterReference]
+      if (setItem)
+      // in base case will return id
+        value = setItem(source, name as unknown as number, value)
+      else
+        console.error('List not have set item hook')
+
+      base[name as unknown as number] = value
     }
-
-    const setItem = source[ListItemSetterReference]
-    if (setItem)
-      value = setItem(source, name as unknown as number, value)
-    else
-      console.error('List not have set item hook')
-
-    base[name as unknown as number] = value
-
+    console.log('[ListNodes] was set value for nodes:', base, name, value)
     return true
   }

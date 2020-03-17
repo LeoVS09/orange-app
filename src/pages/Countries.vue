@@ -26,7 +26,6 @@
 import Vue from 'vue'
 import { Component, Mixins } from 'vue-property-decorator'
 import { Getter } from 'vuex-class'
-import { Country } from '@/models'
 import {
   Button,
   Tags,
@@ -34,9 +33,9 @@ import {
   PageHeaderAction,
   Filters
 } from '@/components'
-import { ROUTES } from '@/router'
+import { ROUTES } from '@/router/routes'
 import { RouterPush } from '@/components/decorators'
-import { CountryRepository } from '@/models/country'
+import { Country, CountryRepository } from '@/models/country'
 import { List, ListColumn, PageHeader } from '@/containers'
 import ReactiveUpdate, { reactiveUpdate } from '@/components/mixins/ReactiveUpdate'
 import { ListProducer } from '@/lazyDB/database/types'
@@ -60,7 +59,9 @@ export default class Countries extends Mixins(ReactiveUpdate) {
    public chooseItem!: (country: Country) => void;
 
    get list(): ListProducer<Country> {
-     return CountryRepository.list(reactiveUpdate(this)) as ListProducer<Country>
+     const list = CountryRepository.list(reactiveUpdate(this)) as ListProducer<Country>
+     console.log('Countries list:', list)
+     return list
    }
 
    public add() {
@@ -69,6 +70,14 @@ export default class Countries extends Mixins(ReactiveUpdate) {
 
    public validate() {
      // TODO
+   }
+
+   public formatItem(item: Country) {
+     return {
+       name: item.name,
+       code: item.code,
+       updated: item.updatedAt
+     }
    }
 }
 </script>

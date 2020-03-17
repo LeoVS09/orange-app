@@ -25,6 +25,7 @@ export default {
 
   Country: () => ({
     name: casual.country,
+    code: casual.country_code,
     ...mockEntity()
   }),
 

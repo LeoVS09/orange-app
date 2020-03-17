@@ -96,8 +96,13 @@ export default class ListItem extends Vue {
      if (!visibleProps)
        visibleProps = Object.keys(item)
 
+     if (!item) {
+       console.warn('Passed null or undefined to ListItem')
+       return []
+     }
+
      const result = visibleProps.map((key) => item[key])
-     console.log('list item', result)
+     console.log('list item', result, visibleProps)
      return result
    }
 

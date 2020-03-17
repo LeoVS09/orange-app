@@ -23,7 +23,10 @@ export function getsSpawnReadEvent(
    * If when reading was get events, after read success spawn another read event
    * */
   takeWhileThenContinue(
-      stream!.pipe(filter((event) => event.type === ModelEventTypes.GetProperty)),
+      stream!.pipe(filter((event) => {
+        console.log('filter event', event)
+        return event.type === ModelEventTypes.GetProperty
+      })),
       () => canRead() && !isReading(memory!),
       stream!.pipe(filter((event) => event.type === ModelEventTypes.ReadSuccess))
   )
@@ -31,6 +34,7 @@ export function getsSpawnReadEvent(
       debounceTime(READ_TIME),
       map(() => {
         const gets = memory!.filter((event) => event.type === ModelEventTypes.GetProperty)
+        console.log('try find gets events after debounce', gets, memory)
         return gets
       }),
       filter((gets) =>

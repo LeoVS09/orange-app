@@ -8,7 +8,7 @@ import { ModelReadState } from '@/store/modules/statuses/types'
 import { GET_READ_STATE } from '@/store/modules/statuses/getters'
 import { STATUS_SCOPES } from '@/store/statusScopes'
 import { FullContest } from '@/models/contest'
-import { ROUTES } from './rotues'
+import { ROUTES } from './routes'
 
 const { actionName, MODULES } = actions
 

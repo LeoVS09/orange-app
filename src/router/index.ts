@@ -3,7 +3,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 // eslint-disable-next-line import/extensions,import/no-unresolved
 import { Component } from 'vue-router/types/router'
-import { ROUTES } from '@/router/rotues'
+import { ROUTES } from '@/router/routes'
 import Base from '@/layouts/Base.vue'
 import Authorisation from '@/layouts/Authorisation.vue'
 import Contests from '@/pages/Contests.vue'

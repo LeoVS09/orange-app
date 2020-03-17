@@ -9,6 +9,7 @@ module.exports = {
   ],
 
   transform: {
+    '\\.(gql|graphql)$': '@jagi/jest-transform-graphql',
     '^.+\\.vue$': 'vue-jest',
     '.+\\.(css|styl|less|sass|scss|svg|png|jpg|ttf|woff|woff2)$': 'jest-transform-stub',
     '^.+\\.tsx?$': 'ts-jest'
@@ -43,5 +44,7 @@ module.exports = {
     }
   },
 
-  preset: '@vue/cli-plugin-unit-jest/presets/typescript-and-babel'
+  preset: '@vue/cli-plugin-unit-jest/presets/typescript-and-babel',
+
+  testTimeout: 10000000
 }

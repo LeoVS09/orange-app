@@ -892,6 +892,7 @@ type Country implements Node {
    """
    nodeId: ID!
    id: UUID!
+   code: String!
    name: String!
    createdAt: Datetime!
    updatedAt: Datetime!

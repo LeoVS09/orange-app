@@ -11,6 +11,7 @@ import {
   ListItemSetter
 } from '@/lazyDB/database/types'
 import { applyListControls, makeListSource } from '@/lazyDB/database/base/repository/list'
+import { isTemporalTrap } from '../base/repository/temporal'
 
 export const TableStoreReference = SymFor('table storage')
 
@@ -67,8 +68,13 @@ export const setter: ProducerStoreSetter = ({ base, extendTemporalTrap }, name, 
 const listItemGetter = (table: DatabaseTableMap): ListItemGetter => ({ nodes }, index) => {
   const id = nodes[index as number]
   if (!id) {
-    console.log('[Table] WARN: list item getter not foind id', nodes, index)
+    console.warn('[Table] list item getter not foind id', nodes, index)
     return
+  }
+
+  if (isTemporalTrap(id)) {
+    console.log('[Table] will return tamporal trap from list', nodes, index)
+    return id
   }
 
   const node = table.get(id)
@@ -92,9 +98,10 @@ const defaultGetEntityId: IGetEntityId = (value: any): string | undefined => {
 const listItemSetter = (table: DatabaseTableMap, getEntityId: IGetEntityId = defaultGetEntityId): ListItemSetter =>
   (_, __, value) => {
     const id = getEntityId(value)
-    if (!id)
+    if (!id) {
+      console.warn('[Table] setter, was not received id for value', value, 'will return null')
       return null
-
+    }
     table.set(id, value)
 
     return id
