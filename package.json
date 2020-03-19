@@ -101,7 +101,8 @@
     "url": "https://github.com/LeoVS09/orange-app/issues"
   },
   "gitHooks": {
-    "pre-commit": "lint-staged"
+    "pre-commit": "lint-staged",
+    "pre-push": "yarn test:unit"
   },
   "homepage": "https://github.com/LeoVS09/orange-app#readme",
   "license": "GPL-3.0",
