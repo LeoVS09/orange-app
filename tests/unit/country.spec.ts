@@ -9,7 +9,7 @@ import mockConsole from './utils/console.mock'
 import flushPromises from 'flush-promises'
 import { timeout } from './utils/timeout'
 
-describe('Countries.vue', () => {
+describe('Country.vue', () => {
 
   let localVue: VueConstructor<any> 
   let store: Store<any> 
@@ -25,32 +25,37 @@ describe('Countries.vue', () => {
       }
     })
 
-    await nockAllGraphqlRequests(nock, 'countries')
+    await nockAllGraphqlRequests(nock, 'country')
   })
 
   afterEach(() => nock.cleanAll());
 
-  it('renders countries list', async () => {
+  it('renders country', async () => {
     const restoreConsole = mockConsole()
     // must be inside test for mock fetch function
-    const Component = require('@/pages/Countries.vue').default
+    const Component = require('@/pages/Country.vue').default
     
-    const wrapper = mount(Component, { store, localVue, attachToDocument: true })
+    const wrapper = mount(Component, { 
+      store, 
+      localVue, 
+      attachToDocument: true,
+      propsData: { 
+        id: 'country-test-id'
+      }
+     })
     
     expect(wrapper.element).toMatchSnapshot()
     
     // Wait while lazyDB requested all data and rerender
-    await timeout(300)
+    await timeout(400)
     await flushPromises()
 
-    expect(wrapper.text()).toContain('Korea')
-    expect(wrapper.text()).toContain('IN')
-
-    expect(wrapper.text()).toContain('Cocos (Keeling) Islands')
-    expect(wrapper.text()).toContain('DE')
-
-    expect(wrapper.text()).toContain('Georgia')
-    expect(wrapper.text()).toContain('IE')
+    expect(wrapper.text()).toContain('Isle of Man')
+    expect(wrapper.text()).toContain('19.07.2019')
+    expect(wrapper.text()).toContain('01.03.2020')
+    
+    expect(wrapper.text()).toContain('Fayshire')
+    expect(wrapper.text()).toContain('New Olin')
 
     expect(wrapper.element).toMatchSnapshot()
     restoreConsole()

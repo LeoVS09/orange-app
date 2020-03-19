@@ -1,0 +1,356 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Country.vue renders country 1`] = `
+<div
+  class="country"
+>
+  <div
+    class="page-header highlight"
+  >
+    <div
+      class="page-header--hidden-breadcrumbs"
+    >
+      <div
+        class="breadcrumbs"
+      >
+        Countries
+      </div>
+    </div>
+     
+    <!---->
+     
+    <div
+      class="page-header--content"
+    >
+      <h1>
+        
+      </h1>
+       
+      <div
+        class="page-header--actions"
+      />
+       
+      <!---->
+    </div>
+     
+    <!---->
+  </div>
+   
+  <section
+    class="lazy-data section without-margin border-bottom"
+  >
+    <div
+      class="lazy-data--main"
+    >
+      <h4
+        class="lazy-data--header"
+      >
+        Information
+      </h4>
+       
+      <div
+        class="lazy-data--hidden-columns"
+      >
+        <div
+          class="model-property"
+        >
+          
+   code
+
+        </div>
+      </div>
+       
+      <div
+        class="lazy-data--content"
+      />
+    </div>
+  </section>
+   
+  <section
+    class="section"
+  >
+    <div
+      class="list--container"
+      inlineadd=""
+      validateadd="function () { [native code] }"
+    >
+      <div
+        class="list--hidden-columns"
+      >
+        <div
+          class="list-column"
+        >
+          name
+        </div>
+         
+        <div
+          class="list-column"
+        >
+          updated
+        </div>
+      </div>
+       
+      <div
+        class="list"
+      >
+        <div
+          class="list--header"
+        />
+         
+        <!---->
+         
+        <div
+          mode="out-in"
+        >
+          <div
+            class="list-item bordered hover-shadow"
+            style="background: transparent;"
+          >
+            <div
+              class="list-item--content"
+            />
+          </div>
+        </div>
+      </div>
+       
+      <!---->
+    </div>
+  </section>
+</div>
+`;
+
+exports[`Country.vue renders country 2`] = `
+<div
+  class="country"
+>
+  <div
+    class="page-header highlight breadcrumbs"
+  >
+    <div
+      class="page-header--hidden-breadcrumbs"
+    >
+      <div
+        class="breadcrumbs"
+      >
+        Countries
+      </div>
+    </div>
+     
+    <div
+      class="page-header--breadcrumbs"
+    >
+      <router-link
+        class="page-header--breadcrumb-step link"
+        to="[object Object]"
+      >
+        Countries
+      </router-link>
+       
+      <span
+        class="page-header--breadcrumb-separator"
+      >
+        /
+      </span>
+    </div>
+     
+    <div
+      class="page-header--content"
+    >
+      <h1>
+        Isle of Man
+      </h1>
+       
+      <div
+        class="page-header--actions"
+      />
+       
+      <!---->
+    </div>
+     
+    <div
+      class="page-header--data"
+    >
+      <div
+        class="page-header--data-content"
+      >
+        <div
+          class="data-view in-row contrast small"
+        >
+          <div
+            class="data-view--item"
+          >
+            <i
+              class="material-icons data-view--icon"
+            >
+              publish
+            </i>
+             
+            <span
+              class="data-view--value"
+            >
+              19.07.2019
+            </span>
+          </div>
+          <div
+            class="data-view--item"
+          >
+            <i
+              class="material-icons data-view--icon"
+            >
+              edit
+            </i>
+             
+            <span
+              class="data-view--value"
+            >
+              01.03.2020
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+   
+  <section
+    class="lazy-data section without-margin border-bottom"
+  >
+    <div
+      class="lazy-data--main"
+    >
+      <h4
+        class="lazy-data--header"
+      >
+        Information
+      </h4>
+       
+      <div
+        class="lazy-data--hidden-columns"
+      >
+        <div
+          class="model-property"
+        >
+          
+   code
+
+        </div>
+      </div>
+       
+      <div
+        class="lazy-data--content"
+      />
+    </div>
+  </section>
+   
+  <section
+    class="section"
+  >
+    <div
+      class="list--container"
+      inlineadd=""
+      validateadd="function () { [native code] }"
+    >
+      <div
+        class="list--hidden-columns"
+      >
+        <div
+          class="list-column"
+        >
+          name
+        </div>
+         
+        <div
+          class="list-column"
+        >
+          updated
+        </div>
+      </div>
+       
+      <div
+        class="list"
+      >
+        <div
+          class="list--header"
+        >
+          <div
+            class="list--header-item"
+          >
+            <span
+              class="list--header-text"
+            >
+              name
+            </span>
+             
+            <div
+              class="list--header-sort-arrow"
+            >
+              <!---->
+            </div>
+          </div>
+          <div
+            class="list--header-item"
+          >
+            <span
+              class="list--header-text"
+            >
+              updated
+            </span>
+             
+            <div
+              class="list--header-sort-arrow"
+            >
+              <!---->
+            </div>
+          </div>
+        </div>
+         
+        <!---->
+         
+        <div
+          mode="out-in"
+        >
+          <div
+            class="list-item bordered hover-shadow"
+            style="background: transparent;"
+          >
+            <div
+              class="list-item--content"
+            >
+              <span
+                class="list-item--property"
+              >
+                Fayshire
+              </span>
+              <span
+                class="list-item--property"
+              >
+                Thu Feb 27 2020 23:15:59 GMT+0300 (Москва, стандартное время)
+              </span>
+            </div>
+          </div>
+          <div
+            class="list-item bordered hover-shadow"
+            style="background: transparent;"
+          >
+            <div
+              class="list-item--content"
+            >
+              <span
+                class="list-item--property"
+              >
+                New Olin
+              </span>
+              <span
+                class="list-item--property"
+              >
+                Sun Mar 01 2020 23:15:59 GMT+0300 (Москва, стандартное время)
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+       
+      <!---->
+    </div>
+  </section>
+</div>
+`;

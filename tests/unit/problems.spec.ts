@@ -8,8 +8,8 @@ import { nockAllGraphqlRequests } from './utils/graphql.mock'
 import mockConsole from './utils/console.mock'
 import flushPromises from 'flush-promises'
 import vuexI18n from 'vuex-i18n'
-
-const timeout = (time: number) => new Promise(resolve => setTimeout(resolve, time))
+import { timeout } from './utils/timeout'
+import moment from 'moment'
 
 describe('Problems.vue', () => {
 
@@ -29,21 +29,35 @@ describe('Problems.vue', () => {
 
     localVue.use(vuexI18n.plugin, store)
 
+    moment.now = function() {
+      return +new Date('2020-03-17T19:54:57.551Z')
+    }
+
     await nockAllGraphqlRequests(nock, 'problems')
   })
 
-  afterEach(() => nock.cleanAll());
+  afterEach(() => {
+    nock.cleanAll()
+  });
 
   it('renders problems list', async () => {
     const restoreConsole = mockConsole()
     // must be inside test for mock fetch function
-    const Countries = require('@/pages/Problems.vue').default
+    const Component = require('@/pages/Problems.vue').default
     
-    const wrapper = mount(Countries, { store, localVue, attachToDocument: true })
+    const wrapper = mount(Component, { store, localVue, attachToDocument: true })
     
+    expect(wrapper.element).toMatchSnapshot()
+
     // Wait while lazyDB requested all data and rerender
     await timeout(500)
     await flushPromises()
+
+    expect(wrapper.text()).toContain('dolore')
+    expect(wrapper.text()).toContain('corrupti')
+    expect(wrapper.text()).toContain('officia')
+    expect(wrapper.text()).toContain('Mrs. Hildegard Jerde')
+    expect(wrapper.text()).toContain('11 days ago')
 
     expect(wrapper.element).toMatchSnapshot()
     restoreConsole()

@@ -4,7 +4,7 @@
    >
       <div class="tags--separator" v-if="values"><span> </span></div>
       <span class="tags--left-gradient" v-if="scrollable && values"> </span>
-      <div :id="id" class="tags--content-wrapper" >
+      <div ref="tags" class="tags--content-wrapper" >
          <ButtonGroup
             class="tags--content"
             v-if="values"
@@ -47,7 +47,7 @@ const scrollLeft = (el: Element, left = 100) => el.scrollBy({
 })
 const scrollRight = (el: Element, left = 100) => el.scrollLeft += left
 
-enum ScroolTo {
+enum ScrollTo {
    NONE = 'NONE',
    LEFT = 'LEFT',
    RIGHT = 'RIGHT',
@@ -59,7 +59,6 @@ enum ScroolTo {
   }
 })
 export default class Tags extends Mixins(Loadable) {
-   public id = `tags-${randomId()}`;
 
    @Prop({
      type: Array
@@ -77,7 +76,7 @@ export default class Tags extends Mixins(Loadable) {
    })
    public activeTags!: BaseTag[];
 
-   public scrollTo = ScroolTo.NONE;
+   public scrollTo = ScrollTo.NONE;
 
    public isCanAnimateScroll = true;
 
@@ -87,7 +86,7 @@ export default class Tags extends Mixins(Loadable) {
    }
 
    public mounted() {
-     const el = document.querySelector(`#${this.id}`)
+     const el = this.$refs.tags as Element | null
      if (!el)
        return console.error('Cannot add scrolling')
 
@@ -98,10 +97,10 @@ export default class Tags extends Mixins(Loadable) {
 
      const infiniteScroll = () => {
        const step = 100
-       if (this.scrollTo === ScroolTo.LEFT)
+       if (this.scrollTo === ScrollTo.LEFT)
          el.scrollLeft -= step
 
-       if (this.scrollTo === ScroolTo.RIGHT)
+       if (this.scrollTo === ScrollTo.RIGHT)
          el.scrollLeft += step
 
        if (this.isCanAnimateScroll)
@@ -112,18 +111,18 @@ export default class Tags extends Mixins(Loadable) {
 
      onSideHover(el, 0.1, {
        left: async () => {
-         this.scrollTo = ScroolTo.LEFT
+         this.scrollTo = ScrollTo.LEFT
        },
        right: async () => {
-         this.scrollTo = ScroolTo.RIGHT
+         this.scrollTo = ScrollTo.RIGHT
        },
        center: async () => {
-         this.scrollTo = ScroolTo.NONE
+         this.scrollTo = ScrollTo.NONE
        }
      })
 
      el.addEventListener('mouseleave', (event) => {
-       this.scrollTo = ScroolTo.NONE
+       this.scrollTo = ScrollTo.NONE
      })
    }
 

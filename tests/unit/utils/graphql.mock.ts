@@ -15,7 +15,7 @@ const mockGraphql = async (name: string) => {
 
     const cached = await wrapForCache(
         name, 
-        (query: string) => graphql(schema, query)
+        (query: string, variables?: any) => graphql(schema, query, undefined, undefined, variables)
         )
 
     return cached
@@ -30,7 +30,7 @@ export const nockAllGraphqlRequests = async (nock: any, name: string) => {
     .post('/graphql')
     .reply(async (uri: any, requestBody: any, cb: any) => {
       console.log('Was made requiest', requestBody)
-      const result = await mockedGraphql(requestBody.query as string)
+      const result = await mockedGraphql(requestBody.query as string, requestBody.variables)
       console.log('result of requies', requestBody, result)
       return cb(null, [200, result])
     })

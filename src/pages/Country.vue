@@ -4,7 +4,7 @@
          :createdAt="model.createdAt"
          :modified="model.updatedAt"
          v-model="model.name"
-         :is-loading="model | isReading('name')"
+         :is-loading="false"
       >
          <template #breadcrumbs>
             <breadcrumb :to="{name: ROUTES.COUNTRIES}">{{'Countries' | translate}}</breadcrumb>
@@ -47,7 +47,7 @@ import {
   Filters,
   DataView
 } from '@/components'
-import { ROUTES } from '@/router'
+import { ROUTES } from '@/router/routes'
 import { City, CountryRepository } from '@/models/country'
 import { RouterPush } from '@/components/decorators'
 import ReactiveUpdate, { reactiveUpdate } from '@/components/mixins/ReactiveUpdate'

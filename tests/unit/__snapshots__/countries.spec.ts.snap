@@ -67,6 +67,97 @@ exports[`Countries.vue renders countries list 1`] = `
       >
         <div
           class="list--header"
+        />
+         
+        <!---->
+         
+        <div
+          mode="out-in"
+        >
+          <div
+            class="list-item bordered hover-shadow"
+            style="background: transparent;"
+          >
+            <div
+              class="list-item--content"
+            />
+          </div>
+        </div>
+      </div>
+       
+      <!---->
+    </div>
+  </section>
+</div>
+`;
+
+exports[`Countries.vue renders countries list 2`] = `
+<div
+  class="countries"
+>
+  <div
+    class="page-header highlight"
+  >
+    <div
+      class="page-header--hidden-breadcrumbs"
+    />
+     
+    <!---->
+     
+    <div
+      class="page-header--content"
+    >
+      <h1>
+        
+      Countries
+   
+      </h1>
+       
+      <div
+        class="page-header--actions"
+      />
+       
+      <!---->
+    </div>
+     
+    <!---->
+  </div>
+   
+  <section
+    class="section"
+  >
+    <div
+      class="list--container"
+      inlineadd=""
+      validateadd="function () { [native code] }"
+    >
+      <div
+        class="list--hidden-columns"
+      >
+        <div
+          class="list-column"
+        >
+          name
+        </div>
+         
+        <div
+          class="list-column"
+        >
+          code
+        </div>
+         
+        <div
+          class="list-column"
+        >
+          updated
+        </div>
+      </div>
+       
+      <div
+        class="list"
+      >
+        <div
+          class="list--header"
         >
           <div
             class="list--header-item"
@@ -115,37 +206,7 @@ exports[`Countries.vue renders countries list 1`] = `
           </div>
         </div>
          
-        <div
-          class="list--add"
-        >
-          <div
-            class="list--add-button button max-width max-height"
-          >
-            <button
-              class="button--submit simple max-width max-height text-not-faded ghost icon-left left-align"
-            >
-              <div
-                class="button--content"
-              >
-                <span>
-                  <i
-                    class="material-icons button--icon button--icon-left"
-                  >
-                    add
-                  </i>
-                </span>
-                 
-                <span
-                  class="button--text"
-                >
-                  Add
-                </span>
-                 
-                <!---->
-              </div>
-            </button>
-          </div>
-        </div>
+        <!---->
          
         <div
           mode="out-in"
