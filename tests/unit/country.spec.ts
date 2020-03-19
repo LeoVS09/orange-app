@@ -5,7 +5,7 @@ import { createLocalVue, mount } from '@vue/test-utils'
 import { VueConstructor } from 'vue'
 import Vuex, {Store} from 'vuex'
 import { nockAllGraphqlRequests } from './utils/graphql.mock'
-import mockConsole from './utils/console.mock'
+import cons from './utils/console.mock'
 import flushPromises from 'flush-promises'
 import { timeout } from './utils/timeout'
 
@@ -26,12 +26,15 @@ describe('Country.vue', () => {
     })
 
     await nockAllGraphqlRequests(nock, 'country')
+    cons.mockConsole()
   })
 
-  afterEach(() => nock.cleanAll());
+  afterEach(() => {
+    cons.restoreConsole()
+    nock.cleanAll()
+  });
 
   it('renders country', async () => {
-    const restoreConsole = mockConsole()
     // must be inside test for mock fetch function
     const Component = require('@/pages/Country.vue').default
     
@@ -58,6 +61,5 @@ describe('Country.vue', () => {
     expect(wrapper.text()).toContain('New Olin')
 
     expect(wrapper.element).toMatchSnapshot()
-    restoreConsole()
   })
 })

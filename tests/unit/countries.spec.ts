@@ -5,7 +5,7 @@ import { createLocalVue, mount } from '@vue/test-utils'
 import { VueConstructor } from 'vue'
 import Vuex, {Store} from 'vuex'
 import { nockAllGraphqlRequests } from './utils/graphql.mock'
-import mockConsole from './utils/console.mock'
+import cons from './utils/console.mock'
 import flushPromises from 'flush-promises'
 import { timeout } from './utils/timeout'
 
@@ -26,12 +26,15 @@ describe('Countries.vue', () => {
     })
 
     await nockAllGraphqlRequests(nock, 'countries')
+    cons.mockConsole()
   })
 
-  afterEach(() => nock.cleanAll());
+  afterEach(() => {
+    cons.restoreConsole()
+    nock.cleanAll()
+  });
 
   it('renders countries list', async () => {
-    const restoreConsole = mockConsole()
     // must be inside test for mock fetch function
     const Component = require('@/pages/Countries.vue').default
     
@@ -53,6 +56,5 @@ describe('Countries.vue', () => {
     expect(wrapper.text()).toContain('IE')
 
     expect(wrapper.element).toMatchSnapshot()
-    restoreConsole()
   })
 })

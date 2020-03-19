@@ -62,7 +62,10 @@ export interface QueryEntityByIdGenerated {
   name: string
 }
 
-export function generateQueryEntityById(entity: string, fields: Array<string | QueryField>): any {
+export function generateQueryEntityById(entity: string, fields: Array<string | QueryField>): QueryEntityByIdGenerated {
+  const loggedInput = JSON.stringify(fields)
+  console.log(loggedInput)
+
   const queryName = firstToUpperCase(entity)
 
   const query = `
@@ -81,6 +84,9 @@ export interface QueryListGenerated {
 }
 
 export function generateQueryList(entity: string, fields: Array<string | QueryField>): QueryListGenerated {
+  const loggedInput = JSON.stringify(fields)
+  console.log(loggedInput)
+
   const listName = entityToList(entity)
   const queryName = firstToUpperCase(listName)
 

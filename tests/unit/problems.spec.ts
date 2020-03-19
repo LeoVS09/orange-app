@@ -5,7 +5,7 @@ import { createLocalVue, mount } from '@vue/test-utils'
 import { VueConstructor } from 'vue'
 import Vuex, {Store} from 'vuex'
 import { nockAllGraphqlRequests } from './utils/graphql.mock'
-import mockConsole from './utils/console.mock'
+import cons from './utils/console.mock'
 import flushPromises from 'flush-promises'
 import vuexI18n from 'vuex-i18n'
 import { timeout } from './utils/timeout'
@@ -34,14 +34,15 @@ describe('Problems.vue', () => {
     }
 
     await nockAllGraphqlRequests(nock, 'problems')
+    cons.mockConsole()
   })
 
   afterEach(() => {
+    cons.restoreConsole()
     nock.cleanAll()
   });
 
   it('renders problems list', async () => {
-    const restoreConsole = mockConsole()
     // must be inside test for mock fetch function
     const Component = require('@/pages/Problems.vue').default
     
@@ -60,6 +61,5 @@ describe('Problems.vue', () => {
     expect(wrapper.text()).toContain('11 days ago')
 
     expect(wrapper.element).toMatchSnapshot()
-    restoreConsole()
   })
 })
