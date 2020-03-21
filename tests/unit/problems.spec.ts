@@ -6,15 +6,16 @@ import { VueConstructor } from 'vue'
 import Vuex, {Store} from 'vuex'
 import { nockAllGraphqlRequests } from './utils/graphql.mock'
 import cons from './utils/console.mock'
-import flushPromises from 'flush-promises'
 import vuexI18n from 'vuex-i18n'
-import { timeout } from './utils/timeout'
 import moment from 'moment'
+import { WaitStore } from './utils/wait'
+import { when } from './utils/when'
 
 describe('Problems.vue', () => {
 
   let localVue: VueConstructor<any> 
   let store: Store<any> 
+  let requiests: WaitStore
 
   beforeAll(() => nock.disableNetConnect());
 
@@ -33,7 +34,7 @@ describe('Problems.vue', () => {
       return +new Date('2020-03-17T19:54:57.551Z')
     }
 
-    await nockAllGraphqlRequests(nock, 'problems')
+    requiests = await nockAllGraphqlRequests(nock, 'problems')
     cons.mockConsole()
   })
 
@@ -50,9 +51,12 @@ describe('Problems.vue', () => {
     
     expect(wrapper.element).toMatchSnapshot()
 
+    expect(wrapper.text()).not.toContain('dolore')
+
     // Wait while lazyDB requested all data and rerender
-    await timeout(500)
-    await flushPromises()
+    await requiests.wait()
+    await requiests.wait()
+    await when(() =>  wrapper.text().includes('dolore'))
 
     expect(wrapper.text()).toContain('dolore')
     expect(wrapper.text()).toContain('corrupti')

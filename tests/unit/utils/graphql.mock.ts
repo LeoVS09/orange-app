@@ -4,6 +4,7 @@ import * as schemaFile from '../../../graphql.schema.json'
 // @ts-ignore
 import mocks from '../../../apollo-server/mocks'
 import wrapForCache from './record-requests'
+import { WaitStore } from './wait'
 
 const mockGraphql = async (name: string) => {
     const schema = buildClientSchema(schemaFile as unknown as IntrospectionQuery)
@@ -25,13 +26,21 @@ export default mockGraphql
 
 export const nockAllGraphqlRequests = async (nock: any, name: string) => {
     const mockedGraphql = await mockGraphql(name)
-
+    const waits = new WaitStore()
+    
     nock('http://localhost:4000')
     .post('/graphql')
     .reply(async (uri: any, requestBody: any, cb: any) => {
       console.log('Was made requiest', requestBody)
+      
       const result = await mockedGraphql(requestBody.query as string, requestBody.variables)
+      
       console.log('result of requies', requestBody, result)
-      return cb(null, [200, result])
+      cb(null, [200, result])
+
+      waits.resolve()
+      return
     })
+
+    return waits
 }

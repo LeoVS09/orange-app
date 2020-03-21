@@ -328,7 +328,7 @@ exports[`Country.vue renders country 2`] = `
             </div>
           </div>
           <div
-            class="list-item bordered hover-shadow"
+            class="list-item bordered hover-shadow list-item-down-enter list-item-down-enter-active"
             style="background: transparent;"
           >
             <div

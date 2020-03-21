@@ -63,9 +63,6 @@ export interface QueryEntityByIdGenerated {
 }
 
 export function generateQueryEntityById(entity: string, fields: Array<string | QueryField>): QueryEntityByIdGenerated {
-  const loggedInput = JSON.stringify(fields)
-  console.log(loggedInput)
-
   const queryName = firstToUpperCase(entity)
 
   const query = `
@@ -74,7 +71,6 @@ export function generateQueryEntityById(entity: string, fields: Array<string | Q
       }
    `
 
-  console.log('query', query)
   return { query: gql(query), name: entity }
 }
 
@@ -84,9 +80,6 @@ export interface QueryListGenerated {
 }
 
 export function generateQueryList(entity: string, fields: Array<string | QueryField>): QueryListGenerated {
-  const loggedInput = JSON.stringify(fields)
-  console.log(loggedInput)
-
   const listName = entityToList(entity)
   const queryName = firstToUpperCase(listName)
 
@@ -102,7 +95,7 @@ export function generateQueryList(entity: string, fields: Array<string | QueryFi
       ${generateOneToManyQueryFields(field, 1)}
     }
   `
-  console.log('query', query)
+
   return { query: gql(query), name: listName }
 }
 

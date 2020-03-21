@@ -6,13 +6,14 @@ import { VueConstructor } from 'vue'
 import Vuex, {Store} from 'vuex'
 import { nockAllGraphqlRequests } from './utils/graphql.mock'
 import cons from './utils/console.mock'
-import flushPromises from 'flush-promises'
-import { timeout } from './utils/timeout'
+import { WaitStore } from './utils/wait'
+import { when } from './utils/when'
 
 describe('Countries.vue', () => {
 
   let localVue: VueConstructor<any> 
   let store: Store<any> 
+  let requests: WaitStore
 
   beforeAll(() => nock.disableNetConnect());
 
@@ -25,7 +26,7 @@ describe('Countries.vue', () => {
       }
     })
 
-    await nockAllGraphqlRequests(nock, 'countries')
+    requests = await nockAllGraphqlRequests(nock, 'countries')
     cons.mockConsole()
   })
 
@@ -42,9 +43,11 @@ describe('Countries.vue', () => {
     
     expect(wrapper.element).toMatchSnapshot()
     
+    expect(wrapper.text()).not.toContain('Korea')
+
     // Wait while lazyDB requested all data and rerender
-    await timeout(300)
-    await flushPromises()
+    await requests.wait()
+    await when(() => wrapper.text().includes('Korea'))
 
     expect(wrapper.text()).toContain('Korea')
     expect(wrapper.text()).toContain('IN')
@@ -58,3 +61,4 @@ describe('Countries.vue', () => {
     expect(wrapper.element).toMatchSnapshot()
   })
 })
+
