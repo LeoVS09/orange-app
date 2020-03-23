@@ -7,7 +7,7 @@ import { AbstractData } from '@/lazyDB/core/types'
 export function schemaToQueryFields(schema: AosSchema): Array<string | QueryField> {
   const keys = Object.keys(schema)
 
-  return keys.map((key) => {
+  return keys.map(key => {
     const field = schema[key]
     if (isSimpleAosField(field))
       return key

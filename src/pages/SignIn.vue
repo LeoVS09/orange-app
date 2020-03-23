@@ -106,7 +106,7 @@ export default class SignIn extends Vue {
      this.isSubmitDisabled = true
 
      this.loginToProfile({ login, password, isRemember })
-       .then((result) => {
+       .then(result => {
          this.isLoginDisabled = false
          this.isPasswordDisabled = false
          this.isSubmitDisabled = false
@@ -117,7 +117,7 @@ export default class SignIn extends Vue {
            eventBus.$emit(BusEventTypes.Authorisation, payload)
          }
        })
-       .catch((error) => {
+       .catch(error => {
          this.isLoginDisabled = false
          this.isPasswordDisabled = false
          this.isSubmitDisabled = false

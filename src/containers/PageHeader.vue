@@ -75,9 +75,14 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import { Component, Prop, Emit } from 'vue-property-decorator'
+import {
+  Component,
+  Prop,
+  Emit,
+  Provide
+} from 'vue-property-decorator'
 import ColorLine from '@/components/ColorLine.vue'
-import { ColorLineType, Breadcrumb } from '@/components/types'
+import { ColorLineType, Breadcrumb, AddBreadcrumbMethod } from '@/components/types'
 import { formatDate, randomId } from '../components/utils'
 import DataView from '../components/DataView.vue'
 
@@ -143,8 +148,27 @@ export default class PageHeader extends Vue {
    public breadcrumbs: Array<Breadcrumb> = [];
 
    created() {
-     this.breadcrumbs = []
      this.pageHeaderId = `page-header-${randomId()}`
+   }
+
+   @Provide()
+   addBreadcrumb: AddBreadcrumbMethod = ({ id, label, link }) => {
+     console.log('[PageHeader] add breadcrumb', { id, label, link })
+     const have = this.breadcrumbs.find(b => b.id === id)
+     if (!have) {
+       this.breadcrumbs.push({
+         id,
+         label,
+         link
+       })
+       return
+     }
+
+     if (have.label !== label)
+       have.label = label
+
+     if (JSON.stringify(have.link) !== JSON.stringify(link))
+       have.link = link
    }
 
    @Emit('input')

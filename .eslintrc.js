@@ -60,6 +60,7 @@ module.exports = {
     'padded-blocks': 'off',
     'comma-dangle': ['error', 'never'],
     'max-classes-per-file': 'off',
+    'arrow-parens': ['error', 'as-needed'],
     // 'graphql/template-strings': [
     //   'error',
     //   {

@@ -9,9 +9,9 @@
          <div class="list--header">
             <div
                class="list--header-item"
-               v-for="header in headers"
+               v-for="(header, index) in headers"
                @click="onClickHeader(header)"
-               :key="header.label"
+               :key="hash({ header, index })"
             >
                <span class="list--header-text">{{header.label | normalise | capitalise | translate}}</span>
                <div
@@ -35,7 +35,9 @@
                maxWidth
                maxHeight
                leftAlign
-            ><slot name="add">Add</slot></Button>
+            >
+              <slot name="add">Add</slot>
+            </Button>
          </div>
 
          <transition-group :name="listTransitionName" tag="div" mode="out-in">
@@ -44,7 +46,7 @@
                v-for="(item, index) in visibleItems"
                @click="onClickItem(item)"
                :visibleProps="headers.map(h => h.key)"
-               :key="item ? hash(item) : index"
+               :key="hash({ item, index })"
                :item="item"
                :formatData="formatData"
                @list-item-over="onItemOver(item)"
@@ -119,11 +121,15 @@
 
 <script lang="ts">
 import {
-  Component, Prop, Emit, Mixins
+  Component,
+  Prop,
+  Emit,
+  Mixins,
+  Provide
 } from 'vue-property-decorator'
-import crypto from 'crypto-js'
 import Loadable from '@/components/mixins/loadable'
 import { randomId } from '@/components/utils'
+import hash from 'object-hash'
 import ListItem from '../components/ListItem.vue'
 import Button from '../components/Button.vue'
 import {
@@ -131,9 +137,9 @@ import {
   DataItem,
   Header,
   ListMeta,
-  ListSortEvent
+  ListSortEvent,
+  AddHeaderMethod
 } from '../components/types'
-// @ts-ignore
 
 export interface ListSortHeader {
    by: string;
@@ -141,7 +147,7 @@ export interface ListSortHeader {
 }
 
 function toHeaders(headers: any[]): Header[] {
-  return headers.map((header) => {
+  return headers.map(header => {
     if (typeof header === 'string') {
       return {
         key: header,
@@ -243,13 +249,16 @@ export default class List extends Mixins(Loadable) {
    // TODO: make consistently items animation
    public listTransitionName = listTransitionDown;
 
-   public listId: string = 'default';
-
    public headers: Array<Header> = [];
 
-   created() {
-     this.listId = `list-${randomId()}`
-     this.headers = []
+   @Provide()
+   addHeader: AddHeaderMethod = header => {
+     console.log('[List] add header', header, this.headers)
+
+     if (this.headers.some(h => h.key === header.key))
+       return
+
+     this.headers.push(header)
    }
 
    get visibleItems(): DataItem[] {
@@ -399,8 +408,8 @@ export default class List extends Mixins(Loadable) {
      }
    }
 
-   public hash(item: Object): string {
-     return crypto.MD5(JSON.stringify(item)).toString()
+   public hash(data: Object): string {
+     return hash(data)
    }
 
    public onClickHeader(header: Header) {

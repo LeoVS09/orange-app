@@ -56,14 +56,45 @@ const { MODULES, actionName } = actions
 })
 export default class Problems extends Mixins(ReactiveUpdate) {
 
+  reactiveUpdateOptions = {
+    debounce: 100
+  }
+
   get list(): ListProducer<Problem> {
     const list = ProblemRepository.list(reactiveUpdate(this)) as ListProducer<Problem>
+    // const list: ListProducer<Problem> = {
+    //   totalCount: 0,
+    //   onPage: 10,
+    //   pageNumber: 10,
+    //   maxPageNumber: 10,
+    //   nodes: [{
+    //     id: 'some-id',
+    //     difficulty: 10,
+    //     name: 'problem-name',
+    //     author: { user: { name: 'some-author' } },
+    //     updatedAt: new Date(),
+    //     createdAt: new Date()
+    //   } as unknown as Problem]
+    // }
     console.log('Problems list:', list)
     return list
   }
 
   get tags(): ListProducer<Tag> {
     return TagRepository.list(reactiveUpdate(this)) as ListProducer<Tag>
+    // const list: ListProducer<Tag> = {
+    //   totalCount: 0,
+    //   onPage: 10,
+    //   pageNumber: 10,
+    //   maxPageNumber: 10,
+    //   nodes: [{
+    //     id: 'some-id',
+    //     name: 'problem-name',
+    //     updatedAt: new Date(),
+    //     createdAt: new Date()
+    //   }]
+    // }
+    // return list
   }
 
    @Getter public isTeacher!: boolean;

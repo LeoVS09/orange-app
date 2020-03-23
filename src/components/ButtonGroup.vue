@@ -11,7 +11,7 @@
          <template v-if="reflectedButtons">
             <Button
                v-for="item in reflectedButtons"
-               :key="item.label"
+               :key="itemId(item)"
                class="button-group--item"
                :hovered="hovered"
                :secondary="secondary"
@@ -27,7 +27,13 @@
 <script lang="ts">
 import Vue from 'vue'
 import { Component, Prop, Emit } from 'vue-property-decorator'
-import { ButtonEvent, ButtonEvents, ButtonGroupMeta } from './types'
+import hash from 'object-hash'
+import {
+  ButtonEvent,
+  ButtonEvents,
+  ButtonGroupMeta,
+  ButtonGroupMetaItem
+} from './types'
 import Button from './Button.vue'
 
 interface ReflectedButton {
@@ -50,10 +56,10 @@ export default class ButtonGroup extends Vue {
       if (!Array.isArray(active))
         return active === value
 
-      return active.some((item) => item === value)
+      return active.some(item => item === value)
     }
 
-    return this.meta.buttons.map((b) => {
+    return this.meta.buttons.map(b => {
       const keys = Object.keys(b)
       if (keys.length !== 1)
         throw new Error('Not implemented yet')
@@ -122,6 +128,13 @@ export default class ButtonGroup extends Vue {
        return
 
      this.hovered = null
+   }
+
+   public itemId(item: ButtonGroupMetaItem): string {
+     if (item.id)
+       return item.id
+
+     return hash(item)
    }
 
    @Emit('click')

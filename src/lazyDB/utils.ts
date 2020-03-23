@@ -41,5 +41,5 @@ export function addOrUpdate(db: ILazyReactiveDatabase, entity: string, node: { i
 }
 
 export function wait(duration: number) {
-  return new Promise((resolve) => setTimeout(resolve, duration))
+  return new Promise(resolve => setTimeout(resolve, duration))
 }

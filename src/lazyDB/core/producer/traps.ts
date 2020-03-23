@@ -18,7 +18,13 @@ export const objectTraps: ProxyHandler<IProducerStore> = {
     throw new Error('Object.defineProperty() cannot be used on an LazyDb event producer')
   },
   getPrototypeOf(store) {
-    return Object.getPrototypeOf(store.base)
+    const proto = Object.getPrototypeOf(store.base)
+    if (!proto) {
+      console.error('Object.getPrototypeOf from', store, 'was return', proto)
+      return proto
+    }
+
+    return proto
   },
   setPrototypeOf() {
     throw new Error('Object.defineProperty() cannot be used on an LazyDb event producer')

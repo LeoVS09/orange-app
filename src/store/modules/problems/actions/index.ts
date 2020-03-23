@@ -38,18 +38,18 @@ export default {
     STATUS_SCOPES.PROBLEMS,
     () => defaultProblem(),
     {
-      readList: async (variables) => {
+      readList: async variables => {
         const response = await API.problems(variables)
         if (!response)
           return
 
         return {
           ...response,
-          nodes: response.nodes.map((p) => responseToPartialProblem(p) as PartialProblem)
+          nodes: response.nodes.map(p => responseToPartialProblem(p) as PartialProblem)
         }
       },
 
-      read: async (id) => responseToFullProblem(await API.problem({ id })),
+      read: async id => responseToFullProblem(await API.problem({ id })),
 
       create: async (problem: FullProblem) => responseToFullProblem(
         await API.createProblem({
@@ -68,7 +68,7 @@ export default {
         })
       ),
 
-      delete: async (id) => responseToPartialProblem(
+      delete: async id => responseToPartialProblem(
         await API.deleteProblem({ input: { id } })
       )
     }

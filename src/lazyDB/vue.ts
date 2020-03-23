@@ -1,6 +1,6 @@
 import { PluginFunction } from 'vue'
 
-export const LazyDBFilters: PluginFunction<any> = (Vue) => {
+export const LazyDBFilters: PluginFunction<any> = Vue => {
   Vue.prototype.$isReading = () => {
   }
 

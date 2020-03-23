@@ -39,7 +39,7 @@ export default {
       return false
 
     const { tests } = problem as FullProblem
-    const old = tests.find((t) => t.id === test.id)
+    const old = tests.find(t => t.id === test.id)
     if (!old)
       return false
 
@@ -48,7 +48,7 @@ export default {
     const edit = (m: Test) => editAction(problem.tests, m, setOrAddMutation, statusManipulations)
 
     if (old.index < test.index) {
-      tests.forEach((t) => {
+      tests.forEach(t => {
         if (t.index <= old.index || t.index > test.index)
           return
 
@@ -60,7 +60,7 @@ export default {
     }
 
     if (old.index > test.index) {
-      tests.forEach((t) => {
+      tests.forEach(t => {
         if (t.index >= old.index || t.index < test.index)
           return
 
@@ -84,7 +84,7 @@ export default {
     const edit = (m: Test) => editAction(problem.tests, m, setOrAddMutation, statusManipulations)
 
     const { tests } = problem as FullProblem
-    tests.forEach((t) => {
+    tests.forEach(t => {
       if (t.index < index)
         return
 
@@ -101,7 +101,7 @@ export default {
         index,
         problemId
       }),
-      (m) => commit(mutations.SET_OR_ADD_TEST, m),
+      m => commit(mutations.SET_OR_ADD_TEST, m),
       statusManipulations
     )
   },
@@ -114,9 +114,9 @@ export default {
     return await createAction(
       problem.tests,
       test,
-      (payload) => commit(mutations.SET_BY_ID_TEST, payload),
+      payload => commit(mutations.SET_BY_ID_TEST, payload),
       generateStatusManipulation(STATUS_SCOPES.TESTS, commit, rootGetters),
-      async (t) => responseToTest(await API.createTest({ input: { test: testToInput(t) } }))
+      async t => responseToTest(await API.createTest({ input: { test: testToInput(t) } }))
     )
   },
 
@@ -128,9 +128,9 @@ export default {
     return await updateAction(
       problem.tests,
       testId,
-      (m) => commit(mutations.SET_BY_ID_TEST, m),
+      m => commit(mutations.SET_BY_ID_TEST, m),
       generateStatusManipulation(STATUS_SCOPES.TESTS, commit, rootGetters),
-      async (test) => responseToTest(await API.updateTest({
+      async test => responseToTest(await API.updateTest({
         input: {
           id: test.id,
           patch: testToInput(test)
@@ -147,9 +147,9 @@ export default {
     return await deleteAction(
       problem.tests,
       testId,
-      (id) => commit(mutations.DELETE_TEST, problem.tests.find((t) => t.id === id)),
+      id => commit(mutations.DELETE_TEST, problem.tests.find(t => t.id === id)),
       generateStatusManipulation(STATUS_SCOPES.TESTS, commit, rootGetters),
-      async (id) => responseToTest(await API.deleteTest({ input: { id } }))
+      async id => responseToTest(await API.deleteTest({ input: { id } }))
     )
   }
 

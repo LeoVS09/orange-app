@@ -39,7 +39,7 @@ export interface ILazyReactiveDatabase {
    add: (entity: string, id: string, data: AbstractData) => void
    getSchemaByKey: (key: string, type: AosFieldType) => AosEntitySchema | undefined
    setSchema: (entity: string, schema: AosEntitySchema) => void
-   excludeProperties: Array<string>
+   excludeProperties: Array<string | RegExp>
 }
 
 export const ListItemGetterReference = SymFor('list item getter') as 'list item getter'
@@ -80,7 +80,7 @@ export interface OnChangeCallback {
 }
 
 export interface IDatabaseModelProducerStore extends IProducerStore {
-   excludeProperties?: Array<string>
+   excludeProperties?: Array<string | RegExp>
    readSchema?: AosSchema
    dispatcher: DatabaseDispatcher
    onChange?: OnChangeCallback

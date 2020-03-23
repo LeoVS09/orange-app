@@ -29,7 +29,7 @@ export interface IModelInfoTopData {
 }
 
 function normaliseName(key: string): string {
-  return key.slice(0, 1).toUpperCase() + (key.slice(1).split('').map((c) => {
+  return key.slice(0, 1).toUpperCase() + (key.slice(1).split('').map(c => {
     if (c.match(/[A-Z]/))
       return ` ${c.toLowerCase()}`
 
@@ -92,12 +92,12 @@ export default class ModelInfo extends Vue {
        keys = Object.keys(this.value)
        const exclude = [...this.excludeDefaults, ...this.exclude]
 
-       keys = keys.filter((k) => k[0] !== '_'
+       keys = keys.filter(k => k[0] !== '_'
             && exclude.indexOf(k) === -1)
      } else if (isArrayOfObjects(this.properties)) {
        keys = []
 
-       this.properties.forEach((property) => {
+       this.properties.forEach(property => {
          const key = Object.keys(property)[0]
 
          labels[key] = property[key]
@@ -108,7 +108,7 @@ export default class ModelInfo extends Vue {
        keys = this.properties as string[]
 
      if (!this.properties || typeof this.properties[0] !== 'object')
-       keys.forEach((key) => labels[key] = normaliseName(key))
+       keys.forEach(key => labels[key] = normaliseName(key))
 
      const result: {[key: string]: any} = {}
 

@@ -19,6 +19,6 @@ export const applyRepositoryControls = (
 
   // make temporal trap in list work as repository object
   // This must be setted for repository and table, they all create list in differrent situations
-  store.extendTemporalTrap = (trapStore) =>
+  store.extendTemporalTrap = trapStore =>
     applyRepositoryControls(trapStore, schema)
 }

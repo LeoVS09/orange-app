@@ -156,8 +156,8 @@ export default class TopBar extends Vue {
      )
 
      onScroll(
-       (top) => this.startScroll(top),
-       (top) => this.endScroll(top)
+       top => this.startScroll(top),
+       top => this.endScroll(top)
      )
    }
 

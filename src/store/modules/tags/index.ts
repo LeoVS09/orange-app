@@ -20,20 +20,20 @@ export default {
       updatedAt: new Date()
     }),
     {
-      readList: (variables) => API.tags(variables),
+      readList: variables => API.tags(variables),
 
-      create: (tag) => API.createTag({ input: { tag: tagToInput(tag) } }),
+      create: tag => API.createTag({ input: { tag: tagToInput(tag) } }),
 
-      read: async (id) => responseToTag(await API.tag({ id })),
+      read: async id => responseToTag(await API.tag({ id })),
 
-      update: (tag) => API.updateTag({
+      update: tag => API.updateTag({
         input: {
           id: tag.id,
           patch: tagToInput(tag)
         }
       }),
 
-      delete: (id) => API.deleteTag({ input: { id } })
+      delete: id => API.deleteTag({ input: { id } })
     }
   )
 }

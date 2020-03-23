@@ -144,7 +144,7 @@ export default class Profile extends Vue {
      this.city = this.userData.city || null
      if (this.city) {
        this.getOrLoadCountry(this.city.countryId)
-         .then((country) => this.country = country || null)
+         .then(country => this.country = country || null)
      }
 
      this.initialiseProfileData()

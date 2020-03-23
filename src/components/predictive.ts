@@ -12,7 +12,7 @@ export interface IListener {
 }
 
 export function onMouseOutOfWindow(callback: () => void): IListener {
-  const mousemoveListener: EventListener = (event) => {
+  const mousemoveListener: EventListener = event => {
     // @ts-ignore
     if (event.fromElement && event.fromElement.nodeName === 'HTML')
       callback()
@@ -34,7 +34,7 @@ export function isPredictiveHover(event: MouseEvent, el: HTMLElement, limit: num
 export function onPredictiveHover(start: () => boolean, end: () => boolean): IListener {
   let isHovered = false
 
-  const mousemoveListener: EventListener = (event) => {
+  const mousemoveListener: EventListener = event => {
     const el: HTMLElement | null = document.querySelector('html')
     if (!el) {
       console.error('Unexpected error')

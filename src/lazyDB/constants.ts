@@ -1,10 +1,11 @@
 export const defaultExcludeProperties = [
   'state',
-  '_isVue',
+  /^_.*/,
   'render',
+  'every', // some vue function used in slots
   'toJSON',
   'constructor',
-  '__ob__',
+  'prototype',
   'then',
   'catch',
   'function () { [native code] }',
@@ -12,5 +13,9 @@ export const defaultExcludeProperties = [
   'map',
   'length',
   'push',
-  'pop'
+  'pop',
+  'required',
+  'validator',
+  'get',
+  'type'
 ]

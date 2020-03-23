@@ -31,7 +31,7 @@ export default class LazyReactiveRepository<T extends AbstractData = AbstractDat
 
    public schema: AosEntitySchema
 
-   public excludeProperties: Array<string> = []
+   public excludeProperties: Array<string | RegExp> = []
 
   public applyRepositoryControlsOptions: ApplyRepositoryControlsOptions
 
@@ -56,7 +56,7 @@ export default class LazyReactiveRepository<T extends AbstractData = AbstractDat
     const tableStore = getStore(this.table)
 
     // this hack allow change schema after constructor execution
-    tableStore.extendTemporalTrap = (trapStore) =>
+    tableStore.extendTemporalTrap = trapStore =>
       applyRepositoryControls(trapStore, this.schema, this.applyRepositoryControlsOptions)
   }
 
@@ -103,7 +103,7 @@ export default class LazyReactiveRepository<T extends AbstractData = AbstractDat
 function appendRepositoryLifeHooks(
   store: IDatabaseModelProducerStore,
   id: string,
-  excludeProperties: Array<string>,
+  excludeProperties: Array<string | RegExp>,
   onChange?: OnChangeCallback
 ) {
   store.excludeProperties = excludeProperties
@@ -117,7 +117,7 @@ function appendRepositoryLifeHooks(
 }
 
 const listOnChangeWrapper = (list: ListProducer<any>, onChange?: OnChangeCallback): OnChangeCallback =>
-  (event) => {
+  event => {
 
     // Hack for vue to track changed nodes
     // list.nodes.push(null)

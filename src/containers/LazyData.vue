@@ -31,10 +31,11 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import { Component, Prop } from 'vue-property-decorator'
+import { Component, Prop, Provide } from 'vue-property-decorator'
 import { Section } from '@/components'
 import { randomId } from '@/components/utils'
 import { Filter } from '@/components/decorators'
+import { SetLazyPropertyDataMethod } from '@/components/types'
 
 export interface DataItem {
    key: string;
@@ -67,10 +68,15 @@ export default class LazyData extends Vue {
 
    public lazyDataId: string = 'default';
 
+   @Provide()
+   setProperty: SetLazyPropertyDataMethod = ({ key, label }) => {
+     this.$set(this.properties, key, label)
+   }
+
    get dataItems(): DataItem[] {
      console.log('LazyData slots', this.$slots)
 
-     const properties = Object.keys(this.properties).map((key) => ({
+     const properties = Object.keys(this.properties).map(key => ({
        key,
        label: this.properties[key]
      }))
@@ -80,7 +86,6 @@ export default class LazyData extends Vue {
 
    public created() {
      this.lazyDataId = `lazy-data-${randomId()}`
-     this.properties = {}
    }
 }
 </script>

@@ -19,20 +19,20 @@ export default {
       updatedAt: new Date()
     }),
     {
-      readList: (variables) => API.countries(variables),
+      readList: variables => API.countries(variables),
 
-      create: (country) => API.createCountry({ input: { country: countryToInput(country) } }),
+      create: country => API.createCountry({ input: { country: countryToInput(country) } }),
 
-      read: async (id) => responseToCountry(await API.country({ id })),
+      read: async id => responseToCountry(await API.country({ id })),
 
-      update: (country) => API.updateCountry({
+      update: country => API.updateCountry({
         input: {
           id: country.id,
           patch: countryToInput(country)
         }
       }),
 
-      delete: (id) => API.deleteCountry({ input: { id } })
+      delete: id => API.deleteCountry({ input: { id } })
     }
   )
 }

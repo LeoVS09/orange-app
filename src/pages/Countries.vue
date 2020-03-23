@@ -53,7 +53,12 @@ import { ListProducer } from '@/lazyDB/database/types'
   }
 })
 export default class Countries extends Mixins(ReactiveUpdate) {
-   @Getter public isTeacher!: boolean;
+   @Getter
+   public isTeacher!: boolean;
+
+   reactiveUpdateOptions = {
+     debounce: 100
+   }
 
    @RouterPush(ROUTES.COUNTRY)
    public chooseItem!: (country: Country) => void;

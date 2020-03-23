@@ -11,7 +11,7 @@ export default {
   mutations: crudMutations<University>(),
   actions: crudActions<University, UniversitiesOrderBy>(
     STATUS_SCOPES.UNIVERSITIES,
-    (cityId) => ({
+    cityId => ({
       id: '',
       shortName: '',
       longName: '',
@@ -20,20 +20,20 @@ export default {
       updatedAt: new Date()
     }),
     {
-      readList: (variables) => API.universities(variables),
+      readList: variables => API.universities(variables),
 
-      create: (university) => API.createUniversity({ input: { university: universityToInput(university) } }),
+      create: university => API.createUniversity({ input: { university: universityToInput(university) } }),
 
-      read: async (id) => responseToUniversity(await API.university({ id })),
+      read: async id => responseToUniversity(await API.university({ id })),
 
-      update: (university) => API.updateUniversity({
+      update: university => API.updateUniversity({
         input: {
           id: university.id,
           patch: universityToInput(university)
         }
       }),
 
-      delete: (id) => API.deleteUnviersity({ input: { id } })
+      delete: id => API.deleteUnviersity({ input: { id } })
     }
   )
 }

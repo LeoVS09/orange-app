@@ -1,47 +1,50 @@
 <template>
-   <div class="list-column">
-      <slot></slot>
-   </div>
+  <div class="list-column">
+    <slot></slot>
+  </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
-import { Component, Prop, Mixins } from 'vue-property-decorator'
-import ChildValue from '@/components/mixins/ChildValue'
-import { Header } from '../components/types'
+import {
+  Component,
+  Prop,
+  Mixins,
+  Inject
+} from 'vue-property-decorator'
+import SlotValue from '@/components/mixins/SlotValue'
+import { AddHeaderMethod } from '../components/types'
 
-   @Component
-export default class ListColumn extends Mixins(ChildValue) {
-      @Prop(String)
-      name?: string
+@Component
+export default class ListColumn extends Mixins(SlotValue) {
+  @Prop(String)
+  name?: string;
 
-      get propertyKey() {
-        if (this.name)
-          return this.name
+  get propertyKey() {
+    if (this.name)
+      return this.name
 
-        return this.slotValue()
-      }
+    return this.slotValue()
+  }
 
-      parentIdKey = 'listId'
+  @Inject()
+  addHeader!: AddHeaderMethod
 
-      mounted() {
-        // @ts-ignore
-        const headers = this.owner.headers as Array<Header>
+  mounted() {
+    const key = this.propertyKey
+    const label = this.slotValue()
 
-        const key = this.propertyKey
-        const label = this.slotValue()
+    if (!key || !label)
+      return
 
-        if (!key || !label)
-          return
-
-        if (headers.some((h) => h.key === key))
-          return
-
-        headers.push({ key, label, expand: false })
-      }
+    this.addHeader({
+      key,
+      label,
+      expand: false
+    })
+  }
 }
 </script>
 
 <style lang="scss">
-
 </style>

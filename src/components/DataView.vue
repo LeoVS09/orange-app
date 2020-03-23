@@ -98,8 +98,8 @@ export default class DataView extends Vue {
      let keys = Object.keys(this.values)
 
      if (this.order) {
-       const notOrdered = keys.filter((k) => this.order.indexOf(k) === -1)
-       const have = this.order.filter((k) => keys.indexOf(k) !== -1)
+       const notOrdered = keys.filter(k => this.order.indexOf(k) === -1)
+       const have = this.order.filter(k => keys.indexOf(k) !== -1)
 
        keys = [
          ...have,
@@ -108,9 +108,9 @@ export default class DataView extends Vue {
      }
 
      if (this.exclude)
-       keys = keys.filter((k) => this.exclude.indexOf(k) === -1)
+       keys = keys.filter(k => this.exclude.indexOf(k) === -1)
 
-     return keys.map((label) => {
+     return keys.map(label => {
        const value = this.values[label]
 
        const icon = this.icons[label]

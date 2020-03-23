@@ -60,10 +60,10 @@ export default function crudMutations<T extends Identical, OrderBy>(
     [actionTypes.READ_LIST]({ commit, rootGetters, state }: IActionContext<CrudState<T>>): Promise<boolean> {
       return readListAction(
         state.data,
-        (m) => commit(mutations.SET_OR_ADD, m),
+        m => commit(mutations.SET_OR_ADD, m),
         generateStatusManipulation(scope, commit, rootGetters),
         api.readList,
-        (status) => setStatus(STATUS_SCOPES.GLOBAL, commit, scope, status)
+        status => setStatus(STATUS_SCOPES.GLOBAL, commit, scope, status)
       )
     },
 
@@ -71,7 +71,7 @@ export default function crudMutations<T extends Identical, OrderBy>(
       return readAction(
         state.data,
         id,
-        (m) => commit(mutations.SET_OR_ADD, m),
+        m => commit(mutations.SET_OR_ADD, m),
         generateStatusManipulation(scope, commit, rootGetters),
         api.read
       )
@@ -82,7 +82,7 @@ export default function crudMutations<T extends Identical, OrderBy>(
       return editAction(
         state.data,
         model,
-        (m) => commit(mutations.SET_OR_ADD, m),
+        m => commit(mutations.SET_OR_ADD, m),
         generateStatusManipulation(scope, commit, rootGetters)
       )
     },
@@ -91,7 +91,7 @@ export default function crudMutations<T extends Identical, OrderBy>(
       return updateAction(
         state.data,
         id,
-        (m) => commit(mutations.SET_OR_ADD, m),
+        m => commit(mutations.SET_OR_ADD, m),
         generateStatusManipulation(scope, commit, rootGetters),
         api.update
       )
@@ -101,7 +101,7 @@ export default function crudMutations<T extends Identical, OrderBy>(
       return addModelForCreateAction(
         state.data,
         () => defaultModel(parentId),
-        (m) => commit(mutations.SET_OR_ADD, m),
+        m => commit(mutations.SET_OR_ADD, m),
         generateStatusManipulation(scope, commit, rootGetters)
       )
     },
@@ -110,7 +110,7 @@ export default function crudMutations<T extends Identical, OrderBy>(
       return createAction(
         state.data,
         model,
-        (payload) => commit(mutations.SET_BY_ID, payload),
+        payload => commit(mutations.SET_BY_ID, payload),
         generateStatusManipulation(scope, commit, rootGetters),
         api.create
       )
@@ -120,7 +120,7 @@ export default function crudMutations<T extends Identical, OrderBy>(
       return deleteAction(
         state.data,
         id,
-        (deleteId) => commit(mutations.DELETE, deleteId),
+        deleteId => commit(mutations.DELETE, deleteId),
         generateStatusManipulation(scope, commit, rootGetters),
         api.delete
       )

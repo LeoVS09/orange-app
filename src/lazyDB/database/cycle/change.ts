@@ -2,7 +2,7 @@ import { debounceTime, filter } from 'rxjs/operators'
 import { IDatabaseModelProducerStore, OnChangeCallback } from '../types'
 import { ModelEventTypes } from '../events'
 
-const CHANGE_TIME = 50
+const CHANGE_TIME = 10
 
 export const updateOnChange = (store: IDatabaseModelProducerStore, onChangeCallback?: OnChangeCallback) => {
   if (onChangeCallback)
@@ -13,12 +13,12 @@ export const updateOnChange = (store: IDatabaseModelProducerStore, onChangeCallb
     return
 
   stream.pipe(
-    filter((event) =>
-      event.type === ModelEventTypes.SetProperty
+    filter(event =>
+      event.type === ModelEventTypes.Read
       || event.type === ModelEventTypes.ReadSuccess),
     debounceTime(CHANGE_TIME)
   )
-    .subscribe((event) => {
+    .subscribe(event => {
       console.log('Update on change', event, store, memory, base)
 
       const { onChange } = store

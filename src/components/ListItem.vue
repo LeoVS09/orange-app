@@ -15,9 +15,9 @@
       <div class="list-item--content">
          <span
            class="list-item--property"
-           v-for="(property, index) in properties"
-           :key="typeof property !== 'undefined' ? `${property}` : index"
-         >{{property | formatDate}}</span>
+           v-for="(cell, index) in cells"
+           :key="`${typeof cell !== 'undefined' && cell} ${index}`"
+         >{{cell | formatDate}}</span>
       </div>
    </div>
 </template>
@@ -87,7 +87,7 @@ export default class ListItem extends Vue {
    })
    public hoverShadow!: boolean;
 
-   get properties() {
+   get cells() {
      let { item } = this
      if (this.formatData)
        item = this.formatData(item)
@@ -101,7 +101,7 @@ export default class ListItem extends Vue {
        return []
      }
 
-     const result = visibleProps.map((key) => item[key])
+     const result = visibleProps.map(key => item[key])
      console.log('list item', result, visibleProps)
      return result
    }

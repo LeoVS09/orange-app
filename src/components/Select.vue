@@ -110,7 +110,7 @@ export default class Select extends Mixins(Focusable) {
    }
 
    get visibleItems() {
-     return this.items.map((value) => {
+     return this.items.map(value => {
        const text = this.extractTextFromItem(value)
 
        return { text, value }

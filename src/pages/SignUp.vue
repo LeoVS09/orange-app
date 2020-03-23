@@ -144,7 +144,7 @@ export default class SignUp extends Vue {
        password: this.password,
        email: this.email,
        username: this.login
-     }).then((result) => {
+     }).then(result => {
        this.isDisabled = false
        if (result) {
          const payload: AuthorisationEventPayload = {
@@ -152,7 +152,7 @@ export default class SignUp extends Vue {
          }
          eventBus.$emit(BusEventTypes.Authorisation, payload)
        }
-     }).catch((error) => {
+     }).catch(error => {
        this.isDisabled = false
        console.error(error)
      })

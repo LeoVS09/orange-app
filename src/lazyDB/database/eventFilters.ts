@@ -29,7 +29,7 @@ export const excludePropertyEventWithNames = (excludeProperties: Array<string>) 
     return true
 
   const innerName = lastObjectPropertyName(event.payload as ModelEventGetPropertyPayload)
-  if (excludeProperties.some((value) => value === innerName))
+  if (excludeProperties.some(value => value === innerName))
     return false
 
   return true

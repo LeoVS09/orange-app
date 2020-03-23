@@ -28,6 +28,18 @@ export interface Header {
    expand?: boolean
 }
 
+export interface AddHeaderMethod {
+   (header: Header): void
+}
+
+export interface LazyPropertyData {
+   key: string
+   label: string
+}
+export interface SetLazyPropertyDataMethod {
+   (data: LazyPropertyData): void
+}
+
 export interface SimpleHeader {
    [key: string]: string
 }
@@ -77,6 +89,10 @@ export interface Breadcrumb {
    link?: object
    label: string
    id: string
+}
+
+export interface AddBreadcrumbMethod {
+   (breadcrumb: Breadcrumb): void
 }
 
 export interface DynamicPageAction {

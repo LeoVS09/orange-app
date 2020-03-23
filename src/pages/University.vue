@@ -29,6 +29,7 @@
 </template>
 
 <script lang="ts">
+import Vue from 'vue'
 import { Component, Prop, Mixins } from 'vue-property-decorator'
 import { Getter } from 'vuex-class'
 import { Section, PageHeaderAction } from '@/components'

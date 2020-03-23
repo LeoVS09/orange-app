@@ -34,18 +34,18 @@ export function makeClient(uri: string): APIClient {
   })
 
   return {
-    mutate: (options) => new Promise((resolve, reject) => {
+    mutate: options => new Promise((resolve, reject) => {
       // fix bug with apollo throw error
       try {
         client.mutate(options)
         // @ts-ignore
           .then(resolve)
-          .catch((e) => reject(extractRealError(e)))
+          .catch(e => reject(extractRealError(e)))
       } catch (e) {
         reject(extractRealError(e))
       }
     }),
-    query: (options) => new Promise((resolve, reject) => {
+    query: options => new Promise((resolve, reject) => {
       try {
         client.query(options)
         // @ts-ignore

@@ -41,7 +41,10 @@ import Vue from 'vue'
 import { Component, Prop, Emit } from 'vue-property-decorator'
 import moment from 'moment'
 import {
-  Button, Tags, Section, Filters
+  Button,
+  Tags,
+  Section,
+  Filters
 } from '@/components'
 import { Problem } from '@/models/problems'
 import { profileInitials } from '@/models/user'
@@ -60,22 +63,22 @@ function filterProblemsByPublication(filter: ProblemFilter, data: Array<Problem>
   const now = new Date()
 
   if (filter === ProblemFilter.Public)
-    return data.filter((p) => isProblemPublicated(p, now))
+    return data.filter(p => isProblemPublicated(p, now))
 
   if (filter === ProblemFilter.NotPublic)
-    return data.filter((p) => !isProblemPublicated(p, now))
+    return data.filter(p => !isProblemPublicated(p, now))
 
   return data
 }
 
 const isProblemContainAnyTag = ({ problemsTags }: Problem, tags: Tag[]): boolean =>
-  tags.every((tag) => problemsTags.nodes.some(({ tag: { id } }) => tag.id === id))
+  tags.every(tag => problemsTags.nodes.some(({ tag: { id } }) => tag.id === id))
 
 function filterProblemsByTags(tags: Tag[], data: Array<Problem>): Array<Problem> {
   if (!tags.length)
     return data
 
-  return data.filter((p) => isProblemContainAnyTag(p, tags))
+  return data.filter(p => isProblemContainAnyTag(p, tags))
 }
 
 const exptractAuthourName = (problem: Problem, fallback: string): string => {
@@ -89,7 +92,9 @@ const exptractAuthourName = (problem: Problem, fallback: string): string => {
   if (!user)
     return fallback
 
-  return user.name || user.username
+  const authorName = user.name || user.username
+  console.log('author name:', authorName)
+  return `${authorName}`
 }
 
 @Component({
@@ -142,7 +147,7 @@ export default class ProblemsList extends Vue {
 
    @Emit('set-filter-tags')
    public toggleFilterTag(tag: Tag): Tag[] {
-     const index = this.activeTags.findIndex((item) => item.id === tag.id)
+     const index = this.activeTags.findIndex(item => item.id === tag.id)
      if (index === -1) {
        this.activeTags.push(tag)
        return this.activeTags
@@ -165,7 +170,7 @@ export default class ProblemsList extends Vue {
    // Translate text if can i18n translation connected to vue
    private translate(text: string): string {
      if (this.$t)
-       return this.$t(text) as unknown as string
+       return `${this.$t(text)}`
 
      return text
    }

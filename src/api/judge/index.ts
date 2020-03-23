@@ -17,5 +17,5 @@ export function runProgram(problemId: string, code: string): Promise<ResultRunPr
     method: 'POST',
     credentials,
     body: JSON.stringify(body)
-  }).then((response) => response.json())
+  }).then(response => response.json())
 }

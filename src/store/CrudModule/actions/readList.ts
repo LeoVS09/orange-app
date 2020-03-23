@@ -26,7 +26,7 @@ export async function readListAction<T extends Identical, OrderBy>(
     setModelState(model.id, ModelStatus.Synced, ModelReadState.Partial)
   }
 
-  list.nodes.forEach((node) => {
+  list.nodes.forEach(node => {
     if (!node)
       return
 

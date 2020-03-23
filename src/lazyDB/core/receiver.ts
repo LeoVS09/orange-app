@@ -36,7 +36,7 @@ export function receive(
 export function atomicReceiveByReducers(store: IProducerStore, reducers: EventReducersMap) {
   store.reducers = reducers
 
-  receive(store, (event) => {
+  receive(store, event => {
     const reducer = getReducer(event)
     if (!reducer)
       return
@@ -48,7 +48,7 @@ export function atomicReceiveByReducers(store: IProducerStore, reducers: EventRe
 export function asyncReceiveByReducers(store: IProducerStore, reducers: EventReducersMap) {
   store.reducers = reducers
 
-  receive(store, async (event) => {
+  receive(store, async event => {
     const reducer = getReducer(event)
     if (!reducer)
       return
@@ -65,7 +65,7 @@ export function atomicReceiveWithMemory(prducerStore: IProducerStore, reducers: 
   // Trying handle event by reducers in storage
   // If event not handled (handler return false) and storage have memory
   // event adding to storage memory
-  receive(prducerStore, (event) => {
+  receive(prducerStore, event => {
     if (isHaveEventInMemory(event))
       return
 
@@ -78,7 +78,7 @@ export function atomicReceiveWithMemory(prducerStore: IProducerStore, reducers: 
     const store = getStoreFromEvent(event)
 
     async(handleResult)
-      .then((isHandled) => {
+      .then(isHandled => {
         if (isHandled || !store.memory)
           return
 
@@ -113,12 +113,12 @@ export function asyncReceiveWithMemory(
   // event would remove from storage memory
   store.stream = dispatcher.eventsSubject
     .pipe(
-      filter((event) => !isHaveEventInMemory(event)),
+      filter(event => !isHaveEventInMemory(event)),
       tap(saveInMemoryIfCan),
       share()
     )
 
-  store.subscription = store.stream!.subscribe(async (event) => {
+  store.subscription = store.stream!.subscribe(async event => {
     const reducer = getReducer(event)
     if (!reducer) {
       if (prop)

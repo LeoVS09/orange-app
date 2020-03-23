@@ -54,9 +54,7 @@ exports[`Country.vue renders country 1`] = `
         <div
           class="model-property"
         >
-          
-   code
-
+          code
         </div>
       </div>
        
@@ -229,9 +227,7 @@ exports[`Country.vue renders country 2`] = `
         <div
           class="model-property"
         >
-          
-   code
-
+          code
         </div>
       </div>
        
@@ -328,7 +324,7 @@ exports[`Country.vue renders country 2`] = `
             </div>
           </div>
           <div
-            class="list-item bordered hover-shadow list-item-down-enter list-item-down-enter-active"
+            class="list-item bordered hover-shadow"
             style="background: transparent;"
           >
             <div

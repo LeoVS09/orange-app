@@ -13,7 +13,7 @@ export function mockCountry(): Country {
 }
 
 export function mockCountries(): Array<Country> {
-  return baseCountries.map((country) => ({
+  return baseCountries.map(country => ({
     ...country,
     id: `country-${randomId()}`,
     createdAt: new Date(),
@@ -22,7 +22,7 @@ export function mockCountries(): Array<Country> {
 }
 
 export function mockCities(): Array<City> {
-  return baseCities.map((city) => ({
+  return baseCities.map(city => ({
     id: `city-${randomId()}`,
     name: city.name,
     createdAt: new Date(),

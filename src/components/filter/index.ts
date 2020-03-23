@@ -1,7 +1,7 @@
 import { PluginFunction } from 'vue'
 import { formatDate, isDate } from '@/components/utils'
 
-const Filters: PluginFunction<any> = (Vue) => {
+const Filters: PluginFunction<any> = Vue => {
   Vue.filter('formatDate', (value: any) => {
     if (!isDate(value))
       return value
@@ -31,7 +31,7 @@ function capitalise(s: string): string {
 }
 
 function normaliseName(key: string): string {
-  return key.split('').map((c) => {
+  return key.split('').map(c => {
     if (c.match(/[A-Z]/))
       return ` ${c.toLowerCase()}`
 

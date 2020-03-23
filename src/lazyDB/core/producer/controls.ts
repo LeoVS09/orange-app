@@ -8,6 +8,11 @@ import { pushPropertyEventsToParent } from '../toParent'
 import { wrapInProducerIfNot } from './wrap'
 
 export function get(store: IProducerStore, prop: PropertyKey) {
+
+  // Proxy traps works for [[Prototype]], so need manualy return correct props
+  if (prop === 'prototype' || prop === '__proto__')
+    return store.base[prop]
+
   if (
     typeof prop === 'symbol'
       // Directly check with reference
@@ -17,7 +22,10 @@ export function get(store: IProducerStore, prop: PropertyKey) {
     return store
 
   const {
-    dispatcher, base, getter, setter
+    dispatcher,
+    base,
+    getter,
+    setter
   } = store
 
   dispatcher.get(prop, store)

@@ -447,7 +447,7 @@ export default class ProblemView extends Vue {
        }
 
        this.createProblem(this.model)
-         .then((problem) => {
+         .then(problem => {
            if (!problem) {
              console.error('Error when create')
              // TODO: handle error

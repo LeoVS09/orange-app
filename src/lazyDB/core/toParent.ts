@@ -14,7 +14,7 @@ export function pushPropertyEventsToParent(
   prop: PropertyKey,
   type: AosFieldType = AosFieldType.OneToOne
 ) {
-  receive(child, (event) => pushToParentIfCan(child, prop, event, type))
+  receive(child, event => pushToParentIfCan(child, prop, event, type))
 }
 
 export function pushToParentIfCan(

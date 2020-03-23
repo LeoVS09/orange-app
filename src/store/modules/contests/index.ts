@@ -21,7 +21,7 @@ export default {
   mutations: crudMutations<PartialContest | FullContest>(),
   actions: crudActions<PartialContest | FullContest, ContestsOrderBy>(
     STATUS_SCOPES.CONTESTS,
-    (creatorId) => ({
+    creatorId => ({
       id: '',
       name: '',
       text: '',
@@ -45,33 +45,33 @@ export default {
       updatedAt: new Date()
     }),
     {
-      readList: async (variables) => {
+      readList: async variables => {
         const response = await API.contests(variables)
         if (!response)
           return response
 
         return {
           ...response,
-          nodes: response.nodes.map((n) => responseToPartialContest(n) as PartialContest)
+          nodes: response.nodes.map(n => responseToPartialContest(n) as PartialContest)
         }
       },
 
-      create: async (contest) => responseToFullContest(await API.createContest({
+      create: async contest => responseToFullContest(await API.createContest({
         input: {
           contest: contestToInput(contest as FullContest)
         }
       })),
 
-      read: async (id) => responseToFullContest(await API.contest({ id })),
+      read: async id => responseToFullContest(await API.contest({ id })),
 
-      update: async (contest) => responseToFullContest(await API.updateContest({
+      update: async contest => responseToFullContest(await API.updateContest({
         input: {
           id: contest.id,
           patch: contestToInput(contest as FullContest)
         }
       })),
 
-      delete: async (id) => responseToPartialContest(await API.deleteContest({ input: { id } }))
+      delete: async id => responseToPartialContest(await API.deleteContest({ input: { id } }))
     }
   )
 }
@@ -93,9 +93,9 @@ function responseToFullContest(result: fragmentsTypes.FullContest | undefined | 
   return {
     ...result,
     creator: responseToPartialUserProfile(result.creator) as PartialUserProfile,
-    problems: result.contestsProblems.nodes.map((n) => responseToPartialProblem(n && n.problem) as PartialProblem),
-    profiles: result.contestsProfiles.nodes.map((n) => responseToPartialUserProfile(n && n.profile) as PartialUserProfile),
-    teams: result.contestsTeams.nodes.map((n) => responseToPartialTeam(n && n.team) as Team)
+    problems: result.contestsProblems.nodes.map(n => responseToPartialProblem(n && n.problem) as PartialProblem),
+    profiles: result.contestsProfiles.nodes.map(n => responseToPartialUserProfile(n && n.profile) as PartialUserProfile),
+    teams: result.contestsTeams.nodes.map(n => responseToPartialTeam(n && n.team) as Team)
   }
 }
 

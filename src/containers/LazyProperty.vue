@@ -1,39 +1,38 @@
 <template>
-   <div class="model-property">
-      {{propertyKey}}
-   </div>
+  <div class="model-property">{{propertyKey}}</div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
-import { Component, Mixins, Prop } from 'vue-property-decorator'
-import ChildValue from '@/components/mixins/ChildValue'
+import {
+  Component, Mixins, Prop, Inject
+} from 'vue-property-decorator'
+import SlotValue from '@/components/mixins/SlotValue'
+import { SetLazyPropertyDataMethod } from '@/components/types'
 
-   @Component
-export default class LazyProperty extends Mixins(ChildValue) {
-      @Prop(String)
-      name?: string
+@Component
+export default class LazyProperty extends Mixins(SlotValue) {
+  @Prop(String)
+  name?: string;
 
-      get propertyKey() {
-        if (this.name)
-          return this.name
+  get propertyKey() {
+    if (this.name)
+      return this.name
 
-        return this.slotValue()
-      }
+    return this.slotValue()
+  }
 
-      parentIdKey = 'lazyDataId'
+  @Inject()
+  setProperty!: SetLazyPropertyDataMethod;
 
-      mounted() {
-        // @ts-ignore
-        const { properties } = this.owner
+  mounted() {
+    const key = this.propertyKey
+    const label = this.slotValue()
 
-        const key = this.propertyKey
-        const label = this.slotValue()
+    if (!key || !label)
+      return
 
-        if (!key || !label)
-          return
-
-        this.$set(properties, key as string, label)
-      }
+    this.setProperty({ key, label })
+  }
 }
 </script>

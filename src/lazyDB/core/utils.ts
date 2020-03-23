@@ -4,7 +4,7 @@ export function splitArray<T>(arr: Array<T>, predicate: (v: T) => boolean) {
   const searching = new Array<T>()
   const other = new Array<T>()
 
-  arr.forEach((val) => {
+  arr.forEach(val => {
     if (predicate(val))
       return searching.push(val)
 

@@ -12,32 +12,32 @@ export function generateQuery<V, T, R>(query: any, formatter: (result: T) => R |
   if (DEBUG && mock)
     return (variables: V) => mock(variables)
 
-  return mapRequester((client) => (variables: V) => client.query<T>({
+  return mapRequester(client => (variables: V) => client.query<T>({
     query,
     variables
   })
-    .then((result) => result.data && formatter(result.data)))
+    .then(result => result.data && formatter(result.data)))
 }
 
 export function generateSimpleQuery<T, R>(query: any, formatter: (result: T) => R | null, mock?: () => Promise<R>) {
   if (DEBUG && mock)
     return () => mock()
 
-  return mapRequester((client) => () => client.query<T>({
+  return mapRequester(client => () => client.query<T>({
     query
   })
-    .then((result) => result.data && formatter(result.data)))
+    .then(result => result.data && formatter(result.data)))
 }
 
 export function generateMutation<V, T, R>(mutation: any, formatter: (result: T) => R | null, mock?: (variables: V) => Promise<R>) {
   if (DEBUG && mock)
     return (variables: V) => mock(variables)
 
-  return mapRequester((client) => (variables: V) => client.mutate<T>({
+  return mapRequester(client => (variables: V) => client.mutate<T>({
     mutation,
     variables
   })
-    .then((result) => result.data && formatter(result.data)))
+    .then(result => result.data && formatter(result.data)))
 }
 
 // mapRequester transform date string to date objects, but currently TypeScript don't have support

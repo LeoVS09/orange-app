@@ -60,7 +60,7 @@ export const genSetLinkedEntity = (
     if (type === AosFieldType.OneToMany) {
 
       const listStore = getStore(value)
-      listStore.extendTemporalTrap = (trapStore) =>
+      listStore.extendTemporalTrap = trapStore =>
         applyRepositoryControls(trapStore, schema, { setLinkedEntity })
 
       applyListControls(listStore)

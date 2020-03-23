@@ -30,7 +30,7 @@ export interface IOnWheelCallbacks {
 }
 
 export function onWheel(elem: Element, { up = () => { }, down = () => { } }: IOnWheelCallbacks) {
-  const onWheelListener: EventListener = (e) => {
+  const onWheelListener: EventListener = e => {
     e = e || window.event
 
     // wheelDelta не дает возможность узнать количество пикселей

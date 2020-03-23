@@ -26,6 +26,7 @@
             :validateAdd="validate"
             @add="add"
             @choose-item="chooseItem"
+            :key="reactive"
          >
             <list-column>name</list-column>
             <list-column name="updatedAt">updated</list-column>
@@ -90,7 +91,7 @@ export default class CountryView extends Mixins(ReactiveUpdate) {
     const cities = this.model.cities!.nodes
     console.log('Country cities', cities)
     // TODO: temporal hack, need investigate why vue not rerender without map
-    return cities.map((node) => node)
+    return cities
   }
 
    @Prop({

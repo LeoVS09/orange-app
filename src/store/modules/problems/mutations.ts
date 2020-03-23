@@ -29,11 +29,11 @@ export default {
   ...crudMutations(),
 
   [mutationTypes.START_TESTING_SOLUTION](state: ProblemsState, { problemId }: IStartTestingSolutionPayload) {
-    updateById(state.data, problemId, (problem) => problem.testingStatus = ProblemTestingStatus.Testing)
+    updateById(state.data, problemId, problem => problem.testingStatus = ProblemTestingStatus.Testing)
   },
 
   [mutationTypes.SET_RESULT_OF_SOLUTION_RUN](state: ProblemsState, result: ResultRunProgram) {
-    updateById(state.data, result.problemId, (problem) => {
+    updateById(state.data, result.problemId, problem => {
       if (result.isUnexpectedError)
         problem.testingStatus = ProblemTestingStatus.Error
       else if (result.isAllTestsSuccessful)
@@ -47,22 +47,22 @@ export default {
   },
 
   [mutationTypes.SET_TESTS](state: ProblemsState, { problemId, tests }: ISetTestsPayload) {
-    updateById(state.data as Array<FullProblem>, problemId, (problem) => {
+    updateById(state.data as Array<FullProblem>, problemId, problem => {
       problem.tests = tests
       return problem
     })
   },
 
   [mutationTypes.SET_OR_ADD_TEST](state: ProblemsState, test: Test) {
-    updateById(state.data as Array<FullProblem>, test.problemId, (p) => setByIdOrPush(p.tests, test))
+    updateById(state.data as Array<FullProblem>, test.problemId, p => setByIdOrPush(p.tests, test))
   },
 
   [mutationTypes.DELETE_TEST](state: ProblemsState, test: Test) {
-    updateById(state.data as Array<FullProblem>, test.problemId, (p) => p.tests = removeById(p.tests, test.id))
+    updateById(state.data as Array<FullProblem>, test.problemId, p => p.tests = removeById(p.tests, test.id))
   },
 
   [mutationTypes.SET_BY_ID_TEST](state: ProblemsState, { id, model }: ISetByIdPayload<Test>) {
-    updateById(state.data as Array<FullProblem>, model.problemId, (p) => setById(p.tests, id, model))
+    updateById(state.data as Array<FullProblem>, model.problemId, p => setById(p.tests, id, model))
   },
 
   [mutationTypes.ADD_PROBLEM_ERROR](state: ProblemsState, error: ProblemError) {

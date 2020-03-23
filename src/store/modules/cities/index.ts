@@ -11,7 +11,7 @@ export default {
   mutations: crudMutations(),
   actions: crudActions<City, CitiesOrderBy>(
     STATUS_SCOPES.CITIES,
-    (countryId) => ({
+    countryId => ({
       id: '',
       name: '',
       countryId: countryId as string,
@@ -19,20 +19,20 @@ export default {
       updatedAt: new Date()
     }),
     {
-      readList: (variables) => API.cities(variables),
+      readList: variables => API.cities(variables),
 
-      create: (city) => API.createCity({ input: { city: cityToInput(city) } }),
+      create: city => API.createCity({ input: { city: cityToInput(city) } }),
 
-      read: async (id) => responseToCity(await API.city({ id })),
+      read: async id => responseToCity(await API.city({ id })),
 
-      update: (city) => API.updateCity({
+      update: city => API.updateCity({
         input: {
           id: city.id,
           patch: cityToInput(city)
         }
       }),
 
-      delete: (id) => API.deleteCity({ input: { id } })
+      delete: id => API.deleteCity({ input: { id } })
     }
   )
 }

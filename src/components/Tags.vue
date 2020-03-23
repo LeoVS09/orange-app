@@ -29,7 +29,10 @@
 <script lang="ts">
 import Vue from 'vue'
 import {
-  Component, Prop, Emit, Mixins
+  Component,
+  Prop,
+  Emit,
+  Mixins
 } from 'vue-property-decorator'
 import { ButtonGroup } from '@/components/index'
 import { onWheel, randomId } from '@/components/utils'
@@ -121,7 +124,7 @@ export default class Tags extends Mixins(Loadable) {
        }
      })
 
-     el.addEventListener('mouseleave', (event) => {
+     el.addEventListener('mouseleave', event => {
        this.scrollTo = ScrollTo.NONE
      })
    }

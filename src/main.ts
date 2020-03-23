@@ -61,7 +61,7 @@ window.debugState = () => (() => JSON.parse(JSON.stringify(store.state)))()
 new Vue({
   store,
   router,
-  render: (h) => h(App),
+  render: h => h(App),
   // apolloProvider: createProvider(),
   components: { App }
 }).$mount('#app')

@@ -60,6 +60,6 @@ export const generateStatusManipulation = (scope: string, commit: Commit, rootGe
   setStatus: (id, status) => setStatus(scope, commit, id, status),
   setReadState: (id, read) => setReadState(scope, commit, id, read),
   setModelState: (id, status, read) => setModelState(scope, commit, id, status, read),
-  getRead: (id) => rootGetters[GET_READ_STATE](scope, id),
-  getStatus: (id) => rootGetters[GET_STATUS](scope, id)
+  getRead: id => rootGetters[GET_READ_STATE](scope, id),
+  getStatus: id => rootGetters[GET_STATUS](scope, id)
 })

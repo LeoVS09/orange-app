@@ -27,7 +27,7 @@ import {
 export interface LazyReactiveDatabaseOptions {
   storage?: DatabaseStorage
   schemas?: AosEntitySchemaStorage
-  excludeProperties?: Array<string>
+  excludeProperties?: Array<string | RegExp>
 }
 
 export default class LazyReactiveDatabase implements ILazyReactiveDatabase {
@@ -35,7 +35,7 @@ export default class LazyReactiveDatabase implements ILazyReactiveDatabase {
 
   public schemas: AosEntitySchemaStorage
 
-  public excludeProperties: Array<string>
+  public excludeProperties: Array<string | RegExp>
 
   constructor(
     {
@@ -161,7 +161,7 @@ export default class LazyReactiveDatabase implements ILazyReactiveDatabase {
       return false
 
     Object.keys(data)
-      .forEach((key) => model[key] = data[key])
+      .forEach(key => model[key] = data[key])
 
     return true
   }

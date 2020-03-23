@@ -24,7 +24,7 @@ export default class App extends Vue {
 
    public created() {
      this.initProfile()
-       .then((result) => {
+       .then(result => {
          if (!result)
            return
 
