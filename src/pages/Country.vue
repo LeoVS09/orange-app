@@ -49,7 +49,8 @@ import {
   DataView
 } from '@/components'
 import { ROUTES } from '@/router/routes'
-import { City, CountryRepository } from '@/models/country'
+import { City } from '@/models'
+import { CountryRepository } from '@/db'
 import { RouterPush } from '@/components/decorators'
 import ReactiveUpdate, { reactiveUpdate } from '@/components/mixins/ReactiveUpdate'
 

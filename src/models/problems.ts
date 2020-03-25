@@ -1,19 +1,6 @@
 import { Test } from '@/models/tests'
 import { ModelReadState, ModelStatus } from '@/store/modules/statuses/types'
-import {
-  defaultPartialProfile, mockInput, mockOutput, mockTag
-} from '@/models/mock/mock'
-import { Repository } from '@/lazyDB'
-import { AosFieldType } from '@/abstractObjectScheme'
-import { PartialUserProfile, UserType, Profile } from './user'
-
-export {
-  defaultPartialProfile,
-  mockTag,
-  mockOutput,
-  mockInput,
-  mockTags
-} from './mock/mock'
+import { PartialUserProfile, Profile } from './user'
 
 export enum ProblemTestingStatus {
    NotTested = 'NotTested',
@@ -22,63 +9,6 @@ export enum ProblemTestingStatus {
    Solved = 'Solved',
    Error = 'Error',
 }
-
-export const TagRepository = new Repository(
-  'tag',
-  {
-    fields: {
-      problemsTags: AosFieldType.OneToMany
-    }
-  }
-)
-
-export const ProblemRepository = new Repository(
-  'problem',
-  {
-    fields: {
-      author: {
-        type: AosFieldType.OneToOne,
-        table: 'profile'
-      },
-      tester: {
-        type: AosFieldType.OneToOne,
-        table: 'profile'
-      },
-      inputType: AosFieldType.OneToOne,
-      outputType: AosFieldType.OneToOne,
-      tests: AosFieldType.OneToMany,
-      problemsTags: AosFieldType.OneToMany
-    }
-  }
-)
-
-export const ProgramInputType = new Repository(
-  'programInputType',
-  {
-    fields: {
-      problemsByInputTypeId: AosFieldType.OneToMany
-    }
-  }
-)
-
-export const ProgramOutputType = new Repository(
-  'programOutputType',
-  {
-    fields: {
-      problemsByOutputTypeId: AosFieldType.OneToMany
-    }
-  }
-)
-
-export const ProblemsTagRepository = new Repository(
-  'problemsTag',
-  {
-    fields: {
-      problem: AosFieldType.OneToOne,
-      tag: AosFieldType.OneToOne
-    }
-  }
-)
 
 export interface Problem {
   id: string
@@ -208,53 +138,6 @@ export interface ProblemError {
    readState: ModelReadState
    status: ModelStatus
    testingStatus?: ProblemTestingStatus
-}
-
-export function defaultProblem(): FullProblem {
-  return {
-    id: '',
-    name: '',
-    description: '',
-    difficulty: 0,
-    note: '',
-
-    createdAt: new Date(),
-    updatedAt: new Date(),
-    publicationDate: new Date(),
-
-    author: {
-      ...defaultPartialProfile(),
-      login: 'Author',
-      type: UserType.TEACHER
-    },
-
-    tester: {
-      ...defaultPartialProfile(),
-      login: 'Tester',
-      type: UserType.TEACHER
-    },
-
-    problemsTags: {
-      nodes: [],
-      totalCount: 0
-    },
-
-    // tags: [mockTag('some'), mockTag('tags')],
-
-    limits: {
-      time: 30000,
-      memory: 2048
-    },
-
-    io: {
-      input: mockInput('stdin'),
-      output: mockOutput('stdout')
-    },
-
-    testingStatus: ProblemTestingStatus.NotTested,
-
-    tests: []
-  }
 }
 
 export enum ProblemFilter {

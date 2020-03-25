@@ -11,7 +11,7 @@
             <breadcrumb :to="{
                name: ROUTES.COUNTRY,
                params: {id: model.countryId}
-            }">{{parent.name || $t('Country')}}</breadcrumb>
+            }">{{model.country.name || $t('Country')}}</breadcrumb>
          </template>
       </PageHeader>
 
@@ -23,6 +23,7 @@
             :validateAdd="validate"
             @add="add"
             @choose-item="chooseItem"
+            :key="reactive"
          >
             <list-column name="longName">name</list-column>
             <list-column name="shortName">short</list-column>
@@ -40,7 +41,7 @@ import { University } from '@/models'
 import { ModelInfo, Section, PageHeaderAction } from '@/components'
 import { ROUTES } from '@/router'
 import { RouterPush } from '@/components/decorators'
-import { CityRepository } from '@/models/country'
+import { CityRepository } from '@/db'
 import ReactiveUpdate, { reactiveUpdate } from '@/components/mixins/ReactiveUpdate'
 import {
   List,
@@ -63,10 +64,6 @@ import {
 export default class CityView extends Mixins(ReactiveUpdate) {
   get model() {
     return CityRepository.findOne(this.id, reactiveUpdate(this))
-  }
-
-  get parent() {
-    return this.model && this.model.country
   }
 
    @Prop({

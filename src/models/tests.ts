@@ -21,16 +21,3 @@ export interface ResultOfProblem {
    member: string
    testsResults: Array<ResultOfTest>
 }
-
-export function defaultTest(): Test {
-  return {
-    id: '',
-    index: 0,
-    input: '',
-    output: '',
-    problemId: '',
-    createdAt: new Date(),
-    updatedAt: new Date(),
-    isPublic: false
-  }
-}

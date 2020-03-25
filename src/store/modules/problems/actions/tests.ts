@@ -1,5 +1,7 @@
 import {
-  defaultTest, FullProblem, PartialProblem, Test
+  FullProblem,
+  PartialProblem,
+  Test
 } from '@/models'
 import { IActionContext, RootGetters } from '@/store/state'
 import { findById } from '@/store/CrudModule/actions/utils'
@@ -12,7 +14,11 @@ import { ProblemsState } from '@/store/modules'
 import { generateStatusManipulation } from '@/store/modules/statuses/utils'
 import * as mutations from '@/store/modules/problems/mutationTypes'
 import {
-  addModelForCreateAction, createAction, deleteAction, editAction, updateAction
+  addModelForCreateAction,
+  createAction,
+  deleteAction,
+  editAction,
+  updateAction
 } from '@/store/CrudModule'
 import * as API from '@/api'
 import { TestInput } from '@/api/database/global-types'
@@ -30,6 +36,19 @@ export interface IUpdateTestActionPayload {
 export interface IDeleteTestActionPayload {
    problemId: string
    testId: string
+}
+
+export function defaultTest(): Test {
+  return {
+    id: '',
+    index: 0,
+    input: '',
+    output: '',
+    problemId: '',
+    createdAt: new Date(),
+    updatedAt: new Date(),
+    isPublic: false
+  }
 }
 
 export default {

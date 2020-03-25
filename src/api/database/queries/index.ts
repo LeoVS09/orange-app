@@ -1,5 +1,3 @@
-import { mockCountries, mockCities, mockCountry } from '@/models/mock/countries'
-import { mockTags } from '@/models/mock/mock'
 import { generateQuery, generateSimpleQuery } from '@/api/database/utils'
 import currentUserGql from './currentUser.graphql'
 import searchCountriesGql from './searchCountries.graphql'
@@ -42,44 +40,12 @@ export const searchCountries = generateQuery<types.SearchCountriesVariables, typ
 
 export const countries = generateQuery<types.CountriesVariables, types.Countries, types.Countries_countries>(
   countriesGql,
-  data => data.countries,
-  () => new Promise<types.Countries_countries>(resolve => setTimeout(() => {
-    const nodes = mockCountries()
-      .map(c => ({
-        ...c,
-        createdAt: c.createdAt.toDateString(),
-        updatedAt: c.updatedAt.toDateString()
-      }))
-
-    // @ts-ignore
-    resolve({
-      totalCount: nodes.length,
-      nodes
-    })
-  },
-  1000))
+  data => data.countries
 )
 
 export const country = generateQuery<types.CountryVariables, types.Country, types.Country_country>(
   countryGql,
-  data => data.country,
-  id => new Promise<types.Country_country>(resolve =>
-  // @ts-ignore
-    setTimeout(() => resolve({
-      ...mockCountry(),
-      id,
-      createdAt: new Date().toDateString(),
-      updatedAt: new Date().toDateString(),
-      cities: {
-        nodes: mockCities().map(c => ({
-          ...c,
-          createdAt: c.createdAt.toDateString(),
-          updatedAt: c.updatedAt.toDateString(),
-          countryId: id
-        }))
-      }
-    }),
-    1000))
+  data => data.country
 )
 
 // -------------------------------------------------- City -------------------------------------------------------------
@@ -133,15 +99,7 @@ export const inputOutputTypes = generateQuery<types.InputOutputTypesVariables, t
 
 export const tags = generateQuery<types.TagsVariables, types.Tags, types.Tags_tags>(
   tagsGql,
-  data => data.tags,
-  () => new Promise(resolve => setTimeout(() => {
-    const nodes = mockTags()
-    return {
-      totalCount: nodes.length,
-      nodes
-    }
-  },
-  1000))
+  data => data.tags
 )
 
 export const tag = generateQuery<types.TagVariables, types.Tag, types.Tag_tag>(

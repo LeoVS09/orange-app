@@ -5,23 +5,19 @@ import casual from 'casual'
 import { MockList } from 'vue-cli-plugin-apollo/node_modules/graphql-tools'
 import moment from 'moment'
 
-function getRandomInt(max) {
-  return Math.floor(Math.random() * Math.floor(max))
-}
-
 const mockConnection = () => ({
-  nodes: () => new MockList([5, 20])
+  nodes: () => new MockList([5, 30])
 })
 
 const mockEntity = () => ({
-  createdAt: moment().add(-(getRandomInt(20) + 5), 'month').format(),
-  updatedAt: moment().add(-(getRandomInt(20) + 5), 'days').format()
+  createdAt: moment().add(casual.integer(5, 30), 'month').format(),
+  updatedAt: moment().add(casual.integer(5, 30), 'days').format()
 })
 
 export default {
   UUID: () => shortid.generate(),
   Datetime: () => moment().format(),
-  Int: () => getRandomInt(20) + 5,
+  Int: () => casual.integer(5, 30),
 
   Country: () => ({
     name: casual.country,
@@ -58,9 +54,16 @@ export default {
     ...mockEntity()
   }),
 
+  University: () => ({
+    shortName: casual.word,
+    longName: casual.words(casual.integer(2, 6)),
+    ...mockEntity()
+  }),
+
   Query: () => ({
     countries: mockConnection,
     tags: mockConnection,
-    problems: mockConnection
+    problems: mockConnection,
+    universities: mockConnection
   })
 }

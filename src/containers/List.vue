@@ -62,7 +62,7 @@
         :pagesCount="pagesCount"
         :currentPage="currentPage"
         :maxPageNumbers="maxPageNumbers"
-        @to-paga="goToPage"
+        @to-page="goToPage"
         @previous-page="previousPage"
         @next-page="nextPage"
       />

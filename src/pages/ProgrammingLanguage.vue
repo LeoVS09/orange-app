@@ -30,7 +30,7 @@ import {
   Button, Tags, Input, ModelInfo, Section, TextSection, PageHeaderAction, Filters, DataView
 } from '@/components'
 import { ROUTES } from '@/router'
-import { ProgrammingLanguageRepository } from '@/models/programmingLanguage'
+import { ProgrammingLanguageRepository } from '@/db'
 import LazyData from '@/containers/LazyData.vue'
 import LazyProperty from '@/containers/LazyProperty.vue'
 import {

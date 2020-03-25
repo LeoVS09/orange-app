@@ -41,10 +41,13 @@
 import Vue from 'vue'
 import { Component } from 'vue-property-decorator'
 import { Getter, Action } from 'vuex-class'
-import { City, Country } from '@/models/country'
-import { Email } from '@/models/email'
+import {
+  City,
+  Country,
+  UserProfile,
+  Email
+} from '@/models'
 import { PageHeader } from '@/containers'
-import { UserProfile } from '../models'
 import * as actions from '../store/actionTypes'
 import {
   MaterialIcon,

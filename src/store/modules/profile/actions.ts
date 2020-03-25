@@ -1,22 +1,16 @@
-import * as API from '@/api'
-import * as queryTypes from '@/api/database/queries/types'
+import { UserProfile } from '@/models'
 import {
-  University,
-  UserProfile
-} from '@/models'
-import {
-  checkIsLogin, currentUserIfHave, signin, signout, signup
+  checkIsLogin,
+  currentUserIfHave,
+  signin,
+  signout,
+  signup
 } from '@/authentication'
-import { City, Country } from '@/models/country'
 import { IActionContext } from '@/store/state'
-import * as fragmentsTypes from '@/api/database/fragments/types'
 import { IRegisterProfilePayload } from './types'
 import * as mutations from './mutationTypes'
 import * as actionTypes from './actionTypes'
 import { ProfileState } from './state'
-
-// const DEBUG = process.env.NODE_ENV !== 'production'
-const DEBUG = false
 
 export interface ILoginToProfilePayload {
    login: string

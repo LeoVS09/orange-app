@@ -36,7 +36,7 @@ import {
 } from '@/components'
 import { ROUTES } from '@/router'
 import { RouterPush } from '@/components/decorators'
-import { ProgrammingLanguageRepository } from '@/models/programmingLanguage'
+import { ProgrammingLanguageRepository } from '@/db'
 import { List, ListColumn, PageHeader } from '@/containers'
 
 @Component({

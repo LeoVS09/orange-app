@@ -1,6 +1,4 @@
-import { Country, UserProfile } from '@/models'
-import { City } from '@/models/country'
-import { University } from '@/models/university'
+import { UserProfile } from '@/models'
 
 export class ProfileState {
    public data?: UserProfile

@@ -178,8 +178,8 @@ export default class Pagination extends Vue {
       this.goToPage(nextPage)
     }
 
-    @Emit('previus-page')
-    public previusPage() {
+    @Emit('previous-page')
+    public previousPage() {
       const nextPage = this.currentPage - 1
       if (nextPage < 1)
         return

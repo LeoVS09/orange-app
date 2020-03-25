@@ -9,11 +9,11 @@ import { ContestInput, ContestsOrderBy } from '@/api/database/global-types'
 import * as API from '@/api'
 import * as fragmentsTypes from '@/api/database/fragments/types'
 import { STATUS_SCOPES } from '@/store/statusScopes'
-import { defaultPartialProfile } from '@/models/problems'
 import { FullContest } from '@/models/contest'
 import { responseToPartialUserProfile } from '@/store/modules/problems/utils'
 import { responseToPartialProblem } from '@/store/modules/problems/actions/responseFormat'
 import { PartialUserProfile } from '@/models/user'
+import { defaultPartialProfile } from '../problems/actions'
 
 export default {
   namespaced: true,

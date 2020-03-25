@@ -23,21 +23,21 @@
 import Vue from 'vue'
 import { Component, Mixins } from 'vue-property-decorator'
 import { Getter, Action } from 'vuex-class'
-import { FullProblem, PartialProblem } from '@/models'
+import {
+  FullProblem,
+  PartialProblem,
+  Tag,
+  Problem
+} from '@/models'
 import { MODULES, actionName } from '@/store/actionTypes'
 import { PageHeaderAction, Section } from '@/components'
 import { ROUTES } from '@/router'
-import {
-  Tag,
-  ProblemRepository,
-  Problem,
-  TagRepository
-} from '@/models/problems'
 import { RouterPush } from '@/components/decorators'
 import ProblemsList from '@/containers/ProblemsList.vue'
 import { List, ListColumn, PageHeader } from '@/containers'
 import ReactiveUpdate, { reactiveUpdate } from '@/components/mixins/ReactiveUpdate'
 import { ListProducer } from '@/lazyDB/database/types'
+import { ProblemRepository, TagRepository } from '@/db'
 
 // TODO: add author
 // TODO: make difficulty like in Problems list
@@ -59,40 +59,11 @@ export default class Problems extends Mixins(ReactiveUpdate) {
   }
 
   get list(): ListProducer<Problem> {
-    const list = ProblemRepository.list(reactiveUpdate(this)) as ListProducer<Problem>
-    // const list: ListProducer<Problem> = {
-    //   totalCount: 0,
-    //   onPage: 10,
-    //   pageNumber: 10,
-    //   maxPageNumber: 10,
-    //   nodes: [{
-    //     id: 'some-id',
-    //     difficulty: 10,
-    //     name: 'problem-name',
-    //     author: { user: { name: 'some-author' } },
-    //     updatedAt: new Date(),
-    //     createdAt: new Date()
-    //   } as unknown as Problem]
-    // }
-    console.log('Problems list:', list)
-    return list
+    return ProblemRepository.list(reactiveUpdate(this))
   }
 
   get tags(): ListProducer<Tag> {
-    return TagRepository.list(reactiveUpdate(this)) as ListProducer<Tag>
-    // const list: ListProducer<Tag> = {
-    //   totalCount: 0,
-    //   onPage: 10,
-    //   pageNumber: 10,
-    //   maxPageNumber: 10,
-    //   nodes: [{
-    //     id: 'some-id',
-    //     name: 'problem-name',
-    //     updatedAt: new Date(),
-    //     createdAt: new Date()
-    //   }]
-    // }
-    // return list
+    return TagRepository.list(reactiveUpdate(this))
   }
 
    @Getter public isTeacher!: boolean;

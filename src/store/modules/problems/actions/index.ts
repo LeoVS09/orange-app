@@ -1,24 +1,25 @@
 import * as API from '@/api'
 import {
-  defaultProblem,
   FullProblem,
   PartialProblem,
-  ResultRunProgram
+  ResultRunProgram,
+  UserType,
+  ProblemTestingStatus,
+  PartialUserProfile,
+  Tag,
+  PartialProgramInput,
+  PartialProgramOutput
 } from '@/models'
 import { IActionContext } from '@/store/state'
-import {
-  crudActions
-} from '@/store/CrudModule'
+import { crudActions } from '@/store/CrudModule'
 import { ProblemInput, ProblemsOrderBy } from '@/api/database/global-types'
 import { responseToFullProblem, responseToPartialProblem } from '@/store/modules/problems/actions/responseFormat'
 import { STATUS_SCOPES } from '@/store/statusScopes'
+import { randomId } from '@/components/utils'
 import { ProblemsState } from '../state'
 import * as mutations from '../mutationTypes'
 import * as actionTypes from '../actionTypes'
 import { IStartTestingSolutionPayload } from '../mutations'
-
-// const DEBUG = process.env.NODE_ENV !== 'production'
-const DEBUG = false
 
 // TODO: make solution creating
 export interface IUploadCodePayload {
@@ -31,6 +32,87 @@ export {
   IDeleteTestActionPayload,
   IUpdateTestActionPayload
 } from './tests'
+
+export function defaultProblem(): FullProblem {
+  return {
+    id: '',
+    name: '',
+    description: '',
+    difficulty: 0,
+    note: '',
+
+    createdAt: new Date(),
+    updatedAt: new Date(),
+    publicationDate: new Date(),
+
+    author: {
+      ...defaultPartialProfile(),
+      login: 'Author',
+      type: UserType.TEACHER
+    },
+
+    tester: {
+      ...defaultPartialProfile(),
+      login: 'Tester',
+      type: UserType.TEACHER
+    },
+
+    problemsTags: {
+      nodes: [],
+      totalCount: 0
+    },
+
+    // tags: [mockTag('some'), mockTag('tags')],
+
+    limits: {
+      time: 30000,
+      memory: 2048
+    },
+
+    io: {
+      input: mockInput('stdin'),
+      output: mockOutput('stdout')
+    },
+
+    testingStatus: ProblemTestingStatus.NotTested,
+
+    tests: []
+  }
+}
+
+export function defaultPartialProfile(): PartialUserProfile {
+  return {
+    id: randomId(),
+    userId: randomId(),
+    login: 'SomeUser',
+    firstName: 'First',
+    lastName: 'Last',
+    type: UserType.CONTESTANT
+  }
+}
+
+export function mockTag(name: string): Tag {
+  return {
+    id: `test-${name}`,
+    name,
+    createdAt: new Date(),
+    updatedAt: new Date()
+  }
+}
+
+export function mockInput(name: string): PartialProgramInput {
+  return {
+    id: `tests.ts${name}`,
+    name
+  }
+}
+
+export function mockOutput(name: string): PartialProgramOutput {
+  return {
+    id: `tests.ts${name}`,
+    name
+  }
+}
 
 export default {
 

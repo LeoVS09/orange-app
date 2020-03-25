@@ -5,17 +5,18 @@
          :modified="model.updatedAt"
          v-model="model.shortName"
          :is-loading="model | isReading('shortName')"
+         :key="reactive"
       >
          <template #breadcrumbs>
             <breadcrumb :to="{name: ROUTES.COUNTRIES}">{{'Countries' | translate}}</breadcrumb>
             <breadcrumb :to="{
                name: ROUTES.COUNTRY,
-               params: {id: country && country.id}
-            }">{{country.name || $t('Country')}}</breadcrumb>
+               params: {id: model.city.country.id}
+            }">{{model.city.country.name || $t('Country')}}</breadcrumb>
             <breadcrumb :to="{
                name: ROUTES.CITY,
-               params: {id: city && city.id}
-            }">{{city.name || $t('City')}}</breadcrumb>
+               params: {id: model.city.id}
+            }">{{model.city.name || $t('City')}}</breadcrumb>
          </template>
       </PageHeader>
 
@@ -35,10 +36,10 @@ import { Getter } from 'vuex-class'
 import { Section, PageHeaderAction } from '@/components'
 import { ROUTES } from '@/router'
 import ReactiveUpdate, { reactiveUpdate } from '@/components/mixins/ReactiveUpdate'
-import { UniversityRepository } from '@/models/university'
 import LazyData from '@/containers/LazyData.vue'
 import LazyProperty from '@/containers/LazyProperty.vue'
 import { PageHeader, Breadcrumb } from '@/containers'
+import { UniversityRepository } from '@/db'
 
 @Component({
   components: {
@@ -59,14 +60,6 @@ export default class UniversityView extends Mixins(ReactiveUpdate) {
 
    get model() {
      return UniversityRepository.findOne(this.id, reactiveUpdate(this))
-   }
-
-   get city() {
-     return this.model && this.model.city
-   }
-
-   get country() {
-     return this.city && this.city.country
    }
 
    @Getter public isTeacher!: boolean;
