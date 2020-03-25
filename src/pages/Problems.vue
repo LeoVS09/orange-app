@@ -24,7 +24,7 @@ import Vue from 'vue'
 import { Component, Mixins } from 'vue-property-decorator'
 import { Getter, Action } from 'vuex-class'
 import { FullProblem, PartialProblem } from '@/models'
-import * as actions from '@/store/actionTypes'
+import { MODULES, actionName } from '@/store/actionTypes'
 import { PageHeaderAction, Section } from '@/components'
 import { ROUTES } from '@/router'
 import {
@@ -38,8 +38,6 @@ import ProblemsList from '@/containers/ProblemsList.vue'
 import { List, ListColumn, PageHeader } from '@/containers'
 import ReactiveUpdate, { reactiveUpdate } from '@/components/mixins/ReactiveUpdate'
 import { ListProducer } from '@/lazyDB/database/types'
-
-const { MODULES, actionName } = actions
 
 // TODO: add author
 // TODO: make difficulty like in Problems list

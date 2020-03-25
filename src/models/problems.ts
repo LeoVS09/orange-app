@@ -256,3 +256,10 @@ export function defaultProblem(): FullProblem {
     tests: []
   }
 }
+
+export enum ProblemFilter {
+  All = 'All',
+  Public = 'Open',
+  NotPublic = 'Closed',
+  Resolved = 'Resolved',
+}

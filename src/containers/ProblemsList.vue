@@ -46,10 +46,14 @@ import {
   Section,
   Filters
 } from '@/components'
-import { Problem } from '@/models/problems'
-import { profileInitials } from '@/models/user'
-import { FullProblem, PartialProblem, Tag } from '../models'
-import { ProblemFilter } from '../store/modules/problems'
+import {
+  FullProblem,
+  PartialProblem,
+  Tag,
+  Problem,
+  profileInitials,
+  ProblemFilter
+} from '../models'
 import List from './List.vue'
 import ListColumn from './ListColumn.vue'
 

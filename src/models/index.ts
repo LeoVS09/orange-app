@@ -1,20 +1,7 @@
-export { UserProfile, UserType } from './user'
-export { Team } from './team'
-export {
-  FullProblem,
-  ResultRunProgram,
-  defaultProblem,
-  ProblemTestingStatus,
-  PartialProblem,
-  ProblemError,
-  Tag
-} from './problems'
-export {
-  Test,
-  ResultOfProblem,
-  ResultOfTest,
-  defaultTest
-} from './tests'
-export { PartialContest, Requirements } from './contest'
-export { Country, City } from './country'
-export { University } from './university'
+export * from './user'
+export * from './team'
+export * from './problems'
+export * from './tests'
+export * from './contest'
+export * from './country'
+export * from './university'

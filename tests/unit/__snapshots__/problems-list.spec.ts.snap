@@ -1,0 +1,964 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ProblemsList.vue renders problems empty list 1`] = `
+<div
+  class="problems-list"
+>
+  <div
+    class="tags scrollable-horizontal"
+  >
+    <div
+      class="tags--separator"
+    >
+      <span />
+    </div>
+     
+    <span
+      class="tags--left-gradient"
+    />
+     
+    <div
+      class="tags--content-wrapper"
+    >
+      <div
+        class="tags--content button-group horizontal secondary"
+      >
+        <div
+          class="button-group--content"
+        >
+           
+        </div>
+      </div>
+    </div>
+     
+    <!---->
+  </div>
+   
+  <section
+    class="section"
+  >
+    <div
+      class="filters"
+    >
+      <div
+        class="button-group horizontal"
+      >
+        <div
+          class="button-group--content"
+        >
+           
+          <div
+            class="button-group--item button"
+          >
+            <button
+              class="button--submit active gradient-highlight text-not-faded"
+            >
+              <div
+                class="button--content"
+              >
+                <!---->
+                 
+                <span
+                  class="button--text"
+                >
+                  All
+                </span>
+                 
+                <!---->
+              </div>
+            </button>
+          </div>
+          <div
+            class="button-group--item button"
+          >
+            <button
+              class="button--submit gradient-highlight text-not-faded"
+            >
+              <div
+                class="button--content"
+              >
+                <!---->
+                 
+                <span
+                  class="button--text"
+                >
+                  Public
+                </span>
+                 
+                <!---->
+              </div>
+            </button>
+          </div>
+          <div
+            class="button-group--item button"
+          >
+            <button
+              class="button--submit gradient-highlight text-not-faded"
+            >
+              <div
+                class="button--content"
+              >
+                <!---->
+                 
+                <span
+                  class="button--text"
+                >
+                  Not public
+                </span>
+                 
+                <!---->
+              </div>
+            </button>
+          </div>
+          <div
+            class="button-group--item button"
+          >
+            <button
+              class="button--submit gradient-highlight text-not-faded"
+            >
+              <div
+                class="button--content"
+              >
+                <!---->
+                 
+                <span
+                  class="button--text"
+                >
+                  Resolved
+                </span>
+                 
+                <!---->
+              </div>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+     
+    <div
+      class="list--container"
+    >
+      <div
+        class="list--hidden-columns"
+      >
+        <div
+          class="list-column"
+        >
+          name
+        </div>
+         
+        <div
+          class="list-column"
+        >
+          difficulty
+        </div>
+         
+        <div
+          class="list-column"
+        >
+          author
+        </div>
+         
+        <div
+          class="list-column"
+        >
+          updated
+        </div>
+      </div>
+       
+      <div
+        class="list"
+      >
+        <div
+          class="list--header"
+        />
+         
+        <!---->
+         
+        <div
+          mode="out-in"
+        />
+      </div>
+       
+      <!---->
+    </div>
+  </section>
+</div>
+`;
+
+exports[`ProblemsList.vue renders problems list with data 1`] = `
+<div
+  class="problems-list"
+>
+  <div
+    class="tags scrollable-horizontal"
+  >
+    <div
+      class="tags--separator"
+    >
+      <span />
+    </div>
+     
+    <span
+      class="tags--left-gradient"
+    />
+     
+    <div
+      class="tags--content-wrapper"
+    >
+      <div
+        class="tags--content button-group horizontal secondary"
+      >
+        <div
+          class="button-group--content"
+        >
+           
+          <div
+            class="button-group--item button"
+          >
+            <button
+              class="button--submit simple text-not-faded secondary no-active-bold simple-active"
+            >
+              <div
+                class="button--content"
+              >
+                <!---->
+                 
+                <span
+                  class="button--text"
+                >
+                  magni
+                </span>
+                 
+                <!---->
+              </div>
+            </button>
+          </div>
+          <div
+            class="button-group--item button"
+          >
+            <button
+              class="button--submit simple text-not-faded secondary no-active-bold simple-active"
+            >
+              <div
+                class="button--content"
+              >
+                <!---->
+                 
+                <span
+                  class="button--text"
+                >
+                  id
+                </span>
+                 
+                <!---->
+              </div>
+            </button>
+          </div>
+          <div
+            class="button-group--item button"
+          >
+            <button
+              class="button--submit simple text-not-faded secondary no-active-bold simple-active"
+            >
+              <div
+                class="button--content"
+              >
+                <!---->
+                 
+                <span
+                  class="button--text"
+                >
+                  dolore
+                </span>
+                 
+                <!---->
+              </div>
+            </button>
+          </div>
+          <div
+            class="button-group--item button"
+          >
+            <button
+              class="button--submit simple text-not-faded secondary no-active-bold simple-active"
+            >
+              <div
+                class="button--content"
+              >
+                <!---->
+                 
+                <span
+                  class="button--text"
+                >
+                  sit
+                </span>
+                 
+                <!---->
+              </div>
+            </button>
+          </div>
+          <div
+            class="button-group--item button"
+          >
+            <button
+              class="button--submit simple text-not-faded secondary no-active-bold simple-active"
+            >
+              <div
+                class="button--content"
+              >
+                <!---->
+                 
+                <span
+                  class="button--text"
+                >
+                  corrupti
+                </span>
+                 
+                <!---->
+              </div>
+            </button>
+          </div>
+          <div
+            class="button-group--item button"
+          >
+            <button
+              class="button--submit simple text-not-faded secondary no-active-bold simple-active"
+            >
+              <div
+                class="button--content"
+              >
+                <!---->
+                 
+                <span
+                  class="button--text"
+                >
+                  officia
+                </span>
+                 
+                <!---->
+              </div>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+     
+    <span
+      class="tags--right-gradient"
+    />
+  </div>
+   
+  <section
+    class="section"
+  >
+    <div
+      class="filters"
+    >
+      <div
+        class="button-group horizontal"
+      >
+        <div
+          class="button-group--content"
+        >
+           
+          <div
+            class="button-group--item button"
+          >
+            <button
+              class="button--submit active gradient-highlight text-not-faded"
+            >
+              <div
+                class="button--content"
+              >
+                <!---->
+                 
+                <span
+                  class="button--text"
+                >
+                  All
+                </span>
+                 
+                <!---->
+              </div>
+            </button>
+          </div>
+          <div
+            class="button-group--item button"
+          >
+            <button
+              class="button--submit gradient-highlight text-not-faded"
+            >
+              <div
+                class="button--content"
+              >
+                <!---->
+                 
+                <span
+                  class="button--text"
+                >
+                  Public
+                </span>
+                 
+                <!---->
+              </div>
+            </button>
+          </div>
+          <div
+            class="button-group--item button"
+          >
+            <button
+              class="button--submit gradient-highlight text-not-faded"
+            >
+              <div
+                class="button--content"
+              >
+                <!---->
+                 
+                <span
+                  class="button--text"
+                >
+                  Not public
+                </span>
+                 
+                <!---->
+              </div>
+            </button>
+          </div>
+          <div
+            class="button-group--item button"
+          >
+            <button
+              class="button--submit gradient-highlight text-not-faded"
+            >
+              <div
+                class="button--content"
+              >
+                <!---->
+                 
+                <span
+                  class="button--text"
+                >
+                  Resolved
+                </span>
+                 
+                <!---->
+              </div>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+     
+    <div
+      class="list--container"
+    >
+      <div
+        class="list--hidden-columns"
+      >
+        <div
+          class="list-column"
+        >
+          name
+        </div>
+         
+        <div
+          class="list-column"
+        >
+          difficulty
+        </div>
+         
+        <div
+          class="list-column"
+        >
+          author
+        </div>
+         
+        <div
+          class="list-column"
+        >
+          updated
+        </div>
+      </div>
+       
+      <div
+        class="list"
+      >
+        <div
+          class="list--header"
+        >
+          <div
+            class="list--header-item"
+          >
+            <span
+              class="list--header-text"
+            >
+              name
+            </span>
+             
+            <div
+              class="list--header-sort-arrow"
+            >
+              <!---->
+            </div>
+          </div>
+          <div
+            class="list--header-item"
+          >
+            <span
+              class="list--header-text"
+            >
+              difficulty
+            </span>
+             
+            <div
+              class="list--header-sort-arrow"
+            >
+              <!---->
+            </div>
+          </div>
+          <div
+            class="list--header-item"
+          >
+            <span
+              class="list--header-text"
+            >
+              author
+            </span>
+             
+            <div
+              class="list--header-sort-arrow"
+            >
+              <!---->
+            </div>
+          </div>
+          <div
+            class="list--header-item"
+          >
+            <span
+              class="list--header-text"
+            >
+              updated
+            </span>
+             
+            <div
+              class="list--header-sort-arrow"
+            >
+              <!---->
+            </div>
+          </div>
+        </div>
+         
+        <!---->
+         
+        <div
+          mode="out-in"
+        >
+          <div
+            class="list-item bordered hover-shadow"
+            style="background: transparent;"
+          >
+            <div
+              class="list-item--content"
+            >
+              <span
+                class="list-item--property"
+              >
+                Optio ratione
+              </span>
+              <span
+                class="list-item--property"
+              >
+                7
+              </span>
+              <span
+                class="list-item--property"
+              >
+                Miss Lavada Hoeger
+              </span>
+              <span
+                class="list-item--property"
+              >
+                15 days ago
+              </span>
+            </div>
+          </div>
+          <div
+            class="list-item bordered hover-shadow"
+            style="background: transparent;"
+          >
+            <div
+              class="list-item--content"
+            >
+              <span
+                class="list-item--property"
+              >
+                Molestias architecto aut
+              </span>
+              <span
+                class="list-item--property"
+              >
+                23
+              </span>
+              <span
+                class="list-item--property"
+              >
+                Mr. Wilma Corkery
+              </span>
+              <span
+                class="list-item--property"
+              >
+                11 days ago
+              </span>
+            </div>
+          </div>
+          <div
+            class="list-item bordered hover-shadow"
+            style="background: transparent;"
+          >
+            <div
+              class="list-item--content"
+            >
+              <span
+                class="list-item--property"
+              >
+                Autem et aliquid
+              </span>
+              <span
+                class="list-item--property"
+              >
+                14
+              </span>
+              <span
+                class="list-item--property"
+              >
+                Ms. Maynard Abbott
+              </span>
+              <span
+                class="list-item--property"
+              >
+                19 days ago
+              </span>
+            </div>
+          </div>
+          <div
+            class="list-item bordered hover-shadow"
+            style="background: transparent;"
+          >
+            <div
+              class="list-item--content"
+            >
+              <span
+                class="list-item--property"
+              >
+                Unde possimus
+              </span>
+              <span
+                class="list-item--property"
+              >
+                8
+              </span>
+              <span
+                class="list-item--property"
+              >
+                Mrs. Hardy Herzog
+              </span>
+              <span
+                class="list-item--property"
+              >
+                15 days ago
+              </span>
+            </div>
+          </div>
+          <div
+            class="list-item bordered hover-shadow"
+            style="background: transparent;"
+          >
+            <div
+              class="list-item--content"
+            >
+              <span
+                class="list-item--property"
+              >
+                Enim non
+              </span>
+              <span
+                class="list-item--property"
+              >
+                11
+              </span>
+              <span
+                class="list-item--property"
+              >
+                Miss Furman Bernier
+              </span>
+              <span
+                class="list-item--property"
+              >
+                7 days ago
+              </span>
+            </div>
+          </div>
+          <div
+            class="list-item bordered hover-shadow"
+            style="background: transparent;"
+          >
+            <div
+              class="list-item--content"
+            >
+              <span
+                class="list-item--property"
+              >
+                Nobis dolor
+              </span>
+              <span
+                class="list-item--property"
+              >
+                14
+              </span>
+              <span
+                class="list-item--property"
+              >
+                Mr. Stacey Bradtke
+              </span>
+              <span
+                class="list-item--property"
+              >
+                13 days ago
+              </span>
+            </div>
+          </div>
+          <div
+            class="list-item bordered hover-shadow"
+            style="background: transparent;"
+          >
+            <div
+              class="list-item--content"
+            >
+              <span
+                class="list-item--property"
+              >
+                Necessitatibus temporibus enim
+              </span>
+              <span
+                class="list-item--property"
+              >
+                11
+              </span>
+              <span
+                class="list-item--property"
+              >
+                Mrs. Hildegard Jerde
+              </span>
+              <span
+                class="list-item--property"
+              >
+                11 days ago
+              </span>
+            </div>
+          </div>
+          <div
+            class="list-item bordered hover-shadow"
+            style="background: transparent;"
+          >
+            <div
+              class="list-item--content"
+            >
+              <span
+                class="list-item--property"
+              >
+                Et architecto quia
+              </span>
+              <span
+                class="list-item--property"
+              >
+                11
+              </span>
+              <span
+                class="list-item--property"
+              >
+                Miss Karelle Feeney
+              </span>
+              <span
+                class="list-item--property"
+              >
+                7 days ago
+              </span>
+            </div>
+          </div>
+          <div
+            class="list-item bordered hover-shadow"
+            style="background: transparent;"
+          >
+            <div
+              class="list-item--content"
+            >
+              <span
+                class="list-item--property"
+              >
+                Totam et
+              </span>
+              <span
+                class="list-item--property"
+              >
+                21
+              </span>
+              <span
+                class="list-item--property"
+              >
+                Mrs. Candelario Denesik
+              </span>
+              <span
+                class="list-item--property"
+              >
+                6 days ago
+              </span>
+            </div>
+          </div>
+          <div
+            class="list-item bordered hover-shadow"
+            style="background: transparent;"
+          >
+            <div
+              class="list-item--content"
+            >
+              <span
+                class="list-item--property"
+              >
+                Suscipit dolor nihil
+              </span>
+              <span
+                class="list-item--property"
+              >
+                5
+              </span>
+              <span
+                class="list-item--property"
+              >
+                Mrs. Yasmine Skiles
+              </span>
+              <span
+                class="list-item--property"
+              >
+                16 days ago
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+       
+      <div
+        class="list--pagination"
+      >
+        <div
+          class="button"
+        >
+          <button
+            class="button--submit simple text-not-faded text-on-hover static-size icon-left"
+          >
+            <div
+              class="button--content"
+            >
+              <span>
+                <i
+                  class="material-icons button--icon button--icon-left"
+                >
+                  navigate_before
+                </i>
+              </span>
+               
+              <span
+                class="button--text"
+              >
+                Previous
+              </span>
+               
+              <!---->
+            </div>
+          </button>
+        </div>
+         
+        <div
+          class="list--pages"
+        >
+          <!---->
+           
+          <div
+            class="button"
+          >
+            <button
+              class="button--submit simple active text-not-faded"
+            >
+              <div
+                class="button--content"
+              >
+                <!---->
+                 
+                <span
+                  class="button--text"
+                >
+                  1
+         
+                </span>
+                 
+                <!---->
+              </div>
+            </button>
+          </div>
+          <div
+            class="button"
+          >
+            <button
+              class="button--submit simple text-not-faded"
+            >
+              <div
+                class="button--content"
+              >
+                <!---->
+                 
+                <span
+                  class="button--text"
+                >
+                  2
+         
+                </span>
+                 
+                <!---->
+              </div>
+            </button>
+          </div>
+           
+          <!---->
+        </div>
+         
+        <div
+          class="button"
+        >
+          <button
+            class="button--submit simple text-not-faded text-on-hover static-size icon-right"
+          >
+            <div
+              class="button--content"
+            >
+              <!---->
+               
+              <span
+                class="button--text"
+              >
+                Next
+              </span>
+               
+              <span>
+                <i
+                  class="material-icons button--icon button--icon-right"
+                >
+                  navigate_next
+                </i>
+              </span>
+            </div>
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+`;

@@ -1,4 +1,4 @@
-import { ProblemsState, ProblemFilter } from './state'
+import { ProblemsState } from './state'
 import actions from './actions'
 import mutations from './mutations'
 
@@ -10,6 +10,5 @@ export default {
 }
 
 export {
-  ProblemsState,
-  ProblemFilter
+  ProblemsState
 }
