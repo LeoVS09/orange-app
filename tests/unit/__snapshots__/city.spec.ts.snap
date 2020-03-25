@@ -1,0 +1,357 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`City.vue renders city 1`] = `
+<div
+  class="city"
+>
+  <div
+    class="page-header highlight"
+  >
+    <div
+      class="page-header--hidden-breadcrumbs"
+    >
+      <div
+        class="breadcrumbs"
+      >
+        Countries
+      </div>
+       
+      <div
+        class="breadcrumbs"
+      >
+        Country
+      </div>
+    </div>
+     
+    <!---->
+     
+    <div
+      class="page-header--content"
+    >
+      <h1>
+        
+      </h1>
+       
+      <div
+        class="page-header--actions"
+      />
+       
+      <!---->
+    </div>
+     
+    <!---->
+  </div>
+   
+  <section
+    class="section"
+  >
+    <div
+      class="list--container"
+      inlineadd=""
+      validateadd="function () { [native code] }"
+    >
+      <div
+        class="list--hidden-columns"
+      >
+        <div
+          class="list-column"
+        >
+          name
+        </div>
+         
+        <div
+          class="list-column"
+        >
+          short
+        </div>
+         
+        <div
+          class="list-column"
+        >
+          updated
+        </div>
+      </div>
+       
+      <div
+        class="list"
+      >
+        <div
+          class="list--header"
+        />
+         
+        <!---->
+         
+        <div
+          mode="out-in"
+        >
+          <div
+            class="list-item bordered hover-shadow"
+            style="background: transparent;"
+          >
+            <div
+              class="list-item--content"
+            />
+          </div>
+        </div>
+      </div>
+       
+      <!---->
+    </div>
+  </section>
+</div>
+`;
+
+exports[`City.vue renders city 2`] = `
+<div
+  class="city"
+>
+  <div
+    class="page-header highlight breadcrumbs"
+  >
+    <div
+      class="page-header--hidden-breadcrumbs"
+    >
+      <div
+        class="breadcrumbs"
+      >
+        Countries
+      </div>
+       
+      <div
+        class="breadcrumbs"
+      >
+        Uruguay
+      </div>
+    </div>
+     
+    <div
+      class="page-header--breadcrumbs"
+    >
+      <router-link
+        class="page-header--breadcrumb-step link"
+        to="[object Object]"
+      >
+        Countries
+      </router-link>
+       
+      <span
+        class="page-header--breadcrumb-separator"
+      >
+        /
+      </span>
+      <router-link
+        class="page-header--breadcrumb-step link"
+        to="[object Object]"
+      >
+        Uruguay
+      </router-link>
+       
+      <span
+        class="page-header--breadcrumb-separator"
+      >
+        /
+      </span>
+    </div>
+     
+    <div
+      class="page-header--content"
+    >
+      <h1>
+        New Nathanial
+      </h1>
+       
+      <div
+        class="page-header--actions"
+      />
+       
+      <!---->
+    </div>
+     
+    <div
+      class="page-header--data"
+    >
+      <div
+        class="page-header--data-content"
+      >
+        <div
+          class="data-view in-row contrast small"
+        >
+          <div
+            class="data-view--item"
+          >
+            <i
+              class="material-icons data-view--icon"
+            >
+              publish
+            </i>
+             
+            <span
+              class="data-view--value"
+            >
+              25.09.2021
+            </span>
+          </div>
+          <div
+            class="data-view--item"
+          >
+            <i
+              class="material-icons data-view--icon"
+            >
+              edit
+            </i>
+             
+            <span
+              class="data-view--value"
+            >
+              04.04.2020
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+   
+  <section
+    class="section"
+  >
+    <div
+      class="list--container"
+      inlineadd=""
+      validateadd="function () { [native code] }"
+    >
+      <div
+        class="list--hidden-columns"
+      >
+        <div
+          class="list-column"
+        >
+          name
+        </div>
+         
+        <div
+          class="list-column"
+        >
+          short
+        </div>
+         
+        <div
+          class="list-column"
+        >
+          updated
+        </div>
+      </div>
+       
+      <div
+        class="list"
+      >
+        <div
+          class="list--header"
+        >
+          <div
+            class="list--header-item"
+          >
+            <span
+              class="list--header-text"
+            >
+              name
+            </span>
+             
+            <div
+              class="list--header-sort-arrow"
+            >
+              <!---->
+            </div>
+          </div>
+          <div
+            class="list--header-item"
+          >
+            <span
+              class="list--header-text"
+            >
+              short
+            </span>
+             
+            <div
+              class="list--header-sort-arrow"
+            >
+              <!---->
+            </div>
+          </div>
+          <div
+            class="list--header-item"
+          >
+            <span
+              class="list--header-text"
+            >
+              updated
+            </span>
+             
+            <div
+              class="list--header-sort-arrow"
+            >
+              <!---->
+            </div>
+          </div>
+        </div>
+         
+        <!---->
+         
+        <div
+          mode="out-in"
+        >
+          <div
+            class="list-item bordered hover-shadow"
+            style="background: transparent;"
+          >
+            <div
+              class="list-item--content"
+            >
+              <span
+                class="list-item--property"
+              >
+                nulla quia at
+              </span>
+              <span
+                class="list-item--property"
+              >
+                blanditiis
+              </span>
+              <span
+                class="list-item--property"
+              >
+                Sun Apr 19 2020 23:59:16 GMT+0300 (Москва, стандартное время)
+              </span>
+            </div>
+          </div>
+          <div
+            class="list-item bordered hover-shadow"
+            style="background: transparent;"
+          >
+            <div
+              class="list-item--content"
+            >
+              <span
+                class="list-item--property"
+              >
+                non voluptas a libero
+              </span>
+              <span
+                class="list-item--property"
+              >
+                ut
+              </span>
+              <span
+                class="list-item--property"
+              >
+                Sun Apr 12 2020 23:59:16 GMT+0300 (Москва, стандартное время)
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+       
+      <!---->
+    </div>
+  </section>
+</div>
+`;

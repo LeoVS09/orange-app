@@ -10,7 +10,7 @@ import { WaitStore } from './utils/wait'
 import { when } from './utils/when'
 import vuexI18n from 'vuex-i18n'
 
-describe('Country.vue', () => {
+describe('City.vue', () => {
 
   let localVue: VueConstructor<any> 
   let store: Store<any> 
@@ -29,7 +29,7 @@ describe('Country.vue', () => {
 
     localVue.use(vuexI18n.plugin, store)
 
-    requests = await nockAllGraphqlRequests(nock, 'country')
+    requests = await nockAllGraphqlRequests(nock, 'city')
     cons.mockConsole()
   })
 
@@ -38,33 +38,32 @@ describe('Country.vue', () => {
     nock.cleanAll()
   });
 
-  it('renders country', async () => {
+  it('renders city', async () => {
     // must be inside test for mock fetch function
-    const Component = require('@/pages/Country.vue').default
+    const Component = require('@/pages/City.vue').default
     
     const wrapper = mount(Component, { 
       store, 
       localVue, 
       attachToDocument: true,
       propsData: { 
-        id: 'country-test-id'
+        id: 'city-test-id'
       }
      })
     
     expect(wrapper.element).toMatchSnapshot()
 
-    expect(wrapper.text()).not.toContain('Isle of Man')
+    expect(wrapper.text()).not.toContain('New Nathanial')
     
     // Wait while lazyDB requested all data and rerender
     await requests.wait()
-    await when(() =>  wrapper.text().includes('Isle of Man'))
+    await when(() => wrapper.text().includes('New Nathanial'))
 
-    expect(wrapper.text()).toContain('Isle of Man')
-    expect(wrapper.text()).toContain('19.07.2019')
-    expect(wrapper.text()).toContain('01.03.2020')
+    expect(wrapper.text()).toContain('New Nathanial')
+    expect(wrapper.text()).toContain('Uruguay')
     
-    expect(wrapper.text()).toContain('Fayshire')
-    expect(wrapper.text()).toContain('New Olin')
+    expect(wrapper.text()).toContain('nulla quia at')
+    expect(wrapper.text()).toContain('non voluptas a libero')
 
     expect(wrapper.element).toMatchSnapshot()
   })

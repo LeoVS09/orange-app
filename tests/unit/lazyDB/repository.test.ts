@@ -21,7 +21,7 @@ describe('Repository', () => {
 
   it('generade query for list and return', async () => {
     // must be inside test for mock fetch function
-    const Repository = require('@/models/country').CountryRepository
+    const Repository = require('@/db').CountryRepository
   
     const reactiveUpdate = jest.fn()
     const list = Repository.list(reactiveUpdate)

@@ -4,7 +4,7 @@
          :createdAt="model.createdAt"
          :modified="model.updatedAt"
          v-model="model.name"
-         :is-loading="model | isReading('name')"
+         :is-loading="false"
       >
          <template #breadcrumbs>
             <breadcrumb :to="{name: ROUTES.COUNTRIES}">{{'Countries' | translate}}</breadcrumb>
@@ -39,7 +39,7 @@ import { Component, Prop, Mixins } from 'vue-property-decorator'
 import { Getter } from 'vuex-class'
 import { University } from '@/models'
 import { ModelInfo, Section, PageHeaderAction } from '@/components'
-import { ROUTES } from '@/router'
+import { ROUTES } from '@/router/routes'
 import { RouterPush } from '@/components/decorators'
 import { CityRepository } from '@/db'
 import ReactiveUpdate, { reactiveUpdate } from '@/components/mixins/ReactiveUpdate'

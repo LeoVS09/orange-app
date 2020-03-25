@@ -4,7 +4,7 @@
          :createdAt="model.createdAt"
          :modified="model.updatedAt"
          v-model="model.shortName"
-         :is-loading="model | isReading('shortName')"
+         :is-loading="false"
          :key="reactive"
       >
          <template #breadcrumbs>
@@ -34,7 +34,7 @@ import Vue from 'vue'
 import { Component, Prop, Mixins } from 'vue-property-decorator'
 import { Getter } from 'vuex-class'
 import { Section, PageHeaderAction } from '@/components'
-import { ROUTES } from '@/router'
+import { ROUTES } from '@/router/routes'
 import ReactiveUpdate, { reactiveUpdate } from '@/components/mixins/ReactiveUpdate'
 import LazyData from '@/containers/LazyData.vue'
 import LazyProperty from '@/containers/LazyProperty.vue'
