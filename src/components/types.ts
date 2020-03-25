@@ -75,6 +75,11 @@ export enum ListEvents {
    loaded = 'loaded',
 }
 
+export interface GoToPageEvent {
+   old: number
+   next: number
+}
+
 export interface ButtonGroupMetaItem {
    [key: string]: any
 }

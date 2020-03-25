@@ -31,20 +31,22 @@
 import Vue from 'vue'
 import { Component } from 'vue-property-decorator'
 import { Getter, Action } from 'vuex-class'
-import { PartialContest } from '@/models'
 import * as actions from '@/store/actionTypes'
 import {
   Button,
   Tags,
   Section,
   PageHeaderAction,
-  Filters
+  Filters,
+  RouterPush
 } from '@/components'
-import { ROUTES } from '@/router'
-import { ProblemFilter } from '@/store/modules'
-import { Tag } from '@/models/problems'
-import { FullContest } from '@/models/contest'
-import { RouterPush } from '@/components/decorators'
+import { ROUTES } from '@/router/routes'
+import {
+  Tag,
+  ProblemFilter,
+  FullContest,
+  PartialContest
+} from '@/models'
 import {
   List,
   ListColumn,

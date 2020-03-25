@@ -847,7 +847,7 @@ exports[`ProblemsList.vue renders problems list with data 1`] = `
       </div>
        
       <div
-        class="list--pagination"
+        class="pagination"
       >
         <div
           class="button"
@@ -878,7 +878,7 @@ exports[`ProblemsList.vue renders problems list with data 1`] = `
         </div>
          
         <div
-          class="list--pages"
+          class="pagination--numbers"
         >
           <!---->
            
@@ -897,7 +897,7 @@ exports[`ProblemsList.vue renders problems list with data 1`] = `
                   class="button--text"
                 >
                   1
-         
+      
                 </span>
                  
                 <!---->
@@ -919,7 +919,7 @@ exports[`ProblemsList.vue renders problems list with data 1`] = `
                   class="button--text"
                 >
                   2
-         
+      
                 </span>
                  
                 <!---->

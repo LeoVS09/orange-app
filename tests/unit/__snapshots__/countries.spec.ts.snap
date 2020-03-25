@@ -455,7 +455,7 @@ exports[`Countries.vue renders countries list 2`] = `
       </div>
        
       <div
-        class="list--pagination"
+        class="pagination"
       >
         <div
           class="button"
@@ -486,7 +486,7 @@ exports[`Countries.vue renders countries list 2`] = `
         </div>
          
         <div
-          class="list--pages"
+          class="pagination--numbers"
         >
           <!---->
            
@@ -505,7 +505,7 @@ exports[`Countries.vue renders countries list 2`] = `
                   class="button--text"
                 >
                   1
-         
+      
                 </span>
                  
                 <!---->
@@ -527,7 +527,7 @@ exports[`Countries.vue renders countries list 2`] = `
                   class="button--text"
                 >
                   2
-         
+      
                 </span>
                  
                 <!---->
