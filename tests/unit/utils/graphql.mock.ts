@@ -24,23 +24,38 @@ const mockGraphql = async (name: string) => {
 
 export default mockGraphql
 
-export const nockAllGraphqlRequests = async (nock: any, name: string) => {
+// Allow check request parameters before send
+export interface CheckRequestParams {
+    (params: any): void
+}
+
+export interface NockAllGraphqlRequestsControls {
+    waits: WaitStore
+    checkRequestParams: CheckRequestParams
+}
+
+export const nockAllGraphqlRequests = async (nock: any, name: string): Promise<NockAllGraphqlRequestsControls> => {
     const mockedGraphql = await mockGraphql(name)
-    const waits = new WaitStore()
+    const controls: NockAllGraphqlRequestsControls = {
+        waits: new WaitStore(),
+        checkRequestParams: () => {}
+    }
     
     nock('http://localhost:4000')
     .post('/graphql')
     .reply(async (uri: any, requestBody: any, cb: any) => {
       console.log('Was made requiest', requestBody)
+
+      controls.checkRequestParams({ query: requestBody.query, variables: requestBody.variables })
       
       const result = await mockedGraphql(requestBody.query as string, requestBody.variables)
       
       console.log('result of requies', requestBody, result)
       cb(null, [200, result])
 
-      waits.resolve()
+      controls.waits.resolve()
       return
     })
 
-    return waits
+    return controls
 }

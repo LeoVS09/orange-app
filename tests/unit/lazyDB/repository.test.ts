@@ -1,11 +1,9 @@
 // @ts-ignore next-line
 global.fetch = require('node-fetch')
 import nock from 'nock'
-import { nockAllGraphqlRequests } from '../utils/graphql.mock'
+import { nockAllGraphqlRequests, NockAllGraphqlRequestsControls } from '../utils/graphql.mock'
 import cons from '../utils/console.mock'
 import flushPromises from 'flush-promises'
-import { timeout } from '../utils/timeout'
-import { WaitStore } from '../utils/wait'
 import { when } from '../utils/when'
 
 // For run tests sequentially (one by one)
@@ -17,10 +15,10 @@ describe('Repository', () => {
     cons.mockConsole()
   });
 
-  let requests: WaitStore
+  let requestControls: NockAllGraphqlRequestsControls
 
   beforeEach(async () => {
-    requests = await nockAllGraphqlRequests(nock, 'repository')
+    requestControls = await nockAllGraphqlRequests(nock, 'repository')
   })
 
   afterEach(() => {
@@ -66,8 +64,12 @@ describe('Repository', () => {
     expect(node.updatedAt).toBeUndefined()
     expect(node.createdAt).toBeUndefined()
 
+    // Check graphql query is correct
+    requestControls.checkRequestParams = query => 
+      expect(query).toMatchSnapshot()
+
     // Wait while lazyDB requested all data and rerender
-    await requests.wait()
+    await requestControls.waits.wait()
     // one call when requiest start
     await when(() => reactiveUpdate.mock.calls.length > 0)
     expect(reactiveUpdate.mock.calls.length).toBe(1)
@@ -99,9 +101,13 @@ describe('Repository', () => {
     expect(list.nodes[0].name).toBeUndefined()
     expect(list.nodes[0].code).toBeUndefined()
     expect(list.nodes[0].updatedAt).toBeUndefined()
+
+    // Check graphql query is correct
+    requestControls.checkRequestParams = query => 
+      expect(query).toMatchSnapshot()
     
     // Wait while lazyDB requested all data and rerender
-    await requests.wait()
+    await requestControls.waits.wait()
     // only one call, need investigate why, 
     //  possible because debounce is too big
     await when(() => reactiveUpdate.mock.calls.length === 1)

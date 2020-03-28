@@ -29,7 +29,8 @@ describe('City.vue', () => {
 
     localVue.use(vuexI18n.plugin, store)
 
-    requests = await nockAllGraphqlRequests(nock, 'city')
+    const { waits } = await nockAllGraphqlRequests(nock, 'city')
+    requests = waits
     cons.mockConsole()
   })
 

@@ -26,7 +26,8 @@ describe('Countries.vue', () => {
       }
     })
 
-    requests = await nockAllGraphqlRequests(nock, 'countries')
+    const { waits } = await nockAllGraphqlRequests(nock, 'countries')
+    requests = waits
     cons.mockConsole()
   })
 

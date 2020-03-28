@@ -15,7 +15,7 @@ describe('Problems.vue', () => {
 
   let localVue: VueConstructor<any> 
   let store: Store<any> 
-  let requiests: WaitStore
+  let requests: WaitStore
 
   beforeAll(() => nock.disableNetConnect());
 
@@ -34,7 +34,8 @@ describe('Problems.vue', () => {
       return +new Date('2020-03-17T19:54:57.551Z')
     }
 
-    requiests = await nockAllGraphqlRequests(nock, 'problems')
+    const { waits } = await nockAllGraphqlRequests(nock, 'problems')
+    requests = waits
     cons.mockConsole()
   })
 
@@ -54,8 +55,8 @@ describe('Problems.vue', () => {
     expect(wrapper.text()).not.toContain('dolore')
 
     // Wait while lazyDB requested all data and rerender
-    await requiests.wait()
-    await requiests.wait()
+    await requests.wait()
+    await requests.wait()
     await when(() =>  wrapper.text().includes('dolore'))
 
     expect(wrapper.text()).toContain('dolore')

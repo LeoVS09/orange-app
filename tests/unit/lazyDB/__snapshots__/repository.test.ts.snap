@@ -1,0 +1,42 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Repository should generade query for list by first node and return 1`] = `
+Object {
+  "query": "query Countries {
+  countries {
+    totalCount
+    nodes {
+      id
+      nodeId
+      name
+      code
+      updatedAt
+      __typename
+    }
+    __typename
+  }
+}
+",
+  "variables": Object {},
+}
+`;
+
+exports[`Repository should generate query for one entity and display 1`] = `
+Object {
+  "query": "query Country($id: UUID!) {
+  country(id: $id) {
+    id
+    nodeId
+    name
+    code
+    updatedAt
+    createdAt
+    __typename
+  }
+}
+",
+  "variables": Object {
+    "id": "test-id",
+  },
+}
+`;
