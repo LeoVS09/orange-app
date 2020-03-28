@@ -5,26 +5,95 @@ import { nockAllGraphqlRequests } from '../utils/graphql.mock'
 import cons from '../utils/console.mock'
 import flushPromises from 'flush-promises'
 import { timeout } from '../utils/timeout'
+import { WaitStore } from '../utils/wait'
+import { when } from '../utils/when'
+
+// For run tests sequentially (one by one)
+// use describe blocks, each describe block runs ony after previus
 
 describe('Repository', () => {
-  beforeAll(() => nock.disableNetConnect());
+  beforeAll(() => {
+    nock.disableNetConnect()
+    cons.mockConsole()
+  });
+
+  let requests: WaitStore
 
   beforeEach(async () => {
-    await nockAllGraphqlRequests(nock, 'repository')
-    cons.mockConsole()
+    requests = await nockAllGraphqlRequests(nock, 'repository')
   })
 
   afterEach(() => {
-    cons.restoreConsole()
     nock.cleanAll()
   });
 
-  it('generade query for list and return', async () => {
+  afterAll(() => {
+    cons.restoreConsole()
+  })
+
+
+  // TODO: check requests snapshots
+  
+  // TODO: check order or events
+  //  request -> reactive update -> response -> reactive update
+  
+  // TODO: check display states
+  //  isLoading -> before and during request
+  //  isChanged -> on change data
+  //  isUpdating -> during update
+  //  ...
+
+  // TODO: check snapshots of result data
+
+  // TODO: remove timeouts
+
+  // TODO: check multiple layers of object
+  
+  // TODO: test repository without database
+  
+  it('should generate query for one entity and display', async () => {
     // must be inside test for mock fetch function
-    const Repository = require('@/db').CountryRepository
+    const { Database } = require('@/lazyDb/database/connected/Database')
+    const { Repository } = new Database()
+    const DataRepository = new Repository('country')
+
+    const reactiveUpdate = jest.fn()
+    const node = DataRepository.findOne('test-id', reactiveUpdate) 
+
+    // ask data
+    expect(node.name).toBeUndefined()
+    expect(node.code).toBeUndefined()
+    expect(node.updatedAt).toBeUndefined()
+    expect(node.createdAt).toBeUndefined()
+
+    // Wait while lazyDB requested all data and rerender
+    await requests.wait()
+    // one call when requiest start
+    await when(() => reactiveUpdate.mock.calls.length > 0)
+    expect(reactiveUpdate.mock.calls.length).toBe(1)
+
+    // when data will be displayed
+    await when(() => reactiveUpdate.mock.calls.length === 2)
+    expect(reactiveUpdate.mock.calls.length).toBe(2)
+
+    expect(node.id).toBeDefined()
+    expect(node.name).toBeDefined()
+    expect(node.code).toBeDefined()
+    expect(node.updatedAt).toBeDefined()
+    expect(node.createdAt).toBeDefined()
+
+    // flush events
+    await flushPromises()
+  })
+
+  it('should generade query for list by first node and return', async () => {
+    // must be inside test for mock fetch function
+    const { Database } = require('@/lazyDb/database/connected/Database')
+    const { Repository } = new Database()
+    const DataRepository = new Repository('country')
   
     const reactiveUpdate = jest.fn()
-    const list = Repository.list(reactiveUpdate)
+    const list = DataRepository.list(reactiveUpdate)
 
     // ask data
     expect(list.nodes[0].name).toBeUndefined()
@@ -32,44 +101,49 @@ describe('Repository', () => {
     expect(list.nodes[0].updatedAt).toBeUndefined()
     
     // Wait while lazyDB requested all data and rerender
-    await timeout(300)
+    await requests.wait()
+    // only one call, need investigate why, 
+    //  possible because debounce is too big
+    await when(() => reactiveUpdate.mock.calls.length === 1)
+    expect(reactiveUpdate.mock.calls.length).toBe(1)
+  
+    // when data will be displayed
+    // await when(() => reactiveUpdate.mock.calls.length === 2)
+    // expect(reactiveUpdate.mock.calls.length).toBe(2)
+
+    expect(list.nodes.length).toBe(15)
+
+    expect(list.nodes[0].id).toBe("gILNkgtqw")
+    expect(list.nodes[0].name).toBe("Estonia")
+    expect(list.nodes[0].code).toBe("DE")
+    expect(list.nodes[0].updatedAt).toEqual(new Date("2020-02-27T00:25:04+03:00"))
+
+    expect(list.nodes[6].id).toBe("vP38-NdB-S")
+    expect(list.nodes[6].name).toBe("Guinea-Bissau")
+    expect(list.nodes[6].code).toBe("IE")
+    expect(list.nodes[6].updatedAt).toEqual(new Date("2020-03-15T00:25:04+03:00"))
+
+    // flush events
     await flushPromises()
-
-    const resultedList = Repository.list(reactiveUpdate)
-
-    // Currently only 1 times call update 
-    // TODO: investigate why
-    //expect(reactiveUpdate.mock.calls.length).toBe(2)
-
-    expect(resultedList.nodes.length).toBe(15)
-
-    expect(resultedList.nodes[0].id).toBe("gILNkgtqw")
-    expect(resultedList.nodes[0].name).toBe("Estonia")
-    expect(resultedList.nodes[0].code).toBe("DE")
-    expect(resultedList.nodes[0].updatedAt).toEqual(new Date("2020-02-27T00:25:04+03:00"))
-
-    expect(resultedList.nodes[6].id).toBe("vP38-NdB-S")
-    expect(resultedList.nodes[6].name).toBe("Guinea-Bissau")
-    expect(resultedList.nodes[6].code).toBe("IE")
-    expect(resultedList.nodes[6].updatedAt).toEqual(new Date("2020-03-15T00:25:04+03:00"))
 
     // TODO: equility comparisition for lazy objects not work, need fix
     // expect(resultedList.nodes).toEqual([
-    //   {"id":"gILNkgtqw","nodeId":"e594829f-9e24-42ca-9743-a981f89f1583","name":"Estonia","code":"DE","updatedAt":"2020-02-27T00:25:04+03:00"},
-    //   {"id":"RvBE9BWZ85","nodeId":"f4793d49-1da5-4cb1-b5ef-85e8d244d56b","name":"Comoros","code":"CN","updatedAt":"2020-03-02T00:25:04+03:00"},
-    //   {"id":"0Pj8HSsj2e","nodeId":"4ef01f57-260d-40ae-a924-a97838b13b58","name":"Mayotte","code":"IN","updatedAt":"2020-03-07T00:25:04+03:00"},
-    //   {"id":"mIBSPRsCW1","nodeId":"7fd05815-6b7d-4cae-9b8c-3ab4ca94e870","name":"Kuwait","code":"US","updatedAt":"2020-03-04T00:25:04+03:00"},
-    //   {"id":"hcQnOCkpmJ","nodeId":"f978be87-e3d8-4bea-88bd-e2c3eb8c5a5e","name":"Slovakia (Slovak Republic)","code":"US","updatedAt":"2020-03-07T00:25:04+03:00"},
-    //   {"id":"N8RK5pKUpR","nodeId":"9b25a45e-e7e5-4e06-9929-90e116114919","name":"Guinea","code":"FR","updatedAt":"2020-03-12T00:25:04+03:00"},      
-    //   {"id":"vP38-NdB-S","nodeId":"56294d43-4d8b-45f0-9676-f380930f8d66","name":"Guinea-Bissau","code":"IE","updatedAt":"2020-03-15T00:25:04+03:00"},      
-    //   {"id":"HUZ0tFZw41","nodeId":"dda4c4ae-d2a9-4d91-b36a-1232a399b1f4","name":"Nicaragua","code":"MX","updatedAt":"2020-02-29T00:25:04+03:00"},
-    //   {"id":"o_xKHVYYCb","nodeId":"e7a888bb-420e-4a02-a539-ae29625f77e7","name":"Czech Republic","code":"IE","updatedAt":"2020-03-07T00:25:04+03:00"},
-    //   {"id":"GjmpsFXCnv","nodeId":"7ccf5f7b-a2ba-4bec-baaf-74e68a505110","name":"India","code":"ES","updatedAt":"2020-02-25T00:25:04+03:00"},
-    //   {"id":"HCGgb2ALkw","nodeId":"763ddbb4-b6c8-4646-ba2b-7e7e14412782","name":"Japan","code":"RU","updatedAt":"2020-03-06T00:25:04+03:00"},
-    //   {"id":"G6uw5EaXT8","nodeId":"c21c8574-0d24-4a25-bfa3-d0da3818bfad","name":"Monaco","code":"IN","updatedAt":"2020-03-14T00:25:04+03:00"},
-    //   {"id":"tuMpRj14b3","nodeId":"f2e04466-7ae6-48d4-818a-dc76b9187046","name":"Guadeloupe","code":"MX","updatedAt":"2020-03-09T00:25:04+03:00"},
-    //   {"id":"KF5UhVBanC","nodeId":"4556647a-d090-44a8-81cf-5669c5d691e8","name":"Netherlands Antilles","code":"MX","updatedAt":"2020-03-06T00:25:04+03:00"},
-    //   {"id":"FlSxQ0a3nP","nodeId":"5fbe7b62-fa10-4232-b0d7-b5dd6425b2bf","name":"Myanmar","code":"FR","updatedAt":"2020-03-09T00:25:04+03:00"}
+    //   {"id":"gILNkgtqw", "name":"Estonia","code":"DE","updatedAt":"2020-02-27T00:25:04+03:00"},
+    //   {"id":"RvBE9BWZ85","name":"Comoros","code":"CN","updatedAt":"2020-03-02T00:25:04+03:00"},
+    //   {"id":"0Pj8HSsj2e","name":"Mayotte","code":"IN","updatedAt":"2020-03-07T00:25:04+03:00"},
+    //   {"id":"mIBSPRsCW1","name":"Kuwait","code":"US","updatedAt":"2020-03-04T00:25:04+03:00"},
+    //   {"id":"hcQnOCkpmJ","name":"Slovakia (Slovak Republic)","code":"US","updatedAt":"2020-03-07T00:25:04+03:00"},
+    //   {"id":"N8RK5pKUpR","name":"Guinea","code":"FR","updatedAt":"2020-03-12T00:25:04+03:00"},      
+    //   {"id":"vP38-NdB-S","name":"Guinea-Bissau","code":"IE","updatedAt":"2020-03-15T00:25:04+03:00"},      
+    //   {"id":"HUZ0tFZw41","name":"Nicaragua","code":"MX","updatedAt":"2020-02-29T00:25:04+03:00"},
+    //   {"id":"o_xKHVYYCb","name":"Czech Republic","code":"IE","updatedAt":"2020-03-07T00:25:04+03:00"},
+    //   {"id":"GjmpsFXCnv","name":"India","code":"ES","updatedAt":"2020-02-25T00:25:04+03:00"},
+    //   {"id":"HCGgb2ALkw","name":"Japan","code":"RU","updatedAt":"2020-03-06T00:25:04+03:00"},
+    //   {"id":"G6uw5EaXT8","name":"Monaco","code":"IN","updatedAt":"2020-03-14T00:25:04+03:00"},
+    //   {"id":"tuMpRj14b3","name":"Guadeloupe","code":"MX","updatedAt":"2020-03-09T00:25:04+03:00"},
+    //   {"id":"KF5UhVBanC","name":"Netherlands Antilles","code":"MX","updatedAt":"2020-03-06T00:25:04+03:00"},
+    //   {"id":"FlSxQ0a3nP","name":"Myanmar","code":"FR","updatedAt":"2020-03-09T00:25:04+03:00"}
     // ])
   })
+  
 })

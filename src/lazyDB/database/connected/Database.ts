@@ -12,7 +12,7 @@ import LazyReactiveDatabase from '../base/database/Database'
 // TODO: must have base lifecycle handlers and debug tools
 export class Database extends LazyReactiveDatabase {
 
-  public Repository: typeof Repository = Repository
+  public Repository: ConnectedRepository
 
   constructor() {
     super({
@@ -28,33 +28,32 @@ export class Database extends LazyReactiveDatabase {
     connectDebugToActionsStream(this.store)
 
     // TODO: not plain, need create more readable solution for connect Repository to database,
-    //  this will not work with multiple databases
-    this.Repository.db = this
+    this.Repository = createConnectedRepository(this)
   }
 }
 
-class Repository<T> extends LazyReactiveRepository<T> {
+export type ConnectedRepository = new <T>(entity: string, schema?: Partial<AosEntitySchema>) => LazyReactiveRepository<T>
 
-  static db: Database
+const createConnectedRepository = (db: Database) =>
+  class Repository<T> extends LazyReactiveRepository<T> {
+    constructor(
+      entity: string,
+      schema?: Partial<AosEntitySchema>
+    ) {
+      super(entity, {
+        table: db.storage[entity],
+        schema
+      })
 
-  constructor(
-    entity: string,
-    schema?: Partial<AosEntitySchema>
-  ) {
-    super(entity, {
-      table: Repository.db.storage[entity],
-      schema
-    })
+      db.setSchema(entity, this.schema)
 
-    Repository.db.setSchema(entity, this.schema)
+      this.excludeProperties = db.excludeProperties
 
-    this.excludeProperties = Repository.db.excludeProperties
+      this.applyRepositoryControlsOptions.setLinkedEntity = genSetLinkedEntity(
+        this.schema,
+        db.getSchemaByKey,
+        db.setEntity
+      )
 
-    this.applyRepositoryControlsOptions.setLinkedEntity = genSetLinkedEntity(
-      this.schema,
-      Repository.db.getSchemaByKey,
-      Repository.db.setEntity
-    )
-
+    }
   }
-}

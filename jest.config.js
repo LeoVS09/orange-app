@@ -44,5 +44,6 @@ module.exports = {
     }
   },
 
+  testTimeout: 5000,
   preset: '@vue/cli-plugin-unit-jest/presets/typescript-and-babel'
 }
