@@ -29,10 +29,7 @@ describe('Repository', () => {
     cons.restoreConsole()
   })
 
-
-  // TODO: check requests snapshots
-  
-  // TODO: check order or events
+  // TODO: check order of events
   //  request -> reactive update -> response -> reactive update
   
   // TODO: check display states
@@ -42,8 +39,6 @@ describe('Repository', () => {
   //  ...
 
   // TODO: check snapshots of result data
-
-  // TODO: remove timeouts
 
   // TODO: check multiple layers of object
   
