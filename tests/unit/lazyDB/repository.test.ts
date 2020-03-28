@@ -125,23 +125,23 @@ describe('Repository', () => {
     expect(list.nodes[6].updatedAt).toEqual(new Date("2020-03-15T00:25:04+03:00"))
 
     // TODO: equility comparisition for lazy objects not work, need fix
-    // expect(resultedList.nodes).toEqual([
-    //   {"id":"gILNkgtqw", "name":"Estonia","code":"DE","updatedAt":"2020-02-27T00:25:04+03:00"},
-    //   {"id":"RvBE9BWZ85","name":"Comoros","code":"CN","updatedAt":"2020-03-02T00:25:04+03:00"},
-    //   {"id":"0Pj8HSsj2e","name":"Mayotte","code":"IN","updatedAt":"2020-03-07T00:25:04+03:00"},
-    //   {"id":"mIBSPRsCW1","name":"Kuwait","code":"US","updatedAt":"2020-03-04T00:25:04+03:00"},
-    //   {"id":"hcQnOCkpmJ","name":"Slovakia (Slovak Republic)","code":"US","updatedAt":"2020-03-07T00:25:04+03:00"},
-    //   {"id":"N8RK5pKUpR","name":"Guinea","code":"FR","updatedAt":"2020-03-12T00:25:04+03:00"},      
-    //   {"id":"vP38-NdB-S","name":"Guinea-Bissau","code":"IE","updatedAt":"2020-03-15T00:25:04+03:00"},      
-    //   {"id":"HUZ0tFZw41","name":"Nicaragua","code":"MX","updatedAt":"2020-02-29T00:25:04+03:00"},
-    //   {"id":"o_xKHVYYCb","name":"Czech Republic","code":"IE","updatedAt":"2020-03-07T00:25:04+03:00"},
-    //   {"id":"GjmpsFXCnv","name":"India","code":"ES","updatedAt":"2020-02-25T00:25:04+03:00"},
-    //   {"id":"HCGgb2ALkw","name":"Japan","code":"RU","updatedAt":"2020-03-06T00:25:04+03:00"},
-    //   {"id":"G6uw5EaXT8","name":"Monaco","code":"IN","updatedAt":"2020-03-14T00:25:04+03:00"},
-    //   {"id":"tuMpRj14b3","name":"Guadeloupe","code":"MX","updatedAt":"2020-03-09T00:25:04+03:00"},
-    //   {"id":"KF5UhVBanC","name":"Netherlands Antilles","code":"MX","updatedAt":"2020-03-06T00:25:04+03:00"},
-    //   {"id":"FlSxQ0a3nP","name":"Myanmar","code":"FR","updatedAt":"2020-03-09T00:25:04+03:00"}
-    // ])
+    expect(list.nodes).toMatchObject([
+      {"id":"gILNkgtqw", "name":"Estonia","code":"DE","updatedAt":new Date("2020-02-27T00:25:04+03:00")},
+      {"id":"RvBE9BWZ85","name":"Comoros","code":"CN","updatedAt":new Date("2020-03-02T00:25:04+03:00")},
+      {"id":"0Pj8HSsj2e","name":"Mayotte","code":"IN","updatedAt":new Date("2020-03-07T00:25:04+03:00")},
+      {"id":"mIBSPRsCW1","name":"Kuwait","code":"US","updatedAt":new Date("2020-03-04T00:25:04+03:00")},
+      {"id":"hcQnOCkpmJ","name":"Slovakia (Slovak Republic)","code":"US","updatedAt":new Date("2020-03-07T00:25:04+03:00")},
+      {"id":"N8RK5pKUpR","name":"Guinea","code":"FR","updatedAt":new Date("2020-03-12T00:25:04+03:00")},
+      {"id":"vP38-NdB-S","name":"Guinea-Bissau","code":"IE","updatedAt":new Date("2020-03-15T00:25:04+03:00")},
+      {"id":"HUZ0tFZw41","name":"Nicaragua","code":"MX","updatedAt":new Date("2020-02-29T00:25:04+03:00")},
+      {"id":"o_xKHVYYCb","name":"Czech Republic","code":"IE","updatedAt":new Date("2020-03-07T00:25:04+03:00")},
+      {"id":"GjmpsFXCnv","name":"India","code":"ES","updatedAt":new Date("2020-02-25T00:25:04+03:00")},
+      {"id":"HCGgb2ALkw","name":"Japan","code":"RU","updatedAt":new Date("2020-03-06T00:25:04+03:00")},
+      {"id":"G6uw5EaXT8","name":"Monaco","code":"IN","updatedAt":new Date("2020-03-14T00:25:04+03:00")},
+      {"id":"tuMpRj14b3","name":"Guadeloupe","code":"MX","updatedAt":new Date("2020-03-09T00:25:04+03:00")},
+      {"id":"KF5UhVBanC","name":"Netherlands Antilles","code":"MX","updatedAt":new Date("2020-03-06T00:25:04+03:00")},
+      {"id":"FlSxQ0a3nP","name":"Myanmar","code":"FR","updatedAt":new Date("2020-03-09T00:25:04+03:00")}
+    ])
 
     // flush events
     await flushPromises()

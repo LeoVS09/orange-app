@@ -8,9 +8,14 @@ import { pushPropertyEventsToParent } from '../toParent'
 import { wrapInProducerIfNot } from './wrap'
 
 export function get(store: IProducerStore, prop: PropertyKey) {
-
-  // Proxy traps works for [[Prototype]], so need manualy return correct props
-  if (prop === 'prototype' || prop === '__proto__')
+  // Standart JS object and array propertyes,
+  // need return to not break built in js operators
+  if (
+    // [[Prototype]] link
+    prop === 'prototype' || prop === '__proto__'
+    // contructor object
+    || prop === 'constructor'
+  )
     return store.base[prop]
 
   if (

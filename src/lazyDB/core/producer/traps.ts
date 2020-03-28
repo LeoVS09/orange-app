@@ -11,6 +11,10 @@ export const objectTraps: ProxyHandler<IProducerStore> = {
     return prop in store.base
   },
 
+  ownKeys(store) {
+    return Reflect.ownKeys(store.base)
+  },
+
   getOwnPropertyDescriptor(store, prop) {
     return Reflect.getOwnPropertyDescriptor(store.base, prop)
   },
