@@ -78,11 +78,11 @@ describe('Repository', () => {
     await when(() => reactiveUpdate.mock.calls.length === 2)
     expect(reactiveUpdate.mock.calls.length).toBe(2)
 
-    expect(node.id).toBeDefined()
-    expect(node.name).toBeDefined()
-    expect(node.code).toBeDefined()
-    expect(node.updatedAt).toBeDefined()
-    expect(node.createdAt).toBeDefined()
+    expect(node.id).toBe("0SHIyxJBp")
+    expect(node.name).toBe("Switzerland")
+    expect(node.code).toBe("IN")
+    expect(node.updatedAt).toEqual(new Date("2020-04-24T19:29:15+03:00"))
+    expect(node.createdAt).toEqual(new Date("2021-04-28T19:29:15+03:00"))
 
     // flush events
     await flushPromises()
@@ -129,9 +129,6 @@ describe('Repository', () => {
     expect(list.nodes[6].code).toBe("IE")
     expect(list.nodes[6].updatedAt).toEqual(new Date("2020-03-15T00:25:04+03:00"))
 
-    // flush events
-    await flushPromises()
-
     // TODO: equility comparisition for lazy objects not work, need fix
     // expect(resultedList.nodes).toEqual([
     //   {"id":"gILNkgtqw", "name":"Estonia","code":"DE","updatedAt":"2020-02-27T00:25:04+03:00"},
@@ -150,6 +147,9 @@ describe('Repository', () => {
     //   {"id":"KF5UhVBanC","name":"Netherlands Antilles","code":"MX","updatedAt":"2020-03-06T00:25:04+03:00"},
     //   {"id":"FlSxQ0a3nP","name":"Myanmar","code":"FR","updatedAt":"2020-03-09T00:25:04+03:00"}
     // ])
+
+    // flush events
+    await flushPromises()
   })
   
 })
