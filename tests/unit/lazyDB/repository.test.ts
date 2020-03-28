@@ -79,6 +79,8 @@ describe('Repository', () => {
     expect(node.updatedAt).toEqual(new Date("2020-04-24T19:29:15+03:00"))
     expect(node.createdAt).toEqual(new Date("2021-04-28T19:29:15+03:00"))
 
+    expect(node).toMatchSnapshot()
+
     // flush events
     await flushPromises()
   })
@@ -142,6 +144,8 @@ describe('Repository', () => {
       {"id":"KF5UhVBanC","name":"Netherlands Antilles","code":"MX","updatedAt":new Date("2020-03-06T00:25:04+03:00")},
       {"id":"FlSxQ0a3nP","name":"Myanmar","code":"FR","updatedAt":new Date("2020-03-09T00:25:04+03:00")}
     ])
+
+    expect(list).toMatchSnapshot()
 
     // flush events
     await flushPromises()

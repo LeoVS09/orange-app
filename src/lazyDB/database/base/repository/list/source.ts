@@ -7,29 +7,48 @@ import {
 } from '@/lazyDB/database/types'
 import { AbstractData } from '@/lazyDB/core/types'
 
-export const makeListSource = (): ListSource => ({
-  // page number and on page is synthetic
-  // TODO: create more clean pagination logic
-  pageNumber: 1,
-  onPage: 10,
+const HIDEN_PROPERTIES = [
+  NodesProducerReference,
+  ListItemGetterReference,
+  ListItemSetterReference
+]
 
-  totalCount: null,
-  // nodes list storing only id
-  [nodesKey]: [],
+export const makeListSource = (): ListSource => {
+  const base: ListSource = {
+    // page number and on page is synthetic
+    // TODO: create more clean pagination logic
+    pageNumber: 1,
+    onPage: 10,
 
-  // Nodes producer stored
-  [NodesProducerReference]: null,
+    totalCount: null,
+    // nodes list storing only id
+    [nodesKey]: [],
 
-  [ListItemGetterReference]: null,
-  [ListItemSetterReference]: null,
+    // Nodes producer stored
+    [NodesProducerReference]: null,
 
-  get maxPageNumber() {
-    if (!this.onPage || !this.totalCount)
-      return null
+    [ListItemGetterReference]: null,
+    [ListItemSetterReference]: null,
 
-    return this.totalCount / this.onPage
+    get maxPageNumber() {
+      if (!this.onPage || !this.totalCount)
+        return null
+
+      return this.totalCount / this.onPage
+    }
   }
-})
+
+  HIDEN_PROPERTIES.forEach(prop =>
+    Object.defineProperty(base, prop, {
+      // disallow enumerate
+      enumerable: false,
+      // default valus need write directly, for prevent rewrite
+      writable: true,
+      configurable: true
+    }))
+
+  return base
+}
 
 export function isListSource(data: AbstractData): data is ListSource {
   if (!data[nodesKey] || !data[NodesProducerReference])
