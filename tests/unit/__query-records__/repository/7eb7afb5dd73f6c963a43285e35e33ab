@@ -1,1 +1,132 @@
-{"data":{"data":{"countries":{"totalCount":8,"nodes":[{"id":"gILNkgtqw","nodeId":"e594829f-9e24-42ca-9743-a981f89f1583","name":"Estonia","code":"DE","updatedAt":"2020-02-27T00:25:04+03:00","__typename":"Country"},{"id":"RvBE9BWZ85","nodeId":"f4793d49-1da5-4cb1-b5ef-85e8d244d56b","name":"Comoros","code":"CN","updatedAt":"2020-03-02T00:25:04+03:00","__typename":"Country"},{"id":"0Pj8HSsj2e","nodeId":"4ef01f57-260d-40ae-a924-a97838b13b58","name":"Mayotte","code":"IN","updatedAt":"2020-03-07T00:25:04+03:00","__typename":"Country"},{"id":"mIBSPRsCW1","nodeId":"7fd05815-6b7d-4cae-9b8c-3ab4ca94e870","name":"Kuwait","code":"US","updatedAt":"2020-03-04T00:25:04+03:00","__typename":"Country"},{"id":"hcQnOCkpmJ","nodeId":"f978be87-e3d8-4bea-88bd-e2c3eb8c5a5e","name":"Slovakia (Slovak Republic)","code":"US","updatedAt":"2020-03-07T00:25:04+03:00","__typename":"Country"},{"id":"N8RK5pKUpR","nodeId":"9b25a45e-e7e5-4e06-9929-90e116114919","name":"Guinea","code":"FR","updatedAt":"2020-03-12T00:25:04+03:00","__typename":"Country"},{"id":"vP38-NdB-S","nodeId":"56294d43-4d8b-45f0-9676-f380930f8d66","name":"Guinea-Bissau","code":"IE","updatedAt":"2020-03-15T00:25:04+03:00","__typename":"Country"},{"id":"HUZ0tFZw41","nodeId":"dda4c4ae-d2a9-4d91-b36a-1232a399b1f4","name":"Nicaragua","code":"MX","updatedAt":"2020-02-29T00:25:04+03:00","__typename":"Country"},{"id":"o_xKHVYYCb","nodeId":"e7a888bb-420e-4a02-a539-ae29625f77e7","name":"Czech Republic","code":"IE","updatedAt":"2020-03-07T00:25:04+03:00","__typename":"Country"},{"id":"GjmpsFXCnv","nodeId":"7ccf5f7b-a2ba-4bec-baaf-74e68a505110","name":"India","code":"ES","updatedAt":"2020-02-25T00:25:04+03:00","__typename":"Country"},{"id":"HCGgb2ALkw","nodeId":"763ddbb4-b6c8-4646-ba2b-7e7e14412782","name":"Japan","code":"RU","updatedAt":"2020-03-06T00:25:04+03:00","__typename":"Country"},{"id":"G6uw5EaXT8","nodeId":"c21c8574-0d24-4a25-bfa3-d0da3818bfad","name":"Monaco","code":"IN","updatedAt":"2020-03-14T00:25:04+03:00","__typename":"Country"},{"id":"tuMpRj14b3","nodeId":"f2e04466-7ae6-48d4-818a-dc76b9187046","name":"Guadeloupe","code":"MX","updatedAt":"2020-03-09T00:25:04+03:00","__typename":"Country"},{"id":"KF5UhVBanC","nodeId":"4556647a-d090-44a8-81cf-5669c5d691e8","name":"Netherlands Antilles","code":"MX","updatedAt":"2020-03-06T00:25:04+03:00","__typename":"Country"},{"id":"FlSxQ0a3nP","nodeId":"5fbe7b62-fa10-4232-b0d7-b5dd6425b2bf","name":"Myanmar","code":"FR","updatedAt":"2020-03-09T00:25:04+03:00","__typename":"Country"}],"__typename":"CountriesConnection"}}}}
+{
+    "data": {
+        "data": {
+            "countries": {
+                "totalCount": 8,
+                "nodes": [
+                    {
+                        "id": "gILNkgtqw",
+                        "nodeId": "e594829f-9e24-42ca-9743-a981f89f1583",
+                        "name": "Estonia",
+                        "code": "DE",
+                        "updatedAt": "2020-02-27T00:25:04+03:00",
+                        "__typename": "Country"
+                    },
+                    {
+                        "id": "RvBE9BWZ85",
+                        "nodeId": "f4793d49-1da5-4cb1-b5ef-85e8d244d56b",
+                        "name": "Comoros",
+                        "code": "CN",
+                        "updatedAt": "2020-03-02T00:25:04+03:00",
+                        "__typename": "Country"
+                    },
+                    {
+                        "id": "0Pj8HSsj2e",
+                        "nodeId": "4ef01f57-260d-40ae-a924-a97838b13b58",
+                        "name": "Mayotte",
+                        "code": "IN",
+                        "updatedAt": "2020-03-07T00:25:04+03:00",
+                        "__typename": "Country"
+                    },
+                    {
+                        "id": "mIBSPRsCW1",
+                        "nodeId": "7fd05815-6b7d-4cae-9b8c-3ab4ca94e870",
+                        "name": "Kuwait",
+                        "code": "US",
+                        "updatedAt": "2020-03-04T00:25:04+03:00",
+                        "__typename": "Country"
+                    },
+                    {
+                        "id": "hcQnOCkpmJ",
+                        "nodeId": "f978be87-e3d8-4bea-88bd-e2c3eb8c5a5e",
+                        "name": "Slovakia (Slovak Republic)",
+                        "code": "US",
+                        "updatedAt": "2020-03-07T00:25:04+03:00",
+                        "__typename": "Country"
+                    },
+                    {
+                        "id": "N8RK5pKUpR",
+                        "nodeId": "9b25a45e-e7e5-4e06-9929-90e116114919",
+                        "name": "Guinea",
+                        "code": "FR",
+                        "updatedAt": "2020-03-12T00:25:04+03:00",
+                        "__typename": "Country"
+                    },
+                    {
+                        "id": "vP38-NdB-S",
+                        "nodeId": "56294d43-4d8b-45f0-9676-f380930f8d66",
+                        "name": "Guinea-Bissau",
+                        "code": "IE",
+                        "updatedAt": "2020-03-15T00:25:04+03:00",
+                        "__typename": "Country"
+                    },
+                    {
+                        "id": "HUZ0tFZw41",
+                        "nodeId": "dda4c4ae-d2a9-4d91-b36a-1232a399b1f4",
+                        "name": "Nicaragua",
+                        "code": "MX",
+                        "updatedAt": "2020-02-29T00:25:04+03:00",
+                        "__typename": "Country"
+                    },
+                    {
+                        "id": "o_xKHVYYCb",
+                        "nodeId": "e7a888bb-420e-4a02-a539-ae29625f77e7",
+                        "name": "Czech Republic",
+                        "code": "IE",
+                        "updatedAt": "2020-03-07T00:25:04+03:00",
+                        "__typename": "Country"
+                    },
+                    {
+                        "id": "GjmpsFXCnv",
+                        "nodeId": "7ccf5f7b-a2ba-4bec-baaf-74e68a505110",
+                        "name": "India",
+                        "code": "ES",
+                        "updatedAt": "2020-02-25T00:25:04+03:00",
+                        "__typename": "Country"
+                    },
+                    {
+                        "id": "HCGgb2ALkw",
+                        "nodeId": "763ddbb4-b6c8-4646-ba2b-7e7e14412782",
+                        "name": "Japan",
+                        "code": "RU",
+                        "updatedAt": "2020-03-06T00:25:04+03:00",
+                        "__typename": "Country"
+                    },
+                    {
+                        "id": "G6uw5EaXT8",
+                        "nodeId": "c21c8574-0d24-4a25-bfa3-d0da3818bfad",
+                        "name": "Monaco",
+                        "code": "IN",
+                        "updatedAt": "2020-03-14T00:25:04+03:00",
+                        "__typename": "Country"
+                    },
+                    {
+                        "id": "tuMpRj14b3",
+                        "nodeId": "f2e04466-7ae6-48d4-818a-dc76b9187046",
+                        "name": "Guadeloupe",
+                        "code": "MX",
+                        "updatedAt": "2020-03-09T00:25:04+03:00",
+                        "__typename": "Country"
+                    },
+                    {
+                        "id": "KF5UhVBanC",
+                        "nodeId": "4556647a-d090-44a8-81cf-5669c5d691e8",
+                        "name": "Netherlands Antilles",
+                        "code": "MX",
+                        "updatedAt": "2020-03-06T00:25:04+03:00",
+                        "__typename": "Country"
+                    },
+                    {
+                        "id": "FlSxQ0a3nP",
+                        "nodeId": "5fbe7b62-fa10-4232-b0d7-b5dd6425b2bf",
+                        "name": "Myanmar",
+                        "code": "FR",
+                        "updatedAt": "2020-03-09T00:25:04+03:00",
+                        "__typename": "Country"
+                    }
+                ],
+                "__typename": "CountriesConnection"
+            }
+        }
+    }
+}

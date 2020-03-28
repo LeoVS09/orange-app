@@ -1,1 +1,26 @@
-{"data":{"data":{"university":{"id":"j0MFUghyb","nodeId":"5af1bf7d-7c37-4398-b73d-74701efa4728","createdAt":"2022-05-25T23:59:16+03:00","updatedAt":"2020-04-17T23:59:16+03:00","shortName":"numquam","city":{"id":"27s3Ic0_FI","nodeId":"b74d9e61-ca63-4c5d-b30f-335508b58768","country":{"id":"Zb8Ck88lep","nodeId":"6d0e064d-c30b-4ab6-8efd-c60ca9aab74f","name":"Cook Islands","__typename":"Country"},"name":"West Devanstad","__typename":"City"},"__typename":"University"}}}}
+{
+    "data": {
+        "data": {
+            "university": {
+                "id": "j0MFUghyb",
+                "nodeId": "5af1bf7d-7c37-4398-b73d-74701efa4728",
+                "createdAt": "2022-05-25T23:59:16+03:00",
+                "updatedAt": "2020-04-17T23:59:16+03:00",
+                "shortName": "numquam",
+                "city": {
+                    "id": "27s3Ic0_FI",
+                    "nodeId": "b74d9e61-ca63-4c5d-b30f-335508b58768",
+                    "country": {
+                        "id": "Zb8Ck88lep",
+                        "nodeId": "6d0e064d-c30b-4ab6-8efd-c60ca9aab74f",
+                        "name": "Cook Islands",
+                        "__typename": "Country"
+                    },
+                    "name": "West Devanstad",
+                    "__typename": "City"
+                },
+                "__typename": "University"
+            }
+        }
+    }
+}
