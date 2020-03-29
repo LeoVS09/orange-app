@@ -1,5 +1,7 @@
 import { IProducerStore } from '@/lazyDB/core/types'
-import { deleteProperty, get, set } from './controls'
+import { get } from './get'
+import { set } from './set'
+import { deleteProperty } from './delete'
 
 export const objectTraps: ProxyHandler<IProducerStore> = {
   get,

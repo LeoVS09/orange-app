@@ -15,8 +15,8 @@ import { isTemporalTrap } from '../base/repository/temporal'
 
 export const TableStoreReference = SymFor('table storage')
 
-// Used string, because event producer get symbols from base as it is
-export const TableListKey = '__list__'
+// Used string, because event producer get symbols and strings starts from `_` from base as it is
+export const TableListKey = '$__list__'
 
 export const makeTableSource = (table: DatabaseTableMap) => ({
   [TableStoreReference]: table

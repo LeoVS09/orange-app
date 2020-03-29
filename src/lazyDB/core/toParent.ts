@@ -9,7 +9,7 @@ import {
 import { receive } from './receiver'
 import { getEventPayload, setEventPayload } from './common'
 
-export function pushPropertyEventsToParent(
+export function setEventReceiverToParent(
   child: IProducerStore,
   prop: PropertyKey,
   type: AosFieldType = AosFieldType.OneToOne

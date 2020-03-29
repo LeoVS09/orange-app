@@ -7,14 +7,16 @@ import {
   IProducerStore,
   ModelEvent,
   ProducerStoreOptions,
-  ProxyRevoke
+  ProxyRevoke,
+  ProducerStoreGetter,
+  ProducerStoreSetter
 } from '@/lazyDB/core/types'
 import { StateMemory } from '@/lazyDB/core/memory'
 
 /* eslint-disable no-underscore-dangle */
 
-export class ProducerStore implements IProducerStore {
-   public base: AbstractData
+export class ProducerStore<T = AbstractData> implements IProducerStore<T> {
+   public base: T
 
    public dispatcher: IModelEventDispatcher
 
@@ -30,13 +32,13 @@ export class ProducerStore implements IProducerStore {
 
    public subscription?: Subscription
 
-   public getter?: (store: IProducerStore, prop: PropertyKey) => any
+   public getter: ProducerStoreGetter<T>
 
-   public setter?: (store: IProducerStore, prop: PropertyKey, value: any) => boolean
+   public setter: ProducerStoreSetter<T>
 
    private _stream?: Observable<ModelEvent<any>>
 
-   constructor(options: ProducerStoreOptions) {
+   constructor(options: ProducerStoreOptions<T>) {
      this.base = options.base
      this.dispatcher = options.dispatcher
      this.reducers = options.reducers
@@ -45,8 +47,8 @@ export class ProducerStore implements IProducerStore {
      this.memory = options.memory
      this.parent = options.parent
      this.subscription = options.subscription
-     this.getter = options.getter
-     this.setter = options.setter
+     this.getter = options.getter || defaultGetter
+     this.setter = options.setter || defaultSetter
    }
 
    set stream(value: Observable<ModelEvent<any>> | undefined) {
@@ -62,4 +64,12 @@ export class ProducerStore implements IProducerStore {
 
      return this.dispatcher.eventsSubject
    }
+}
+
+const defaultGetter: ProducerStoreGetter<any> = (store, prop) =>
+  store.base[prop as string]
+
+const defaultSetter: ProducerStoreSetter<any> = (store, prop, v) => {
+  store.base[prop as string] = v
+  return true
 }
