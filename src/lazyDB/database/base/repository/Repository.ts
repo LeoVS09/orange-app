@@ -2,10 +2,10 @@ import { getStore } from '@/lazyDB/core/common'
 import { AbstractData, EventProducer } from '@/lazyDB/core/types'
 import { asyncReceiveWithMemory } from '@/lazyDB/core/receiver'
 import { repositoryReducers } from '@/lazyDB/database/connected/actions'
-import { getsSpawnReadEvent } from '@/lazyDB/database/cycle/read'
 import { DatabaseDispatcher, getDatabaseStore } from '@/lazyDB/database/dispatcher'
 import { AosEntitySchema, AosFieldType } from '@/abstractObjectScheme'
-import { updateOnChange } from '../../cycle/change'
+import { spawnRead } from '@/lazyDB/lifeCycle/spawnRead'
+import { whenChanged, updateOnChangeHandler, listOnChangeWrapper } from '../../cycle/change'
 import {
   applyRepositoryControls, ApplyRepositoryControlsOptions
 } from './controls'
@@ -16,6 +16,7 @@ import {
   OnChangeCallback
 } from '../../types'
 import { makeDatabaseTable, TableListKey } from '../../storage/table'
+import { ModelEventTypes } from '../../events'
 
 export interface LazyReactiveRepositoryOptions {
    table?: DatabaseTable
@@ -111,21 +112,15 @@ function appendRepositoryLifeHooks(
   // Current logic require this order to call functions
   asyncReceiveWithMemory(store, repositoryReducers, id, AosFieldType.OneToOne)
   // spawn require to stream which generate only on async receive
-  getsSpawnReadEvent(store)
+  const { stream, memory, dispatcher } = store
+  stream!
+    .pipe(spawnRead({ memory: memory! }))
+    .subscribe(payload => dispatcher.dispatch(ModelEventTypes.Read, payload))
 
-  updateOnChange(store, onChange)
+  stream!
+    .pipe(whenChanged())
+    .subscribe(updateOnChangeHandler(store, onChange))
 }
-
-const listOnChangeWrapper = (list: ListProducer<any>, onChange?: OnChangeCallback): OnChangeCallback =>
-  event => {
-
-    // Hack for vue to track changed nodes
-    // list.nodes.push(null)
-    // list.nodes.pop()
-
-    if (onChange)
-      onChange(event)
-  }
 
 export const getEntityPrimaryKey = (
   { primaryKey }: AosEntitySchema,

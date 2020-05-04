@@ -1,10 +1,10 @@
 import { TestScheduler } from 'rxjs/testing';
-import { pauseOn } from '@/lazyDB/reactive/pauseOn';
+import { pauseWhile } from '@/lazyDB/reactive/pauseWhile';
 
 
 
 // This tests will actually run *synchronously*
-describe('PauseOn', () => {
+describe('PauseWhile', () => {
     let testScheduler: TestScheduler
 
     beforeEach(() => {
@@ -20,7 +20,10 @@ describe('PauseOn', () => {
             const pause = hot(' ----------t----------------', {t: true, f: false})
             const expect = '    --a--a--a------------------';
 
-            const result = source.pipe(pauseOn(pause))
+            let isOnPause = false;
+            pause.subscribe(v => isOnPause = v)
+
+            const result = source.pipe(pauseWhile(() => isOnPause))
 
             expectObservable(result).toBe(expect);
         });
@@ -29,11 +32,14 @@ describe('PauseOn', () => {
 
     it('pause then replay all events on pause', () => {
         testScheduler.run(({ hot, expectObservable }) => {
-            const source = hot('--a--a--a--a--a--a-----a---');
-            const pause = hot(' ----------t-------f--------', {t: true, f: false})
+            const source = hot('--a--a--a--a--a---a----a---');
+            const pause = hot(' ----------t------f---------', {t: true, f: false})
             const expect = '    --a--a--a---------(aaa)a--';
 
-            const result = source.pipe(pauseOn(pause))
+            let isOnPause = false;
+            pause.subscribe(v => isOnPause = v)
+
+            const result = source.pipe(pauseWhile(() => isOnPause))
 
             expectObservable(result).toBe(expect);
         });
@@ -46,7 +52,10 @@ describe('PauseOn', () => {
             const pause = hot(' ----------t-------f--------', {t: true, f: false})
             const expect = '    --a--a--a--------------a--';
 
-            const result = source.pipe(pauseOn(pause))
+            let isOnPause = false;
+            pause.subscribe(v => isOnPause = v)
+
+            const result = source.pipe(pauseWhile(() => isOnPause))
 
             expectObservable(result).toBe(expect);
         });
@@ -54,11 +63,14 @@ describe('PauseOn', () => {
 
     it('pause and not spawn event in it frame', () => {
         testScheduler.run(({ hot, expectObservable }) => {
-            const pause = hot(' ----------t-------f--------', {t: true, f: false})
-            const source = hot('--a--a--a-a--a--a------a---');
+            const pause = hot(' ----------t-----f----------', {t: true, f: false})
+            const source = hot('--a--a--a-a--a----a----a---');
             const expect = '    --a--a--a---------(aaa)a--';
 
-            const result = source.pipe(pauseOn(pause))
+            let isOnPause = false;
+            pause.subscribe(v => isOnPause = v)
+
+            const result = source.pipe(pauseWhile(() => isOnPause))
 
             expectObservable(result).toBe(expect);
         });
@@ -67,11 +79,14 @@ describe('PauseOn', () => {
 
     it('multiple times pause', () => {
         testScheduler.run(({ hot, expectObservable }) => {
-            const source = hot('--a--a--a--a--a--a-----a--a-a-a-----a--');
-            const pause = hot(' ----------t-------f-------t----f--------', {t: true, f: false})
+            const source = hot('--a--a--a--a--a---a----a--a-a--a----a--');
+            const pause = hot(' ----------t------f--------t---f---------', {t: true, f: false})
             const expect = '    --a--a--a---------(aaa)a--a----(aa)-a---';
 
-            const result = source.pipe(pauseOn(pause))
+            let isOnPause = false;
+            pause.subscribe(v => isOnPause = v)
+
+            const result = source.pipe(pauseWhile(() => isOnPause))
 
             expectObservable(result).toBe(expect);
         });
