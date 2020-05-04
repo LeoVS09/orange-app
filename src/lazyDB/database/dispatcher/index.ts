@@ -8,19 +8,31 @@ import {
   ModelEvent,
   ModelEventPayload
 } from '@/lazyDB/core/types'
-import { ModelEventTypes, ReadFailureEventPayload, ReadSuccessEventPayload } from '@/lazyDB/database/events'
+import {
+  ModelEventTypes, ReadFailureEventPayload, ReadSuccessEventPayload, ReadEventPayload
+} from '@/lazyDB/database/events'
 import { IDatabaseModelProducerStore } from '@/lazyDB/database/types'
 import { getStore } from '@/lazyDB/core/common'
 
-export const readSuccessEventPayload = (data: AbstractData, store: IDatabaseModelProducerStore): ReadSuccessEventPayload => ({
+export const readSuccessEventPayload = (
+  data: AbstractData,
+  readPayload: ReadEventPayload,
+  store: IDatabaseModelProducerStore
+): ReadSuccessEventPayload => ({
+  readPayload,
   data,
   store
 })
 
-export const readFailureEventPayload = <T extends Error = any>(error: T, store: IDatabaseModelProducerStore): ReadFailureEventPayload<T> => ({
-  error,
-  store
-})
+export const readFailureEventPayload = <T extends Error = any>(
+  error: T,
+  readPayload: ReadEventPayload,
+  store: IDatabaseModelProducerStore
+): ReadFailureEventPayload<T> => ({
+    readPayload,
+    error,
+    store
+  })
 
 export class DatabaseDispatcher implements IModelEventDispatcher<ModelEventPayload> {
    public eventsSubject: Subject<ModelEvent<ModelEventPayload | undefined>>
@@ -45,9 +57,11 @@ export class DatabaseDispatcher implements IModelEventDispatcher<ModelEventPaylo
      this.delete = (...args) => this.dispatcher.delete(...args)
    }
 
-   public readSuccess = (data: AbstractData, store: IDatabaseModelProducerStore) => this.dispatch(ModelEventTypes.ReadSuccess, readSuccessEventPayload(data, store))
+   public readSuccess = (data: AbstractData, readPayload: ReadEventPayload, store: IDatabaseModelProducerStore) =>
+     this.dispatch(ModelEventTypes.ReadSuccess, readSuccessEventPayload(data, readPayload, store))
 
-   public readFailure = (error: Error, store: IDatabaseModelProducerStore) => this.dispatch(ModelEventTypes.ReadFailure, readFailureEventPayload(error, store))
+   public readFailure = (error: Error, readPayload: ReadEventPayload, store: IDatabaseModelProducerStore) =>
+     this.dispatch(ModelEventTypes.ReadFailure, readFailureEventPayload(error, readPayload, store))
 }
 
 export function isDatabaseDispatcher(value: any): value is DatabaseDispatcher {

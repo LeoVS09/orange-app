@@ -5,6 +5,7 @@ import { nockAllGraphqlRequests, NockAllGraphqlRequestsControls } from '../utils
 import cons from '../utils/console.mock'
 import flushPromises from 'flush-promises'
 import { when } from '../utils/when'
+import { timeout } from 'rxjs/operators'
 
 // For run tests sequentially (one by one)
 // use describe blocks, each describe block runs ony after previus
@@ -37,8 +38,6 @@ describe('Repository', () => {
   //  isChanged -> on change data
   //  isUpdating -> during update
   //  ...
-
-  // TODO: check snapshots of result data
 
   // TODO: check multiple layers of object
   
@@ -126,7 +125,6 @@ describe('Repository', () => {
     expect(list.nodes[6].code).toBe("IE")
     expect(list.nodes[6].updatedAt).toEqual(new Date("2020-03-15T00:25:04+03:00"))
 
-    // TODO: equility comparisition for lazy objects not work, need fix
     expect(list.nodes).toMatchObject([
       {"id":"gILNkgtqw", "name":"Estonia","code":"DE","updatedAt":new Date("2020-02-27T00:25:04+03:00")},
       {"id":"RvBE9BWZ85","name":"Comoros","code":"CN","updatedAt":new Date("2020-03-02T00:25:04+03:00")},
@@ -149,6 +147,58 @@ describe('Repository', () => {
 
     // flush events
     await flushPromises()
+  })
+
+  it.only('should generate request for entity and next reqires when more fields need', async () => {
+     // must be inside test for mock fetch function
+     const { Database } = require('@/lazyDb/database/connected/Database')
+     const { Repository } = new Database()
+     const DataRepository = new Repository('country')
+ 
+     const reactiveUpdate = jest.fn()
+     const node = DataRepository.findOne('test-id', reactiveUpdate) 
+ 
+     // ask data
+     expect(node.name).toBeUndefined()
+     expect(node.updatedAt).toBeUndefined()
+     expect(node.createdAt).toBeUndefined()
+
+     // Check graphql query is correct
+    requestControls.checkRequestParams = query => 
+      expect(query).toMatchSnapshot()
+
+    // Wait while lazyDB requested all data and rerender
+    await requestControls.waits.wait()
+    // one call when requiest start
+    await when(() => reactiveUpdate.mock.calls.length > 0)
+    expect(reactiveUpdate.mock.calls.length).toBe(1)
+
+    // when data will be displayed
+    await when(() => reactiveUpdate.mock.calls.length === 2)
+    expect(reactiveUpdate.mock.calls.length).toBe(2)
+
+    expect(node.id).toBe('I2o82_J6a')
+    expect(node.name).toBe('United Arab Emirates')
+    expect(node.updatedAt).toEqual(new Date("2020-05-08T15:31:16.000Z"))
+    expect(node.createdAt).toEqual(new Date("2021-01-16T15:31:16.000Z"))
+
+    expect(node).toMatchSnapshot()
+
+    await timeout(1000)
+    // ---------------------------------------------------------------
+    // Ask additional data
+    expect(node.code).toBeUndefined()
+
+    // Wait while lazyDB requested 'code' data and rerender
+    await requestControls.waits.wait()
+
+    // next call when requiest start
+    await when(() => reactiveUpdate.mock.calls.length === 3)
+    expect(reactiveUpdate.mock.calls.length).toBe(3)
+
+    expect(node.code).toBeDefined()
+
+    expect(node).toMatchSnapshot()
   })
   
 })

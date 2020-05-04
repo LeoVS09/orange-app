@@ -1,5 +1,5 @@
 import { IProducerStore, ProducerStoreGetter, ProducerStoreSetter } from '@/lazyDB/core/types'
-import { wrapInProducer } from '@/lazyDB/core/producer/wrap'
+import { wrapInProducer } from '@/lazyDB/core/wrap'
 import { getStore } from '@/lazyDB/core/common'
 import { SymFor } from '@/lazyDB/core/utils'
 import {

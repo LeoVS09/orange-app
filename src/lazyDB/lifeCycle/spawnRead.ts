@@ -9,7 +9,7 @@ import { ModelEvent } from '../core/types'
 import { ModelEventTypes, ModelEventReadPayload } from '../database/events'
 import { isReading } from '../database/states'
 import { pauseWhileReading } from './pauseWhileReading'
-import { debug } from '../reactive/debug'
+import { debug } from '../../reactive/debug'
 
 const WAIT_TIME_WHEN_GETS_STOP_SPAWN = 50
 
@@ -40,6 +40,11 @@ export const spawnRead = (
 ) =>
     <T>(source: Observable<ModelEvent<any>>): Observable<ModelEventReadPayload> =>
     source.pipe(
+      // TODO: fix reading hook
+      // add test to isReading getter
+      // add test to read success and failure
+      // on read success and failure remove read event
+      // add to read success and failure link to read event
       pauseWhileReading(() => isReading(memory) || !canRead()),
       // Wait some time to be sure, get events stop spawn
       debug('before debounce'),

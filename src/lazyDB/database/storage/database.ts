@@ -4,7 +4,7 @@ import {
   ProducerStoreSetter
 } from '@/lazyDB/core/types'
 import { DatabaseStorage, DatabaseStorageMap, DatabaseTableMap } from '@/lazyDB/database/types'
-import { wrapInProducer } from '@/lazyDB/core/producer/wrap'
+import { wrapInProducer } from '@/lazyDB/core/wrap'
 import { getStore, isProducer } from '@/lazyDB/core/common'
 import { applyTableControls, makeTableSource, TableStoreReference } from './table'
 

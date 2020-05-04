@@ -57,8 +57,10 @@ export type ModelEventReadPayload = ReadEventPayload
 
 export interface ReadSuccessEventPayload extends DatabaseModelPayload {
    data: AbstractData
+   readPayload: ReadEventPayload
 }
 
 export interface ReadFailureEventPayload<T extends Error = any> extends DatabaseModelPayload {
-   error: T
+   error: T,
+   readPayload: ReadEventPayload,
 }

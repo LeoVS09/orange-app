@@ -2,7 +2,7 @@ import { debounceTime } from 'rxjs/operators'
 import { filterEventsByTypes } from '@/lazyDB/reactive/filterEventByTypes'
 import { Observable } from 'rxjs'
 import { ModelEvent } from '@/lazyDB/core/types'
-import { debug } from '@/lazyDB/reactive/debug'
+import { debug } from '@/reactive/debug'
 import { ModelEventTypes } from '../events'
 import { IDatabaseModelProducerStore, OnChangeCallback, ListProducer } from '../types'
 

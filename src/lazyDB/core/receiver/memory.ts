@@ -65,6 +65,7 @@ export function asyncReceiveWithMemory(
   store.stream = dispatcher.eventsSubject
     .pipe(
       filter(event => !isHaveEventInMemory(event)),
+      debug('not have event in memory'),
       saveInMemory(false),
       share()
     )
@@ -94,9 +95,10 @@ const saveInMemory = <Payload extends ModelEventPayload = ModelEventPayload>(fai
     const store = getStoreFromEvent(event)
 
     if (!store.memory) {
-      if (!failIfCannot)
+      if (!failIfCannot) {
+        console.warn('Cannot save event in memory', event)
         return
-
+      }
       throw new Error(`Cannot save event in memory, event store not have memory event: ${event}`)
     }
 

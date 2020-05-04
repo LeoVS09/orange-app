@@ -24,17 +24,19 @@ export const removeGetEventsFromMemory = ({ store, gets }: ReadEventPayload) => 
   const { memory } = store
 
   if (memory)
-    memory.remove(...gets)
+    memory.forget(...gets)
 }
 
-export const dispatchReadSuccess = ({ store }: ReadEventPayload, responseData: AbstractData) => {
+export const dispatchReadSuccess = (readPayload: ReadEventPayload, responseData: AbstractData) => {
+  const { store } = readPayload
   const { dispatcher } = store
-  dispatcher.readSuccess(responseData, store)
+  dispatcher.readSuccess(responseData, readPayload, store)
 }
 
-export const dispatchReadFailure = ({ store }: ReadEventPayload, error: any) => {
+export const dispatchReadFailure = (readPayload: ReadEventPayload, error: any) => {
+  const { store } = readPayload
   const { dispatcher } = store
-  dispatcher.readFailure(error, store)
+  dispatcher.readFailure(error, readPayload, store)
 }
 
 export const isObject = (value: any): value is Object => typeof value === 'object'
