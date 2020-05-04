@@ -1,5 +1,5 @@
 import { AbstractData, EventProducer } from './types'
-import { wrapInProducer } from './producer/wrap'
+import { wrapInProducer } from './wrap'
 import { asyncReceiveWithMemory } from './receiver'
 import { changeTrackableReducersMap } from './actions'
 import { isChanged } from './states'

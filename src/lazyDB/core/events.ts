@@ -26,13 +26,8 @@ export function isHaveEventInMemory(modelEvent: ModelEvent<any>) {
     }
   })
 
-  debugNotHaveEvent(payload, index)
-
   return index !== -1
 }
-
-const debugNotHaveEvent = (payload: ModelEventPayload, index: number) =>
-  index === -1 && console.log('Not have event in memory', payload, payload.store.memory)
 
 export function isGetEventsEqual(a: ModelEventGetPropertyPayload, b: ModelEventGetPropertyPayload): boolean {
   if (a.name !== b.name || a.type !== b.type)

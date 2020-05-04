@@ -1,5 +1,5 @@
-import { atomicReceiveByReducers } from '@/lazyDB/core/receiver'
-import { AtomicModelEventDispatcher } from '@/lazyDB/core/dispatcher/model/atomic'
+import { atomicReceiveByReducers } from './receiver'
+import { AtomicModelEventDispatcher } from './dispatcher/model/atomic'
 import {
   AbstractData,
   EventReducer, EventType,
@@ -7,7 +7,7 @@ import {
   ModelEventGetPropertyPayload,
   ModelEventSetPropertyPayload
 } from './types'
-import { wrapInProducer } from './producer/wrap'
+import { wrapInProducer } from './wrap'
 import { getStore } from './common'
 
 export interface AtomicProducerActions {

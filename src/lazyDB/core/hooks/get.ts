@@ -6,7 +6,7 @@ import {
   AbstractData
 } from '../types'
 import { isProducerable, getStore } from '../common'
-import { wrapInProducerIfNot } from './wrap'
+import { wrapInProducerIfNot } from '../wrap'
 import { setEventReceiverToParent } from '../toParent'
 import { isExplictlyAccessPropty } from './explictly'
 

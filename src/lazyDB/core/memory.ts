@@ -1,12 +1,24 @@
 import { splitArray } from './utils'
 
 export class StateMemory<T> {
+   // TODO: make field private
    public memory: Array<T> = []
 
    public push(event: T) {
      this.memory.push(event)
    }
 
+   get length(): number {
+     return this.memory.length
+   }
+
+   set length(length: number) {
+     this.memory.length = length
+   }
+
+   // TODO: add forget method, which can take event and predicate
+   // and working like remove or exclude accordingly,
+   // and make remove and exclude private
    public remove(...target: Array<T>) {
      this.memory = this.memory.filter(event => !target.includes(event))
    }
