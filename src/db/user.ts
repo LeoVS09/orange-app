@@ -1,4 +1,4 @@
-import { AosFieldType } from '@/abstractObjectScheme/types'
+import { AosFieldType } from '@/abstractObjectSchema/types'
 import { Repository } from '@/lazyDB'
 
 export const ProfileRepository = new Repository(

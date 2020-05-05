@@ -5,7 +5,7 @@ import {
 import { getStore } from '@/lazyDB/core/common'
 
 import { ModelEventDispatcher } from '@/lazyDB/core/dispatcher/model/base'
-import { AosFieldType, AosEntitySchemaStorage, AosEntitySchema } from '@/abstractObjectScheme'
+import { AosFieldType, AosEntitySchemaStorage, AosEntitySchema } from '@/abstractObjectSchema'
 import { getEntityPrimaryKey } from '@/lazyDB/database/base/repository/Repository'
 import { isListSourceData } from '@/lazyDB/database/base/repository/list'
 import { extractEntityNameFromManyKey } from '@/lazyDB/utils'

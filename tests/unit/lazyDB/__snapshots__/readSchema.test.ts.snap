@@ -1,0 +1,78 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AOS builder append multiple string properties 1`] = `
+Object {
+  "isAppended": true,
+  "schema": Object {
+    "first": Object {
+      "type": "Any",
+    },
+    "id": Object {
+      "type": "Any",
+    },
+    "nodeId": Object {
+      "type": "Any",
+    },
+  },
+}
+`;
+
+exports[`AOS builder append multiple string properties 2`] = `
+Object {
+  "isAppended": true,
+  "schema": Object {
+    "first": Object {
+      "type": "Any",
+    },
+    "id": Object {
+      "type": "Any",
+    },
+    "nodeId": Object {
+      "type": "Any",
+    },
+    "second": Object {
+      "type": "Any",
+    },
+  },
+}
+`;
+
+exports[`AOS builder append multiple string properties 3`] = `
+Object {
+  "isAppended": true,
+  "schema": Object {
+    "first": Object {
+      "type": "Any",
+    },
+    "id": Object {
+      "type": "Any",
+    },
+    "nodeId": Object {
+      "type": "Any",
+    },
+    "second": Object {
+      "type": "Any",
+    },
+    "third": Object {
+      "type": "Any",
+    },
+  },
+}
+`;
+
+exports[`AOS builder append simple string property 1`] = `
+Object {
+  "isAppended": true,
+  "schema": Object {
+    "id": Object {
+      "type": "Any",
+    },
+    "nodeId": Object {
+      "type": "Any",
+    },
+    "simple": Object {
+      "type": "Any",
+    },
+  },
+}
+`;

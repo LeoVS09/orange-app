@@ -10,7 +10,7 @@ import { SymFor } from '@/lazyDB/core/utils'
 import { DatabaseDispatcher } from '@/lazyDB/database/dispatcher'
 import {
   AosEntitySchemaStorage, AosEntitySchema, AosSchema, AosFieldType
-} from '@/abstractObjectScheme'
+} from '@/abstractObjectSchema'
 
 export type AsyncConnectorReducer<T, R> = (store: IProducerStore, event: T) => Promise<R>
 

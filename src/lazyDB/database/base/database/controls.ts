@@ -1,5 +1,5 @@
 import { AbstractData, EventProducer, IProducerStore } from '@/lazyDB/core/types'
-import { AosEntitySchemaStorage, AosEntitySchema, AosFieldType } from '@/abstractObjectScheme'
+import { AosEntitySchemaStorage, AosEntitySchema, AosFieldType } from '@/abstractObjectSchema'
 import { isProducer, getStore } from '@/lazyDB/core/common'
 import { extractEntityNameFromManyKey } from '@/lazyDB/utils'
 import { ISetLinkedEntity, applyRepositoryControls } from '../repository/controls'

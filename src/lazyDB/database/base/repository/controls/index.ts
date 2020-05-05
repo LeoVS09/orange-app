@@ -1,5 +1,5 @@
 import { IProducerStore } from '@/lazyDB/core/types'
-import { AosEntitySchema } from '@/abstractObjectScheme'
+import { AosEntitySchema } from '@/abstractObjectSchema'
 import { ApplyRepositoryControlsOptions } from './types'
 import getter from './getter'
 import setter from './setter'

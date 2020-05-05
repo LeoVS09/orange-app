@@ -3,7 +3,7 @@ import { AbstractData, EventProducer } from '@/lazyDB/core/types'
 import { asyncReceiveWithMemory } from '@/lazyDB/core/receiver'
 import { repositoryReducers } from '@/lazyDB/database/connected/actions'
 import { DatabaseDispatcher, getDatabaseStore } from '@/lazyDB/database/dispatcher'
-import { AosEntitySchema, AosFieldType } from '@/abstractObjectScheme'
+import { AosEntitySchema, AosFieldType } from '@/abstractObjectSchema'
 import { spawnRead } from '@/lazyDB/lifeCycle/spawnRead'
 import { whenChanged, updateOnChangeHandler, listOnChangeWrapper } from '../../cycle/change'
 import {

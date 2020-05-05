@@ -1,4 +1,4 @@
-import { AosFieldType } from '@/abstractObjectScheme'
+import { AosFieldType } from '@/abstractObjectSchema'
 import { filter, tap, share } from 'rxjs/operators'
 import { Observable } from 'rxjs'
 import { debug } from '@/reactive/debug'

@@ -1,4 +1,4 @@
-import { AosSchema } from '@/abstractObjectScheme'
+import { AosSchema } from '@/abstractObjectSchema'
 import { ModelEventGetPropertyPayload, IProducerStore, AbstractData } from '@/lazyDB/core/types'
 import { IDatabaseModelProducerStore } from '../../../types'
 

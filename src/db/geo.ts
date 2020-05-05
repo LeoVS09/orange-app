@@ -1,6 +1,6 @@
 import { Repository } from '@/lazyDB'
 import { Country, City, University } from '@/models'
-import { AosFieldType } from '@/abstractObjectScheme'
+import { AosFieldType } from '@/abstractObjectSchema'
 
 export const CountryRepository = new Repository<Country>(
   'country',

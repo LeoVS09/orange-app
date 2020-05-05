@@ -1,4 +1,4 @@
-import { AosFieldType } from '@/abstractObjectScheme'
+import { AosFieldType } from '@/abstractObjectSchema'
 import {
   IProducerStore,
   ProducerStoreReference,

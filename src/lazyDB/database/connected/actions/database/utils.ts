@@ -1,4 +1,4 @@
-import { AosSchema, isSimpleAosField } from '@/abstractObjectScheme'
+import { AosSchema, isSimpleAosField } from '@/abstractObjectSchema'
 import { QueryField } from '@/lazyDB/connectors/queryMapper'
 import { ReadEventPayload } from '@/lazyDB/database/events'
 import { AbstractData } from '@/lazyDB/core/types'

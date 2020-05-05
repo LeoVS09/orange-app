@@ -1,5 +1,5 @@
 import { IDatabaseModelProducerStore, ListSource } from '@/lazyDB/database/types'
-import { AosSchema } from '@/abstractObjectScheme'
+import { AosSchema } from '@/abstractObjectSchema'
 import {
   ModelEvent,
   ModelEventGetPropertyPayload,

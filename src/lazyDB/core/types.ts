@@ -1,5 +1,5 @@
 import { Observable, Subject, Subscription } from 'rxjs'
-import { AosFieldType } from '@/abstractObjectScheme'
+import { AosFieldType } from '@/abstractObjectSchema'
 import { SymFor } from './utils'
 import { StateMemory } from './memory'
 

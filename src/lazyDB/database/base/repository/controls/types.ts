@@ -1,4 +1,4 @@
-import { AosFieldType, AosEntitySchema } from '@/abstractObjectScheme'
+import { AosFieldType, AosEntitySchema } from '@/abstractObjectSchema'
 import { AbstractData, IProducerStore } from '@/lazyDB/core/types'
 
 export interface IGetLinkedEntity {

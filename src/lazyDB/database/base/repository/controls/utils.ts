@@ -1,4 +1,4 @@
-import { AosEntityFields, AosFieldType } from '@/abstractObjectScheme'
+import { AosEntityFields, AosFieldType } from '@/abstractObjectSchema'
 
 export const getFieldType = (fields: AosEntityFields, name: string): AosFieldType => {
   const field = fields[name]

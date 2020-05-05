@@ -8,7 +8,7 @@ import {
   AosSimpleField,
   AosField,
   AosRelationsField
-} from '@/abstractObjectScheme'
+} from '@/abstractObjectSchema'
 import { requiredFields } from '../constants'
 
 export function appendPropertyToSchema(
@@ -56,6 +56,9 @@ function appendNumberPropertyToSchema(
   inner: ModelEventInnerPayload<any> | undefined
 ): boolean {
   if (!inner)
+    // in case when was asked only some item in list,
+    // but wasn't asked any data from item,
+    // ignore...
     return false
 
   return appendPropertyToSchema(schema, inner)

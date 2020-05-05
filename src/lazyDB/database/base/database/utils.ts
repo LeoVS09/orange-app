@@ -1,4 +1,4 @@
-import { AosEntityFields } from '@/abstractObjectScheme'
+import { AosEntityFields } from '@/abstractObjectSchema'
 
 export const getTableNameByField = (fields: AosEntityFields, name: string): string => {
   const field = fields[name]

@@ -1,4 +1,4 @@
-import { AosSchema } from '@/abstractObjectScheme'
+import { AosSchema } from '@/abstractObjectSchema'
 import { generateQueryEntityById, generateQueryList } from '@/lazyDB/connectors/queryMapper'
 import { databaseClient } from '@/api/database/utils'
 import { dateToStringFormatter } from '@/lazyDB/utils'

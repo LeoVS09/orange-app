@@ -1,4 +1,4 @@
-import { AosEntitySchema, isSimpleType, AosFieldType } from '@/abstractObjectScheme'
+import { AosEntitySchema, isSimpleType, AosFieldType } from '@/abstractObjectSchema'
 import { ProducerStoreGetter } from '@/lazyDB/core/types'
 import { IGetLinkedEntity } from './types'
 import { getFieldType } from './utils'
