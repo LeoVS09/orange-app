@@ -163,6 +163,348 @@ Object {
 }
 `;
 
+exports[`AOS builder append complex OneToMany property after another 1`] = `
+Object {
+  "isAppended": true,
+  "schema": Object {
+    "first": Object {
+      "type": "Any",
+    },
+    "id": Object {
+      "type": "Any",
+    },
+    "nodeId": Object {
+      "type": "Any",
+    },
+  },
+}
+`;
+
+exports[`AOS builder append complex OneToMany property after another 2`] = `
+Object {
+  "isAppended": true,
+  "schema": Object {
+    "complex": Object {
+      "schema": Object {
+        "id": Object {
+          "type": "Any",
+        },
+        "nodeId": Object {
+          "type": "Any",
+        },
+        "second": Object {
+          "type": "Any",
+        },
+      },
+      "type": "OneToMany",
+    },
+    "first": Object {
+      "type": "Any",
+    },
+    "id": Object {
+      "type": "Any",
+    },
+    "nodeId": Object {
+      "type": "Any",
+    },
+  },
+}
+`;
+
+exports[`AOS builder append complex OneToMany property after another 3`] = `
+Object {
+  "isAppended": true,
+  "schema": Object {
+    "complex": Object {
+      "schema": Object {
+        "id": Object {
+          "type": "Any",
+        },
+        "nodeId": Object {
+          "type": "Any",
+        },
+        "second": Object {
+          "type": "Any",
+        },
+        "third": Object {
+          "type": "Any",
+        },
+      },
+      "type": "OneToMany",
+    },
+    "first": Object {
+      "type": "Any",
+    },
+    "id": Object {
+      "type": "Any",
+    },
+    "nodeId": Object {
+      "type": "Any",
+    },
+  },
+}
+`;
+
+exports[`AOS builder append complex OneToMany to different items 1`] = `
+Object {
+  "isAppended": true,
+  "schema": Object {
+    "first": Object {
+      "type": "Any",
+    },
+    "id": Object {
+      "type": "Any",
+    },
+    "nodeId": Object {
+      "type": "Any",
+    },
+  },
+}
+`;
+
+exports[`AOS builder append complex OneToMany to different items 2`] = `
+Object {
+  "isAppended": true,
+  "schema": Object {
+    "complex": Object {
+      "schema": Object {
+        "id": Object {
+          "type": "Any",
+        },
+        "nodeId": Object {
+          "type": "Any",
+        },
+        "second": Object {
+          "type": "Any",
+        },
+      },
+      "type": "OneToMany",
+    },
+    "first": Object {
+      "type": "Any",
+    },
+    "id": Object {
+      "type": "Any",
+    },
+    "nodeId": Object {
+      "type": "Any",
+    },
+  },
+}
+`;
+
+exports[`AOS builder append complex OneToMany to different items 3`] = `
+Object {
+  "isAppended": true,
+  "schema": Object {
+    "complex": Object {
+      "schema": Object {
+        "id": Object {
+          "type": "Any",
+        },
+        "nodeId": Object {
+          "type": "Any",
+        },
+        "second": Object {
+          "type": "Any",
+        },
+        "third": Object {
+          "type": "Any",
+        },
+      },
+      "type": "OneToMany",
+    },
+    "first": Object {
+      "type": "Any",
+    },
+    "id": Object {
+      "type": "Any",
+    },
+    "nodeId": Object {
+      "type": "Any",
+    },
+  },
+}
+`;
+
+exports[`AOS builder append complex OneToMany to different items 4`] = `
+Object {
+  "isAppended": true,
+  "schema": Object {
+    "complex": Object {
+      "schema": Object {
+        "id": Object {
+          "type": "Any",
+        },
+        "nodeId": Object {
+          "type": "Any",
+        },
+        "second": Object {
+          "type": "Any",
+        },
+        "third": Object {
+          "type": "Any",
+        },
+      },
+      "type": "OneToMany",
+    },
+    "first": Object {
+      "type": "Any",
+    },
+    "fourth": Object {
+      "type": "Any",
+    },
+    "id": Object {
+      "type": "Any",
+    },
+    "nodeId": Object {
+      "type": "Any",
+    },
+  },
+}
+`;
+
+exports[`AOS builder append complex OneToMany to different properties 1`] = `
+Object {
+  "isAppended": true,
+  "schema": Object {
+    "first": Object {
+      "type": "Any",
+    },
+    "id": Object {
+      "type": "Any",
+    },
+    "nodeId": Object {
+      "type": "Any",
+    },
+  },
+}
+`;
+
+exports[`AOS builder append complex OneToMany to different properties 2`] = `
+Object {
+  "isAppended": true,
+  "schema": Object {
+    "complexFirst": Object {
+      "schema": Object {
+        "id": Object {
+          "type": "Any",
+        },
+        "nodeId": Object {
+          "type": "Any",
+        },
+        "second": Object {
+          "type": "Any",
+        },
+      },
+      "type": "OneToMany",
+    },
+    "first": Object {
+      "type": "Any",
+    },
+    "id": Object {
+      "type": "Any",
+    },
+    "nodeId": Object {
+      "type": "Any",
+    },
+  },
+}
+`;
+
+exports[`AOS builder append complex OneToMany to different properties 3`] = `
+Object {
+  "isAppended": true,
+  "schema": Object {
+    "complexFirst": Object {
+      "schema": Object {
+        "id": Object {
+          "type": "Any",
+        },
+        "nodeId": Object {
+          "type": "Any",
+        },
+        "second": Object {
+          "type": "Any",
+        },
+      },
+      "type": "OneToMany",
+    },
+    "complexSecond": Object {
+      "schema": Object {
+        "id": Object {
+          "type": "Any",
+        },
+        "nodeId": Object {
+          "type": "Any",
+        },
+        "third": Object {
+          "type": "Any",
+        },
+      },
+      "type": "OneToMany",
+    },
+    "first": Object {
+      "type": "Any",
+    },
+    "id": Object {
+      "type": "Any",
+    },
+    "nodeId": Object {
+      "type": "Any",
+    },
+  },
+}
+`;
+
+exports[`AOS builder append complex OneToMany to different properties 4`] = `
+Object {
+  "isAppended": true,
+  "schema": Object {
+    "complexFirst": Object {
+      "schema": Object {
+        "id": Object {
+          "type": "Any",
+        },
+        "nodeId": Object {
+          "type": "Any",
+        },
+        "second": Object {
+          "type": "Any",
+        },
+      },
+      "type": "OneToMany",
+    },
+    "complexSecond": Object {
+      "schema": Object {
+        "id": Object {
+          "type": "Any",
+        },
+        "nodeId": Object {
+          "type": "Any",
+        },
+        "third": Object {
+          "type": "Any",
+        },
+      },
+      "type": "OneToMany",
+    },
+    "first": Object {
+      "type": "Any",
+    },
+    "fourth": Object {
+      "type": "Any",
+    },
+    "id": Object {
+      "type": "Any",
+    },
+    "nodeId": Object {
+      "type": "Any",
+    },
+  },
+}
+`;
+
 exports[`AOS builder append complex OneToOne string property 1`] = `
 Object {
   "isAppended": true,
@@ -509,6 +851,125 @@ exports[`AOS builder append simple number property like string 1`] = `
 Object {
   "isAppended": false,
   "schema": Object {},
+}
+`;
+
+exports[`AOS builder append simple propert after OneToMany 1`] = `
+Object {
+  "isAppended": true,
+  "schema": Object {
+    "first": Object {
+      "type": "Any",
+    },
+    "id": Object {
+      "type": "Any",
+    },
+    "nodeId": Object {
+      "type": "Any",
+    },
+  },
+}
+`;
+
+exports[`AOS builder append simple propert after OneToMany 2`] = `
+Object {
+  "isAppended": true,
+  "schema": Object {
+    "complex": Object {
+      "schema": Object {
+        "id": Object {
+          "type": "Any",
+        },
+        "nodeId": Object {
+          "type": "Any",
+        },
+        "second": Object {
+          "type": "Any",
+        },
+      },
+      "type": "OneToMany",
+    },
+    "first": Object {
+      "type": "Any",
+    },
+    "id": Object {
+      "type": "Any",
+    },
+    "nodeId": Object {
+      "type": "Any",
+    },
+  },
+}
+`;
+
+exports[`AOS builder append simple propert after OneToMany 3`] = `
+Object {
+  "isAppended": true,
+  "schema": Object {
+    "complex": Object {
+      "schema": Object {
+        "id": Object {
+          "type": "Any",
+        },
+        "nodeId": Object {
+          "type": "Any",
+        },
+        "second": Object {
+          "type": "Any",
+        },
+        "third": Object {
+          "type": "Any",
+        },
+      },
+      "type": "OneToMany",
+    },
+    "first": Object {
+      "type": "Any",
+    },
+    "id": Object {
+      "type": "Any",
+    },
+    "nodeId": Object {
+      "type": "Any",
+    },
+  },
+}
+`;
+
+exports[`AOS builder append simple propert after OneToMany 4`] = `
+Object {
+  "isAppended": true,
+  "schema": Object {
+    "complex": Object {
+      "schema": Object {
+        "id": Object {
+          "type": "Any",
+        },
+        "nodeId": Object {
+          "type": "Any",
+        },
+        "second": Object {
+          "type": "Any",
+        },
+        "third": Object {
+          "type": "Any",
+        },
+      },
+      "type": "OneToMany",
+    },
+    "first": Object {
+      "type": "Any",
+    },
+    "fourth": Object {
+      "type": "Any",
+    },
+    "id": Object {
+      "type": "Any",
+    },
+    "nodeId": Object {
+      "type": "Any",
+    },
+  },
 }
 `;
 
