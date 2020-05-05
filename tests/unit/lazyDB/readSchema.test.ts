@@ -138,6 +138,68 @@ describe('AOS builder', () => {
         expect({ isAppended, schema}).toMatchSnapshot()
     })
 
+    it('append simple property to complex OneToOne', () => {
+        const first = simplePayload('first')
+        const second = simplePayload('second')
+        const third = simplePayload('third')
+
+        const complexFirst = complexPayload('complex', AosFieldType.OneToOne, second)
+        const complexSecond = complexPayload('complex', AosFieldType.OneToOne, third)
+
+        let isAppended = appendPropertyToSchema(schema, first)
+        expect({ isAppended, schema}).toMatchSnapshot()
+
+        isAppended = appendPropertyToSchema(schema, complexFirst)
+        expect({ isAppended, schema}).toMatchSnapshot()
+
+        isAppended = appendPropertyToSchema(schema, complexSecond)
+        expect({ isAppended, schema}).toMatchSnapshot()
+    })
+
+    it('append simple property after complex OneToOne', () => {
+        const first = simplePayload('first')
+        const second = simplePayload('second')
+        const third = simplePayload('third')
+        const fourth = simplePayload('fourth')
+
+        const complexFirst = complexPayload('complex', AosFieldType.OneToOne, second)
+        const complexSecond = complexPayload('complex', AosFieldType.OneToOne, third)
+
+        let isAppended = appendPropertyToSchema(schema, first)
+        expect({ isAppended, schema}).toMatchSnapshot()
+
+        isAppended = appendPropertyToSchema(schema, complexFirst)
+        expect({ isAppended, schema}).toMatchSnapshot()
+
+        isAppended = appendPropertyToSchema(schema, complexSecond)
+        expect({ isAppended, schema}).toMatchSnapshot()
+
+        isAppended = appendPropertyToSchema(schema, fourth)
+        expect({ isAppended, schema}).toMatchSnapshot()
+    })
+
+    it('append OneToOne complex property after another complex OneToOne', () => {
+        const first = simplePayload('first')
+        const second = simplePayload('second')
+        const third = simplePayload('third')
+        const fourth = simplePayload('fourth')
+
+        const complexFirst = complexPayload('complexFirst', AosFieldType.OneToOne, second)
+        const complexSecond = complexPayload('complexSecond', AosFieldType.OneToOne, third)
+
+        let isAppended = appendPropertyToSchema(schema, first)
+        expect({ isAppended, schema}).toMatchSnapshot()
+
+        isAppended = appendPropertyToSchema(schema, complexFirst)
+        expect({ isAppended, schema}).toMatchSnapshot()
+
+        isAppended = appendPropertyToSchema(schema, complexSecond)
+        expect({ isAppended, schema}).toMatchSnapshot()
+
+        isAppended = appendPropertyToSchema(schema, fourth)
+        expect({ isAppended, schema}).toMatchSnapshot()
+    })
+
     // Not working correctly, require 'nodes' field
     // TODO: make it work based on type
     it('append complex OneToMany property', () => {

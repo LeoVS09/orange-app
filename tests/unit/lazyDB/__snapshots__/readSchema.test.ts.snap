@@ -1,5 +1,146 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`AOS builder append OneToOne complex property after another complex OneToOne 1`] = `
+Object {
+  "isAppended": true,
+  "schema": Object {
+    "first": Object {
+      "type": "Any",
+    },
+    "id": Object {
+      "type": "Any",
+    },
+    "nodeId": Object {
+      "type": "Any",
+    },
+  },
+}
+`;
+
+exports[`AOS builder append OneToOne complex property after another complex OneToOne 2`] = `
+Object {
+  "isAppended": true,
+  "schema": Object {
+    "complexFirst": Object {
+      "schema": Object {
+        "id": Object {
+          "type": "Any",
+        },
+        "nodeId": Object {
+          "type": "Any",
+        },
+        "second": Object {
+          "type": "Any",
+        },
+      },
+      "type": "OneToOne",
+    },
+    "first": Object {
+      "type": "Any",
+    },
+    "id": Object {
+      "type": "Any",
+    },
+    "nodeId": Object {
+      "type": "Any",
+    },
+  },
+}
+`;
+
+exports[`AOS builder append OneToOne complex property after another complex OneToOne 3`] = `
+Object {
+  "isAppended": true,
+  "schema": Object {
+    "complexFirst": Object {
+      "schema": Object {
+        "id": Object {
+          "type": "Any",
+        },
+        "nodeId": Object {
+          "type": "Any",
+        },
+        "second": Object {
+          "type": "Any",
+        },
+      },
+      "type": "OneToOne",
+    },
+    "complexSecond": Object {
+      "schema": Object {
+        "id": Object {
+          "type": "Any",
+        },
+        "nodeId": Object {
+          "type": "Any",
+        },
+        "third": Object {
+          "type": "Any",
+        },
+      },
+      "type": "OneToOne",
+    },
+    "first": Object {
+      "type": "Any",
+    },
+    "id": Object {
+      "type": "Any",
+    },
+    "nodeId": Object {
+      "type": "Any",
+    },
+  },
+}
+`;
+
+exports[`AOS builder append OneToOne complex property after another complex OneToOne 4`] = `
+Object {
+  "isAppended": true,
+  "schema": Object {
+    "complexFirst": Object {
+      "schema": Object {
+        "id": Object {
+          "type": "Any",
+        },
+        "nodeId": Object {
+          "type": "Any",
+        },
+        "second": Object {
+          "type": "Any",
+        },
+      },
+      "type": "OneToOne",
+    },
+    "complexSecond": Object {
+      "schema": Object {
+        "id": Object {
+          "type": "Any",
+        },
+        "nodeId": Object {
+          "type": "Any",
+        },
+        "third": Object {
+          "type": "Any",
+        },
+      },
+      "type": "OneToOne",
+    },
+    "first": Object {
+      "type": "Any",
+    },
+    "fourth": Object {
+      "type": "Any",
+    },
+    "id": Object {
+      "type": "Any",
+    },
+    "nodeId": Object {
+      "type": "Any",
+    },
+  },
+}
+`;
+
 exports[`AOS builder append complex OneToMany property 1`] = `
 Object {
   "isAppended": true,
@@ -368,6 +509,207 @@ exports[`AOS builder append simple number property like string 1`] = `
 Object {
   "isAppended": false,
   "schema": Object {},
+}
+`;
+
+exports[`AOS builder append simple property after complex OneToOne 1`] = `
+Object {
+  "isAppended": true,
+  "schema": Object {
+    "first": Object {
+      "type": "Any",
+    },
+    "id": Object {
+      "type": "Any",
+    },
+    "nodeId": Object {
+      "type": "Any",
+    },
+  },
+}
+`;
+
+exports[`AOS builder append simple property after complex OneToOne 2`] = `
+Object {
+  "isAppended": true,
+  "schema": Object {
+    "complex": Object {
+      "schema": Object {
+        "id": Object {
+          "type": "Any",
+        },
+        "nodeId": Object {
+          "type": "Any",
+        },
+        "second": Object {
+          "type": "Any",
+        },
+      },
+      "type": "OneToOne",
+    },
+    "first": Object {
+      "type": "Any",
+    },
+    "id": Object {
+      "type": "Any",
+    },
+    "nodeId": Object {
+      "type": "Any",
+    },
+  },
+}
+`;
+
+exports[`AOS builder append simple property after complex OneToOne 3`] = `
+Object {
+  "isAppended": true,
+  "schema": Object {
+    "complex": Object {
+      "schema": Object {
+        "id": Object {
+          "type": "Any",
+        },
+        "nodeId": Object {
+          "type": "Any",
+        },
+        "second": Object {
+          "type": "Any",
+        },
+        "third": Object {
+          "type": "Any",
+        },
+      },
+      "type": "OneToOne",
+    },
+    "first": Object {
+      "type": "Any",
+    },
+    "id": Object {
+      "type": "Any",
+    },
+    "nodeId": Object {
+      "type": "Any",
+    },
+  },
+}
+`;
+
+exports[`AOS builder append simple property after complex OneToOne 4`] = `
+Object {
+  "isAppended": true,
+  "schema": Object {
+    "complex": Object {
+      "schema": Object {
+        "id": Object {
+          "type": "Any",
+        },
+        "nodeId": Object {
+          "type": "Any",
+        },
+        "second": Object {
+          "type": "Any",
+        },
+        "third": Object {
+          "type": "Any",
+        },
+      },
+      "type": "OneToOne",
+    },
+    "first": Object {
+      "type": "Any",
+    },
+    "fourth": Object {
+      "type": "Any",
+    },
+    "id": Object {
+      "type": "Any",
+    },
+    "nodeId": Object {
+      "type": "Any",
+    },
+  },
+}
+`;
+
+exports[`AOS builder append simple property to complex OneToOne 1`] = `
+Object {
+  "isAppended": true,
+  "schema": Object {
+    "first": Object {
+      "type": "Any",
+    },
+    "id": Object {
+      "type": "Any",
+    },
+    "nodeId": Object {
+      "type": "Any",
+    },
+  },
+}
+`;
+
+exports[`AOS builder append simple property to complex OneToOne 2`] = `
+Object {
+  "isAppended": true,
+  "schema": Object {
+    "complex": Object {
+      "schema": Object {
+        "id": Object {
+          "type": "Any",
+        },
+        "nodeId": Object {
+          "type": "Any",
+        },
+        "second": Object {
+          "type": "Any",
+        },
+      },
+      "type": "OneToOne",
+    },
+    "first": Object {
+      "type": "Any",
+    },
+    "id": Object {
+      "type": "Any",
+    },
+    "nodeId": Object {
+      "type": "Any",
+    },
+  },
+}
+`;
+
+exports[`AOS builder append simple property to complex OneToOne 3`] = `
+Object {
+  "isAppended": true,
+  "schema": Object {
+    "complex": Object {
+      "schema": Object {
+        "id": Object {
+          "type": "Any",
+        },
+        "nodeId": Object {
+          "type": "Any",
+        },
+        "second": Object {
+          "type": "Any",
+        },
+        "third": Object {
+          "type": "Any",
+        },
+      },
+      "type": "OneToOne",
+    },
+    "first": Object {
+      "type": "Any",
+    },
+    "id": Object {
+      "type": "Any",
+    },
+    "nodeId": Object {
+      "type": "Any",
+    },
+  },
 }
 `;
 
