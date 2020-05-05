@@ -1,5 +1,161 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`AOS builder append existed simple string property 1`] = `
+Object {
+  "isAppended": true,
+  "schema": Object {
+    "id": Object {
+      "type": "Any",
+    },
+    "nodeId": Object {
+      "type": "Any",
+    },
+    "simple": Object {
+      "type": "Any",
+    },
+  },
+}
+`;
+
+exports[`AOS builder append existed simple string property 2`] = `
+Object {
+  "isAppended": false,
+  "schema": Object {
+    "id": Object {
+      "type": "Any",
+    },
+    "nodeId": Object {
+      "type": "Any",
+    },
+    "simple": Object {
+      "type": "Any",
+    },
+  },
+}
+`;
+
+exports[`AOS builder append existed simple string property after not existing 1`] = `
+Object {
+  "isAppended": true,
+  "schema": Object {
+    "first": Object {
+      "type": "Any",
+    },
+    "id": Object {
+      "type": "Any",
+    },
+    "nodeId": Object {
+      "type": "Any",
+    },
+  },
+}
+`;
+
+exports[`AOS builder append existed simple string property after not existing 2`] = `
+Object {
+  "isAppended": true,
+  "schema": Object {
+    "first": Object {
+      "type": "Any",
+    },
+    "id": Object {
+      "type": "Any",
+    },
+    "nodeId": Object {
+      "type": "Any",
+    },
+    "second": Object {
+      "type": "Any",
+    },
+  },
+}
+`;
+
+exports[`AOS builder append existed simple string property after not existing 3`] = `
+Object {
+  "isAppended": false,
+  "schema": Object {
+    "first": Object {
+      "type": "Any",
+    },
+    "id": Object {
+      "type": "Any",
+    },
+    "nodeId": Object {
+      "type": "Any",
+    },
+    "second": Object {
+      "type": "Any",
+    },
+  },
+}
+`;
+
+exports[`AOS builder append id after simple string property 1`] = `
+Object {
+  "isAppended": true,
+  "schema": Object {
+    "id": Object {
+      "type": "Any",
+    },
+    "nodeId": Object {
+      "type": "Any",
+    },
+    "simple": Object {
+      "type": "Any",
+    },
+  },
+}
+`;
+
+exports[`AOS builder append id after simple string property 2`] = `
+Object {
+  "isAppended": false,
+  "schema": Object {
+    "id": Object {
+      "type": "Any",
+    },
+    "nodeId": Object {
+      "type": "Any",
+    },
+    "simple": Object {
+      "type": "Any",
+    },
+  },
+}
+`;
+
+exports[`AOS builder append id before simple string property 1`] = `
+Object {
+  "isAppended": true,
+  "schema": Object {
+    "id": Object {
+      "type": "Any",
+    },
+    "nodeId": Object {
+      "type": "Any",
+    },
+  },
+}
+`;
+
+exports[`AOS builder append id before simple string property 2`] = `
+Object {
+  "isAppended": true,
+  "schema": Object {
+    "id": Object {
+      "type": "Any",
+    },
+    "nodeId": Object {
+      "type": "Any",
+    },
+    "simple": Object {
+      "type": "Any",
+    },
+  },
+}
+`;
+
 exports[`AOS builder append multiple string properties 1`] = `
 Object {
   "isAppended": true,
@@ -38,6 +194,103 @@ Object {
 `;
 
 exports[`AOS builder append multiple string properties 3`] = `
+Object {
+  "isAppended": true,
+  "schema": Object {
+    "first": Object {
+      "type": "Any",
+    },
+    "id": Object {
+      "type": "Any",
+    },
+    "nodeId": Object {
+      "type": "Any",
+    },
+    "second": Object {
+      "type": "Any",
+    },
+    "third": Object {
+      "type": "Any",
+    },
+  },
+}
+`;
+
+exports[`AOS builder append multiple string properties and id 1`] = `
+Object {
+  "isAppended": true,
+  "schema": Object {
+    "first": Object {
+      "type": "Any",
+    },
+    "id": Object {
+      "type": "Any",
+    },
+    "nodeId": Object {
+      "type": "Any",
+    },
+  },
+}
+`;
+
+exports[`AOS builder append multiple string properties and id 2`] = `
+Object {
+  "isAppended": false,
+  "schema": Object {
+    "first": Object {
+      "type": "Any",
+    },
+    "id": Object {
+      "type": "Any",
+    },
+    "nodeId": Object {
+      "type": "Any",
+    },
+  },
+}
+`;
+
+exports[`AOS builder append multiple string properties and id 3`] = `
+Object {
+  "isAppended": true,
+  "schema": Object {
+    "first": Object {
+      "type": "Any",
+    },
+    "id": Object {
+      "type": "Any",
+    },
+    "nodeId": Object {
+      "type": "Any",
+    },
+    "second": Object {
+      "type": "Any",
+    },
+  },
+}
+`;
+
+exports[`AOS builder append multiple string properties and id 4`] = `
+Object {
+  "isAppended": false,
+  "schema": Object {
+    "first": Object {
+      "type": "Any",
+    },
+    "id": Object {
+      "type": "Any",
+    },
+    "nodeId": Object {
+      "type": "Any",
+    },
+    "second": Object {
+      "type": "Any",
+    },
+  },
+}
+`;
+
+exports[`AOS builder append multiple string properties and id 5`] = `
 Object {
   "isAppended": true,
   "schema": Object {
