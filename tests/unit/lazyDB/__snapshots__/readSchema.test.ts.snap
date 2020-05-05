@@ -1,5 +1,49 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`AOS builder append complex OneToMany property 1`] = `
+Object {
+  "isAppended": true,
+  "schema": Object {
+    "complex": Object {
+      "schema": Object {
+        "id": Object {
+          "type": "Any",
+        },
+        "nodeId": Object {
+          "type": "Any",
+        },
+        "simple": Object {
+          "type": "Any",
+        },
+      },
+      "type": "OneToMany",
+    },
+  },
+}
+`;
+
+exports[`AOS builder append complex OneToOne string property 1`] = `
+Object {
+  "isAppended": true,
+  "schema": Object {
+    "complex": Object {
+      "schema": Object {
+        "id": Object {
+          "type": "Any",
+        },
+        "nodeId": Object {
+          "type": "Any",
+        },
+        "simple": Object {
+          "type": "Any",
+        },
+      },
+      "type": "OneToOne",
+    },
+  },
+}
+`;
+
 exports[`AOS builder append existed simple string property 1`] = `
 Object {
   "isAppended": true,
@@ -310,6 +354,20 @@ Object {
       "type": "Any",
     },
   },
+}
+`;
+
+exports[`AOS builder append simple number property 1`] = `
+Object {
+  "isAppended": false,
+  "schema": Object {},
+}
+`;
+
+exports[`AOS builder append simple number property like string 1`] = `
+Object {
+  "isAppended": false,
+  "schema": Object {},
 }
 `;
 

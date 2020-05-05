@@ -4,8 +4,12 @@ import { ModelEventGetPropertyPayload } from '@/lazyDB/core/types'
 import { appendPropertyToSchema } from '@/lazyDB/database/readSchema'
 import { IDatabaseModelProducerStore } from '@/lazyDB/database/types'
 
-const simplePayload = (name: string, type = AosFieldType.Any): ModelEventGetPropertyPayload => ({
+const simplePayload = (name: string | number, type = AosFieldType.Any): ModelEventGetPropertyPayload => ({
     name, type, store: {} as IDatabaseModelProducerStore
+})
+
+const complexPayload = (name: string | number, type: AosFieldType, inner: ModelEventGetPropertyPayload): ModelEventGetPropertyPayload => ({
+    name, type, inner, store: {} as IDatabaseModelProducerStore
 })
 
 describe('AOS builder', () => {
@@ -108,5 +112,43 @@ describe('AOS builder', () => {
         expect({ isAppended, schema }).toMatchSnapshot()
     })
 
+
+    it('append simple number property', () => {
+        const payload = simplePayload(0)
+
+        const isAppended = appendPropertyToSchema(schema, payload)
+
+        expect({ isAppended, schema }).toMatchSnapshot()
+    })
+
+    it('append simple number property like string', () => {
+        const payload = simplePayload('0')
+
+        const isAppended = appendPropertyToSchema(schema, payload)
+
+        expect({ isAppended, schema }).toMatchSnapshot()
+    })
+
+    it('append complex OneToOne string property', () => {
+        const simple = simplePayload('simple')
+        const complex = complexPayload('complex', AosFieldType.OneToOne, simple)
+
+        const isAppended = appendPropertyToSchema(schema, complex)
+
+        expect({ isAppended, schema}).toMatchSnapshot()
+    })
+
+    // Not working correctly, require 'nodes' field
+    // TODO: make it work based on type
+    it('append complex OneToMany property', () => {
+        const simple = simplePayload('simple')
+        const item = complexPayload('0', AosFieldType.Any, simple)
+        const nodes = complexPayload('nodes', AosFieldType.OneToMany, item)
+        const complex = complexPayload('complex', AosFieldType.OneToOne, nodes)
+
+        const isAppended = appendPropertyToSchema(schema, complex)
+
+        expect({ isAppended, schema}).toMatchSnapshot()
+    })
 
 })
