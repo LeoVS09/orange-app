@@ -15,7 +15,7 @@ export const fetch = async (entity: string, id: string, schema: AosSchema) => {
   const { query, name } = generateQueryEntityById(entity, fields)
   console.log('read schema query', query)
 
-  const { data, errors } = await databaseClient.query({
+  const { data, errors } = await databaseClient.query<any>({
     query,
     variables: { id }
   })
@@ -42,7 +42,7 @@ export const list = async (entity: string, schema: AosSchema) => {
   const { query, name } = generateQueryList(entity, fields)
   console.log('read schema query', query)
 
-  const { data, errors } = await databaseClient.query({
+  const { data, errors } = await databaseClient.query<any>({
     query
   })
 

@@ -1,8 +1,15 @@
 import { ModelEventGetPropertyPayload, ModelEventInnerPayload } from '@/lazyDB/core/types'
 import { nodesKey } from '@/lazyDB/database/types'
 import {
-  AosSchema, AosFieldType, isRelationsAosField, isSimpleType, AosSimpleField, AosField, AosRelationsField
+  AosSchema,
+  AosFieldType,
+  isRelationsAosField,
+  isSimpleType,
+  AosSimpleField,
+  AosField,
+  AosRelationsField
 } from '@/abstractObjectScheme'
+import { requiredFields } from '../constants'
 
 export function appendPropertyToSchema(
   schema: AosSchema,
@@ -17,8 +24,14 @@ export function appendPropertyToSchema(
   if (typeof name === 'number')
     return appendNumberPropertyToSchema(schema, name, inner)
 
-  if (!inner)
-    return appendSimplePropertyToSchema(schema, name, type)
+  if (!inner) {
+    const isAppended = appendSimplePropertyToSchema(schema, name, type)
+    // if some one asks one simple field on object
+    // append required field
+    // must be after first execution, to return correct isAppended result
+    appendRequiredPropertiesToSchema(schema)
+    return isAppended
+  }
 
   const { property, isCreated } = getOrCreateSchemaFieldProperty(schema, name, inner)
 
@@ -29,6 +42,12 @@ export function appendPropertyToSchema(
     return appendPropertyToSchema(property.schema, inner.inner)
 
   return isCreated
+}
+
+// Will append all requied simple fields if they need
+function appendRequiredPropertiesToSchema(schema: AosSchema) {
+  for (const name of requiredFields)
+    appendSimplePropertyToSchema(schema, name, AosFieldType.Any)
 }
 
 function appendNumberPropertyToSchema(

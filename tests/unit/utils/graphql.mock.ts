@@ -43,6 +43,7 @@ export const nockAllGraphqlRequests = async (nock: any, name: string): Promise<N
     
     nock('http://localhost:4000')
     .post('/graphql')
+    .times(Number.MAX_VALUE)
     .reply(async (uri: any, requestBody: any, cb: any) => {
       console.log('Was made requiest', requestBody)
 

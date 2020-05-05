@@ -184,3 +184,65 @@ Object {
   "updatedAt": 2020-04-24T16:29:15.000Z,
 }
 `;
+
+exports[`Repository should generate request for entity and next reqires when more fields need 1`] = `
+Object {
+  "query": "query Country($id: UUID!) {
+  country(id: $id) {
+    id
+    nodeId
+    name
+    updatedAt
+    createdAt
+    __typename
+  }
+}
+",
+  "variables": Object {
+    "id": "test-id2",
+  },
+}
+`;
+
+exports[`Repository should generate request for entity and next reqires when more fields need 2`] = `
+Object {
+  "__typename": "Country",
+  "createdAt": 2021-01-16T15:31:16.000Z,
+  "id": "I2o82_J6a",
+  "name": "United Arab Emirates",
+  "nodeId": "4e027142-1582-49b7-8c19-3022d32092e3",
+  "updatedAt": 2020-05-08T15:31:16.000Z,
+}
+`;
+
+exports[`Repository should generate request for entity and next reqires when more fields need 3`] = `
+Object {
+  "query": "query Country($id: UUID!) {
+  country(id: $id) {
+    id
+    nodeId
+    name
+    updatedAt
+    createdAt
+    code
+    __typename
+  }
+}
+",
+  "variables": Object {
+    "id": "test-id2",
+  },
+}
+`;
+
+exports[`Repository should generate request for entity and next reqires when more fields need 4`] = `
+Object {
+  "__typename": "Country",
+  "code": "PT",
+  "createdAt": 2021-01-16T15:31:16.000Z,
+  "id": "I2o82_J6a",
+  "name": "United Arab Emirates",
+  "nodeId": "4e027142-1582-49b7-8c19-3022d32092e3",
+  "updatedAt": 2020-05-08T15:31:16.000Z,
+}
+`;

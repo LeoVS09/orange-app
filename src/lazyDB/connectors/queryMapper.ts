@@ -1,13 +1,12 @@
 import gql from 'graphql-tag'
 import { AosFieldType } from '@/abstractObjectScheme'
+import { requiredFields } from '../constants'
 
 export interface QueryField {
   entity: string
   type: AosFieldType
   fields: Array<string | QueryField>
 }
-
-const requiredFields = ['id', 'nodeId']
 
 const makeSpaces = (count: number) => new Array(count).fill('\t').join('')
 

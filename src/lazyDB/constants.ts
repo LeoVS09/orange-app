@@ -1,6 +1,8 @@
 export const defaultExcludeProperties = [
   'state',
   /^_.*/,
+  /^\$.*/,
+  /^@.*/,
   'render',
   'every', // some vue function used in slots
   'toJSON',
@@ -17,5 +19,11 @@ export const defaultExcludeProperties = [
   'required',
   'validator',
   'get',
-  'type'
+  'type',
+  'isVueInstance',
+  'nodeType',
+  'asymmetricMatch' // jest snapshot
 ]
+
+// fields which will be included in any request
+export const requiredFields = ['id', 'nodeId']
