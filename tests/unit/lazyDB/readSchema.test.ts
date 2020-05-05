@@ -236,7 +236,7 @@ describe('AOS builder', () => {
         expect({ isAppended, schema}).toMatchSnapshot()
     })
 
-    it('append simple propert after OneToMany', () => {
+    it('append simple property after OneToMany', () => {
         const first = simplePayload('first')
         const second = simplePayload('second')
         const third = simplePayload('third')
