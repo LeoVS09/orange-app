@@ -13,7 +13,7 @@
    </div>
 
    <div
-      v-else-if="true"
+      v-else-if="!model || readState === ProblemReadState.Reading"
       class="skeleton-loading problem-loading"
    ></div>
 
@@ -34,7 +34,7 @@
          <template #breadcrumb>
             <breadcrumb :to="{name: ROUTES.PROBLEMS}">{{'Problems' | translate}}</breadcrumb>
          </template>
-         {{base.name}}
+         {{model.name}}
       </page-header>
 
 <!--      <tags :values="model.tags"></tags>-->
@@ -44,7 +44,7 @@
          :value="model.description"
          @input="updateText"
          placeholder="Problem description..."
-      >{{base.description}}</text-section>
+      >{{model.description}}</text-section>
 
       <text-section highlight :textWidth="false">
          <div class="problem--limits">
@@ -69,7 +69,8 @@
       <h4 v-if="!isTeacher" class="problem--example-header">Examples</h4>
 
       <TestView
-         v-if="!isTeacher" class="problem--example"
+         v-if="!isTeacher"
+         class="problem--example"
          v-for="(example, i) in model.tests.filter(t => t.isPublic)"
          :key="'test-' + i + '-' + example.id"
          :problemId="model.id"
@@ -131,20 +132,20 @@
          <div class="authors">
             <div title="author">
                <Icon class="data" type="create"/>
-               <span>{{base.author.login}}</span>
+               <span>{{model.author.login}}</span>
             </div>
             <div title="tester">
                <Icon class="data" type="how_to_reg"/>
-               <span>{{base.tester.login}}</span>
+               <span>{{model.tester.login}}</span>
             </div>
          </div>
          <div class="dates">
             <div title="date of upload">
-               <span>{{formatDate(base.updatedAt)}}</span>
+               <span>{{formatDate(model.updatedAt)}}</span>
                <Icon class="data" type="publish"/>
             </div>
             <div title="date of publication">
-               <span>{{formatDate(base.publicationDate)}}</span>
+               <span>{{formatDate(model.publicationDate)}}</span>
                <Icon class="data" type="public"/>
             </div>
          </div>

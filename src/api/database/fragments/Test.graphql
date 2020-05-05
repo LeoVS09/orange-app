@@ -3,7 +3,7 @@ fragment Test on Test {
    index
    input
    output
-   isPublic
+   public
    problemId
    createdAt
    updatedAt

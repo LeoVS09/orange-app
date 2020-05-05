@@ -9,7 +9,8 @@ const mockConnection = () => ({
   nodes: () => new MockList([5, 30])
 })
 
-const mockEntity = () => ({
+const mockEntity = ({ id = shortid.generate() } = {}) => ({
+  id,
   createdAt: moment().add(casual.integer(5, 30), 'month').format(),
   updatedAt: moment().add(casual.integer(5, 30), 'days').format()
 })
@@ -19,45 +20,45 @@ export default {
   Datetime: () => moment().format(),
   Int: () => casual.integer(5, 30),
 
-  Country: () => ({
+  Country: (_, args) => ({
     name: casual.country,
     code: casual.country_code,
-    ...mockEntity()
+    ...mockEntity(args)
   }),
 
-  City: () => ({
+  City: (_, args) => ({
     name: casual.city,
-    ...mockEntity()
+    ...mockEntity(args)
   }),
 
-  Problem: () => ({
+  Problem: (_, args) => ({
     name: casual.title,
-    desciption: casual.text,
-    ...mockEntity()
+    description: casual.text,
+    ...mockEntity(args)
   }),
 
-  User: () => ({
+  User: (_, args) => ({
     name: casual.name,
     username: casual.username,
-    ...mockEntity()
+    ...mockEntity(args)
   }),
 
-  Profile: () => ({
+  Profile: (_, args) => ({
     firstName: casual.first_name,
     middleName: casual.last_name,
     lastName: casual.last_name,
-    ...mockEntity()
+    ...mockEntity(args)
   }),
 
-  Tag: () => ({
+  Tag: (_, args) => ({
     name: casual.word,
-    ...mockEntity()
+    ...mockEntity(args)
   }),
 
-  University: () => ({
+  University: (_, args) => ({
     shortName: casual.word,
     longName: casual.words(casual.integer(2, 6)),
-    ...mockEntity()
+    ...mockEntity(args)
   }),
 
   Query: () => ({
