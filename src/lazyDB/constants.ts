@@ -13,6 +13,7 @@ export const defaultExcludeProperties = [
   'function () { [native code] }',
   'slice',
   'map',
+  'filter',
   'length',
   'push',
   'pop',

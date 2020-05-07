@@ -20,7 +20,7 @@ import ProgrammingLanguage from '@/pages/ProgrammingLanguage.vue'
 import SignIn from '@/pages/SignIn.vue'
 import SignUp from '@/pages/SignUp.vue'
 
-import guard, { contestMiddleware, problemMiddleware } from './middlewares'
+import guard, { contestMiddleware } from './middlewares'
 
 export {
   ROUTES
@@ -65,14 +65,12 @@ const router = new Router({
           path: '/problems/create',
           name: ROUTES.CREATE_PROBLEM,
           component: Problem as Component,
-          beforeEnter: problemMiddleware,
           props: true
         },
         {
           path: '/problems/:id',
           name: ROUTES.PROBLEM,
           component: Problem as Component,
-          beforeEnter: problemMiddleware,
           props: true
         },
         {

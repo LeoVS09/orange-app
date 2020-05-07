@@ -2,6 +2,8 @@ import { ListSource, NodesProducerReference, ListItemGetterReference } from '@/l
 import { ArrayStringProperty } from '@/lazyDB/database/utils'
 import { AbstractData } from '@/lazyDB/core/types'
 
+const SIMPLE_ARRAY_METHODS = ['map', 'filter']
+
 const isNeedProduceTrapForSlice = (source: ListSource, base: Array<any>, args: Array<any>) =>
   !base.length && Math.abs(args[0] - args[1]) > 0 && !!source[NodesProducerReference]
 
@@ -12,8 +14,9 @@ export const arrayMethodWrapper = (source: ListSource, base: Array<any>, index: 
     if (index === 'slice' && isNeedProduceTrapForSlice(source, base, args))
       return mockSliceArrayTrap(source)
 
-    if (index === 'map' && !base.length)
-      return mockMapArrayTrap(source, args)
+    // mock simple methods like map and filter
+    if (SIMPLE_ARRAY_METHODS.includes(index) && !base.length)
+      return mockSimpleArrayMethod(index, source, args)
 
     // traps for defined function is end
     // down wrappers for real working function
@@ -24,30 +27,36 @@ export const arrayMethodWrapper = (source: ListSource, base: Array<any>, index: 
     if (getItem)
       realDataArray = base.map((_, i) => getItem(source, i))
     else
-      console.warn('List not have getItem hook', source, base, index)
+      console.warn('[ArrayMethodWrapper] List not have getItem hook', source, base, index)
 
     // @ts-ignore
     const result = realDataArray[index](...args)
-    console.log('nodes property', index, args, 'result', result)
+    console.log('[ArrayMethodWrapper] nodes property', index, args, 'result', result)
     return result
   }
 
 const mockSliceArrayTrap = (source: ListSource) => {
-  console.log('slice from array', source[NodesProducerReference])
+  console.log('[ArrayMethodWrapper] slice from array', source[NodesProducerReference])
 
   // @ts-ignore
   const result = source[NodesProducerReference][0]
-  console.log('slice from array result', result)
+  console.log('[ArrayMethodWrapper] slice from array result', result)
   return [result]
 }
 
-const mockMapArrayTrap = (source: ListSource, args: Array<any>) => {
-  console.log('produce trap for map')
+/**
+ * Pass trap to method call,
+ * for receive fields, which need for this method work
+ * @param methodName - name of array method, aka 'map'
+ * @param source - trap producer
+ * @param args - agruments of method call
+ */
+const mockSimpleArrayMethod = (methodName: string, source: ListSource, args: Array<any>) => {
+  console.log('[ArrayMethodWrapper] produce trap for', methodName)
 
   // @ts-ignore
   const trap = source[NodesProducerReference][0]
 
   // @ts-ignore
-  return [trap].map(...args)
+  return [trap][methodName](...args)
 }
-

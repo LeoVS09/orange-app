@@ -1,5 +1,5 @@
 import {
-  EventReducersMap
+  EventReducersMap, ModelEventInnerPayload
 } from '@/lazyDB/core/types'
 import {
   ModelEventTypes,
@@ -30,8 +30,9 @@ export const databaseReducers: EventReducersMap = {
 
   [ModelEventTypes.ReadSuccess]: readSuccess,
 
-  [ModelEventTypes.ReadFailure]: ({ base }, { error }: ReadFailureEventPayload) => {
-    console.error(base, error)
+  [ModelEventTypes.ReadFailure]: (store, payload: ModelEventInnerPayload<ModelEventInnerPayload<ReadFailureEventPayload>>) => {
+    const fail = (payload.inner && payload.inner.inner && payload.inner.inner || {}) as ReadFailureEventPayload
+    console.error('Failed to read\n', fail.error, store)
     // TODO: handle error
     return false
   }

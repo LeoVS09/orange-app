@@ -1,6 +1,7 @@
 <template>
+
    <div
-      v-if="!model && isReadingError"
+     v-if="$isHaveReadingError(model)"
      class="problem--not-found"
    >
       <div class="not-found--icons">
@@ -13,21 +14,22 @@
    </div>
 
    <div
-      v-else-if="!model || readState === ProblemReadState.Reading"
+      :key="reactive"
+      v-else-if="$isReading(model)"
       class="skeleton-loading problem-loading"
    ></div>
 
    <div
-      v-else-if="!!model && readState === ProblemReadState.Full"
+      :key="reactive"
+      v-else
       class="problem"
    >
 
       <page-header
          :editable="isTeacher"
-         :value="model.name"
-         @input="updateName"
+         v-model="model.name"
          placeholder="Problem name..."
-         :colorLine="done && 'success'"
+         :colorLine="isDone && 'success'"
          :highlight="false"
          :textWidth="true"
       >
@@ -41,8 +43,7 @@
 
       <text-section
          :editable="isTeacher"
-         :value="model.description"
-         @input="updateText"
+         v-model="model.description"
          placeholder="Problem description..."
       >{{model.description}}</text-section>
 
@@ -52,15 +53,15 @@
 
             <data-view
                :values="{
-                  Time: formatTime(model.limits.time),
-                  Memory: formatBytes(model.limits.memory)
+                  Time: formatTime(model.limitTime),
+                  Memory: formatBytes(model.limitMemory)
                }"
             />
 
             <data-view
                :values="{
-                  Input: formatIO(model.io.input),
-                  Output: formatIO(model.io.output)
+                  Input: formatIO(model.inputType),
+                  Output: formatIO(model.outputType)
                }"
             />
          </div>
@@ -71,17 +72,24 @@
       <TestView
          v-if="!isTeacher"
          class="problem--example"
-         v-for="(example, i) in model.tests.filter(t => t.isPublic)"
+         v-for="(example, i) in model.tests.nodes.filter(t => t.public)"
          :key="'test-' + i + '-' + example.id"
          :problemId="model.id"
          :testData="example"
       />
 
-      <div class="problem--tests" v-if="isTeacher && model.tests">
+      <div
+         v-if="isTeacher && model.tests"
+         class="problem--tests"
+      >
          <h2>Tests</h2>
 
          <template v-for="test in model.tests">
-            <div class="problem--new-test" v-if="!test.id" :key="test.id">
+            <div
+               v-if="!test.id"
+               class="problem--new-test"
+               :key="test.id"
+            >
                <div class="line"></div>
                <p class="text">New test</p>
             </div>
@@ -105,18 +113,21 @@
 
          <div class="problem--code-button-wrapper">
             <transition name="fade">
+               <!-- disabled="model.testingStatus === ProblemTestingStatus.Testing" -->
                <Button
                   v-if="!!solutionCode.length"
                   @click="handleUpload"
-                  :disabled="model.testingStatus === ProblemTestingStatus.Testing"
+                  :disabled="false"
                   :maxWidth="true"
                >Upload</Button>
             </transition>
          </div>
 
-         <div class="problem--test-result" v-if="model.testingStatus !== ProblemTestingStatus.NotTested">
             <!-- TODO: refactor, better to use component-->
             <!-- TODO: use spinner for testing process -->
+
+         <!-- <div class="problem--test-result" v-if="model.testingStatus !== ProblemTestingStatus.NotTested">
+
             <p class="problem--test-result-testing" v-if="model.testingStatus === ProblemTestingStatus.Testing">Testing...</p>
             <p class="problem--test-result-error" v-if="model.testingStatus === ProblemTestingStatus.Error">Some unexpected error :(</p>
             <p class="problem--test-result-success" v-else-if="model.testingStatus === ProblemTestingStatus.Solved">All tests successful!</p>
@@ -125,18 +136,18 @@
                Failed test {{resultRun.failedTest + 1}}
                <span v-if="statusLabel">{{statusLabel}}</span>
             </p>
-         </div>
+         </div> -->
       </div>
 
       <div class="problem--data">
          <div class="authors">
             <div title="author">
                <Icon class="data" type="create"/>
-               <span>{{model.author.login}}</span>
+               <span>{{model.author.user.name}}</span>
             </div>
             <div title="tester">
                <Icon class="data" type="how_to_reg"/>
-               <span>{{model.tester.login}}</span>
+               <span>{{model.tester.user.name}}</span>
             </div>
          </div>
          <div class="dates">
@@ -152,15 +163,15 @@
       </div>
 
       <FloatingButton
-         :visible="!isSynced"
+         :visible="!$isSynced(model)"
          @click="syncProblem"
-         :disabled="isProcessing"
+         :disabled="model | isProcessing"
          :primary="true"
          :circle="true"
          :shadow="true"
          :gradientHighlight="false"
-         :icon="isCreate ? 'add' : 'autorenew'"
-      >{{isCreate ? 'ForCreate' : 'Synchronize'}}
+         :icon="$isNew(model) ? 'add' : 'autorenew'"
+      >{{$isNew(model) ? 'ForCreate' : 'Synchronize'}}
       </FloatingButton>
 
    </div>
@@ -168,7 +179,7 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import { Component, Prop } from 'vue-property-decorator'
+import { Component, Prop, Mixins } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
 import { FullProblem, ResultRunProgram } from '@/models'
 import * as actions from '@/store/actionTypes'
@@ -196,6 +207,8 @@ import { ModelStatus } from '@/store/modules'
 import { ModelReadState } from '@/store/modules/statuses/types'
 import { GET_READ_STATE, GET_STATUS } from '@/store/modules/statuses/getters'
 import { STATUS_SCOPES } from '@/store/statusScopes'
+import { ProblemRepository } from '@/db'
+import ReactiveUpdate, { reactiveUpdate } from '@/components/mixins/ReactiveUpdate'
 import { TestView, PageHeader, Breadcrumb } from '../containers'
 import Tags from '../components/Tags.vue'
 
@@ -224,46 +237,17 @@ Component.registerHooks([
     LdrRobot
   }
 })
-export default class ProblemView extends Vue {
+export default class ProblemView extends Mixins(ReactiveUpdate) {
    @Prop({
      type: String,
      required: true
    })
    public id!: string;
 
-   @Getter public problemById!: (id: string) => FullProblem | undefined;
-
-   @Getter public problemErrorById!: (id: string) => ProblemError | undefined;
-
    @Getter public isTeacher?: boolean;
 
-   @Action(actionName(MODULES.PROBLEMS, actions.EDIT)) public editProblem!: (problem: FullProblem) => void;
-
-   @Action(actionName(MODULES.PROBLEMS, actions.UPDATE)) public updateProblem!: (id: string) => Promise<FullProblem | undefined>;
-
-   @Action(actionName(MODULES.PROBLEMS, actions.CREATE)) public createProblem!: (problem: FullProblem) => Promise<FullProblem | undefined>;
-
-   @Action(actionName(MODULES.PROBLEMS, actions.UPLOAD_CODE)) public uploadCode!: (payload: IUploadCodePayload) => Promise<void>;
-
-   @Getter(GET_STATUS)
-   public getStatus!: (scope: string, id: string) => ModelStatus;
-
-   get status(): ModelStatus {
-     if (!this.model)
-       return ModelStatus.None
-
-     return this.getStatus(STATUS_SCOPES.PROBLEMS, this.model.id)
-   }
-
-   @Getter(GET_READ_STATE)
-   public getRead!: (scope: string, id: string) => ModelReadState;
-
-   get readState(): ModelReadState {
-     if (!this.model)
-       return ModelReadState.None
-
-     return this.getRead(STATUS_SCOPES.PROBLEMS, this.model.id)
-   }
+   @Action(actionName(MODULES.PROBLEMS, actions.UPLOAD_CODE))
+   public uploadCode!: (payload: IUploadCodePayload) => Promise<void>;
 
    public solutionCode = '';
 
@@ -276,58 +260,12 @@ export default class ProblemView extends Vue {
    public ProblemReadState = ModelReadState;
 
    get model() {
-     return this.problemById(this.id)
+     return ProblemRepository.findOne(this.id, reactiveUpdate(this))
    }
 
-   get isReadingError() {
-     if (this.model)
-       return this.status === ModelStatus.ErrorReading
-
-     const error = this.problemErrorById(this.id)
-     if (!error)
-       return false
-
-     return error.status === ModelStatus.ErrorReading
-   }
-
-   get resultRun(): ResultRunProgram | undefined {
-     if (this.model)
-       return this.model.resultRun
-
-     return undefined
-   }
-
-   get done(): boolean {
-     if (!this.resultRun)
-       return false
-
-     return this.resultRun.isAllTestsSuccessful
-   }
-
-   get isSynced(): boolean {
-     if (!this.model)
-       return true
-
-     return this.status === ModelStatus.Synced
-   }
-
-   get isCreate(): boolean {
-     if (!this.model)
-       return false
-
-     return this.status === ModelStatus.ForCreate
-         || this.status === ModelStatus.Creating
-         || this.status === ModelStatus.ErrorCreating
-   }
-
-   get isProcessing(): boolean {
-     if (!this.model)
-       return false
-
-     return this.status === ModelStatus.Reading
-         || this.status === ModelStatus.Creating
-         || this.status === ModelStatus.Updating
-         || this.status === ModelStatus.Deleting
+   // is problem solved by user
+   get isDone() {
+     return false
    }
 
    public formatDate(value: Date) {
@@ -370,6 +308,10 @@ export default class ProblemView extends Vue {
      })
    }
 
+   public syncProblem() {
+
+   }
+
    get statusLabel(): string | undefined {
      if (!this.resultRun)
        return
@@ -394,74 +336,6 @@ export default class ProblemView extends Vue {
        default:
          return 'Unexpected error'
      }
-   }
-
-   public updateName(name: string) {
-     // TODO: handle edit errors
-     if (!this.model)
-       return console.error('Cannot edit not existed problem')
-
-     this.editProblem({ ...this.model, name })
-   }
-
-   public updateText(description: string) {
-     if (!this.model)
-       return console.error('Cannot edit not existed problem')
-
-     this.editProblem({ ...this.model, description })
-   }
-
-   public syncProblem() {
-     if (!this.model) {
-       console.error('Not have problem data for sync')
-       return
-     }
-
-     if (
-       this.status === ModelStatus.Changed
-         || this.status === ModelStatus.ErrorUpdating
-     ) {
-       this.updateProblem(this.model.id)
-       return
-     }
-
-     if (
-       this.status === ModelStatus.ForCreate
-         || this.status === ModelStatus.ErrorCreating
-     ) {
-       // TODO: display errors
-       if (!this.model.name.length) {
-         console.error('Not have name')
-         return
-       }
-       if (!this.model.description.length) {
-         console.error('Not have text')
-         return
-       }
-       if (!this.model.tests || !this.model.tests.length) {
-         console.error('Unexpected situation in tests')
-         return
-       }
-       if (!this.model.tests[0].id.length) {
-         console.error('Not have tests')
-         return
-       }
-
-       this.createProblem(this.model)
-         .then(problem => {
-           if (!problem) {
-             console.error('Error when create')
-             // TODO: handle error
-             return
-           }
-
-           // TODO: by name routing
-           this.$router.push({ path: `/problem/${problem.id}` })
-         })
-       return
-     }
-
-     console.error('Cannot understand what do with this problem', this.model)
    }
 }
 </script>

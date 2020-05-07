@@ -67,34 +67,3 @@ export function contestMiddleware(to: Router.Route, from: Router.Route, next: Fu
   }
 }
 
-export function problemMiddleware(to: Router.Route, from: Router.Route, next: Function) {
-  // create async guard generator
-  switch (to.name) {
-    case ROUTES.CREATE_PROBLEM:
-      store.dispatch(actionName(MODULES.PROBLEMS, actions.ADD_MODEL_FOR_CREATE))
-        .then((problem: FullProblem) => {
-          to.params.id = problem.id
-          next()
-        })
-
-      return
-
-    case ROUTES.PROBLEM: {
-      const problem = store.state.problems.data.find((p: PartialProblem | FullProblem) => p.id === to.params.id)
-
-      if (!problem || store.getters[GET_READ_STATE](STATUS_SCOPES.PROBLEMS, problem.id) !== ModelReadState.Full) {
-        store.dispatch(actionName(MODULES.PROBLEMS, actions.READ), to.params.id)
-          .then((fullProblem: FullProblem) => {
-            if (fullProblem)
-              return
-
-            console.error('Not have problem')
-          })
-      }
-      next()
-      return
-    }
-  }
-
-  next()
-}

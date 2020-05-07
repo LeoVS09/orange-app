@@ -5,7 +5,8 @@ import {
   Problem,
   ProgramInputType,
   ProgramOutputType,
-  ProblemsTag
+  ProblemsTag,
+  Test
 } from '@/models'
 
 export const TagRepository = new Repository<Tag>(
@@ -29,8 +30,14 @@ export const ProblemRepository = new Repository<Problem>(
         type: AosFieldType.OneToOne,
         table: 'profile'
       },
-      inputType: AosFieldType.OneToOne,
-      outputType: AosFieldType.OneToOne,
+      inputType: {
+        type: AosFieldType.OneToOne,
+        table: 'programInputType'
+      },
+      outputType: {
+        type: AosFieldType.OneToOne,
+        table: 'programOutputType'
+      },
       tests: AosFieldType.OneToMany,
       problemsTags: AosFieldType.OneToMany
     }
@@ -61,6 +68,15 @@ export const ProblemsTagRepository = new Repository<ProblemsTag>(
     fields: {
       problem: AosFieldType.OneToOne,
       tag: AosFieldType.OneToOne
+    }
+  }
+)
+
+export const Tests = new Repository<Test>(
+  'test',
+  {
+    fields: {
+      problem: AosFieldType.OneToOne
     }
   }
 )

@@ -33,7 +33,7 @@ export default {
 
   Problem: (_, args) => ({
     name: casual.title,
-    description: casual.text,
+    description: casual.sentences(casual.integer(15, 30)),
     ...mockEntity(args)
   }),
 

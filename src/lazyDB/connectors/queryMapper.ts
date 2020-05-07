@@ -103,15 +103,21 @@ export interface QueryEntityByIdGenerated {
 }
 
 export function generateQueryEntityById(entity: string, fields: Array<string | QueryField>): QueryEntityByIdGenerated {
-  const queryName = firstToUpperCase(entity)
+  try {
+    const queryName = firstToUpperCase(entity)
 
-  const query = `
+    const query = `
       query ${queryName}($id: UUID!) {
          ${entity}(id: $id) ${buildFieldsQuery(fields, 3)}
       }
    `
+    console.debug('[QueryMapper] generated query', query)
+    return { query: gql(query), name: entity }
 
-  return { query: gql(query), name: entity }
+  } catch (e) {
+    console.error('Cannot generate query', e)
+    throw new Error(`Error on query generation\n${e.toString()}`)
+  }
 }
 
 export interface QueryListGenerated {
