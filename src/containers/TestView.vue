@@ -1,12 +1,12 @@
 <template>
-   <div :class="{test: true, syncing: isSyncing}">
+   <div :class="{test: true, syncing: !$isSynced(model)}">
       <h4>Input
-         <Icon type="autorenew" v-if="isSyncing" class="test--status-icon"/>
-         <Icon type="create" v-else-if="isEdited" class="test--status-icon"/>
+         <Icon type="autorenew" v-if="!$isSynced(model)" class="test--status-icon"/>
+         <Icon type="create" v-else-if="$isChanged(model)" class="test--status-icon"/>
       </h4>
-      <source-view :text="testData.input" @input="updateInput" :editable="editable"></source-view>
+      <source-view v-model="model.input" :editable="editable"></source-view>
       <h4>Output</h4>
-      <source-view :text="testData.output" @input="updateOutput" :editable="editable"></source-view>
+      <source-view v-model="model.output" :editable="editable"></source-view>
    </div>
 </template>
 
@@ -44,46 +44,15 @@ export default class TestView extends Vue {
    })
    public editable!: boolean;
 
-   @Getter(GET_STATUS)
-   public getStatus!: (scope: string, id: string) => ModelStatus;
-
-   @Getter(GET_READ_STATE)
-   public getRead!: (scope: string, id: string) => ModelReadState;
-
-   @Action(actionName(MODULES.PROBLEMS, actions.EDIT_TEST)) public editTest!: (test: Test) => void;
-
-   @Action(actionName(MODULES.PROBLEMS, actions.UPDATE_TEST)) public updateTest!: (payload: IUpdateTestActionPayload) => boolean;
-
-   get isEdited() {
-     return this.getStatus(STATUS_SCOPES.TESTS, this.testData.id) === ModelStatus.Changed
-   }
-
    get isTestCorect() {
      const test = this.testData
      return test.input.length && test.output.length
    }
 
-   get isSyncing() {
-     if (this.isEdited)
-       return false
-
-     const status = this.getStatus(STATUS_SCOPES.TESTS, this.testData.id)
-
-     return status === ModelStatus.Creating || status === ModelStatus.Updating
-   }
-
-   public updateInput(input: string) {
-     this.editTest({
-       ...this.testData,
-       input
-     })
-   }
-
-   public updateOutput(output: string) {
-     this.editTest({
-       ...this.testData,
-       output
-     })
+   get model() {
+     const data = this.testData
+     console.log('[TestView] model', data)
+     return data
    }
 }
 </script>

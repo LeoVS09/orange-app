@@ -2,13 +2,14 @@ import {
   AbstractData,
   EventProducer
 } from '@/lazyDB/core/types'
-import { getStore } from '@/lazyDB/core/common'
+import { getStore, isProducer } from '@/lazyDB/core/common'
 
 import { ModelEventDispatcher } from '@/lazyDB/core/dispatcher/model/base'
 import { AosFieldType, AosEntitySchemaStorage, AosEntitySchema } from '@/abstractObjectSchema'
 import { getEntityPrimaryKey } from '@/lazyDB/database/base/repository/Repository'
 import { isListSourceData } from '@/lazyDB/database/base/repository/list'
 import { extractEntityNameFromManyKey } from '@/lazyDB/utils'
+import { defineParentOfProducer } from '@/lazyDB/core/hooks/get'
 import {
   applyDatabaseControls,
   getSchemaByKey,
@@ -21,7 +22,8 @@ import {
   IDatabaseModelProducerStore,
   DatabaseStorage,
   ListItemGetterReference,
-  ListItemGetter
+  ListItemGetter,
+  NodesProducerReference
 } from '../../types'
 
 export interface LazyReactiveDatabaseOptions {
@@ -85,7 +87,8 @@ export default class LazyReactiveDatabase implements ILazyReactiveDatabase {
         throw new Error('Try set not list source to OneToMany field')
 
       const list = base[entity]
-      const { base: listSource } = getStore(list)
+      const store = getStore(list)
+      const { base: listSource } = store
       const entityName = extractEntityNameFromManyKey(entity)
 
       // Clear array of nodes before start
@@ -107,7 +110,8 @@ export default class LazyReactiveDatabase implements ILazyReactiveDatabase {
 
       // List may not have getter which must return data by id
       if (!listSource[ListItemGetterReference]) {
-        const listItemGetter: ListItemGetter = ({ nodes }, index) => {
+        const listItemGetter: ListItemGetter = (source, index) => {
+          const { nodes } = source
           const id = nodes[index]
           if (!id) {
             console.log('[Database] WARN: list item getter not foind id', nodes, index)
@@ -115,6 +119,14 @@ export default class LazyReactiveDatabase implements ILazyReactiveDatabase {
           }
           const node = this.storage[entityName][id]
           console.log('[Database] list item getter', nodes, index, node)
+
+          if (!isProducer(node)) {
+            console.error('[Database] list item is not producer', nodes, index, node)
+            throw new Error('[Database] list item getter received not node without producer')
+          }
+
+          defineParentOfProducer(node, store, index)
+          console.log('[Database] list nodesStore', node, store, 'nodes')
           return node
         }
         listSource[ListItemGetterReference] = listItemGetter

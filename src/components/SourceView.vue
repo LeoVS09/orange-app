@@ -1,10 +1,10 @@
 <template>
    <div class="source-view">
-      <code v-if="!editable" class="source-view--code">{{text}}</code>
+      <code v-if="!editable" class="source-view--code">{{value}}</code>
       <TextareaAutoresize
          v-else
          class="source-view--input"
-         :value="text"
+         :value="value"
          @input="updateValue"
          placeholder="// Add test"
       />
@@ -23,7 +23,7 @@ import TextareaAutoresize from './TextareaAutoresize.vue'
 })
 export default class SourceView extends Vue {
    @Prop(String)
-   public text!: String;
+   public value!: String;
 
    @Prop(Boolean)
    public editable!: Boolean;

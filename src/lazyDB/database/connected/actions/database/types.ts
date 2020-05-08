@@ -18,3 +18,10 @@ export function getInnerInnerPayload<T>(payload: ModelEventInnerPayload<ModelEve
 
   return getInnerPayload(inner)
 }
+
+export function getInitialPayload<T>(payload: ModelEventInnerPayload<T>): T {
+  if (!payload.inner)
+    return payload as unknown as T
+
+  return getInitialPayload(payload.inner as ModelEventInnerPayload<T>)
+}

@@ -5,11 +5,12 @@ import {
   debounceTime
 } from 'rxjs/operators'
 import { StateMemory } from '../core/memory'
-import { ModelEvent } from '../core/types'
+import { ModelEvent, ModelEventGetPropertyPayload } from '../core/types'
 import { ModelEventTypes, ModelEventReadPayload } from '../database/events'
 import { isReading } from '../database/states'
 import { pauseWhileReading } from './pauseWhileReading'
 import { debug } from '../../reactive/debug'
+import { debugInitialPayload } from './utils'
 
 const WAIT_TIME_WHEN_GETS_STOP_SPAWN = 50
 
@@ -45,11 +46,11 @@ export const spawnRead = (
       // add test to read success and failure
       // on read success and failure remove read event
       // add to read success and failure link to read event
+      debugInitialPayload('[SpawnRead] received get', ({ name }: ModelEventGetPropertyPayload) => name),
       pauseWhileReading(() => isReading(memory) || !canRead()),
       // Wait some time to be sure, get events stop spawn
-      debug('before debounce'),
       debounceTime(waitTimeWhenGetsStopSpawn, scheduler),
-      debug('after debounce'),
+      // debugInitialPayload('[SpawnRead] get after debounce', ({ name }: ModelEventGetPropertyPayload) => name),
       // need retrive all GET events from memory after debounce
       // and check they still exists
       // in case they was removed while debounce

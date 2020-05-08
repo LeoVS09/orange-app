@@ -53,3 +53,8 @@ This components can be simply copied to another project without problems.
 - index.ts - enter point of application
 - translations.ts - file which define translation for text used in interface
 
+## LazyDB
+
+This project use LazyDB for data management
+
+Warn: LazyDB don't allow use `_` and `$` as start symbols for id

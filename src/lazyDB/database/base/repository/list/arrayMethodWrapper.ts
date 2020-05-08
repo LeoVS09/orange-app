@@ -9,7 +9,7 @@ const isNeedProduceTrapForSlice = (source: ListSource, base: Array<any>, args: A
 
 export const arrayMethodWrapper = (source: ListSource, base: Array<any>, index: ArrayStringProperty) =>
   (...args: Array<any>) => {
-    console.log('nodes property', index, args, base)
+    console.log('[ArrayMethodWrapper], nodes property', index, args, base)
 
     if (index === 'slice' && isNeedProduceTrapForSlice(source, base, args))
       return mockSliceArrayTrap(source)

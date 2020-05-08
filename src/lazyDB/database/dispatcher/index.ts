@@ -91,6 +91,10 @@ export function wrapToDatabaseDispatcher(store: IProducerStore) {
 
 export function getDatabaseStore(model: AbstractData | EventProducer): IDatabaseModelProducerStore {
   const store = getStore(model)
+  if (!store) {
+    console.error('[DatabaseDispatcher] getDatabaseStore cannot fund store', model)
+    throw new Error('DatabaseDispatcher cannot find store')
+  }
 
   wrapToDatabaseDispatcher(store)
 

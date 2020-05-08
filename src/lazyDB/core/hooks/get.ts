@@ -55,7 +55,7 @@ export const getterHook = (store: IProducerStore, prop: PropertyKey) => {
   return producer
 }
 
-const defineParentOfProducer = (producer: EventProducer, parent: IProducerStore, prop: PropertyKey) => {
+export const defineParentOfProducer = (producer: EventProducer, parent: IProducerStore, prop: PropertyKey) => {
   const valueStore = getStore(producer)
   valueStore.parent = parent
 

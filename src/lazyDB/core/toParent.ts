@@ -29,6 +29,11 @@ export function pushToParentIfCan(
   const wrapped = wrapEventToNestingLevel(prop, type, parent, event)
 
   const { dispatcher } = parent
+  if (!dispatcher) {
+    console.error('Parent not have dispatcher', parent)
+    return
+  }
+
   dispatcher.eventsSubject.next(wrapped)
 }
 

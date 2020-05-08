@@ -5,18 +5,22 @@ import casual from 'casual'
 import { MockList } from 'vue-cli-plugin-apollo/node_modules/graphql-tools'
 import moment from 'moment'
 
-const mockConnection = () => ({
-  nodes: () => new MockList([5, 30])
+// For LazyDB cannot be used id which starts from `_` and `$`, and possible `-`
+const uuid = () => shortid.generate().replace('_', 'x').replace('-', '0')
+
+const mockConnection = (min = 5, max = 30) => () => ({
+  nodes: () => new MockList([min, max]),
+  totalCount: casual.integer(max, max * 5)
 })
 
-const mockEntity = ({ id = shortid.generate() } = {}) => ({
+const mockEntity = ({ id = uuid() } = {}) => ({
   id,
   createdAt: moment().add(casual.integer(5, 30), 'month').format(),
   updatedAt: moment().add(casual.integer(5, 30), 'days').format()
 })
 
 export default {
-  UUID: () => shortid.generate(),
+  UUID: () => uuid(),
   Datetime: () => moment().format(),
   Int: () => casual.integer(5, 30),
 
@@ -34,6 +38,13 @@ export default {
   Problem: (_, args) => ({
     name: casual.title,
     description: casual.sentences(casual.integer(15, 30)),
+    ...mockEntity(args),
+    tests: mockConnection(2, 7)
+  }),
+
+  Test: (_, args) => ({
+    input: casual.array_of_digits(casual.integer(5, 10)).join(', ').slice(0, -3),
+    output: casual.array_of_digits(casual.integer(5, 10)).join(', ').slice(0, -3),
     ...mockEntity(args)
   }),
 
@@ -62,9 +73,10 @@ export default {
   }),
 
   Query: () => ({
-    countries: mockConnection,
-    tags: mockConnection,
-    problems: mockConnection,
-    universities: mockConnection
+    countries: mockConnection(),
+    tags: mockConnection(),
+    problems: mockConnection(),
+    universities: mockConnection(),
+    tests: mockConnection()
   })
 }

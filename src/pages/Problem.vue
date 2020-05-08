@@ -259,6 +259,8 @@ export default class ProblemView extends Mixins(ReactiveUpdate) {
 
    public ProblemReadState = ModelReadState;
 
+   public resultRun = {} as ResultRunProgram
+
    get model() {
      return ProblemRepository.findOne(this.id, reactiveUpdate(this))
    }
