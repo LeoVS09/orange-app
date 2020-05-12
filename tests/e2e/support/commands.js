@@ -23,3 +23,46 @@
 //
 // -- This is will overwrite an existing command --
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
+
+
+// Cypress currently not support graphql
+// code based on solution in issue https://github.com/cypress-io/cypress/issues/3083
+// Allow wait specific operation in graphql
+Cypress.Commands.add('waitGql', (operationName, checkStatus = true) => {
+    Cypress.log({
+        name: 'GraphQL request',
+        displayName: 'Wait for GraphQL request',
+    });
+
+    cy
+        .wait('@graphql') 
+        .then(async ({ response, request }) => {
+            Cypress.log({
+                name: 'GraphQL request',
+                displayName: 'Graphql request was catched',
+                message: request.body.operationName,
+            })
+
+            if (request.body.operationName !== operationName) {
+                return cy.waitGql(operationName);
+            }
+
+            const body = await response.body;
+
+            Cypress.log({
+                name: 'GraphQL response',
+                displayName: `GraphQL ${operationName} response`,
+                message: operationName,
+                consoleProps: () => ({ Response: body.data }),
+            });
+
+            if (checkStatus) {
+                expect(body.errors, 'GraphQL response without errors').not.exist;
+            }
+
+            return {
+                ...response,
+                data: body.data,
+            };
+        });
+});

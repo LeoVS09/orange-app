@@ -18,8 +18,6 @@ import { UIEventEmitter, UIEvents } from './utils/UIEventEmitter'
 
 import * as actionTypes from './store/actionTypes'
 
-import { createProvider } from './vue-apollo'
-
 Vue.use(vClickOutside)
 
 setTranslations()
