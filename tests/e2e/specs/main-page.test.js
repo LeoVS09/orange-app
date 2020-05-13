@@ -34,34 +34,3 @@ describe('Main page', () => {
       })
   })
 })
-
-
-describe('Simple user', () => {
-  before(async () => {
-    await fetchPolfill.loadPolyfill()
-  })
-
-  beforeEach(() => {
-    cy.server()
-    cy.route({ 
-      url: '/graphql',
-      method: 'POST'
-    }).as('graphql')
-  })
-
-  it('Go to problem page from main', () => {
-    cy.visit('/', fetchPolfill.visitOptions)
-    cy.waitGql('Problems')
-    cy.contains('h1', 'Problems')
-    cy.get('.problems-list').should('be.visible')
-    cy.wait(1500)
-    cy.get('.problems-list .list-item').its('length').should('be.gte', 9)
-    cy.get('.problems-list .list-item').should($div => {
-      const text = $div.text()
-      expect(text.length > 0).to.have.true
-    })
-    cy.get('.problems-list .list-item').last().click()
-    cy.url().should('contain', 'problems')
-    cy.get('.problem').should('contain', 'Examples')
-  })
-})
