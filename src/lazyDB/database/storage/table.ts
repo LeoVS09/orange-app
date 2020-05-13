@@ -78,7 +78,6 @@ const listItemGetter = (table: DatabaseTableMap): ListItemGetter => ({ nodes }, 
   }
 
   const node = table.get(id)
-  console.log('[Table] list item getter', nodes, index, node)
   return node
 }
 
