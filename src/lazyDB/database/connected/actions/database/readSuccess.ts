@@ -15,8 +15,7 @@ const readSuccess: EventReducer<ModelEventInnerPayload<ModelEventInnerPayload<Re
 
   console.log('[databaseReducers]', 'read success data', data)
 
-  // TODO: use Object.assign
-  setEntity(proxy!, data)
+  Object.assign(proxy, data)
 
   removeReadEventFromMemmory(store, readPayload)
 
@@ -26,11 +25,6 @@ const readSuccess: EventReducer<ModelEventInnerPayload<ModelEventInnerPayload<Re
 }
 
 export default readSuccess
-
-const setEntity = (model: EventProducer, received: AbstractData) => {
-  for (const key of Object.keys(received))
-    model[key] = received[key]
-}
 
 const removeReadEventFromMemmory = ({ memory }: IProducerStore, readPayload: ReadEventPayload) => {
   memory!.forget(({ payload }) => payload === readPayload)
