@@ -30,9 +30,6 @@ const filters: ILazyDBFilters = {
 }
 
 export const LazyDBFilters: PluginFunction<any> = Vue => {
-  Vue.prototype.$isReading = (model: AbstractData) => false
-  Vue.filter('isReading', (model: AbstractData, property?: string) => false)
-
   for (const key of Object.keys(filters)) {
     Vue.prototype[`$${key}`] = filters[key]
     Vue.filter(key, filters[key])

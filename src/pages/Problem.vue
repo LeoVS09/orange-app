@@ -165,7 +165,7 @@
       <FloatingButton
          :visible="!$isSynced(model)"
          @click="syncProblem"
-         :disabled="model | isProcessing"
+         :disabled="model | isPending"
          :primary="true"
          :circle="true"
          :shadow="true"
