@@ -4,7 +4,7 @@
 
 const urls = {
   ORANGE_MANAGER_SERVER: '/judge',
-  DATABASE_SERVER: '/graphql', // !isDevelopment ? 'http://localhost:8765/graphql' : 'http://localhost:4000/graphql',
+  DATABASE_SERVER: `${window.location.origin}/graphql`, // !isDevelopment ? 'http://localhost:8765/graphql' : 'http://localhost:4000/graphql',
   RUN_PROGRAM: '/run'
 }
 

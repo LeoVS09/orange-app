@@ -41,7 +41,7 @@ export const nockAllGraphqlRequests = async (nock: any, name: string): Promise<N
         checkRequestParams: () => {}
     }
     
-    nock('http://localhost:4000')
+    nock(window.location.origin)
     .post('/graphql')
     .times(Number.MAX_VALUE)
     .reply(async (uri: any, requestBody: any, cb: any) => {
