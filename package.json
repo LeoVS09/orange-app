@@ -7,7 +7,7 @@
   "scripts": {
     "serve": "vue-cli-service serve --open",
     "build": "vue-cli-service build",
-    "test": "yarn test:unit && yarn test:integration",
+    "test": "yarn test:unit && yarn test:e2e",
     "test:unit": "vue-cli-service test:unit",
     "test:e2e": "concurrently -k -n e2e,mock \"yarn test:e2e-dev\" \"yarn mock\"",
     "test:e2e-dev": "vue-cli-service test:e2e --mode development",
