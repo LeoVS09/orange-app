@@ -77,8 +77,7 @@ const listItemGetter = (table: DatabaseTableMap): ListItemGetter => ({ nodes }, 
     return id
   }
 
-  const node = table.get(id)
-  return node
+  return table.get(id)
 }
 
 export interface IGetEntityId {
