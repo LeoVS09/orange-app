@@ -11,7 +11,7 @@ const filters: ILazyDBFilters = {
 
   isNew: (model: AbstractData) => false,
   isCreating: (model: AbstractData) => false,
-  isHaveCreating: (model: AbstractData) => false,
+  isHaveCreatingError: (model: AbstractData) => false,
 
   isChanged: (model: AbstractData) => false,
   isUpdating: (model: AbstractData) => false,
@@ -21,7 +21,7 @@ const filters: ILazyDBFilters = {
   isHaveDeletingError: (model: AbstractData) => false,
 
   // mix of isReading, isUpdating, isCreating, isDeleting
-  isProcessing: (model: AbstractData) => false,
+  isPending: (model: AbstractData) => false,
   // mix errors on reading, updating, creating, deleting
   isHaveError: (model: AbstractData) => false,
 

@@ -17,6 +17,7 @@ export enum ModelEventTypes {
    ReadFailure = 'ReadFailure',
 
    SetProperty = 'SetProperty',
+   ValidationFailure = 'ValidationFailure',
    Update = 'Update',
    UpdateSuccess = 'UpdateSuccess',
    UpdateFailure = 'UpdateFailure',

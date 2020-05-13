@@ -53,4 +53,8 @@ export class StateMemory<T> {
    public findIndex(predicate: (value: T, index: number, obj: T[]) => boolean): number {
      return this.memory.findIndex(predicate)
    }
+
+   public some(predicat: (value: T, index: number, array: T[]) => boolean): boolean {
+     return this.memory.some(predicat)
+   }
 }
