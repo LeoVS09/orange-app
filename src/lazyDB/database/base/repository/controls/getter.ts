@@ -1,11 +1,10 @@
 import { AosEntitySchema, isSimpleType, AosFieldType } from '@/abstractObjectSchema'
 import { ProducerStoreGetter } from '@/lazyDB/core/types'
-import { IGetLinkedEntity } from './types'
-import { getFieldType } from './utils'
+import { IGetLinkedEntity, GetFieldType } from './types'
 import { makeListSource } from '../list'
 
 export const getter = (
-  schema: AosEntitySchema,
+  getFieldType: GetFieldType,
   getLinkedEntity: IGetLinkedEntity = defaultGetLinkedEntity
 ): ProducerStoreGetter =>
   (store, name) => {
@@ -14,7 +13,7 @@ export const getter = (
     if (typeof value !== 'undefined')
       return value
 
-    const type = getFieldType(schema.fields, name as string)
+    const type = getFieldType(name as string)
     if (!type || isSimpleType(type))
       return
 

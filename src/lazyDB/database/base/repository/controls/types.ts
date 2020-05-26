@@ -1,19 +1,24 @@
 import { AosFieldType, AosEntitySchema } from '@/abstractObjectSchema'
-import { AbstractData, IProducerStore } from '@/lazyDB/core/types'
+import { Producerable, IProducerStore } from '@/lazyDB/core/types'
 
 export interface IGetLinkedEntity {
-    (store: IProducerStore<AbstractData>, name: string, type: AosFieldType): object | undefined
+    (store: IProducerStore<Producerable>, name: string, type: AosFieldType): object | undefined
 }
 
 export interface ISetLinkedEntity {
-    (store: IProducerStore<AbstractData>, name: string, type: string, value: any): boolean
+    (store: IProducerStore<Producerable>, name: string, type: string, value: any): boolean
 }
 
 export interface ApplyRepositoryControlsOptions {
+    getFieldType: GetFieldType,
     getLinkedEntity?: IGetLinkedEntity
     setLinkedEntity?: ISetLinkedEntity
 }
 
 export interface IGetSchema {
     (entity: string): AosEntitySchema | undefined
+}
+
+export interface GetFieldType {
+    (name: string): AosFieldType
 }

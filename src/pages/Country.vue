@@ -91,7 +91,6 @@ export default class CountryView extends Mixins(ReactiveUpdate) {
   get cities(): Array<City> {
     const cities = this.model.cities!.nodes
     console.log('Country cities', cities)
-    // TODO: temporal hack, need investigate why vue not rerender without map
     return cities
   }
 

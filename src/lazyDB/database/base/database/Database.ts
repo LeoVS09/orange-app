@@ -1,19 +1,18 @@
 import {
-  AbstractData,
-  EventProducer
+  Producerable,
+  EventProducer,
+  IProducerStore
 } from '@/lazyDB/core/types'
 import { getStore, isProducer } from '@/lazyDB/core/common'
-
 import { ModelEventDispatcher } from '@/lazyDB/core/dispatcher/model/base'
 import { AosFieldType, AosEntitySchemaStorage, AosEntitySchema } from '@/abstractObjectSchema'
 import { getEntityPrimaryKey } from '@/lazyDB/database/base/repository/Repository'
 import { isListSourceData } from '@/lazyDB/database/base/repository/list'
 import { extractEntityNameFromManyKey } from '@/lazyDB/utils'
-import { defineParentOfProducer } from '@/lazyDB/core/hooks/get'
+import { setupEventBubbling } from '@/lazyDB/core/bubbling'
 import {
   applyDatabaseControls,
   getSchemaByKey,
-  IGetSchema,
   ISetEntity
 } from './controls'
 import { makeDatabaseStorage } from '../../storage'
@@ -23,6 +22,7 @@ import {
   DatabaseStorage,
   ListItemGetterReference,
   ListItemGetter,
+  DatabaseTable,
   NodesProducerReference
 } from '../../types'
 
@@ -39,13 +39,11 @@ export default class LazyReactiveDatabase implements ILazyReactiveDatabase {
 
   public excludeProperties: Array<string | RegExp>
 
-  constructor(
-    {
-      storage = makeDatabaseStorage(),
-      schemas = {},
-      excludeProperties = []
-    }: LazyReactiveDatabaseOptions = {}
-  ) {
+  constructor({
+    storage = makeDatabaseStorage(),
+    schemas = {},
+    excludeProperties = []
+  }: LazyReactiveDatabaseOptions = {}) {
     this.storage = storage
     this.schemas = schemas
     this.excludeProperties = excludeProperties
@@ -57,7 +55,7 @@ export default class LazyReactiveDatabase implements ILazyReactiveDatabase {
 
   public get dispatcher(): ModelEventDispatcher {
     const store = getStore(this.storage)
-    return store.dispatcher as ModelEventDispatcher
+    return store!.dispatcher as ModelEventDispatcher
   }
 
   public setSchema(entity: string, schema: AosEntitySchema) {
@@ -65,7 +63,8 @@ export default class LazyReactiveDatabase implements ILazyReactiveDatabase {
     console.log('database schema was set', entity, schema, this.schemas)
   }
 
-  public findOne(entity: string, id: string): EventProducer {
+  public findOne<T extends Producerable = Producerable>(entity: string, id: string): EventProducer<T> {
+    // Probably error, we must apply controls in any case
     if (!this.schemas[entity])
       return this.storage[entity][id]
 
@@ -73,7 +72,7 @@ export default class LazyReactiveDatabase implements ILazyReactiveDatabase {
     const store = getStore(model)
     const schema = this.schemas[entity]
 
-    applyDatabaseControls(store, schema, this.getSchemaByKey, this.setEntity)
+    applyDatabaseControls(store!, schema, this.getSchemaByKey, this.setEntity)
 
     return model
   }
@@ -88,6 +87,9 @@ export default class LazyReactiveDatabase implements ILazyReactiveDatabase {
 
       const list = base[entity]
       const store = getStore(list)
+      if (!store)
+        throw new Error('List source wasn\'t wrapped as producer or not exists')
+
       const { base: listSource } = store
       const entityName = extractEntityNameFromManyKey(entity)
 
@@ -125,8 +127,10 @@ export default class LazyReactiveDatabase implements ILazyReactiveDatabase {
             throw new Error('[Database] list item getter received not node without producer')
           }
 
-          defineParentOfProducer(node, store, index)
-          console.log('[Database] list nodesStore', node, store, 'nodes')
+          const nodeStore = getStore(node)
+          const nodesStore = getStore(store.base[NodesProducerReference])!
+          setupEventBubbling(nodeStore!, nodesStore, index)
+          console.log('[Database] list nodesStore', node, nodesStore, 'nodes')
           return node
         }
         listSource[ListItemGetterReference] = listItemGetter
@@ -152,11 +156,11 @@ export default class LazyReactiveDatabase implements ILazyReactiveDatabase {
     return this.storage[entity][id]
   }
 
-  public set(entity: string, id: string, data: AbstractData | EventProducer) {
+  public set<T extends Producerable = Producerable>(entity: string, id: string, data: T | EventProducer<T>) {
     this.storage[entity][id] = data
   }
 
-  public add(entity: string, id: string, data: AbstractData): boolean {
+  public add<T extends Producerable = Producerable>(entity: string, id: string, data: T | EventProducer<T>): boolean {
     // TODO: produce event
     const model = this.storage[entity][id]
     if (model)
@@ -166,7 +170,7 @@ export default class LazyReactiveDatabase implements ILazyReactiveDatabase {
     return true
   }
 
-  public update(entity: string, id: string, data: AbstractData): boolean {
+  public update<T extends Producerable = Producerable>(entity: string, id: string, data: T | EventProducer<T>): boolean {
     // TODO: produce event
     const model = this.storage[entity][id]
     if (!model)
@@ -181,3 +185,4 @@ export default class LazyReactiveDatabase implements ILazyReactiveDatabase {
   public getSchemaByKey = (entity: string, type: AosFieldType) => getSchemaByKey(this.schemas, entity, type)
 
 }
+

@@ -1,5 +1,6 @@
 // @ts-ignore next-line
 global.fetch = require('node-fetch')
+jest.unmock('graphql-tag');
 import nock from 'nock'
 import { createLocalVue, mount } from '@vue/test-utils'
 import { VueConstructor } from 'vue'

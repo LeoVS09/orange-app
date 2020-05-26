@@ -4,7 +4,6 @@ exports[`Repository should generade query for list by first node and return 1`] 
 Object {
   "query": "query Countries {
   countries {
-    totalCount
     nodes {
       id
       nodeId
@@ -24,7 +23,7 @@ Object {
 exports[`Repository should generade query for list by first node and return 2`] = `
 Object {
   "__typename": "CountriesConnection",
-  "maxPageNumber": 0.8,
+  "maxPageNumber": null,
   "nodes": Array [
     Object {
       "__typename": "Country",
@@ -149,7 +148,7 @@ Object {
   ],
   "onPage": 10,
   "pageNumber": 1,
-  "totalCount": 8,
+  "totalCount": null,
 }
 `;
 

@@ -1,16 +1,13 @@
 import {
   EventReducer,
-  ModelEventInnerPayload,
-  AbstractData,
-  EventProducer,
   IProducerStore
 } from '@/lazyDB/core/types'
-import { ReadSuccessEventPayload, ReadEventPayload } from '@/lazyDB/database/events'
-import { getInnerInnerPayload } from './types'
+import { ReadSuccessEventPayload, ModelEventReadPayload } from '@/lazyDB/database/events'
+import { DatabaseEventReducer, IDatabaseModelProducerStore } from '@/lazyDB/database/types'
 
-const readSuccess: EventReducer<ModelEventInnerPayload<ModelEventInnerPayload<ReadSuccessEventPayload>>> = (_, payload) => {
+const readSuccess: DatabaseEventReducer<IDatabaseModelProducerStore, ReadSuccessEventPayload> = (_, { payload }) => {
 
-  const { data, store, readPayload } = getInnerInnerPayload(payload)
+  const { data, store, readPayload } = payload
   const { base, proxy } = store
 
   console.log('[databaseReducers]', 'read success data', data)
@@ -26,6 +23,6 @@ const readSuccess: EventReducer<ModelEventInnerPayload<ModelEventInnerPayload<Re
 
 export default readSuccess
 
-const removeReadEventFromMemmory = ({ memory }: IProducerStore, readPayload: ReadEventPayload) => {
+const removeReadEventFromMemmory = ({ memory }: IProducerStore, readPayload: ModelEventReadPayload) => {
   memory!.forget(({ payload }) => payload === readPayload)
 }

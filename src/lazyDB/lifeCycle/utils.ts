@@ -1,14 +1,12 @@
 import { Observable } from 'rxjs'
 import { tap } from 'rxjs/operators'
-import { ModelEventInnerPayload, ModelEvent } from '../core/types'
-import { getInitialPayload } from '../database/connected/actions/database/types'
+import { ModelEvent } from '../core/types'
 
-export const debugInitialPayload = <T>(
+export const debugPayload = <T>(
   message: string,
   extruder: (payload: T) => any = payload => payload
-) => (stream: Observable<ModelEvent<ModelEventInnerPayload<T>>>) =>
+) => (stream: Observable<ModelEvent<T>>) =>
     stream.pipe(tap(({ payload }) => {
-      const realPayload = getInitialPayload(payload)
-      const extrudedMessage = extruder(realPayload)
+      const extrudedMessage = extruder(payload)
       console.debug(message, extrudedMessage)
     }))

@@ -1,6 +1,6 @@
 import { ListSource, NodesProducerReference, ListItemGetterReference } from '@/lazyDB/database/types'
 import { ArrayStringProperty } from '@/lazyDB/database/utils'
-import { AbstractData } from '@/lazyDB/core/types'
+import { Producerable } from '@/lazyDB/core/types'
 
 const SIMPLE_ARRAY_METHODS = ['map', 'filter']
 

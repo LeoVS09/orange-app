@@ -3,1434 +3,170 @@
 exports[`Mapper AOS scheme to graphql query should generate query for read entity by id with one to many links 1`] = `
 Object {
   "name": "country",
-  "query": Object {
-    "definitions": Array [
-      Object {
-        "directives": Array [],
-        "kind": "OperationDefinition",
-        "name": Object {
-          "kind": "Name",
-          "value": "Country",
-        },
-        "operation": "query",
-        "selectionSet": Object {
-          "kind": "SelectionSet",
-          "selections": Array [
-            Object {
-              "alias": undefined,
-              "arguments": Array [
-                Object {
-                  "kind": "Argument",
-                  "name": Object {
-                    "kind": "Name",
-                    "value": "id",
-                  },
-                  "value": Object {
-                    "kind": "Variable",
-                    "name": Object {
-                      "kind": "Name",
-                      "value": "id",
-                    },
-                  },
-                },
-              ],
-              "directives": Array [],
-              "kind": "Field",
-              "name": Object {
-                "kind": "Name",
-                "value": "country",
-              },
-              "selectionSet": Object {
-                "kind": "SelectionSet",
-                "selections": Array [
-                  Object {
-                    "alias": undefined,
-                    "arguments": Array [],
-                    "directives": Array [],
-                    "kind": "Field",
-                    "name": Object {
-                      "kind": "Name",
-                      "value": "id",
-                    },
-                    "selectionSet": undefined,
-                  },
-                  Object {
-                    "alias": undefined,
-                    "arguments": Array [],
-                    "directives": Array [],
-                    "kind": "Field",
-                    "name": Object {
-                      "kind": "Name",
-                      "value": "nodeId",
-                    },
-                    "selectionSet": undefined,
-                  },
-                  Object {
-                    "alias": undefined,
-                    "arguments": Array [],
-                    "directives": Array [],
-                    "kind": "Field",
-                    "name": Object {
-                      "kind": "Name",
-                      "value": "createdAt",
-                    },
-                    "selectionSet": undefined,
-                  },
-                  Object {
-                    "alias": undefined,
-                    "arguments": Array [],
-                    "directives": Array [],
-                    "kind": "Field",
-                    "name": Object {
-                      "kind": "Name",
-                      "value": "updatedAt",
-                    },
-                    "selectionSet": undefined,
-                  },
-                  Object {
-                    "alias": undefined,
-                    "arguments": Array [],
-                    "directives": Array [],
-                    "kind": "Field",
-                    "name": Object {
-                      "kind": "Name",
-                      "value": "name",
-                    },
-                    "selectionSet": undefined,
-                  },
-                  Object {
-                    "alias": undefined,
-                    "arguments": Array [],
-                    "directives": Array [],
-                    "kind": "Field",
-                    "name": Object {
-                      "kind": "Name",
-                      "value": "cities",
-                    },
-                    "selectionSet": Object {
-                      "kind": "SelectionSet",
-                      "selections": Array [
-                        Object {
-                          "alias": undefined,
-                          "arguments": Array [],
-                          "directives": Array [],
-                          "kind": "Field",
-                          "name": Object {
-                            "kind": "Name",
-                            "value": "totalCount",
-                          },
-                          "selectionSet": undefined,
-                        },
-                        Object {
-                          "alias": undefined,
-                          "arguments": Array [],
-                          "directives": Array [],
-                          "kind": "Field",
-                          "name": Object {
-                            "kind": "Name",
-                            "value": "nodes",
-                          },
-                          "selectionSet": Object {
-                            "kind": "SelectionSet",
-                            "selections": Array [
-                              Object {
-                                "alias": undefined,
-                                "arguments": Array [],
-                                "directives": Array [],
-                                "kind": "Field",
-                                "name": Object {
-                                  "kind": "Name",
-                                  "value": "id",
-                                },
-                                "selectionSet": undefined,
-                              },
-                              Object {
-                                "alias": undefined,
-                                "arguments": Array [],
-                                "directives": Array [],
-                                "kind": "Field",
-                                "name": Object {
-                                  "kind": "Name",
-                                  "value": "nodeId",
-                                },
-                                "selectionSet": undefined,
-                              },
-                              Object {
-                                "alias": undefined,
-                                "arguments": Array [],
-                                "directives": Array [],
-                                "kind": "Field",
-                                "name": Object {
-                                  "kind": "Name",
-                                  "value": "name",
-                                },
-                                "selectionSet": undefined,
-                              },
-                              Object {
-                                "alias": undefined,
-                                "arguments": Array [],
-                                "directives": Array [],
-                                "kind": "Field",
-                                "name": Object {
-                                  "kind": "Name",
-                                  "value": "updatedAt",
-                                },
-                                "selectionSet": undefined,
-                              },
-                            ],
-                          },
-                        },
-                      ],
-                    },
-                  },
-                ],
-              },
-            },
-          ],
-        },
-        "variableDefinitions": Array [
-          Object {
-            "defaultValue": undefined,
-            "directives": Array [],
-            "kind": "VariableDefinition",
-            "type": Object {
-              "kind": "NonNullType",
-              "type": Object {
-                "kind": "NamedType",
-                "name": Object {
-                  "kind": "Name",
-                  "value": "UUID",
-                },
-              },
-            },
-            "variable": Object {
-              "kind": "Variable",
-              "name": Object {
-                "kind": "Name",
-                "value": "id",
-              },
-            },
-          },
-        ],
-      },
-    ],
-    "kind": "Document",
-    "loc": Object {
-      "end": 223,
-      "start": 0,
-    },
-  },
+  "query": "
+      query Country($id: UUID!) {
+         country(id: $id) {
+			id
+			nodeId
+			createdAt
+			updatedAt
+			name
+			cities {
+				id
+				nodeId
+				name
+				updatedAt
+			}
+		}
+      }
+   ",
 }
 `;
 
 exports[`Mapper AOS scheme to graphql query should generate query for read entity by id with one to many links without child id 1`] = `
 Object {
   "name": "country",
-  "query": Object {
-    "definitions": Array [
-      Object {
-        "directives": Array [],
-        "kind": "OperationDefinition",
-        "name": Object {
-          "kind": "Name",
-          "value": "Country",
-        },
-        "operation": "query",
-        "selectionSet": Object {
-          "kind": "SelectionSet",
-          "selections": Array [
-            Object {
-              "alias": undefined,
-              "arguments": Array [
-                Object {
-                  "kind": "Argument",
-                  "name": Object {
-                    "kind": "Name",
-                    "value": "id",
-                  },
-                  "value": Object {
-                    "kind": "Variable",
-                    "name": Object {
-                      "kind": "Name",
-                      "value": "id",
-                    },
-                  },
-                },
-              ],
-              "directives": Array [],
-              "kind": "Field",
-              "name": Object {
-                "kind": "Name",
-                "value": "country",
-              },
-              "selectionSet": Object {
-                "kind": "SelectionSet",
-                "selections": Array [
-                  Object {
-                    "alias": undefined,
-                    "arguments": Array [],
-                    "directives": Array [],
-                    "kind": "Field",
-                    "name": Object {
-                      "kind": "Name",
-                      "value": "id",
-                    },
-                    "selectionSet": undefined,
-                  },
-                  Object {
-                    "alias": undefined,
-                    "arguments": Array [],
-                    "directives": Array [],
-                    "kind": "Field",
-                    "name": Object {
-                      "kind": "Name",
-                      "value": "nodeId",
-                    },
-                    "selectionSet": undefined,
-                  },
-                  Object {
-                    "alias": undefined,
-                    "arguments": Array [],
-                    "directives": Array [],
-                    "kind": "Field",
-                    "name": Object {
-                      "kind": "Name",
-                      "value": "createdAt",
-                    },
-                    "selectionSet": undefined,
-                  },
-                  Object {
-                    "alias": undefined,
-                    "arguments": Array [],
-                    "directives": Array [],
-                    "kind": "Field",
-                    "name": Object {
-                      "kind": "Name",
-                      "value": "updatedAt",
-                    },
-                    "selectionSet": undefined,
-                  },
-                  Object {
-                    "alias": undefined,
-                    "arguments": Array [],
-                    "directives": Array [],
-                    "kind": "Field",
-                    "name": Object {
-                      "kind": "Name",
-                      "value": "name",
-                    },
-                    "selectionSet": undefined,
-                  },
-                  Object {
-                    "alias": undefined,
-                    "arguments": Array [],
-                    "directives": Array [],
-                    "kind": "Field",
-                    "name": Object {
-                      "kind": "Name",
-                      "value": "cities",
-                    },
-                    "selectionSet": Object {
-                      "kind": "SelectionSet",
-                      "selections": Array [
-                        Object {
-                          "alias": undefined,
-                          "arguments": Array [],
-                          "directives": Array [],
-                          "kind": "Field",
-                          "name": Object {
-                            "kind": "Name",
-                            "value": "totalCount",
-                          },
-                          "selectionSet": undefined,
-                        },
-                        Object {
-                          "alias": undefined,
-                          "arguments": Array [],
-                          "directives": Array [],
-                          "kind": "Field",
-                          "name": Object {
-                            "kind": "Name",
-                            "value": "nodes",
-                          },
-                          "selectionSet": Object {
-                            "kind": "SelectionSet",
-                            "selections": Array [
-                              Object {
-                                "alias": undefined,
-                                "arguments": Array [],
-                                "directives": Array [],
-                                "kind": "Field",
-                                "name": Object {
-                                  "kind": "Name",
-                                  "value": "name",
-                                },
-                                "selectionSet": undefined,
-                              },
-                              Object {
-                                "alias": undefined,
-                                "arguments": Array [],
-                                "directives": Array [],
-                                "kind": "Field",
-                                "name": Object {
-                                  "kind": "Name",
-                                  "value": "updatedAt",
-                                },
-                                "selectionSet": undefined,
-                              },
-                            ],
-                          },
-                        },
-                      ],
-                    },
-                  },
-                ],
-              },
-            },
-          ],
-        },
-        "variableDefinitions": Array [
-          Object {
-            "defaultValue": undefined,
-            "directives": Array [],
-            "kind": "VariableDefinition",
-            "type": Object {
-              "kind": "NonNullType",
-              "type": Object {
-                "kind": "NamedType",
-                "name": Object {
-                  "kind": "Name",
-                  "value": "UUID",
-                },
-              },
-            },
-            "variable": Object {
-              "kind": "Variable",
-              "name": Object {
-                "kind": "Name",
-                "value": "id",
-              },
-            },
-          },
-        ],
-      },
-    ],
-    "kind": "Document",
-    "loc": Object {
-      "end": 203,
-      "start": 0,
-    },
-  },
+  "query": "
+      query Country($id: UUID!) {
+         country(id: $id) {
+			id
+			nodeId
+			createdAt
+			updatedAt
+			name
+			cities {
+				name
+				updatedAt
+			}
+		}
+      }
+   ",
 }
 `;
 
 exports[`Mapper AOS scheme to graphql query should generate query for read entity by id with one to many links without parent id 1`] = `
 Object {
   "name": "country",
-  "query": Object {
-    "definitions": Array [
-      Object {
-        "directives": Array [],
-        "kind": "OperationDefinition",
-        "name": Object {
-          "kind": "Name",
-          "value": "Country",
-        },
-        "operation": "query",
-        "selectionSet": Object {
-          "kind": "SelectionSet",
-          "selections": Array [
-            Object {
-              "alias": undefined,
-              "arguments": Array [
-                Object {
-                  "kind": "Argument",
-                  "name": Object {
-                    "kind": "Name",
-                    "value": "id",
-                  },
-                  "value": Object {
-                    "kind": "Variable",
-                    "name": Object {
-                      "kind": "Name",
-                      "value": "id",
-                    },
-                  },
-                },
-              ],
-              "directives": Array [],
-              "kind": "Field",
-              "name": Object {
-                "kind": "Name",
-                "value": "country",
-              },
-              "selectionSet": Object {
-                "kind": "SelectionSet",
-                "selections": Array [
-                  Object {
-                    "alias": undefined,
-                    "arguments": Array [],
-                    "directives": Array [],
-                    "kind": "Field",
-                    "name": Object {
-                      "kind": "Name",
-                      "value": "createdAt",
-                    },
-                    "selectionSet": undefined,
-                  },
-                  Object {
-                    "alias": undefined,
-                    "arguments": Array [],
-                    "directives": Array [],
-                    "kind": "Field",
-                    "name": Object {
-                      "kind": "Name",
-                      "value": "updatedAt",
-                    },
-                    "selectionSet": undefined,
-                  },
-                  Object {
-                    "alias": undefined,
-                    "arguments": Array [],
-                    "directives": Array [],
-                    "kind": "Field",
-                    "name": Object {
-                      "kind": "Name",
-                      "value": "name",
-                    },
-                    "selectionSet": undefined,
-                  },
-                  Object {
-                    "alias": undefined,
-                    "arguments": Array [],
-                    "directives": Array [],
-                    "kind": "Field",
-                    "name": Object {
-                      "kind": "Name",
-                      "value": "cities",
-                    },
-                    "selectionSet": Object {
-                      "kind": "SelectionSet",
-                      "selections": Array [
-                        Object {
-                          "alias": undefined,
-                          "arguments": Array [],
-                          "directives": Array [],
-                          "kind": "Field",
-                          "name": Object {
-                            "kind": "Name",
-                            "value": "totalCount",
-                          },
-                          "selectionSet": undefined,
-                        },
-                        Object {
-                          "alias": undefined,
-                          "arguments": Array [],
-                          "directives": Array [],
-                          "kind": "Field",
-                          "name": Object {
-                            "kind": "Name",
-                            "value": "nodes",
-                          },
-                          "selectionSet": Object {
-                            "kind": "SelectionSet",
-                            "selections": Array [
-                              Object {
-                                "alias": undefined,
-                                "arguments": Array [],
-                                "directives": Array [],
-                                "kind": "Field",
-                                "name": Object {
-                                  "kind": "Name",
-                                  "value": "id",
-                                },
-                                "selectionSet": undefined,
-                              },
-                              Object {
-                                "alias": undefined,
-                                "arguments": Array [],
-                                "directives": Array [],
-                                "kind": "Field",
-                                "name": Object {
-                                  "kind": "Name",
-                                  "value": "nodeId",
-                                },
-                                "selectionSet": undefined,
-                              },
-                              Object {
-                                "alias": undefined,
-                                "arguments": Array [],
-                                "directives": Array [],
-                                "kind": "Field",
-                                "name": Object {
-                                  "kind": "Name",
-                                  "value": "name",
-                                },
-                                "selectionSet": undefined,
-                              },
-                              Object {
-                                "alias": undefined,
-                                "arguments": Array [],
-                                "directives": Array [],
-                                "kind": "Field",
-                                "name": Object {
-                                  "kind": "Name",
-                                  "value": "updatedAt",
-                                },
-                                "selectionSet": undefined,
-                              },
-                            ],
-                          },
-                        },
-                      ],
-                    },
-                  },
-                ],
-              },
-            },
-          ],
-        },
-        "variableDefinitions": Array [
-          Object {
-            "defaultValue": undefined,
-            "directives": Array [],
-            "kind": "VariableDefinition",
-            "type": Object {
-              "kind": "NonNullType",
-              "type": Object {
-                "kind": "NamedType",
-                "name": Object {
-                  "kind": "Name",
-                  "value": "UUID",
-                },
-              },
-            },
-            "variable": Object {
-              "kind": "Variable",
-              "name": Object {
-                "kind": "Name",
-                "value": "id",
-              },
-            },
-          },
-        ],
-      },
-    ],
-    "kind": "Document",
-    "loc": Object {
-      "end": 207,
-      "start": 0,
-    },
-  },
+  "query": "
+      query Country($id: UUID!) {
+         country(id: $id) {
+			createdAt
+			updatedAt
+			name
+			cities {
+				id
+				nodeId
+				name
+				updatedAt
+			}
+		}
+      }
+   ",
 }
 `;
 
 exports[`Mapper AOS scheme to graphql query should generate query for read entity by id with one to one link 1`] = `
 Object {
   "name": "city",
-  "query": Object {
-    "definitions": Array [
-      Object {
-        "directives": Array [],
-        "kind": "OperationDefinition",
-        "name": Object {
-          "kind": "Name",
-          "value": "City",
-        },
-        "operation": "query",
-        "selectionSet": Object {
-          "kind": "SelectionSet",
-          "selections": Array [
-            Object {
-              "alias": undefined,
-              "arguments": Array [
-                Object {
-                  "kind": "Argument",
-                  "name": Object {
-                    "kind": "Name",
-                    "value": "id",
-                  },
-                  "value": Object {
-                    "kind": "Variable",
-                    "name": Object {
-                      "kind": "Name",
-                      "value": "id",
-                    },
-                  },
-                },
-              ],
-              "directives": Array [],
-              "kind": "Field",
-              "name": Object {
-                "kind": "Name",
-                "value": "city",
-              },
-              "selectionSet": Object {
-                "kind": "SelectionSet",
-                "selections": Array [
-                  Object {
-                    "alias": undefined,
-                    "arguments": Array [],
-                    "directives": Array [],
-                    "kind": "Field",
-                    "name": Object {
-                      "kind": "Name",
-                      "value": "id",
-                    },
-                    "selectionSet": undefined,
-                  },
-                  Object {
-                    "alias": undefined,
-                    "arguments": Array [],
-                    "directives": Array [],
-                    "kind": "Field",
-                    "name": Object {
-                      "kind": "Name",
-                      "value": "nodeId",
-                    },
-                    "selectionSet": undefined,
-                  },
-                  Object {
-                    "alias": undefined,
-                    "arguments": Array [],
-                    "directives": Array [],
-                    "kind": "Field",
-                    "name": Object {
-                      "kind": "Name",
-                      "value": "createdAt",
-                    },
-                    "selectionSet": undefined,
-                  },
-                  Object {
-                    "alias": undefined,
-                    "arguments": Array [],
-                    "directives": Array [],
-                    "kind": "Field",
-                    "name": Object {
-                      "kind": "Name",
-                      "value": "updatedAt",
-                    },
-                    "selectionSet": undefined,
-                  },
-                  Object {
-                    "alias": undefined,
-                    "arguments": Array [],
-                    "directives": Array [],
-                    "kind": "Field",
-                    "name": Object {
-                      "kind": "Name",
-                      "value": "name",
-                    },
-                    "selectionSet": undefined,
-                  },
-                  Object {
-                    "alias": undefined,
-                    "arguments": Array [],
-                    "directives": Array [],
-                    "kind": "Field",
-                    "name": Object {
-                      "kind": "Name",
-                      "value": "country",
-                    },
-                    "selectionSet": Object {
-                      "kind": "SelectionSet",
-                      "selections": Array [
-                        Object {
-                          "alias": undefined,
-                          "arguments": Array [],
-                          "directives": Array [],
-                          "kind": "Field",
-                          "name": Object {
-                            "kind": "Name",
-                            "value": "id",
-                          },
-                          "selectionSet": undefined,
-                        },
-                        Object {
-                          "alias": undefined,
-                          "arguments": Array [],
-                          "directives": Array [],
-                          "kind": "Field",
-                          "name": Object {
-                            "kind": "Name",
-                            "value": "nodeId",
-                          },
-                          "selectionSet": undefined,
-                        },
-                        Object {
-                          "alias": undefined,
-                          "arguments": Array [],
-                          "directives": Array [],
-                          "kind": "Field",
-                          "name": Object {
-                            "kind": "Name",
-                            "value": "name",
-                          },
-                          "selectionSet": undefined,
-                        },
-                        Object {
-                          "alias": undefined,
-                          "arguments": Array [],
-                          "directives": Array [],
-                          "kind": "Field",
-                          "name": Object {
-                            "kind": "Name",
-                            "value": "updatedAt",
-                          },
-                          "selectionSet": undefined,
-                        },
-                      ],
-                    },
-                  },
-                ],
-              },
-            },
-          ],
-        },
-        "variableDefinitions": Array [
-          Object {
-            "defaultValue": undefined,
-            "directives": Array [],
-            "kind": "VariableDefinition",
-            "type": Object {
-              "kind": "NonNullType",
-              "type": Object {
-                "kind": "NamedType",
-                "name": Object {
-                  "kind": "Name",
-                  "value": "UUID",
-                },
-              },
-            },
-            "variable": Object {
-              "kind": "Variable",
-              "name": Object {
-                "kind": "Name",
-                "value": "id",
-              },
-            },
-          },
-        ],
-      },
-    ],
-    "kind": "Document",
-    "loc": Object {
-      "end": 181,
-      "start": 0,
-    },
-  },
+  "query": "
+      query City($id: UUID!) {
+         city(id: $id) {
+			id
+			nodeId
+			createdAt
+			updatedAt
+			name
+			country {
+				id
+				nodeId
+				name
+				updatedAt
+			}
+		}
+      }
+   ",
 }
 `;
 
 exports[`Mapper AOS scheme to graphql query should generate query for read entity by id with one to one link wihout id 1`] = `
 Object {
   "name": "city",
-  "query": Object {
-    "definitions": Array [
-      Object {
-        "directives": Array [],
-        "kind": "OperationDefinition",
-        "name": Object {
-          "kind": "Name",
-          "value": "City",
-        },
-        "operation": "query",
-        "selectionSet": Object {
-          "kind": "SelectionSet",
-          "selections": Array [
-            Object {
-              "alias": undefined,
-              "arguments": Array [
-                Object {
-                  "kind": "Argument",
-                  "name": Object {
-                    "kind": "Name",
-                    "value": "id",
-                  },
-                  "value": Object {
-                    "kind": "Variable",
-                    "name": Object {
-                      "kind": "Name",
-                      "value": "id",
-                    },
-                  },
-                },
-              ],
-              "directives": Array [],
-              "kind": "Field",
-              "name": Object {
-                "kind": "Name",
-                "value": "city",
-              },
-              "selectionSet": Object {
-                "kind": "SelectionSet",
-                "selections": Array [
-                  Object {
-                    "alias": undefined,
-                    "arguments": Array [],
-                    "directives": Array [],
-                    "kind": "Field",
-                    "name": Object {
-                      "kind": "Name",
-                      "value": "createdAt",
-                    },
-                    "selectionSet": undefined,
-                  },
-                  Object {
-                    "alias": undefined,
-                    "arguments": Array [],
-                    "directives": Array [],
-                    "kind": "Field",
-                    "name": Object {
-                      "kind": "Name",
-                      "value": "updatedAt",
-                    },
-                    "selectionSet": undefined,
-                  },
-                  Object {
-                    "alias": undefined,
-                    "arguments": Array [],
-                    "directives": Array [],
-                    "kind": "Field",
-                    "name": Object {
-                      "kind": "Name",
-                      "value": "name",
-                    },
-                    "selectionSet": undefined,
-                  },
-                  Object {
-                    "alias": undefined,
-                    "arguments": Array [],
-                    "directives": Array [],
-                    "kind": "Field",
-                    "name": Object {
-                      "kind": "Name",
-                      "value": "country",
-                    },
-                    "selectionSet": Object {
-                      "kind": "SelectionSet",
-                      "selections": Array [
-                        Object {
-                          "alias": undefined,
-                          "arguments": Array [],
-                          "directives": Array [],
-                          "kind": "Field",
-                          "name": Object {
-                            "kind": "Name",
-                            "value": "name",
-                          },
-                          "selectionSet": undefined,
-                        },
-                        Object {
-                          "alias": undefined,
-                          "arguments": Array [],
-                          "directives": Array [],
-                          "kind": "Field",
-                          "name": Object {
-                            "kind": "Name",
-                            "value": "updatedAt",
-                          },
-                          "selectionSet": undefined,
-                        },
-                      ],
-                    },
-                  },
-                ],
-              },
-            },
-          ],
-        },
-        "variableDefinitions": Array [
-          Object {
-            "defaultValue": undefined,
-            "directives": Array [],
-            "kind": "VariableDefinition",
-            "type": Object {
-              "kind": "NonNullType",
-              "type": Object {
-                "kind": "NamedType",
-                "name": Object {
-                  "kind": "Name",
-                  "value": "UUID",
-                },
-              },
-            },
-            "variable": Object {
-              "kind": "Variable",
-              "name": Object {
-                "kind": "Name",
-                "value": "id",
-              },
-            },
-          },
-        ],
-      },
-    ],
-    "kind": "Document",
-    "loc": Object {
-      "end": 147,
-      "start": 0,
-    },
-  },
+  "query": "
+      query City($id: UUID!) {
+         city(id: $id) {
+			createdAt
+			updatedAt
+			name
+			country {
+				name
+				updatedAt
+			}
+		}
+      }
+   ",
 }
 `;
 
 exports[`Mapper AOS scheme to graphql query should generate query for read list of entities 1`] = `
 Object {
   "name": "countries",
-  "query": Object {
-    "definitions": Array [
-      Object {
-        "directives": Array [],
-        "kind": "OperationDefinition",
-        "name": Object {
-          "kind": "Name",
-          "value": "Countries",
-        },
-        "operation": "query",
-        "selectionSet": Object {
-          "kind": "SelectionSet",
-          "selections": Array [
-            Object {
-              "alias": undefined,
-              "arguments": Array [],
-              "directives": Array [],
-              "kind": "Field",
-              "name": Object {
-                "kind": "Name",
-                "value": "countries",
-              },
-              "selectionSet": Object {
-                "kind": "SelectionSet",
-                "selections": Array [
-                  Object {
-                    "alias": undefined,
-                    "arguments": Array [],
-                    "directives": Array [],
-                    "kind": "Field",
-                    "name": Object {
-                      "kind": "Name",
-                      "value": "totalCount",
-                    },
-                    "selectionSet": undefined,
-                  },
-                  Object {
-                    "alias": undefined,
-                    "arguments": Array [],
-                    "directives": Array [],
-                    "kind": "Field",
-                    "name": Object {
-                      "kind": "Name",
-                      "value": "nodes",
-                    },
-                    "selectionSet": Object {
-                      "kind": "SelectionSet",
-                      "selections": Array [
-                        Object {
-                          "alias": undefined,
-                          "arguments": Array [],
-                          "directives": Array [],
-                          "kind": "Field",
-                          "name": Object {
-                            "kind": "Name",
-                            "value": "id",
-                          },
-                          "selectionSet": undefined,
-                        },
-                        Object {
-                          "alias": undefined,
-                          "arguments": Array [],
-                          "directives": Array [],
-                          "kind": "Field",
-                          "name": Object {
-                            "kind": "Name",
-                            "value": "nodeId",
-                          },
-                          "selectionSet": undefined,
-                        },
-                        Object {
-                          "alias": undefined,
-                          "arguments": Array [],
-                          "directives": Array [],
-                          "kind": "Field",
-                          "name": Object {
-                            "kind": "Name",
-                            "value": "name",
-                          },
-                          "selectionSet": undefined,
-                        },
-                        Object {
-                          "alias": undefined,
-                          "arguments": Array [],
-                          "directives": Array [],
-                          "kind": "Field",
-                          "name": Object {
-                            "kind": "Name",
-                            "value": "code",
-                          },
-                          "selectionSet": undefined,
-                        },
-                        Object {
-                          "alias": undefined,
-                          "arguments": Array [],
-                          "directives": Array [],
-                          "kind": "Field",
-                          "name": Object {
-                            "kind": "Name",
-                            "value": "updatedAt",
-                          },
-                          "selectionSet": undefined,
-                        },
-                      ],
-                    },
-                  },
-                ],
-              },
-            },
-          ],
-        },
-        "variableDefinitions": Array [],
-      },
-    ],
-    "kind": "Document",
-    "loc": Object {
-      "end": 124,
-      "start": 0,
-    },
-  },
+  "query": "
+    query Countries {
+      countries {
+		id
+		nodeId
+		name
+		code
+		updatedAt
+	}
+    }
+  ",
 }
 `;
 
 exports[`Mapper AOS scheme to graphql query should generate query for read list of entities without id 1`] = `
 Object {
   "name": "countries",
-  "query": Object {
-    "definitions": Array [
-      Object {
-        "directives": Array [],
-        "kind": "OperationDefinition",
-        "name": Object {
-          "kind": "Name",
-          "value": "Countries",
-        },
-        "operation": "query",
-        "selectionSet": Object {
-          "kind": "SelectionSet",
-          "selections": Array [
-            Object {
-              "alias": undefined,
-              "arguments": Array [],
-              "directives": Array [],
-              "kind": "Field",
-              "name": Object {
-                "kind": "Name",
-                "value": "countries",
-              },
-              "selectionSet": Object {
-                "kind": "SelectionSet",
-                "selections": Array [
-                  Object {
-                    "alias": undefined,
-                    "arguments": Array [],
-                    "directives": Array [],
-                    "kind": "Field",
-                    "name": Object {
-                      "kind": "Name",
-                      "value": "totalCount",
-                    },
-                    "selectionSet": undefined,
-                  },
-                  Object {
-                    "alias": undefined,
-                    "arguments": Array [],
-                    "directives": Array [],
-                    "kind": "Field",
-                    "name": Object {
-                      "kind": "Name",
-                      "value": "nodes",
-                    },
-                    "selectionSet": Object {
-                      "kind": "SelectionSet",
-                      "selections": Array [
-                        Object {
-                          "alias": undefined,
-                          "arguments": Array [],
-                          "directives": Array [],
-                          "kind": "Field",
-                          "name": Object {
-                            "kind": "Name",
-                            "value": "name",
-                          },
-                          "selectionSet": undefined,
-                        },
-                        Object {
-                          "alias": undefined,
-                          "arguments": Array [],
-                          "directives": Array [],
-                          "kind": "Field",
-                          "name": Object {
-                            "kind": "Name",
-                            "value": "code",
-                          },
-                          "selectionSet": undefined,
-                        },
-                        Object {
-                          "alias": undefined,
-                          "arguments": Array [],
-                          "directives": Array [],
-                          "kind": "Field",
-                          "name": Object {
-                            "kind": "Name",
-                            "value": "updatedAt",
-                          },
-                          "selectionSet": undefined,
-                        },
-                      ],
-                    },
-                  },
-                ],
-              },
-            },
-          ],
-        },
-        "variableDefinitions": Array [],
-      },
-    ],
-    "kind": "Document",
-    "loc": Object {
-      "end": 108,
-      "start": 0,
-    },
-  },
+  "query": "
+    query Countries {
+      countries {
+		name
+		code
+		updatedAt
+	}
+    }
+  ",
 }
 `;
 
 exports[`Mapper AOS scheme to graphql query should generate query for read list of entities without only id 1`] = `
 Object {
   "name": "countries",
-  "query": Object {
-    "definitions": Array [
-      Object {
-        "directives": Array [],
-        "kind": "OperationDefinition",
-        "name": Object {
-          "kind": "Name",
-          "value": "Countries",
-        },
-        "operation": "query",
-        "selectionSet": Object {
-          "kind": "SelectionSet",
-          "selections": Array [
-            Object {
-              "alias": undefined,
-              "arguments": Array [],
-              "directives": Array [],
-              "kind": "Field",
-              "name": Object {
-                "kind": "Name",
-                "value": "countries",
-              },
-              "selectionSet": Object {
-                "kind": "SelectionSet",
-                "selections": Array [
-                  Object {
-                    "alias": undefined,
-                    "arguments": Array [],
-                    "directives": Array [],
-                    "kind": "Field",
-                    "name": Object {
-                      "kind": "Name",
-                      "value": "totalCount",
-                    },
-                    "selectionSet": undefined,
-                  },
-                  Object {
-                    "alias": undefined,
-                    "arguments": Array [],
-                    "directives": Array [],
-                    "kind": "Field",
-                    "name": Object {
-                      "kind": "Name",
-                      "value": "nodes",
-                    },
-                    "selectionSet": Object {
-                      "kind": "SelectionSet",
-                      "selections": Array [
-                        Object {
-                          "alias": undefined,
-                          "arguments": Array [],
-                          "directives": Array [],
-                          "kind": "Field",
-                          "name": Object {
-                            "kind": "Name",
-                            "value": "nodeId",
-                          },
-                          "selectionSet": undefined,
-                        },
-                        Object {
-                          "alias": undefined,
-                          "arguments": Array [],
-                          "directives": Array [],
-                          "kind": "Field",
-                          "name": Object {
-                            "kind": "Name",
-                            "value": "name",
-                          },
-                          "selectionSet": undefined,
-                        },
-                        Object {
-                          "alias": undefined,
-                          "arguments": Array [],
-                          "directives": Array [],
-                          "kind": "Field",
-                          "name": Object {
-                            "kind": "Name",
-                            "value": "code",
-                          },
-                          "selectionSet": undefined,
-                        },
-                        Object {
-                          "alias": undefined,
-                          "arguments": Array [],
-                          "directives": Array [],
-                          "kind": "Field",
-                          "name": Object {
-                            "kind": "Name",
-                            "value": "updatedAt",
-                          },
-                          "selectionSet": undefined,
-                        },
-                      ],
-                    },
-                  },
-                ],
-              },
-            },
-          ],
-        },
-        "variableDefinitions": Array [],
-      },
-    ],
-    "kind": "Document",
-    "loc": Object {
-      "end": 118,
-      "start": 0,
-    },
-  },
+  "query": "
+    query Countries {
+      countries {
+		nodeId
+		name
+		code
+		updatedAt
+	}
+    }
+  ",
 }
 `;
 
 exports[`Mapper AOS scheme to graphql query should generate query for read list of entities without only nodeId 1`] = `
 Object {
   "name": "countries",
-  "query": Object {
-    "definitions": Array [
-      Object {
-        "directives": Array [],
-        "kind": "OperationDefinition",
-        "name": Object {
-          "kind": "Name",
-          "value": "Countries",
-        },
-        "operation": "query",
-        "selectionSet": Object {
-          "kind": "SelectionSet",
-          "selections": Array [
-            Object {
-              "alias": undefined,
-              "arguments": Array [],
-              "directives": Array [],
-              "kind": "Field",
-              "name": Object {
-                "kind": "Name",
-                "value": "countries",
-              },
-              "selectionSet": Object {
-                "kind": "SelectionSet",
-                "selections": Array [
-                  Object {
-                    "alias": undefined,
-                    "arguments": Array [],
-                    "directives": Array [],
-                    "kind": "Field",
-                    "name": Object {
-                      "kind": "Name",
-                      "value": "totalCount",
-                    },
-                    "selectionSet": undefined,
-                  },
-                  Object {
-                    "alias": undefined,
-                    "arguments": Array [],
-                    "directives": Array [],
-                    "kind": "Field",
-                    "name": Object {
-                      "kind": "Name",
-                      "value": "nodes",
-                    },
-                    "selectionSet": Object {
-                      "kind": "SelectionSet",
-                      "selections": Array [
-                        Object {
-                          "alias": undefined,
-                          "arguments": Array [],
-                          "directives": Array [],
-                          "kind": "Field",
-                          "name": Object {
-                            "kind": "Name",
-                            "value": "id",
-                          },
-                          "selectionSet": undefined,
-                        },
-                        Object {
-                          "alias": undefined,
-                          "arguments": Array [],
-                          "directives": Array [],
-                          "kind": "Field",
-                          "name": Object {
-                            "kind": "Name",
-                            "value": "name",
-                          },
-                          "selectionSet": undefined,
-                        },
-                        Object {
-                          "alias": undefined,
-                          "arguments": Array [],
-                          "directives": Array [],
-                          "kind": "Field",
-                          "name": Object {
-                            "kind": "Name",
-                            "value": "code",
-                          },
-                          "selectionSet": undefined,
-                        },
-                        Object {
-                          "alias": undefined,
-                          "arguments": Array [],
-                          "directives": Array [],
-                          "kind": "Field",
-                          "name": Object {
-                            "kind": "Name",
-                            "value": "updatedAt",
-                          },
-                          "selectionSet": undefined,
-                        },
-                      ],
-                    },
-                  },
-                ],
-              },
-            },
-          ],
-        },
-        "variableDefinitions": Array [],
-      },
-    ],
-    "kind": "Document",
-    "loc": Object {
-      "end": 114,
-      "start": 0,
-    },
-  },
+  "query": "
+    query Countries {
+      countries {
+		id
+		name
+		code
+		updatedAt
+	}
+    }
+  ",
 }
 `;

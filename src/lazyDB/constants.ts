@@ -27,4 +27,5 @@ export const defaultExcludeProperties = [
 ]
 
 // fields which will be included in any request
+// TODO: Move to repository and database options
 export const requiredFields = ['id', 'nodeId']

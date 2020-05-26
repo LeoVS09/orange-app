@@ -4,7 +4,7 @@ import { databaseReducers } from '@/lazyDB/database/connected/actions'
 import { defaultExcludeProperties } from '@/lazyDB/constants'
 import LazyReactiveRepository from '@/lazyDB/database/base/repository/Repository'
 import { AosEntitySchema, AosFieldType } from '@/abstractObjectSchema'
-import { AbstractData } from '@/lazyDB/core/types'
+import { Producerable } from '@/lazyDB/core/types'
 import { genSetLinkedEntity, getSchemaByKey } from '@/lazyDB/database/base/database/controls'
 import LazyReactiveDatabase from '../base/database/Database'
 
@@ -23,7 +23,7 @@ export class Database extends LazyReactiveDatabase {
     // TODO: refactor, need another way to put properties to action
     this.store.excludeProperties = this.excludeProperties
 
-    asyncReceiveWithMemory(this.store, databaseReducers)
+    asyncReceiveWithMemory(this.store, databaseReducers as any)
 
     connectDebugToActionsStream(this.store)
 

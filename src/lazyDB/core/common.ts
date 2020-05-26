@@ -1,67 +1,90 @@
 import { AosFieldType } from '@/abstractObjectSchema'
 import {
-  AbstractData,
+  Producerable,
   EventProducer,
   ModelEventGetPropertyPayload,
   ModelEventSetPropertyPayload,
   IProducerStore,
-  ProducerStoreReference
+  ProducerStoreReference,
+  ModelPropertyKey
 } from './types'
 
-export interface GetStore<T = AbstractData> {
-   (producer: EventProducer): IProducerStore<T>
-   (producer: AbstractData): IProducerStore<T> | undefined
+export function getStore<
+  T extends Producerable<any> = Producerable,
+  Store extends IProducerStore<T, any> = IProducerStore<T>
+>(producer: EventProducer<T> | T): Store | undefined {
+  return producer[ProducerStoreReference]
 }
-
-export const getStore: GetStore = <T = AbstractData>(producer: EventProducer): IProducerStore<T> => producer[ProducerStoreReference]
-
-export function isProducer(value: any): value is EventProducer {
+export function isProducer<T extends Producerable<any> = Producerable>(value: T | EventProducer<T>): value is EventProducer<T> {
   if (!value || typeof value !== 'object')
     return false
 
   return !!value[ProducerStoreReference]
 }
 
-export function isProducerable(value: any): value is AbstractData {
+// will be true only if it object created without class,
+// and not a function
+export function isPlainObject(value: any): value is object {
   if (!value || typeof value !== 'object')
     return false
 
-  // TODO: make array wrap to producer
+  const proto = Object.getPrototypeOf(value)
+  if (!proto || proto === Object.prototype)
+    return true
+
+  return false
+}
+
+export function isDate(value: any): value is Date {
+  return value instanceof Date
+}
+
+export function isProducerable<T>(value: T | Producerable<T>): value is Producerable<T> {
+  if (!value || typeof value !== 'object')
+    return false
+
   if (Array.isArray(value))
     return true
 
-  const proto = Object.getPrototypeOf(value)
-  if (!proto || proto === Object.prototype)
+  if (isDate(value))
+    return false
+
+  // if need exlcude class object, use isPlainObject
+  if (typeof value === 'object' && value !== null)
     return true
 
   // TODO: add functions
   return false
 }
 
-export const getEventPayload = (
-  name: PropertyKey,
-  store: IProducerStore,
-  type: AosFieldType = AosFieldType.Any,
-  inner?: ModelEventGetPropertyPayload
-): ModelEventGetPropertyPayload => ({
-  store,
-  name,
-  type,
-  inner
-})
+export const getEventPayload = <
+  Store extends IProducerStore<any, any> = IProducerStore,
+  Key extends ModelPropertyKey = ModelPropertyKey
+> (
+    name: Key,
+    store: Store,
+    type: AosFieldType = AosFieldType.Any
+  ): ModelEventGetPropertyPayload<Store, Key> => ({
+    store,
+    name,
+    type
+  })
 
-export const setEventPayload = (
-  name: PropertyKey,
-  oldValue: any,
-  newValue: any,
-  store: IProducerStore,
-  type: AosFieldType = AosFieldType.Any,
-  inner?: ModelEventSetPropertyPayload
-): ModelEventSetPropertyPayload => ({
-  store,
-  name,
-  type,
-  oldValue,
-  newValue,
-  inner
-})
+export const setEventPayload = <
+  Store extends IProducerStore<any, any> = IProducerStore,
+  Key extends ModelPropertyKey = ModelPropertyKey,
+  OldValue = any,
+  NewValue = any
+> (
+    name: Key,
+    oldValue: OldValue,
+    newValue: NewValue,
+    store: Store,
+    type: AosFieldType = AosFieldType.Any
+  ): ModelEventSetPropertyPayload<Store, Key, OldValue, NewValue> => ({
+    store,
+    name,
+    type,
+    oldValue,
+    newValue
+  })

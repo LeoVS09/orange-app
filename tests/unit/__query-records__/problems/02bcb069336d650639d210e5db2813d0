@@ -1,0 +1,48 @@
+{
+    "data": {
+        "data": {
+            "tags": {
+                "totalCount": 15,
+                "nodes": [
+                    {
+                        "id": "84eeqrOG",
+                        "nodeId": "cc7958eb-8223-45ab-96ea-7f22f40b9553",
+                        "name": "magni",
+                        "__typename": "Tag"
+                    },
+                    {
+                        "id": "-zU_J_u5m",
+                        "nodeId": "bc428a19-293c-4486-954f-e274ffd2565c",
+                        "name": "id",
+                        "__typename": "Tag"
+                    },
+                    {
+                        "id": "lkV6JPU1Q",
+                        "nodeId": "8b4a0a55-99be-481c-b79e-8c218f4e08c6",
+                        "name": "dolore",
+                        "__typename": "Tag"
+                    },
+                    {
+                        "id": "NUrRCq7RH",
+                        "nodeId": "74de9889-c48d-47e6-bce7-534b25b6f43d",
+                        "name": "sit",
+                        "__typename": "Tag"
+                    },
+                    {
+                        "id": "LLSgR5skV",
+                        "nodeId": "8991163e-ca64-4428-8633-768a927e80c7",
+                        "name": "corrupti",
+                        "__typename": "Tag"
+                    },
+                    {
+                        "id": "ytCvo8T2n",
+                        "nodeId": "d2edd561-c068-4a3f-81f8-c3650d1aba41",
+                        "name": "officia",
+                        "__typename": "Tag"
+                    }
+                ],
+                "__typename": "TagsConnection"
+            }
+        }
+    }
+}

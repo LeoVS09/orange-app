@@ -1,11 +1,12 @@
-import { AbstractData, EventProducer, IProducerStore } from '@/lazyDB/core/types'
+import { Producerable, EventProducer, IProducerStore } from '@/lazyDB/core/types'
 import { AosEntitySchemaStorage, AosEntitySchema, AosFieldType } from '@/abstractObjectSchema'
 import { isProducer, getStore } from '@/lazyDB/core/common'
 import { extractEntityNameFromManyKey } from '@/lazyDB/utils'
-import { ISetLinkedEntity, applyRepositoryControls } from '../repository/controls'
+import { ISetLinkedEntity, applyRepositoryControls, GetFieldType } from '../repository/controls'
 import { getTableNameByField } from './utils'
-import { getDatabaseStore } from '../../dispatcher'
+import { switchStoreToDatabaseStore } from '../../dispatcher'
 import { applyListControls } from '../repository/list'
+import { genGetFieldType } from '../getFieldType'
 
 export const applyDatabaseControls = (
   store: IProducerStore,
@@ -15,16 +16,17 @@ export const applyDatabaseControls = (
 ) => {
 
   const setLinkedEntity = genSetLinkedEntity(schema, getSchema, setEntity)
+  const getFieldType = genGetFieldType(schema.fields)
 
-  applyRepositoryControls(store, schema, { setLinkedEntity })
+  applyRepositoryControls(store, { getFieldType, setLinkedEntity })
 }
 
 export interface IGetSchema {
   (entity: string, type: AosFieldType): AosEntitySchema
 }
 
-export interface ISetEntity {
-  (store: IProducerStore<AbstractData>, entity: string, type: AosFieldType, data: AbstractData): EventProducer
+export interface ISetEntity<T extends Producerable = Producerable> {
+  (store: IProducerStore<T>, entity: string, type: AosFieldType, data: T): EventProducer<T>
 }
 
 export const genSetLinkedEntity = (
@@ -51,8 +53,10 @@ export const genSetLinkedEntity = (
       if (!entitySchema)
         return true
 
-      const entityStore = getDatabaseStore(value)
-      applyRepositoryControls(entityStore, entitySchema, { setLinkedEntity })
+      const getFieldType = genGetFieldType(entitySchema.fields)
+
+      const entityStore = switchStoreToDatabaseStore(value)
+      applyRepositoryControls(entityStore, { getFieldType, setLinkedEntity })
 
       return true
     }
@@ -60,8 +64,13 @@ export const genSetLinkedEntity = (
     if (type === AosFieldType.OneToMany) {
 
       const listStore = getStore(value)
+      if (!listStore)
+        throw new Error('List store for given entity does not exist')
+
+      const getFieldType = genGetFieldType(schema.fields)
+
       listStore.extendTemporalTrap = trapStore =>
-        applyRepositoryControls(trapStore, schema, { setLinkedEntity })
+        applyRepositoryControls(trapStore, { getFieldType, setLinkedEntity })
 
       applyListControls(listStore)
 

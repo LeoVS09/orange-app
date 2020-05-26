@@ -15,23 +15,31 @@ export enum AosFieldType {
  * if not one set it as Relation type
  */
 
+export type AosSimeplFieldType =
+    AosFieldType.Any |
+    AosFieldType.String |
+    AosFieldType.Number |
+    AosFieldType.Boolean |
+    AosFieldType.Date
+
+export type AosRelationsFieldType = AosFieldType.OneToOne | AosFieldType.OneToMany
+
 export interface AosSimpleField {
-    type:
-        AosFieldType.Any |
-        AosFieldType.String |
-        AosFieldType.Number |
-        AosFieldType.Boolean |
-        AosFieldType.Date
+    type: AosSimeplFieldType
+    resolvedAt: number | null
 }
 
 export interface AosRelationsField {
-    type : AosFieldType.OneToOne | AosFieldType.OneToMany
+    type: AosRelationsFieldType
     schema: AosSchema
 }
 
 export type AosField = AosSimpleField | AosRelationsField
 
-// Recursive scheme of object and relations to other objects
+/**
+ * Recursive scheme of object and relations to other objects
+ * Like AST, but for object relations
+ * */
 export interface AosSchema {
     [keys: string]: AosField
 }

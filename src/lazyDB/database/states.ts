@@ -6,13 +6,13 @@ import { ModelEventTypes } from './events'
  * returns state resolver, which receive memory
  * @param type - expected event type in memory
  */
-export const isHaveEventInMemory: (type: ModelEventTypes) => StateResolver<ModelEvent<any>> = type =>
-  memory => memory.some(event => event.type === type)
+export const isHaveEventInMemory: (...types: Array<ModelEventTypes>) => StateResolver<ModelEvent<any>> = (...types) =>
+  memory => memory.some(event => types.includes(event.type as ModelEventTypes))
 
 export const isReading = isHaveEventInMemory(ModelEventTypes.Read)
 export const isHaveReadingError = isHaveEventInMemory(ModelEventTypes.ReadFailure)
 
-export const isChanged = isHaveEventInMemory(ModelEventTypes.SetProperty)
+export const isChanged = isHaveEventInMemory(ModelEventTypes.SetProperty, ModelEventTypes.DeleteProperty)
 export const isHaveValidationError = isHaveEventInMemory(ModelEventTypes.ValidationFailure)
 export const isUpdating = isHaveEventInMemory(ModelEventTypes.Update)
 export const isHaveUpdatingError = isHaveEventInMemory(ModelEventTypes.UpdateFailure)

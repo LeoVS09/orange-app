@@ -1,16 +1,18 @@
-import { EventReducersMap, EventType } from './types'
+import { EventReducersMap, PropertyEventType, ModelTypesToPayloadsMap } from './types'
 
-export const changeTrackableReducersMap: EventReducersMap = {
+// By some reason, typescript correctly understand each reducer type, but not allow it
+// TODO: fix
+export const changeTrackableReducersMap: EventReducersMap<any, ModelTypesToPayloadsMap<any, any>> = {
 
-  [EventType.GetProperty]: (store, event) =>
   // Not storage get events in memory
-    true,
+  [PropertyEventType.GetProperty]: (store, event) => true,
 
-  [EventType.SetProperty]: (store, { oldValue, newValue }) =>
   // Store set events only when they change data
+  [PropertyEventType.SetProperty]: (store, { payload: { oldValue, newValue } }) =>
     oldValue === newValue,
 
-  [EventType.DeleteProperty]: (store, event) =>
   // Store all delete events
+  [PropertyEventType.DeleteProperty]: (store, event) =>
     false
+
 }

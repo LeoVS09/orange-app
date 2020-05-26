@@ -11,6 +11,7 @@ import {
   ListItemSetter
 } from '@/lazyDB/database/types'
 import { applyListControls, makeListSource } from '@/lazyDB/database/base/repository/list'
+import { AosFieldType } from '@/abstractObjectSchema'
 import { isTemporalTrap } from '../base/repository/temporal'
 
 export const TableStoreReference = SymFor('table storage')
@@ -25,7 +26,7 @@ export const makeTableSource = (table: DatabaseTableMap) => ({
 export function makeDatabaseTable(table: DatabaseTableMap = new Map()): DatabaseTable {
   const source = makeTableSource(table)
   const producer = wrapInProducer(source)
-  const store = getStore(producer)
+  const store = getStore(producer)!
 
   applyTableControls(store)
 
@@ -35,6 +36,7 @@ export function makeDatabaseTable(table: DatabaseTableMap = new Map()): Database
 export function applyTableControls(store: IProducerStore) {
   store.getter = getter
   store.setter = setter
+  store.dispatcher.getPropertyType = () => AosFieldType.OneToOne
 }
 
 export const getter: ProducerStoreGetter = ({ base }, name) => {
@@ -54,6 +56,9 @@ export const setter: ProducerStoreSetter = ({ base, extendTemporalTrap }, name, 
     base[TableListKey] = value
 
     const store = getStore(value)
+    if (!store)
+      throw new Error('Trying to set not producer as list')
+
     store.extendTemporalTrap = extendTemporalTrap
     applyListControls(store)
 

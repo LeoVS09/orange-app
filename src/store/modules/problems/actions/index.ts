@@ -133,26 +133,20 @@ export default {
 
       read: async id => responseToFullProblem(await API.problem({ id })),
 
-      create: async (problem: FullProblem) => responseToFullProblem(
-        await API.createProblem({
-          input: {
-            problem: problemToInput(problem)
-          }
-        })
-      ),
+      create: async (problem: FullProblem) => responseToFullProblem(await API.createProblem({
+        input: {
+          problem: problemToInput(problem)
+        }
+      })),
 
-      update: async (problem: FullProblem) => responseToFullProblem(
-        await API.updateProblem({
-          input: {
-            id: problem.id,
-            patch: problemToInput(problem)
-          }
-        })
-      ),
+      update: async (problem: FullProblem) => responseToFullProblem(await API.updateProblem({
+        input: {
+          id: problem.id,
+          patch: problemToInput(problem)
+        }
+      })),
 
-      delete: async id => responseToPartialProblem(
-        await API.deleteProblem({ input: { id } })
-      )
+      delete: async id => responseToPartialProblem(await API.deleteProblem({ input: { id } }))
     }
   ),
 

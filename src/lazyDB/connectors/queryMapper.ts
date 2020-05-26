@@ -9,36 +9,26 @@ export interface QueryField {
 
 const makeSpaces = (count: number) => new Array(count).fill('\t').join('')
 
-const generateOneToOneQueryFields = (field: QueryField, countSpaces: number) =>
+const generateNestedQueryFields = (field: QueryField, countSpaces: number) =>
   `${field.entity} ${buildFieldsQuery(field.fields, countSpaces + 1)}`
-
-const generateOneToManyQueryFields = (field: QueryField, countSpaces: number) =>
-  `${field.entity} {\n`
-    + `${makeSpaces(countSpaces + 1)}totalCount\n`
-    + `${makeSpaces(countSpaces + 1)}nodes ${buildFieldsQuery(field.fields, countSpaces + 2)}\n`
-    + `${makeSpaces(countSpaces)}}`
 
 const generateField = (field: string | QueryField, countSpaces: number) => {
   if (typeof field !== 'object')
     return field
 
-  if (field.type === AosFieldType.OneToOne)
-    return generateOneToOneQueryFields(field, countSpaces)
-
-  if (field.type === AosFieldType.OneToMany)
-    return generateOneToManyQueryFields(field, countSpaces)
-
-  throw new Error(`Unexpected field type${field.type}`)
+  return generateNestedQueryFields(field, countSpaces)
 }
 
 function buildFieldsQuery(fields: Array<string | QueryField>, countSpaces = 1): string {
   const uniquely = removeEqual([...fields]).sort(sortFields)
 
-  const values = uniquely.reduce((all, field) =>
-    `${all}\n${
-      makeSpaces(countSpaces)}${generateField(field, countSpaces)
-    }`,
-  '')
+  const values = uniquely.reduce(
+    (all, field) =>
+      `${all}\n${
+        makeSpaces(countSpaces)}${generateField(field, countSpaces)
+      }`,
+    ''
+  )
 
   return `{${values}\n${
     makeSpaces(countSpaces - 1)
@@ -138,10 +128,10 @@ export function generateQueryList(entity: string, fields: Array<string | QueryFi
 
   const query = `
     query ${queryName} {
-      ${generateOneToManyQueryFields(field, 1)}
+      ${generateNestedQueryFields(field, 1)}
     }
   `
-
+  console.debug('[QueryMapper] generated query', query)
   return { query: gql(query), name: listName }
 }
 

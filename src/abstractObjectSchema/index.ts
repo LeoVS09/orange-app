@@ -1,5 +1,5 @@
 export * from './types'
-export * from './utils'
+export * from './guards'
 
 // TODO: may be use graph representation of object scheme
 // TODO: may be use for database store graph representation

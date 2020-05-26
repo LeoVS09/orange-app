@@ -1,5 +1,8 @@
-import { EventReducer, ModelEventInnerPayload } from '@/lazyDB/core/types'
+import { EventReducer } from '@/lazyDB/core/types'
 import { ModelEventReadPayload } from '@/lazyDB/database/events'
+import { DatabaseEventReducer, IDatabaseModelProducerStore } from '@/lazyDB/database/types'
+import { DatabaseEventsPayloads } from '@/lazyDB/database/dispatcher'
+import { compudeStoreParents } from '@/lazyDB/database/aos'
 import {
   schemaToQueryFields,
   removeGetEventsFromMemory,
@@ -7,29 +10,30 @@ import {
   dispatchReadFailure
 } from './utils'
 import { fetchListOrEntity } from './api'
-import { getInnerInnerPayload, getInnerPayload } from './types'
 
-const read: EventReducer<ModelEventInnerPayload<ModelEventInnerPayload<ModelEventReadPayload>>> = async ({ dispatcher }, payload) => {
-
-  const readPayload = getInnerInnerPayload(payload)
-  if (!readPayload.readSchema) {
-    console.error('read payload', readPayload)
+const read: DatabaseEventReducer<IDatabaseModelProducerStore, ModelEventReadPayload<IDatabaseModelProducerStore>> = async (dataBaseStore, { payload }) => {
+  const { store } = payload
+  const { schema } = store
+  if (!schema) {
+    console.error('read payload', payload)
     throw new Error('Read payload not have read schema')
   }
-  const inner = getInnerPayload(payload)
-  const getRequest = `${payload.name as string}/${inner.name as string}/`
+  // possible need stop on some moment
+  const [initial, entity] = [...compudeStoreParents(store)]
+  const getRequest = `${initial.name as string}/${entity.name as string}/`
+  console.log('[ReadActiont] generated get request', getRequest)
 
   try {
-    console.log('databaseReducers', getRequest, schemaToQueryFields(readPayload.readSchema))
+    console.log('databaseReducers', getRequest, schemaToQueryFields(schema))
 
-    const response = await fetchListOrEntity(payload)
+    const response = await fetchListOrEntity(initial.name as string, entity.name as string, schema)
     console.log('databaseReducers', 'read response', response)
 
-    removeGetEventsFromMemory(readPayload)
+    removeGetEventsFromMemory(payload)
 
-    dispatchReadSuccess(readPayload, response)
+    dispatchReadSuccess(payload, response)
   } catch (err) {
-    dispatchReadFailure(readPayload, err)
+    dispatchReadFailure(payload, err)
   }
 
   return true

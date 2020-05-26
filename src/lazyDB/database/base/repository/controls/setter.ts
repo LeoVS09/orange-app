@@ -1,18 +1,17 @@
 import { AosEntitySchema, isSimpleType, AosFieldType } from '@/abstractObjectSchema'
 import { ProducerStoreSetter } from '@/lazyDB/core/types'
 import { isProducer, getStore } from '@/lazyDB/core/common'
-import { ISetLinkedEntity } from './types'
-import { getFieldType } from './utils'
+import { ISetLinkedEntity, GetFieldType } from './types'
 import { applyListControls } from '../list'
 
 export const setter = (
-  schema: AosEntitySchema,
+  getFieldType: GetFieldType,
   setLinkedEntity: ISetLinkedEntity = defaultSetLinkedEntity
 ): ProducerStoreSetter =>
   (store, name, value) => {
     const { base } = store
 
-    const type = getFieldType(schema.fields, name as string)
+    const type = getFieldType(name as string)
     if (!type || isSimpleType(type)) {
       base[name as string] = value
       return true
@@ -35,7 +34,7 @@ const defaultSetLinkedEntity: ISetLinkedEntity = ({ base, extendTemporalTrap }, 
 
   if (type === AosFieldType.OneToMany) {
 
-    const store = getStore(value)
+    const store = getStore(value)!
     if (extendTemporalTrap)
       store.extendTemporalTrap = extendTemporalTrap
 

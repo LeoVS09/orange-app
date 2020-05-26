@@ -1,6 +1,7 @@
 import { AosEntityFields, AosFieldType } from '@/abstractObjectSchema'
+import { GetFieldType } from './repository/controls/types'
 
-export const getFieldType = (fields: AosEntityFields, name: string): AosFieldType => {
+export const genGetFieldType = (fields: AosEntityFields): GetFieldType => name => {
   const field = fields[name]
 
   if (typeof field === 'object')

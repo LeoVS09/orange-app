@@ -61,6 +61,13 @@ module.exports = {
     'comma-dangle': ['error', 'never'],
     'max-classes-per-file': 'off',
     'arrow-parens': ['error', 'as-needed'],
+    
+    // use @typescript-eslint/no-useless-constructor, 
+    // by this issue https://github.com/typescript-eslint/typescript-eslint/issues/48
+    'no-useless-constructor': 'off', 
+    'no-empty-function': 'off',
+    'function-paren-newline': 'off'
+
     // 'graphql/template-strings': [
     //   'error',
     //   {

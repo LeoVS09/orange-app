@@ -1,106 +1,149 @@
-import { AosFieldType } from '@/abstractObjectSchema'
-import { filter, tap, share } from 'rxjs/operators'
-import { Observable } from 'rxjs'
+import {
+  filter,
+  tap,
+  share,
+  map
+} from 'rxjs/operators'
+import { MonoTypeOperatorFunction, Observable } from 'rxjs'
 import { debug } from '@/reactive/debug'
 import {
   IProducerStore,
   EventReducersMap,
   ModelEvent,
-  ModelEventPayload
+  Producerable,
+  ModelTypesToPayloadsMap,
+  EventReducer
 } from '../types'
 import { StateMemory } from '../memory'
 import { receive, unsubscribeStore } from './receive'
 import { isHaveEventInMemory } from '../events'
-import { getReducer, getStoreFromEvent } from './getters'
+import { getStoreFromEvent } from './getters'
 import { handleByReducer } from './reducers'
 import { async } from './utils'
-import { pushToParentIfCan } from '../toParent'
+import { pushToParent } from '../bubbling'
 
-// TODO: refactor, may be this must be event handler
-export function atomicReceiveWithMemory(prducerStore: IProducerStore, reducers: EventReducersMap) {
-  prducerStore.memory = new StateMemory<ModelEvent<any>>()
-  prducerStore.reducers = reducers
-
-  // Trying handle event by reducers in storage
-  // If event not handled (handler return false) and storage have memory
-  // event adding to storage memory
-  receive(prducerStore, event => {
-    if (isHaveEventInMemory(event))
-      return
-
-    const reducer = getReducer(event)
-    if (!reducer)
-      return
-
-    const handleResult = handleByReducer(event, reducer)
-
-    const store = getStoreFromEvent(event)
-
-    async(handleResult)
-      .then(isHandled => {
-        if (isHandled || !store.memory)
-          return
-
-        store.memory.push(event)
-      })
-  })
-}
-
-export function asyncReceiveWithMemory(
-  store: IProducerStore,
-  reducers: EventReducersMap,
-  prop?: PropertyKey,
-  type?: AosFieldType
+export function receiveWithMemoryAndReducers<
+  T extends Producerable<any> = Producerable,
+  TP extends ModelTypesToPayloadsMap<any, any> = ModelTypesToPayloadsMap<any, any>
+>(
+  store: IProducerStore<T, TP>,
+  reducers: EventReducersMap<IProducerStore<T, TP>, TP>,
+  subscriber: (event: EventWithReducer<T, TP, ModelEvent<TP[keyof TP], keyof TP>>) => void
 ) {
   unsubscribeStore(store)
 
+  const memory = new StateMemory<ModelEvent<TP[keyof TP], keyof TP>>()
   const { dispatcher } = store
 
-  store.memory = new StateMemory<ModelEvent<any>>()
-  store.reducers = reducers
+  store.memory = memory
 
   // Trying handle event by reducers in storage
   // If event handled (handler return true) and storage have memory
   // event would remove from storage memory
   store.stream = dispatcher.eventsSubject
     .pipe(
-      filter(event => !isHaveEventInMemory(event)),
+      filter(event => !isHaveEventInMemory(event, memory)),
       debug('not have event in memory'),
-      saveInMemory(false),
+      saveInMemory(memory),
       share()
     )
 
-  store.subscription = store.stream!.subscribe(async event => {
-    const reducer = getReducer(event)
-    if (!reducer) {
-      if (prop)
-        pushToParentIfCan(store, prop, event, type)
-      else
-        console.warn('Not have handler for event', event)
-      return
-    }
+  const withReducers = store.stream.pipe(
+    pickReducer(reducers),
+    // possible need save event after push to parent
+    pushToParentIfNotHaveReducer(store)
+  )
 
-    const handlerResult = handleByReducer(event, reducer)
-    const isHandled = await async(handlerResult)
+  store.subscription = withReducers.subscribe(subscriber)
+}
 
-    if (!isHandled || !store.memory)
+export interface EventWithPossibleReducer<
+  T extends Producerable<any> = Producerable,
+  TP extends ModelTypesToPayloadsMap<any, any> = ModelTypesToPayloadsMap<any, any>,
+  Event = ModelEvent<TP[keyof TP], keyof TP>
+> {
+  event: Event
+  reducer?: EventReducer<IProducerStore<T, TP>, TP[keyof TP]>
+ }
+
+export interface EventWithReducer<
+ T extends Producerable<any> = Producerable,
+ TP extends ModelTypesToPayloadsMap<any, any> = ModelTypesToPayloadsMap<any, any>,
+ Event = ModelEvent<TP[keyof TP], keyof TP>
+> {
+ event: Event
+ reducer: EventReducer<IProducerStore<T, TP>, TP[keyof TP]>
+}
+
+const pickReducer = <
+  T extends Producerable<any> = Producerable,
+  TP extends ModelTypesToPayloadsMap<any, any> = ModelTypesToPayloadsMap<any, any>,
+  Event extends ModelEvent<TP[keyof TP], keyof TP> = ModelEvent<TP[keyof TP], keyof TP>
+>(reducers: EventReducersMap<IProducerStore<T, TP>, TP>) =>
+    (stream: Observable<Event>): Observable<EventWithPossibleReducer<T, TP, Event>> =>
+  stream.pipe(map(event => ({
+    event,
+    reducer: reducers[event.type]
+  }))) as Observable<EventWithPossibleReducer<T, TP, Event>>
+
+const pushToParentIfNotHaveReducer = <
+  T extends Producerable<any> = Producerable,
+  TP extends ModelTypesToPayloadsMap<any, any> = ModelTypesToPayloadsMap<any, any>,
+  Event extends ModelEvent<TP[keyof TP], keyof TP> = ModelEvent<TP[keyof TP], keyof TP>
+>(store: IProducerStore<T, TP>) =>
+    (stream: Observable<EventWithPossibleReducer<T, TP, Event>>): Observable<EventWithReducer<T, TP, Event>> =>
+      stream.pipe(
+        filter(({ event, reducer }) => {
+          if (reducer)
+            return true
+
+          pushToParent(store, event)
+          return false
+        })
+      ) as Observable<EventWithReducer<T, TP, Event>>
+
+// TODO: refactor, async code same like atomic,
+// need write more complex rxjs streams
+export function atomicReceiveWithMemory<
+  T extends Producerable<any> = Producerable,
+  TP extends ModelTypesToPayloadsMap<any, any> = ModelTypesToPayloadsMap<any, any>
+>(
+  store: IProducerStore<T, TP>,
+  reducers: EventReducersMap<IProducerStore<T, TP>, TP>
+) {
+  receiveWithMemoryAndReducers(store, reducers, ({ event, reducer }) => {
+    const isResolved = handleByReducer(store, event, reducer as any)
+
+    if (!isResolved || !store.memory)
       return
 
     store.memory.remove(event)
   })
 }
 
-const saveInMemory = <Payload extends ModelEventPayload = ModelEventPayload>(failIfCannot: boolean) => (stream: Observable<ModelEvent<Payload | undefined>>) =>
-  stream.pipe(tap(event => {
-    const store = getStoreFromEvent(event)
+export function asyncReceiveWithMemory<
+  T extends Producerable<any> = Producerable,
+  TP extends ModelTypesToPayloadsMap<any, any> = ModelTypesToPayloadsMap<any, any>
+>(
+  store: IProducerStore<T, TP>,
+  reducers: EventReducersMap<IProducerStore<T, TP>, TP>
+) {
+  receiveWithMemoryAndReducers(store, reducers, async ({ event, reducer }) => {
+    const handlerResult = handleByReducer(store, event, reducer as any)
+    const isResolved = await async(handlerResult)
 
-    if (!store.memory) {
-      if (!failIfCannot) {
-        console.warn('Cannot save event in memory', event)
-        return
-      }
-      throw new Error(`Cannot save event in memory, event store not have memory event: ${event}`)
-    }
+    if (!isResolved || !store.memory)
+      return
 
-    store.memory.push(event)
-  }))
+    store.memory.remove(event)
+  })
+}
+
+const saveInMemory = <
+  TP extends ModelTypesToPayloadsMap<any, any> = ModelTypesToPayloadsMap<any, any>
+>(memory: StateMemory<ModelEvent<any, any>>): MonoTypeOperatorFunction<ModelEvent<TP[keyof TP], keyof TP>> =>
+    stream =>
+      stream.pipe(
+        tap(event => memory.push(event))
+      )
+

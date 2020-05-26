@@ -6,6 +6,7 @@ import {
 import { DatabaseStorage, DatabaseStorageMap, DatabaseTableMap } from '@/lazyDB/database/types'
 import { wrapInProducer } from '@/lazyDB/core/wrap'
 import { getStore, isProducer } from '@/lazyDB/core/common'
+import { AosFieldType } from '@/abstractObjectSchema'
 import { applyTableControls, makeTableSource, TableStoreReference } from './table'
 
 export const DatabaseStoreReference = SymFor('database storage')
@@ -15,10 +16,11 @@ export function makeDatabaseStorage(database: DatabaseStorageMap = new Map()): D
     [DatabaseStoreReference]: database
   })
 
-  const store = getStore(producer)
+  const store = getStore(producer)!
 
   store.getter = getter
   store.setter = setter
+  store.dispatcher.getPropertyType = () => AosFieldType.OneToOne
 
   return producer
 }
@@ -53,7 +55,7 @@ const setter: ProducerStoreSetter = ({ base }, name, value) => {
     if (isProducer(value) && value[TableStoreReference]) {
       base[name as string] = value
 
-      const store = getStore(value)
+      const store = getStore(value)!
 
       applyTableControls(store)
 

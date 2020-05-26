@@ -1,31 +1,32 @@
-import { AosFieldType } from '@/abstractObjectSchema'
 import {
   IProducerStore,
   ProducerStoreReference,
-  EventProducer,
-  AbstractData
+  ModelPropertyKey
 } from '../types'
 import { isProducerable, getStore } from '../common'
 import { wrapInProducerIfNot } from '../wrap'
-import { setEventReceiverToParent } from '../toParent'
+import { setupEventBubbling } from '../bubbling'
 import { isExplictlyAccessPropty } from './explictly'
 
-export function get(store: IProducerStore, prop: PropertyKey) {
+export function get<Store extends IProducerStore<any, any> = IProducerStore>(store: Store, prop: PropertyKey) {
   // Directly check with reference
   // need for ProducerStoreReference is string
   if (prop === ProducerStoreReference)
     return store
 
   if (isExplictlyAccessPropty(prop))
-    return store.base[prop as string]
+    return store.base[prop]
 
-  return getterHook(store, prop)
+  return getterHook(store, prop as ModelPropertyKey)
 }
 
 // hook will spawn event
 // get value from getter
 // and then wrap value to producer if need
-export const getterHook = (store: IProducerStore, prop: PropertyKey) => {
+export const getterHook = <Store extends IProducerStore<any, any> = IProducerStore>(
+  store: Store,
+  prop: ModelPropertyKey
+) => {
   const {
     dispatcher,
     getter,
@@ -50,24 +51,8 @@ export const getterHook = (store: IProducerStore, prop: PropertyKey) => {
 
   // set current store as parent for producer
   // for send events to parent
-  defineParentOfProducer(producer, store, prop)
+  const childStore = getStore(producer)
+  setupEventBubbling(childStore!, store, prop)
 
   return producer
-}
-
-export const defineParentOfProducer = (producer: EventProducer, parent: IProducerStore, prop: PropertyKey) => {
-  const valueStore = getStore(producer)
-  valueStore.parent = parent
-
-  const store = getStore(producer)
-  const type = getFieldType(parent.base)
-
-  setEventReceiverToParent(store, prop, type)
-}
-
-const getFieldType = (base: AbstractData) => {
-  if (Array.isArray(base))
-    return AosFieldType.OneToMany
-
-  return AosFieldType.OneToOne
 }

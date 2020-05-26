@@ -16,7 +16,7 @@
     "apollo:schema:generate": "vue-cli-service apollo:schema:generate",
     "apollo:schema:publish": "vue-cli-service apollo:schema:publish",
     "apollo:start": "vue-cli-service apollo:start",
-    "dev": "concurrently -k -n serve,mock \"yarn serve\" \"yarn mock\"",
+    "dev": "concurrently -k -r -n serve,mock \"yarn serve\" \"yarn mock\"",
     "generate-api-types": "yarn run apollo codegen:generate --localSchemaFile=graphql.schema.json --target=typescript --includes=src/**/*.graphql --tagName=gql --globalTypesFile=src/api/database/global-types.ts types",
     "mock": "yarn run mock:server",
     "mock:once": "yarn run run-graphql-api",
@@ -100,7 +100,7 @@
     "node-sass": "^4.9.0",
     "sass-loader": "^7.1.0",
     "ts-jest": "^25.2.1",
-    "typescript": "^3.4.3",
+    "typescript": "^3.9.2",
     "vue-template-compiler": "2.6.10"
   },
   "bugs": {

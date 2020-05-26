@@ -1,17 +1,6 @@
-import { AosSchema } from '@/abstractObjectSchema'
-import { ModelEventGetPropertyPayload, IProducerStore, AbstractData } from '@/lazyDB/core/types'
-import { IDatabaseModelProducerStore } from '../../../types'
-
-export function getOrCreateReadSchema(store: IDatabaseModelProducerStore): AosSchema {
-  const { readSchema } = store
-  if (readSchema)
-    return readSchema
-
-  return store.readSchema = {}
-}
+import { ModelEventGetPropertyPayload, IProducerStore, Producerable } from '@/lazyDB/core/types'
 
 export const isDefinedSimpleProperty = (
-  { base }: IProducerStore<AbstractData>,
-  { name, inner }: ModelEventGetPropertyPayload
+  { name, store: { base } }: ModelEventGetPropertyPayload
 ) =>
-  !inner && typeof base[name as string] !== 'undefined'
+  typeof base[name as string] !== 'undefined'

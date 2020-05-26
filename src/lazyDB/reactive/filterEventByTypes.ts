@@ -5,6 +5,4 @@ import { ModelEvent } from '../core/types'
 
 export const filterEventsByTypes = (types: Array<ModelEventTypes>) =>
 <T>(source: Observable<ModelEvent<T>>): Observable<ModelEvent<T>> =>
-    source.pipe(filter(
-      ({ type }) => types.includes(type as ModelEventTypes)
-    ))
+    source.pipe(filter(({ type }) => types.includes(type as ModelEventTypes)))

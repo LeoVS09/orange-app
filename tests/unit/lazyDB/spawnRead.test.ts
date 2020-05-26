@@ -1,8 +1,8 @@
 import { TestScheduler } from 'rxjs/testing';
 import { pauseWhile } from '@/lazyDB/reactive/pauseWhile';
 import { StateMemory } from '@/lazyDB/core/memory';
-import { ModelEvent, AbstractData } from '@/lazyDB/core/types';
-import { ModelEventTypes, ReadEventPayload, ReadSuccessEventPayload, ReadFailureEventPayload } from '@/lazyDB/database/events';
+import { ModelEvent, Producerable } from '@/lazyDB/core/types';
+import { ModelEventTypes, ModelEventReadPayload, ReadSuccessEventPayload, ReadFailureEventPayload } from '@/lazyDB/database/events';
 import { spawnRead } from '@/lazyDB/lifeCycle/spawnRead';
 import { tap, map } from 'rxjs/operators';
 import { IDatabaseModelProducerStore } from '@/lazyDB/database/types';
@@ -17,31 +17,30 @@ const getEvent = (): ModelEvent<any> => ({
     payload: { store: {readSchema: {}}}
 })
 
-const readEvent = (payload: ReadEventPayload): ModelEvent<ReadEventPayload> => ({
+const readEvent = (payload: ModelEventReadPayload): ModelEvent<ModelEventReadPayload> => ({
     type: ModelEventTypes.Read,
     date,
     payload
 })
 
-const readEventWithGets = (get: ModelEvent<any>, count: number): ModelEvent<any> => 
+const readEventWithGets = (get: ModelEvent<any>, count: number, memory: StateMemory<any>): ModelEvent<any> => 
     readEvent({
         gets: new Array(count).fill(get),
-        readSchema: {},
         sets: [],
-        store: { readSchema: {}} as IDatabaseModelProducerStore
+        store: { memory } as IDatabaseModelProducerStore
     })
 
-const readSuccessEvent = (readPayload: ReadEventPayload): ModelEvent<ReadSuccessEventPayload> => ({
+const readSuccessEvent = (readPayload: ModelEventReadPayload): ModelEvent<ReadSuccessEventPayload> => ({
     type: ModelEventTypes.ReadSuccess,
     date,
     payload: { 
         readPayload,
-        data: {} as AbstractData,
+        data: {} as Producerable,
         store: {} as IDatabaseModelProducerStore
     }
 })
 
-const readFailureEvent = (readPayload: ReadEventPayload): ModelEvent<ReadFailureEventPayload> => ({
+const readFailureEvent = (readPayload: ModelEventReadPayload): ModelEvent<ReadFailureEventPayload> => ({
     type: ModelEventTypes.ReadFailure,
     date,
     payload: { 
@@ -97,8 +96,7 @@ describe('Spawn Read', () => {
             
             const withRead = source.pipe(
                 pushInMemory(),
-                spawnRead({
-                    memory,
+                spawnRead({ memory } as any, {
                     waitTimeWhenGetsStopSpawn: 20,
                     scheduler: testScheduler
                 }),
@@ -106,7 +104,7 @@ describe('Spawn Read', () => {
                 pushInMemory()
             )
 
-            const read = readEventWithGets(get, 6)
+            const read = readEventWithGets(get, 6, memory)
             expectObservable(withRead).toBe(expect, {r: read});
         });
     });
@@ -120,8 +118,7 @@ describe('Spawn Read', () => {
             
             const withRead = source.pipe(
                 pushInMemory(),
-                spawnRead({
-                    memory,
+                spawnRead({ memory } as any, {
                     waitTimeWhenGetsStopSpawn: 20,
                     scheduler: testScheduler
                 }),
@@ -129,7 +126,7 @@ describe('Spawn Read', () => {
                 pushInMemory()
             )
 
-            const read = readEventWithGets(get, 6)
+            const read = readEventWithGets(get, 6, memory)
             expectObservable(withRead).toBe(expect, {r: read});
         });
     });
@@ -137,7 +134,7 @@ describe('Spawn Read', () => {
     it('two times sequentially', () => {
         testScheduler.run(({ hot, expectObservable }) => {
             const get = getEvent()
-            const read = readEventWithGets(get, 2)
+            const read = readEventWithGets(get, 2, memory)
             const success = readSuccessEvent(read.payload)
             const source = hot('--a--a 20ms - 30ms s--a--a--a 20ms ', {a: get, s: success});
             const expect = '    -----  20ms 1 30ms ---------- 20ms 2 ';
@@ -145,8 +142,7 @@ describe('Spawn Read', () => {
             const withRead = source.pipe(
                 pushInMemory(),
                 removeReadFromMemoryOnSuccess(),
-                spawnRead({
-                    memory,
+                spawnRead({ memory } as any, {
                     waitTimeWhenGetsStopSpawn: 20,
                     scheduler: testScheduler
                 }),
@@ -156,7 +152,7 @@ describe('Spawn Read', () => {
 
             expectObservable(withRead).toBe(expect, {
                 1: read, 
-                2: readEventWithGets(get, 5)
+                2: readEventWithGets(get, 5, memory)
             });
         });
     });
@@ -164,7 +160,7 @@ describe('Spawn Read', () => {
     it('second time after success', () => {
         testScheduler.run(({ hot, expectObservable }) => {
             const get = getEvent()
-            const read = readEventWithGets(get, 2)
+            const read = readEventWithGets(get, 2, memory)
             const success = readSuccessEvent(read.payload)
             const source = hot('--a--a 20ms --a-a 30ms s 20ms ', {a: get, s: success});
             const expect = '    -----  20ms 1---- 30ms - 20ms 2 ';
@@ -172,8 +168,7 @@ describe('Spawn Read', () => {
             const withRead = source.pipe(
                 pushInMemory(),
                 removeReadFromMemoryOnSuccess(),
-                spawnRead({
-                    memory,
+                spawnRead({ memory } as any, {
                     waitTimeWhenGetsStopSpawn: 20,
                     scheduler: testScheduler
                 }),
@@ -183,7 +178,7 @@ describe('Spawn Read', () => {
 
             expectObservable(withRead).toBe(expect, {
                 1: read, 
-                2: readEventWithGets(get, 4)
+                2: readEventWithGets(get, 4, memory)
             });
         });
     });
@@ -191,7 +186,7 @@ describe('Spawn Read', () => {
     it('second time after success and event', () => {
         testScheduler.run(({ hot, expectObservable }) => {
             const get = getEvent()
-            const read = readEventWithGets(get, 2)
+            const read = readEventWithGets(get, 2, memory)
             const success = readSuccessEvent(read.payload)
             const source = hot('--a--a 20ms --a-a 30ms s 10ms a--a 20ms ', {a: get, s: success});
             const expect = '    -----  20ms 1---- 30ms - 10ms ---- 20ms 2 ';
@@ -199,8 +194,7 @@ describe('Spawn Read', () => {
             const withRead = source.pipe(
                 pushInMemory(),
                 removeReadFromMemoryOnSuccess(),
-                spawnRead({
-                    memory,
+                spawnRead({ memory } as any, {
                     waitTimeWhenGetsStopSpawn: 20,
                     scheduler: testScheduler
                 }),
@@ -210,7 +204,7 @@ describe('Spawn Read', () => {
 
             expectObservable(withRead).toBe(expect, {
                 1: read, 
-                2: readEventWithGets(get, 6)
+                2: readEventWithGets(get, 6, memory)
             });
         });
     });
@@ -218,7 +212,7 @@ describe('Spawn Read', () => {
     it('second time after failure', () => {
         testScheduler.run(({ hot, expectObservable }) => {
             const get = getEvent()
-            const read = readEventWithGets(get, 2)
+            const read = readEventWithGets(get, 2, memory)
             const failure = readFailureEvent(read.payload)
             const source = hot('--a--a 20ms --a-a 30ms f 20ms ', {a: get, f: failure});
             const expect = '    -----  20ms 1---- 30ms - 20ms 2 ';
@@ -226,8 +220,7 @@ describe('Spawn Read', () => {
             const withRead = source.pipe(
                 pushInMemory(),
                 removeReadFromMemoryOnFail(),
-                spawnRead({
-                    memory,
+                spawnRead({ memory } as any, {
                     waitTimeWhenGetsStopSpawn: 20,
                     scheduler: testScheduler
                 }),
@@ -237,7 +230,7 @@ describe('Spawn Read', () => {
 
             expectObservable(withRead).toBe(expect, {
                 1: read, 
-                2: readEventWithGets(get, 4)
+                2: readEventWithGets(get, 4, memory)
             });
         });
     });
@@ -245,7 +238,7 @@ describe('Spawn Read', () => {
     it('second time after failure and event', () => {
         testScheduler.run(({ hot, expectObservable }) => {
             const get = getEvent()
-            const read = readEventWithGets(get, 2)
+            const read = readEventWithGets(get, 2, memory)
             const failure = readFailureEvent(read.payload)
             const source = hot('--a--a 20ms --a-a 30ms f 10ms a--a 20ms ', {a: get, f: failure});
             const expect = '    -----  20ms 1---- 30ms - 10ms ---- 20ms 2 ';
@@ -253,8 +246,7 @@ describe('Spawn Read', () => {
             const withRead = source.pipe(
                 pushInMemory(),
                 removeReadFromMemoryOnFail(),
-                spawnRead({
-                    memory,
+                spawnRead({ memory } as any, {
                     waitTimeWhenGetsStopSpawn: 20,
                     scheduler: testScheduler
                 }),
@@ -264,7 +256,7 @@ describe('Spawn Read', () => {
 
             expectObservable(withRead).toBe(expect, {
                 1: read, 
-                2: readEventWithGets(get, 6)
+                2: readEventWithGets(get, 6, memory)
             });
         });
     });

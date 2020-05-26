@@ -1,4 +1,3 @@
-// https://docs.cypress.io/api/introduction/api.html
 const {fetchPolfill} = require('../support/fetchPolyfill')
 
 describe('Main page', () => {
@@ -22,7 +21,7 @@ describe('Main page', () => {
         cy.get('.problems-list').should('be.visible')
     
         // wait for animation
-        cy.wait(1500)
+        cy.wait(2000)
         cy.get('.problems-list .list-item').its('length').should('be.gte', 9)
         
         cy.get('.problems-list .list-item')

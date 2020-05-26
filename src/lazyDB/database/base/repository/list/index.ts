@@ -9,6 +9,7 @@ import {
   nodesKey,
   NodesProducerReference
 } from '@/lazyDB/database/types'
+import { AosFieldType } from '@/abstractObjectSchema'
 import { nodesGetter, nodesSetter } from './nodes'
 import { isListSource } from './source'
 
@@ -17,6 +18,9 @@ export * from './source'
 export function applyListControls(store: IProducerStore) {
   store.getter = getter
   store.setter = setter
+  // TODO: add Connection AosFieldType, which explain pagination list source
+  // and use there instead of OneToMany
+  store.dispatcher.getPropertyType = () => AosFieldType.OneToMany
 }
 
 export const getter: ProducerStoreGetter = ({ base }, name) => {

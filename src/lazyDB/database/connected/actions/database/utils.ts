@@ -1,7 +1,7 @@
 import { AosSchema, isSimpleAosField } from '@/abstractObjectSchema'
 import { QueryField } from '@/lazyDB/connectors/queryMapper'
-import { ReadEventPayload } from '@/lazyDB/database/events'
-import { AbstractData } from '@/lazyDB/core/types'
+import { Producerable } from '@/lazyDB/core/types'
+import { ModelEventReadPayload } from '@/lazyDB/database/events'
 
 // TODO: multiple types of object schema, need better solution
 export function schemaToQueryFields(schema: AosSchema): Array<string | QueryField> {
@@ -20,20 +20,20 @@ export function schemaToQueryFields(schema: AosSchema): Array<string | QueryFiel
   })
 }
 
-export const removeGetEventsFromMemory = ({ store, gets }: ReadEventPayload) => {
+export const removeGetEventsFromMemory = ({ store, gets }: ModelEventReadPayload) => {
   const { memory } = store
 
   if (memory)
     memory.forget(...gets)
 }
 
-export const dispatchReadSuccess = (readPayload: ReadEventPayload, responseData: AbstractData) => {
+export const dispatchReadSuccess = (readPayload: ModelEventReadPayload, responseData: Producerable) => {
   const { store } = readPayload
   const { dispatcher } = store
   dispatcher.readSuccess(responseData, readPayload, store)
 }
 
-export const dispatchReadFailure = (readPayload: ReadEventPayload, error: any) => {
+export const dispatchReadFailure = (readPayload: ModelEventReadPayload, error: any) => {
   const { store } = readPayload
   const { dispatcher } = store
   dispatcher.readFailure(error, readPayload, store)

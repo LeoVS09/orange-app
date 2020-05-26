@@ -2,42 +2,60 @@ import {
   IProducerStore,
   EventReducersMap,
   ModelEvent,
-  EventReducer
+  EventReducer,
+  AtomicEventReducersMap,
+  Producerable,
+  ModelTypesToPayloadsMap,
+  ModelEventPayload
 } from '../types'
 import { receive } from './receive'
-import { getReducer, getStoreFromEvent } from './getters'
 import { isPromise } from './utils'
 
-export function atomicReceiveByReducers(store: IProducerStore, reducers: EventReducersMap) {
-  store.reducers = reducers
-
+export function atomicReceiveByReducers<
+  T extends Producerable<any> = Producerable,
+  TP extends ModelTypesToPayloadsMap<any, any> = ModelTypesToPayloadsMap<IProducerStore<T>>
+>(
+  store: IProducerStore<T, TP>,
+  reducers: AtomicEventReducersMap<IProducerStore<T, TP>, TP>
+) {
   receive(store, event => {
-    const reducer = getReducer(event)
+    const reducer = reducers[event.type]
     if (!reducer)
       return
 
-    handleByReducer(event, reducer)
+    handleByReducer(store, event, reducer as any)
   })
 }
 
-export function asyncReceiveByReducers(store: IProducerStore, reducers: EventReducersMap) {
-  store.reducers = reducers
-
+export function asyncReceiveByReducers<
+  T extends Producerable<any> = Producerable,
+  TP extends ModelTypesToPayloadsMap<any, any> = ModelTypesToPayloadsMap<any>
+>(
+  store: IProducerStore<T, TP>,
+  reducers: EventReducersMap<IProducerStore<T, TP>, TP>
+) {
   receive(store, async event => {
-    const reducer = getReducer(event)
+    const reducer = reducers[event.type]
     if (!reducer)
       return
 
-    handleByReducer(event, reducer)
+    handleByReducer<IProducerStore<T, TP>, TP[keyof TP]>(store, event, reducer as any)
   })
 }
 
-export function handleByReducer(event: ModelEvent<any>, reducer: EventReducer<any>): boolean | Promise<boolean | void | undefined> {
-  const store = getStoreFromEvent(event)
-
-  const result = reducer(store, event.payload)
-  if (isPromise(result))
+export function handleByReducer<
+  Store extends IProducerStore<any, any> = IProducerStore,
+  Payload = ModelEventPayload<Store>,
+>(
+  store: Store,
+  event: ModelEvent<Payload, any>,
+  reducer: EventReducer<Store, Payload>
+): boolean | Promise<boolean> {
+  const result = reducer(store, event)
+  if (isPromise(result)) {
     return result
+      .then(promiseResult => !!promiseResult)
+  }
 
   return !!result
 }

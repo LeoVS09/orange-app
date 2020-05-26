@@ -1,15 +1,23 @@
 import {
-  AbstractData,
+  Producerable,
   EventProducer,
   IProducerStore,
-  ModelEvent
+  ModelEvent,
+  EventReducer,
+  ModelPropertyKey
 } from '@/lazyDB/core/types'
-import { AsyncConnectorEventTypes, ModelEventReadPayload } from '@/lazyDB/database/events'
-
+import {
+  AsyncConnectorEventTypes,
+  ModelEventReadPayload,
+  DatabaseModelTypesToPayloadsMap
+} from '@/lazyDB/database/events'
 import { SymFor } from '@/lazyDB/core/utils'
 import { DatabaseDispatcher } from '@/lazyDB/database/dispatcher'
 import {
-  AosEntitySchemaStorage, AosEntitySchema, AosSchema, AosFieldType
+  AosEntitySchemaStorage,
+  AosEntitySchema,
+  AosSchema,
+  AosFieldType
 } from '@/abstractObjectSchema'
 
 export type AsyncConnectorReducer<T, R> = (store: IProducerStore, event: T) => Promise<R>
@@ -19,11 +27,16 @@ export interface AsyncConnectorReducersMap {
    [AsyncConnectorEventTypes.Read]: AsyncConnectorReducer<ModelEventReadPayload, any>
 }
 
-export type DatabaseTableMap = Map<string, AbstractData | EventProducer>
+export type DatabaseTableMap<T extends Producerable = Producerable> = Map<string, T | EventProducer<T>>
 export type DatabaseStorageMap = Map<string, DatabaseTableMap>
 
-export interface DatabaseTable {
-   [id: string]: AbstractData | EventProducer
+export type ProducerProperty<T extends Producerable<any> = Producerable> = {
+   get(): EventProducer<T>
+   set(value: T | EventProducer<T>): void
+}
+
+export type DatabaseTable<T extends Producerable<any> = any> = {
+   [id: string]: T | EventProducer<T>
 }
 
 export interface DatabaseStorage {
@@ -33,10 +46,10 @@ export interface DatabaseStorage {
 export interface ILazyReactiveDatabase {
    storage: DatabaseStorage
    schemas: AosEntitySchemaStorage
-   findOne: (entity: string, id: string, wrapped?: boolean) => AbstractData | undefined
-   set: (entity: string, id: string, data: AbstractData | EventProducer) => void
-   update: (entity: string, id: string, data: AbstractData) => boolean
-   add: (entity: string, id: string, data: AbstractData) => void
+   findOne: <T extends Producerable = Producerable>(entity: string, id: string, wrapped?: boolean) => EventProducer<T> | undefined
+   set: <T extends Producerable = Producerable>(entity: string, id: string, data: T | EventProducer<T>) => void
+   update: <T extends Producerable = Producerable>(entity: string, id: string, data: T | EventProducer<T>) => boolean
+   add: <T extends Producerable = Producerable>(entity: string, id: string, data: T | EventProducer<T>) => void
    getSchemaByKey: (key: string, type: AosFieldType) => AosEntitySchema | undefined
    setSchema: (entity: string, schema: AosEntitySchema) => void
    excludeProperties: Array<string | RegExp>
@@ -79,9 +92,20 @@ export interface OnChangeCallback {
    (event: ModelEvent<any>): void
 }
 
-export interface IDatabaseModelProducerStore extends IProducerStore {
+export interface IDatabaseModelProducerStore<
+   T extends Producerable<any> = any,
+   TP extends DatabaseModelTypesToPayloadsMap<any, any> = any
+> extends IProducerStore<T, TP>{
    excludeProperties?: Array<string | RegExp>
-   readSchema?: AosSchema
-   dispatcher: DatabaseDispatcher
+   schema?: AosSchema
+   dispatcher: DatabaseDispatcher<IDatabaseModelProducerStore<T, TP>, ModelPropertyKey, TP>
    onChange?: OnChangeCallback
+}
+
+export interface DatabaseEventReducer<
+   Store extends IDatabaseModelProducerStore<any, any> = IDatabaseModelProducerStore,
+   Payload = any,
+   Result = boolean | Promise<boolean | void> | void,
+>
+   extends EventReducer<Store, Payload, Result> {
 }

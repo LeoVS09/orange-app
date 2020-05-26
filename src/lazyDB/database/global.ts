@@ -22,4 +22,4 @@ export {
 
 const store = getStore(db.storage)
 
-store.stream!.subscribe(event => console.log('global store debug', event))
+store!.stream!.subscribe(event => console.log('global store debug', event))

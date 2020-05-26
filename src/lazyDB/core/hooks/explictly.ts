@@ -1,6 +1,6 @@
 // Standart JS object and array propertyes,
 // need return to not break built in js operators
-export const isExplictlyAccessPropty = (prop: PropertyKey): boolean =>
+export const isExplictlyAccessPropty = (prop: PropertyKey): prop is symbol =>
   // [[Prototype]] link
   prop === 'prototype' || prop === '__proto__'
   // contructor object

@@ -5,7 +5,7 @@ import {
   ListItemGetterReference,
   ListItemSetterReference
 } from '@/lazyDB/database/types'
-import { AbstractData } from '@/lazyDB/core/types'
+import { Producerable } from '@/lazyDB/core/types'
 
 const HIDEN_PROPERTIES = [
   NodesProducerReference,
@@ -50,7 +50,7 @@ export const makeListSource = (): ListSource => {
   return base
 }
 
-export function isListSource(data: AbstractData): data is ListSource {
+export function isListSource(data: Producerable): data is ListSource {
   if (!data[nodesKey] || !data[NodesProducerReference])
     return false
 
@@ -58,7 +58,7 @@ export function isListSource(data: AbstractData): data is ListSource {
 }
 
 export interface ListSourceData {
-    nodes: Array<AbstractData>
+    nodes: Array<Producerable>
     totalCount: number | null
 }
 
@@ -69,5 +69,5 @@ export const isListSourceData = (source: any): source is ListSourceData => {
   if (!source.nodes || !Array.isArray(source.nodes))
     return false
 
-  return typeof source.totalCount === 'number'
+  return true
 }

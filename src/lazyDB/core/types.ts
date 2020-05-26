@@ -20,102 +20,190 @@ export type AtomicObject =
 export type ProxyRevoke = () => void
 
 // Some object data which can be wrapped by proxy
-export interface AbstractData {
-   [key: string]: any
+export type Producerable<T = any> = {
+   [key: string]: T
+   [index: number]: T
+}
+
+type Proxy<T> = {
+   get(): T;
+   set(value: T): void;
 }
 
 // Proxy wrapper on abstract data
-export interface EventProducer extends AbstractData {
-
+export type Proxyfy<T> = {
+   [P in keyof T]: Proxy<T[P]>;
 }
 
-export enum EventType {
+export const ProducerStoreReference = SymFor('storage') as 'storage'
+
+export type EventProducer<T> = Proxyfy<T> & {
+   [ProducerStoreReference]: IProducerStore<T>
+}
+
+export enum PropertyEventType {
    GetProperty = 'GetProperty',
    SetProperty = 'SetProperty',
    DeleteProperty = 'DeleteProperty',
 }
 
-export interface ModelEvent<T> {
-   type: EventType | string
+export interface ModelEvent<Payload = PropertyEventPayload, Type extends any = any> {
+   type: Type
    date: number
-   payload: T
+   payload: Payload
 }
 
-export interface IEventDispatcher<Payload> {
-   eventsSubject: Subject<ModelEvent<Payload | undefined>>
+export interface IEventDispatcher<TP extends TypesToPayloadsMap<any> = TypesToPayloadsMap> {
+   eventsSubject: Subject<ModelEvent<TP[keyof TP], keyof TP>>
 
-   dispatch(type: string, payload?: Payload, date?: number): any
+   dispatch<Type extends keyof TP>(type: Type, payload: TP[Type], date?: number): any
 }
 
-export interface IModelEventDispatcher<Payload extends ModelEventPayload = ModelEventPayload> extends IEventDispatcher<Payload> {
-   get(prop: PropertyKey, store: IProducerStore): any
-   set<T>(prop: PropertyKey, oldValue: T, newValue: T, store: IProducerStore): any
-   delete(prop: PropertyKey, store: IProducerStore): any
+export type ModelTypesToPayloadsMap<
+   Store extends IProducerStore<any, any> = IProducerStore,
+   Key extends ModelPropertyKey = ModelPropertyKey
+> = {
+   [type: string]: any
+   [PropertyEventType.GetProperty]: ModelEventGetPropertyPayload<Store, Key>
+   [PropertyEventType.SetProperty]: ModelEventSetPropertyPayload<Store, Key>
+   [PropertyEventType.DeleteProperty]: ModelEventDeletePropertyPayload<Store, Key>
 }
 
-export type ProducerStoreGetter<T = AbstractData> = (store: IProducerStore<T>, prop: PropertyKey) => any
+export interface IModelEventDispatcher<
+   Store extends IProducerStore<any, any> = IProducerStore,
+   Key extends ModelPropertyKey = ModelPropertyKey,
+   TP extends ModelTypesToPayloadsMap<Store, Key> = ModelTypesToPayloadsMap<Store, Key>,
+>
+   extends IEventDispatcher<TP> {
 
-export type ProducerStoreSetter<T = AbstractData> = (store: IProducerStore<T>, prop: PropertyKey, value: any) => boolean
+   getPropertyType(name: Key, store: Store): AosFieldType
 
-export interface ProducerStoreOptions<T = AbstractData> {
+   get(prop: Key, store: Store): any
+   set<V>(prop: Key, oldValue: V, newValue: V, store: Store): any
+   delete(prop: Key, store: Store): any
+}
+
+export interface ProducerStoreGetter<Store extends IProducerStore<any, any> = IProducerStore, Result = any> {
+   (store: Store, prop: ModelPropertyKey): Result
+}
+
+export interface ProducerStoreSetter<Store extends IProducerStore<any, any> = IProducerStore, Value = any> {
+   (store: Store, prop: ModelPropertyKey, value: Value): boolean
+}
+
+export interface ParentLink<Store extends IProducerStore<any, any> = IProducerStore> {
+   // parent store object
+   store: Store
+   // proprty name, which was used to get child from parent
+   name: ModelPropertyKey
+}
+
+export interface ExtendTemporalTrap<Store extends IProducerStore<any, any> = IProducerStore> {
+   (trapStore: Store): void
+}
+
+export interface IProducerStore<
+   T extends Producerable<any> = any,
+   TP extends ModelTypesToPayloadsMap<any, any> = any
+> {
    base: T
-   dispatcher: IModelEventDispatcher
+   dispatcher: IModelEventDispatcher<IProducerStore<T, TP>, ModelPropertyKey, TP>
    revoke?: ProxyRevoke
-   proxy?: EventProducer
-   reducers?: EventReducersMap
-   memory?: StateMemory<ModelEvent<any>>
-   parent?: IProducerStore
+   proxy?: EventProducer<T>
+
+   // Move possible types in separate classes
+   stream: Observable<ModelEvent<TP[keyof TP], keyof TP>> | undefined
+   memory?: StateMemory<ModelEvent<TP[keyof TP], keyof TP>>
+   parent?: ParentLink<any>
    subscription?: Subscription
 
-   getter?: ProducerStoreGetter<T>
-   setter?: ProducerStoreSetter<T>
+   getter: ProducerStoreGetter<IProducerStore<T, TP>>
+   setter: ProducerStoreSetter<IProducerStore<T, TP>>
 
    extendTemporalTrap?: ExtendTemporalTrap
 }
 
-export interface ExtendTemporalTrap {
-   (trapStore: IProducerStore<AbstractData>): void
+export function isProducerStore<Store extends IProducerStore<any, any> = IProducerStore>(store: any): store is Store {
+  if (typeof store !== 'object')
+    return false
+
+  return !!(store.base && store.dispatcher && store.getter && store.setter)
 }
 
-export interface IProducerStore<T = AbstractData> extends ProducerStoreOptions<T> {
-   stream?: Observable<ModelEvent<any>>
-   getter: ProducerStoreGetter<T>
-   setter: ProducerStoreSetter<T>
+export interface ProducerStoreOptions<
+   T extends Producerable<any> = Producerable,
+   TP extends ModelTypesToPayloadsMap<any, any> = ModelTypesToPayloadsMap<any>
+> extends Partial<Omit<IProducerStore<T, TP>, 'proxy' | 'revoke'>> {
+   base: T
+   dispatcher: IModelEventDispatcher<IProducerStore<T, TP>, ModelPropertyKey, TP>
 }
 
-export type EventReducer<T> = (store: IProducerStore, event: T) => boolean | Promise<boolean | undefined | void> | undefined | void
+export interface EventReducer<
+   Store = any,
+   Payload = any,
+   Result = boolean | Promise<boolean | void> | void,
+> {
+   (store: Store, event: ModelEvent<Payload>): Result
+}
+export type AtomicEventReducer<Store = any, Payload = any> = EventReducer<Store, Payload, boolean | void>
 
-export interface EventReducersMap {
-   [key: string]: EventReducer<any> | undefined
-   [EventType.GetProperty]?: EventReducer<ModelEventGetPropertyPayload>
-   [EventType.SetProperty]?: EventReducer<ModelEventSetPropertyPayload>
-   [EventType.DeleteProperty]?: EventReducer<ModelEventGetPropertyPayload>
+export type TypesToPayloadsMap<Keys extends keyof any = string, Payload extends ModelEventPayload<any> = ModelEventPayload<any>> = Record<Keys, Payload>
+
+export type EventReducersMap<Store extends IProducerStore<any, any>, TP extends TypesToPayloadsMap> = {
+   [Key in keyof TP]: TP[Key] extends ModelEventPayload<Store> ? EventReducer<Store, TP[Key]> : void
 }
 
-export const ProducerStoreReference = SymFor('storage')
-
-export interface ModelEventPayload {
-   store: IProducerStore
+export type AtomicEventReducersMap<Store extends IProducerStore<any, any>, TP extends TypesToPayloadsMap> = {
+   [Key in keyof TP]: TP[Key] extends ModelEventPayload<Store> ? AtomicEventReducer<Store, TP[Key]> : void
 }
 
-export interface PropertyEventPayload {
+export interface ModelEventPayload<Store extends IProducerStore<any, any> = IProducerStore> {
+   store: Store
+}
+
+export const propertyEventTypes = [PropertyEventType.GetProperty, PropertyEventType.SetProperty, PropertyEventType.DeleteProperty]
+
+export type ModelPropertyKey = string | number
+
+export interface PropertyEventPayload<Key extends ModelPropertyKey = ModelPropertyKey> {
    type: AosFieldType
-   name: PropertyKey
+   name: Key
 }
 
-export interface ModelEventInnerPayload<T> extends ModelEventPayload, PropertyEventPayload {
-   inner?: ModelEventInnerPayload<T> | T
+export interface ModelEventPropertyPayload<
+   Store extends IProducerStore<any, any> = IProducerStore,
+   Key extends ModelPropertyKey = ModelPropertyKey
+>
+ extends ModelEventPayload<Store>, PropertyEventPayload<Key> {}
+
+export interface ModelEventGetPropertyPayload<
+   Store extends IProducerStore<any, any> = IProducerStore,
+   Key extends ModelPropertyKey = ModelPropertyKey
+>
+   extends ModelEventPropertyPayload<Store, Key> {}
+
+export interface ModelEventDeletePropertyPayload<
+   Store extends IProducerStore<any, any> = IProducerStore,
+   Key extends ModelPropertyKey = ModelPropertyKey
+>
+   extends ModelEventPropertyPayload<Store, Key> {}
+
+export interface ModelEventSetPropertyPayload<
+   Store extends IProducerStore<any, any> = IProducerStore,
+   Key extends ModelPropertyKey = ModelPropertyKey,
+   OldValue = any,
+   NewValue = any
+>
+   extends ModelEventPropertyPayload<Store, Key> {
+   oldValue: OldValue
+   newValue: NewValue
 }
 
-export interface ModelEventGetPropertyPayload extends ModelEventPayload, PropertyEventPayload, ModelEventInnerPayload<ModelEventGetPropertyPayload> {
-}
+export type BaseEventsPayloads<Store extends IProducerStore<any, any> = IProducerStore> =
+   ModelEventGetPropertyPayload<Store> & ModelEventSetPropertyPayload<Store> & ModelEventDeletePropertyPayload<Store>
 
-export type ModelEventDeletePropertyPayload = ModelEventGetPropertyPayload
-
-export interface ModelEventSetPropertyPayload extends ModelEventPayload, PropertyEventPayload, ModelEventInnerPayload<ModelEventSetPropertyPayload> {
-   oldValue?: any
-   newValue?: any
-   // If have inner payload then old and new value is undefined
+export function isPropertyEvent(event: ModelEvent<any>): event is ModelEvent<PropertyEventPayload> {
+  return propertyEventTypes.includes(event.type as PropertyEventType)
 }
 
 export type StateResolver<T> = (memory: StateMemory<T>) => boolean

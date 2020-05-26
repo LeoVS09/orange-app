@@ -10,12 +10,12 @@ import { ModelEventTypes, ModelEventReadPayload } from '../database/events'
 import { isReading } from '../database/states'
 import { pauseWhileReading } from './pauseWhileReading'
 import { debug } from '../../reactive/debug'
-import { debugInitialPayload } from './utils'
+import { debugPayload } from './utils'
+import { IDatabaseModelProducerStore } from '../database/types'
 
 const WAIT_TIME_WHEN_GETS_STOP_SPAWN = 50
 
 export interface SpawnReadOptions {
-  memory: StateMemory<ModelEvent<any>>,
   canRead?: () => boolean,
   waitTimeWhenGetsStopSpawn?: number // ms
   scheduler?: SchedulerLike
@@ -31,47 +31,41 @@ export interface SpawnReadOptions {
  * @param scheduler - rxjs scheduler for testing
  * @returns {Observable} - read event payload
  */
-export const spawnRead = (
+export const spawnRead = <Store extends IDatabaseModelProducerStore<any, any> = IDatabaseModelProducerStore>(
+  store: Store,
   {
-    memory,
     canRead = () => true,
     waitTimeWhenGetsStopSpawn = WAIT_TIME_WHEN_GETS_STOP_SPAWN,
     scheduler
-  }: SpawnReadOptions
-) =>
-    <T>(source: Observable<ModelEvent<any>>): Observable<ModelEventReadPayload> =>
-    source.pipe(
-      // TODO: fix reading hook
-      // add test to isReading getter
-      // add test to read success and failure
-      // on read success and failure remove read event
-      // add to read success and failure link to read event
-      debugInitialPayload('[SpawnRead] received get', ({ name }: ModelEventGetPropertyPayload) => name),
-      pauseWhileReading(() => isReading(memory) || !canRead()),
-      // Wait some time to be sure, get events stop spawn
-      debounceTime(waitTimeWhenGetsStopSpawn, scheduler),
-      // debugInitialPayload('[SpawnRead] get after debounce', ({ name }: ModelEventGetPropertyPayload) => name),
-      // need retrive all GET events from memory after debounce
-      // and check they still exists
-      // in case they was removed while debounce
-      map(() => allGetEventsFromMemory(memory)),
-      filter(events => !!events.length),
+  }: SpawnReadOptions = {}) =>
+    <T>(source: Observable<ModelEvent<any, any>>): Observable<ModelEventReadPayload> =>
+      source.pipe(
+        // TODO: fix reading hook
+        // add test to isReading getter
+        // add test to read success and failure
+        // on read success and failure remove read event
+        // add to read success and failure link to read event
+        debugPayload<ModelEventGetPropertyPayload>('[SpawnRead] received get', ({ name }) => name),
+        pauseWhileReading(() => isReading(store.memory!) || !canRead()),
+        // Wait some time to be sure, get events stop spawn
+        debounceTime(waitTimeWhenGetsStopSpawn, scheduler),
+        // debugInitialPayload('[SpawnRead] get after debounce', ({ name }: ModelEventGetPropertyPayload) => name),
+        // need retrive all GET events from memory after debounce
+        // and check they still exists
+        // in case they was removed while debounce
+        map(() => allGetEventsFromMemory(store.memory!)),
+        filter(events => !!events.length),
 
-      map(wrapGetEventsToReadPayload),
-      debug('get events spawn read event')
-    )
+        map(wrapGetEventsToReadPayload(store)),
+        debug('get events spawn read event')
+      )
 
 const allGetEventsFromMemory = (memory: StateMemory<ModelEvent<any>>) =>
   memory.filter(({ type }) => type === ModelEventTypes.GetProperty)
 
-const wrapGetEventsToReadPayload = (gets: Array<ModelEvent<any>>): ModelEventReadPayload => {
-  const { payload: { store } } = gets[0]
-  const { readSchema } = store
-
-  return {
+const wrapGetEventsToReadPayload = <Store extends IDatabaseModelProducerStore<any, any> = IDatabaseModelProducerStore>(store: Store) =>
+  (gets: Array<ModelEvent<any>>): ModelEventReadPayload => ({
     gets,
     sets: [],
-    readSchema: readSchema!,
     store
-  }
-}
+  })

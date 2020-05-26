@@ -4,9 +4,12 @@ import {
   ModelEvent,
   ModelEventGetPropertyPayload,
   ModelEventSetPropertyPayload,
-  AbstractData,
-  ModelEventPayload
+  Producerable,
+  ModelEventPayload,
+  ModelTypesToPayloadsMap,
+  ModelPropertyKey
 } from '../core/types'
+import { DatabaseEventsPayloads } from './dispatcher'
 
 // ModelEventTypes extends EventType,
 // but currently ts not allow this behavior
@@ -33,6 +36,16 @@ export enum ModelEventTypes {
    DeleteFailure = 'DeleteFailure',
 }
 
+export type DatabaseModelTypesToPayloadsMap<
+   Store extends IDatabaseModelProducerStore<any, any> = IDatabaseModelProducerStore,
+   Key extends ModelPropertyKey = ModelPropertyKey
+> = ModelTypesToPayloadsMap<Store, Key> & {
+   [type: string]: any
+   [ModelEventTypes.Read]: ModelEventReadPayload<Store>
+   [ModelEventTypes.ReadSuccess]: ReadSuccessEventPayload<Store>
+   [ModelEventTypes.ReadFailure]: ReadFailureEventPayload<Store>
+}
+
 export enum AsyncConnectorEventTypes {
    Read = 'Read',
    ErrorReading = 'ErrorReading',
@@ -44,24 +57,26 @@ export enum AsyncConnectorEventTypes {
    ErrorDeleting = 'ErrorDeleting',
 }
 
-export interface DatabaseModelPayload extends ModelEventPayload {
-   store: IDatabaseModelProducerStore
+export interface DatabaseModelPayload<Store extends IDatabaseModelProducerStore<any, any> = IDatabaseModelProducerStore>
+   extends ModelEventPayload<Store> {
 }
 
-export interface ReadEventPayload extends DatabaseModelPayload {
-   readSchema: AosSchema
+export interface ModelEventReadPayload<Store extends IDatabaseModelProducerStore<any, any> = IDatabaseModelProducerStore>
+   extends DatabaseModelPayload<Store> {
    gets: Array<ModelEvent<ModelEventGetPropertyPayload>>
    sets: Array<ModelEvent<ModelEventSetPropertyPayload>>
 }
 
-export type ModelEventReadPayload = ReadEventPayload
-
-export interface ReadSuccessEventPayload extends DatabaseModelPayload {
-   data: AbstractData
-   readPayload: ReadEventPayload
+export interface ReadSuccessEventPayload<Store extends IDatabaseModelProducerStore<any, any> = IDatabaseModelProducerStore>
+   extends DatabaseModelPayload<Store> {
+   data: Store['base']
+   readPayload: ModelEventReadPayload<Store>
 }
 
-export interface ReadFailureEventPayload<T extends Error = any> extends DatabaseModelPayload {
+export interface ReadFailureEventPayload<
+   Store extends IDatabaseModelProducerStore<any, any> = IDatabaseModelProducerStore,
+   T extends Error = any
+> extends DatabaseModelPayload<Store> {
    error: T,
-   readPayload: ReadEventPayload,
+   readPayload: ModelEventReadPayload<Store>,
 }

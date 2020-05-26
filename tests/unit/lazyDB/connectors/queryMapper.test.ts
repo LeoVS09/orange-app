@@ -1,8 +1,12 @@
 import { AosFieldType } from "@/abstractObjectSchema"
-import { generateQueryList, generateQueryEntityById } from '@/lazyDB/connectors/queryMapper'
 import cons from "../../utils/console.mock"
 
+jest.mock('graphql-tag');
+
 describe('Mapper AOS scheme to graphql query', () => {
+
+    // Should be inside for mock graphql-tag
+    const { generateQueryList, generateQueryEntityById } = require('@/lazyDB/connectors/queryMapper')
 
     beforeEach(() => {
         cons.mockConsole()

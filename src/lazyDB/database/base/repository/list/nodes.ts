@@ -1,5 +1,5 @@
 import {
-  ListSource, ListItemGetterReference, NodesProducerReference, ListItemSetterReference
+  ListSource, ListItemGetterReference, ListItemSetterReference
 } from '@/lazyDB/database/types'
 import {
   IProducerStore,
@@ -13,71 +13,74 @@ import { arrayMethodWrapper } from './arrayMethodWrapper'
 
 // Getter for array
 // TODO: add typescript support for arrays
-export const nodesGetter = (source: ListSource, _: IProducerStore<Array<any>>): ProducerStoreGetter<Array<any>> =>
-  ({ base }, index) => {
-    console.log('get nodes', index, 'base', base)
-
-    const parsedIndex = Number.parseInt(index as string, 10)
-    if (Number.isInteger(parsedIndex))
-      index = parsedIndex
-
-    if (typeof index === 'string') {
-
-      if (!isArrayProperty(index))
-      // TODO: may be need trow error
-        return
-
-      const property = base[index]
-      if (typeof property !== 'function')
-        return property
-
-      return arrayMethodWrapper(source, base, index)
-    }
-
-    if (!base.length && base) {
-      console.log('make trap in nodes')
-      return makeTemporalTrapObject()
-    }
-
-    const getItem = source[ListItemGetterReference]
-    if (!getItem) {
-      console.error('List not have get item hook')
-      return
-    }
-
-    return getItem(source, index as number)
-  }
-
-export const nodesSetter = (
+export const nodesGetter = <Store extends IProducerStore<any, any> = IProducerStore>(
   source: ListSource,
-  store: IProducerStore<Array<any>>
-): ProducerStoreSetter<Array<any>> =>
-  ({ base }, name, value) => {
+  _: IProducerStore<Array<any>>
+): ProducerStoreGetter<Store> =>
+    ({ base }, index) => {
+      console.log('get nodes', index, 'base', base)
 
-    console.log('[ListNodes] set value for nodes:', base, name, value)
+      const parsedIndex = Number.parseInt(index as string, 10)
+      if (Number.isInteger(parsedIndex))
+        index = parsedIndex
 
-    if (isTemporalTrap(value)) {
+      if (typeof index === 'string') {
 
-      base[name as unknown as number] = value
-      const { extendTemporalTrap } = store
+        if (!isArrayProperty(index))
+        // TODO: may be need trow error
+          return
 
-      // This hack allow make temporal trap work as repository object
-      if (extendTemporalTrap) {
-        const valueStore = getStore(value)
-        extendTemporalTrap(valueStore)
+        const property = base[index]
+        if (typeof property !== 'function')
+          return property
+
+        return arrayMethodWrapper(source, base, index)
       }
 
-    } else {
+      if (!base.length && base) {
+        console.log('make trap in nodes')
+        return makeTemporalTrapObject()
+      }
 
-      const setItem = source[ListItemSetterReference]
-      if (setItem)
-      // in base case will return id
-        value = setItem(source, name as unknown as number, value)
-      else
-        console.error('List not have set item hook')
+      const getItem = source[ListItemGetterReference]
+      if (!getItem) {
+        console.error('List not have get item hook')
+        return
+      }
 
-      base[name as unknown as number] = value
+      return getItem(source, index as number)
     }
-    console.log('[ListNodes] was set value for nodes:', base, name, value)
-    return true
-  }
+
+export const nodesSetter = <Store extends IProducerStore<any, any> = IProducerStore>(
+  source: ListSource,
+  store: IProducerStore<Array<any>>
+): ProducerStoreSetter<Store> =>
+    ({ base }, name, value) => {
+
+      console.log('[ListNodes] set value for nodes:', base, name, value)
+
+      if (isTemporalTrap(value)) {
+
+        base[name as unknown as number] = value
+        const { extendTemporalTrap } = store
+
+        // This hack allow make temporal trap work as repository object
+        if (extendTemporalTrap) {
+          const valueStore = getStore(value)!
+          extendTemporalTrap(valueStore)
+        }
+
+      } else {
+
+        const setItem = source[ListItemSetterReference]
+        if (setItem)
+        // in base case will return id
+          value = setItem(source, name as unknown as number, value)
+        else
+          console.error('List not have set item hook')
+
+        base[name as unknown as number] = value
+      }
+      console.log('[ListNodes] was set value for nodes:', base, name, value)
+      return true
+    }

@@ -1,6 +1,5 @@
 import { ModelEventGetPropertyPayload } from '@/lazyDB/core/types'
-import { IDatabaseModelProducerStore } from '../../types'
-import { lastObjectPropertyName } from '../../utils'
+import { IDatabaseModelProducerStore } from '../types'
 
 // Is exclude used for remove from event cycle, memory and handlers any service properties
 //  better find way to understand which property actualy must be used,
@@ -13,7 +12,7 @@ export function isExcludeProperty({ excludeProperties }: IDatabaseModelProducerS
     return false
   }
 
-  const prop = lastObjectPropertyName(payload)
+  const { name } = payload
 
   // There used filter multiple times for readobility
   //  this operations is run on every "get" event
@@ -23,10 +22,10 @@ export function isExcludeProperty({ excludeProperties }: IDatabaseModelProducerS
   const excludeStrings = excludeProperties.filter(exclude => typeof exclude === 'string')
   const excludeRegexs = excludeProperties.filter(exclude => isRegex(exclude)) as Array<RegExp>
 
-  if (excludeStrings.includes(prop))
+  if (excludeStrings.includes(name as string))
     return true
 
-  return !!excludeRegexs.find(exclude => !!exclude.exec(prop))
+  return !!excludeRegexs.find(exclude => !!exclude.exec(name as string))
 }
 
 const isRegex = (prop: string | RegExp): prop is RegExp => {

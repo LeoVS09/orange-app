@@ -1,8 +1,10 @@
 import {
-  EventProducer, ModelEvent, ModelEventGetPropertyPayload, PropertyEventPayload
+  ModelEvent,
+  ModelEventGetPropertyPayload,
+  PropertyEventPayload,
+  isPropertyEvent
 } from '../core/types'
 import { ModelEventTypes } from './events'
-import { lastObjectPropertyName } from './utils'
 
 export const notHaveGetEventInMemory = (event: ModelEvent<ModelEventGetPropertyPayload>) => {
   if (event.type !== ModelEventTypes.GetProperty)
@@ -15,38 +17,26 @@ export const notHaveGetEventInMemory = (event: ModelEvent<ModelEventGetPropertyP
   const { memory } = store.memory
 
   return !memory.some(({ payload, type }) => type === ModelEventTypes.GetProperty
-      && getEventPayloadsEqual(event.payload, payload))
+      && isGetEventPayloadsEqual(event.payload, payload))
 }
 
 export const excludePropertyEventWithNames = (excludeProperties: Array<string>) => (event: ModelEvent<PropertyEventPayload>) => {
-  const { type } = event
-
-  if (
-    type !== ModelEventTypes.GetProperty
-         && type !== ModelEventTypes.SetProperty
-         && type !== ModelEventTypes.DeleteProperty
-  )
+  if (!isPropertyEvent(event))
     return true
 
-  const innerName = lastObjectPropertyName(event.payload as ModelEventGetPropertyPayload)
-  if (excludeProperties.some(value => value === innerName))
+  const { name } = event.payload
+  if (excludeProperties.some(value => value === name))
     return false
 
   return true
 }
 
-export function getEventPayloadsEqual(first: ModelEventGetPropertyPayload, second: ModelEventGetPropertyPayload): boolean {
+export function isGetEventPayloadsEqual(first: ModelEventGetPropertyPayload, second: ModelEventGetPropertyPayload): boolean {
   if (first.name !== second.name)
     return false
 
   if (first.type !== second.type)
     return false
 
-  if (!first.inner && !second.inner)
-    return true
-
-  if (first.inner && second.inner)
-    return getEventPayloadsEqual(first.inner, second.inner)
-
-  return false
+  return true
 }

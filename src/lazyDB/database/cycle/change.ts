@@ -4,18 +4,28 @@ import { Observable } from 'rxjs'
 import { ModelEvent } from '@/lazyDB/core/types'
 import { debug } from '@/reactive/debug'
 import { ModelEventTypes } from '../events'
-import { IDatabaseModelProducerStore, OnChangeCallback, ListProducer } from '../types'
+import { IDatabaseModelProducerStore, OnChangeCallback } from '../types'
 
-const CHANGE_TIME = 10
+const DEFAULT_DEBOUNCE_CHANGE_TIME = 10
+const DEFAULT_CHANGE_EVENTS = [ModelEventTypes.Read, ModelEventTypes.ReadSuccess, ModelEventTypes.ReadFailure]
 
-export const whenChanged = (changeTime = CHANGE_TIME) => (stream: Observable<ModelEvent<any>>) =>
+export interface WhenChangedOptions {
+  changeEvents?: Array<ModelEventTypes>
+  debounceChangeTime?: number
+}
+
+// Spawn event when one of given events was received
+export const whenChanged = ({
+  changeEvents = DEFAULT_CHANGE_EVENTS,
+  debounceChangeTime = DEFAULT_DEBOUNCE_CHANGE_TIME
+}: WhenChangedOptions = {}) => (stream: Observable<ModelEvent<any, any>>) =>
   stream.pipe(
-    filterEventsByTypes([ModelEventTypes.Read, ModelEventTypes.ReadSuccess, ModelEventTypes.ReadFailure]),
-    debounceTime(changeTime),
+    filterEventsByTypes(changeEvents),
+    debounceTime(debounceChangeTime),
     debug('on change event')
   )
 
-export const updateOnChangeHandler = (store: IDatabaseModelProducerStore, onChangeCallback?: OnChangeCallback) => {
+export const updateOnChangeHandler = (store: IDatabaseModelProducerStore<any, any>, onChangeCallback?: OnChangeCallback) => {
   if (onChangeCallback)
     store.onChange = onChangeCallback
 
@@ -27,14 +37,3 @@ export const updateOnChangeHandler = (store: IDatabaseModelProducerStore, onChan
     onChange(event)
   }
 }
-
-export const listOnChangeWrapper = (list: ListProducer<any>, onChange?: OnChangeCallback): OnChangeCallback =>
-  event => {
-
-    // Hack for vue to track changed nodes
-    // list.nodes.push(null)
-    // list.nodes.pop()
-
-    if (onChange)
-      onChange(event)
-  }

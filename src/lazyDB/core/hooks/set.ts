@@ -1,18 +1,22 @@
-import { IProducerStore } from '../types'
+import { IProducerStore, ModelPropertyKey } from '../types'
 import { isExplictlyAccessPropty } from './explictly'
 
-export function set(store: IProducerStore, prop: PropertyKey, value: any) {
+export function set<Store extends IProducerStore<any, any> = IProducerStore>(store: Store, prop: PropertyKey, value: any) {
   if (isExplictlyAccessPropty(prop)) {
     store.base[prop as unknown as string] = value
     return true
   }
 
-  return setterHook(store, prop, value)
+  return setterHook(store, prop as ModelPropertyKey, value)
 }
 
 // will spawn set event
 // and call setter
-function setterHook(store: IProducerStore, prop: PropertyKey, value: any) {
+function setterHook<Store extends IProducerStore<any, any> = IProducerStore>(
+  store: Store,
+  prop: ModelPropertyKey,
+  value: any
+) {
   const {
     dispatcher,
     setter,
