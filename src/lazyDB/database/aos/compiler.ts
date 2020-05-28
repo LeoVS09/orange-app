@@ -48,7 +48,8 @@ export function appendEventToSchema({
 
   // Will append all requied fields or remove unnecessary
   const tokens = transformTokens(prepared)
-    // in schema number tokens not exists
+    // in schema number tokens not exists,
+    // TODO: need another solution, because fails if token digit id
     .filter(token => !isNumberFieldToken(token))
   console.debug('[AppendPropertyToSchema] aos tokens, based on event path', { tokens, store, schema })
 

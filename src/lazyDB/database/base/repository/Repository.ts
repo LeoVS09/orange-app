@@ -1,6 +1,6 @@
 import { getStore } from '@/lazyDB/core/common'
 import { Producerable, EventProducer, IProducerStore } from '@/lazyDB/core/types'
-import { asyncReceiveWithMemory } from '@/lazyDB/core/receiver'
+import { receiveWithMemoryAndReducers } from '@/lazyDB/core/receiver'
 import { repositoryReducers } from '@/lazyDB/database/connected/actions'
 import { DatabaseDispatcher, switchStoreToDatabaseStore } from '@/lazyDB/database/dispatcher'
 import { AosEntitySchema, AosFieldType } from '@/abstractObjectSchema'
@@ -123,7 +123,7 @@ function appendRepositoryLifeHooks(
 
   // TODO: remove requiring of order
   // Current logic require this order to call functions
-  asyncReceiveWithMemory(store, repositoryReducers as any)
+  receiveWithMemoryAndReducers(store, repositoryReducers as any)
   // spawn require to stream which generate only on async receive
   const { stream, dispatcher } = store
   stream!

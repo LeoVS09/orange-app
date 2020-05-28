@@ -13,7 +13,9 @@ import {
   ModelPropertyKey,
   ModelTypesToPayloadsMap
 } from '@/lazyDB/core/types'
-import { getEventPayload, setEventPayload } from '@/lazyDB/core/common'
+import {
+  getEventPayload, setEventPayload, successEventPayload, failureEventPayload
+} from '@/lazyDB/core/common'
 import { AosFieldType } from '@/abstractObjectSchema'
 
 export class ModelEventDispatcher<
@@ -37,21 +39,31 @@ export class ModelEventDispatcher<
      return AosFieldType.Any
    }
 
-   public get = (name: Key, store: Store) => {
+   public get(name: Key, store: Store) {
      const type = this.getPropertyType(name, store)
      const payload = getEventPayload(name, store, type)
      this.dispatch(PropertyEventType.GetProperty, payload)
    }
 
-   public set = <V>(name: Key, oldValue: V, newValue: V, store: Store) => {
+   public set<V>(name: Key, oldValue: V, newValue: V, store: Store) {
      const type = this.getPropertyType(name, store)
      const payload = setEventPayload(name, oldValue, newValue, store, type)
      this.dispatch(PropertyEventType.SetProperty, payload)
    }
 
-   public delete = (name: Key, store: Store) => {
+   public delete(name: Key, store: Store) {
      const type = this.getPropertyType(name, store)
      const payload = getEventPayload(name, store, type)
      this.dispatch(PropertyEventType.DeleteProperty, payload)
+   }
+
+   public success(event: ModelEvent<any>, store: Store) {
+     const payload = successEventPayload(event, store)
+     this.dispatch(PropertyEventType.Success, payload)
+   }
+
+   public failure(event: ModelEvent<any>, store: Store, error?: any) {
+     const payload = failureEventPayload(event, store, error)
+     this.dispatch(PropertyEventType.Failure, payload)
    }
 }

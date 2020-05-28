@@ -6,7 +6,10 @@ import {
   ModelEventSetPropertyPayload,
   IProducerStore,
   ProducerStoreReference,
-  ModelPropertyKey
+  ModelPropertyKey,
+  ModelEvent,
+  ModelEventFailurePayload,
+  ModelEventSuccessPayload
 } from './types'
 
 export function getStore<
@@ -87,4 +90,22 @@ export const setEventPayload = <
     type,
     oldValue,
     newValue
+  })
+
+export const successEventPayload = <Store extends IProducerStore<any, any> = IProducerStore, Payload = any>(
+  event: ModelEvent<Payload>,
+  store: Store
+): ModelEventSuccessPayload<Store, Payload> => ({
+    store,
+    event
+  })
+
+export const failureEventPayload = <Store extends IProducerStore<any, any> = IProducerStore, Payload = any>(
+  event: ModelEvent<Payload>,
+  store: Store,
+  error?: any
+): ModelEventFailurePayload<Store, Payload> => ({
+    store,
+    event,
+    error
   })

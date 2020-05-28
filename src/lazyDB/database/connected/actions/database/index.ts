@@ -3,9 +3,6 @@ import {
 } from '@/lazyDB/core/types'
 import {
   ModelEventTypes,
-  ReadFailureEventPayload,
-  ModelEventReadPayload,
-  ReadSuccessEventPayload,
   DatabaseModelTypesToPayloadsMap
 } from '../../../events'
 import { IDatabaseModelProducerStore } from '../../../types'
@@ -14,7 +11,6 @@ import {
 } from '../../../base/exclideProperty'
 
 import read from './read'
-import readSuccess from './readSuccess'
 
 export const databaseReducers: EventReducersMap<IDatabaseModelProducerStore, DatabaseModelTypesToPayloadsMap> = {
   [ModelEventTypes.GetProperty]: (store, { payload }: ModelEvent<ModelEventGetPropertyPayload>) => {
@@ -31,10 +27,13 @@ export const databaseReducers: EventReducersMap<IDatabaseModelProducerStore, Dat
   // Add ts support for inner read payload
   [ModelEventTypes.Read]: read,
 
-  [ModelEventTypes.ReadSuccess]: readSuccess,
+  [ModelEventTypes.Success]: (store, payload) => {
+    console.log('Success', store, payload)
+    return true
+  },
 
-  [ModelEventTypes.ReadFailure]: (store, { payload }) => {
-    console.error('Failed to read\n', payload.error, store)
+  [ModelEventTypes.Failure]: (store, { payload }) => {
+    console.error('Failed', payload.event.type, { store, payload }, payload.error)
     // TODO: handle error
     return false
   }

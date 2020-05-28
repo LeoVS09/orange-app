@@ -1,5 +1,5 @@
 import { connectDebugToActionsStream } from '@/lazyDB/debug/actions'
-import { asyncReceiveWithMemory } from '@/lazyDB/core/receiver'
+import { receiveWithMemoryAndReducers } from '@/lazyDB/core/receiver'
 import { databaseReducers } from '@/lazyDB/database/connected/actions'
 import { defaultExcludeProperties } from '@/lazyDB/constants'
 import LazyReactiveRepository from '@/lazyDB/database/base/repository/Repository'
@@ -23,7 +23,7 @@ export class Database extends LazyReactiveDatabase {
     // TODO: refactor, need another way to put properties to action
     this.store.excludeProperties = this.excludeProperties
 
-    asyncReceiveWithMemory(this.store, databaseReducers as any)
+    receiveWithMemoryAndReducers(this.store, databaseReducers as any)
 
     connectDebugToActionsStream(this.store)
 

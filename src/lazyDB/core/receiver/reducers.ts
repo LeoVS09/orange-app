@@ -9,7 +9,7 @@ import {
   ModelEventPayload
 } from '../types'
 import { receive } from './receive'
-import { isPromise } from './utils'
+import { isPromiseLike } from './utils'
 
 export function atomicReceiveByReducers<
   T extends Producerable<any> = Producerable,
@@ -50,9 +50,9 @@ export function handleByReducer<
   store: Store,
   event: ModelEvent<Payload, any>,
   reducer: EventReducer<Store, Payload>
-): boolean | Promise<boolean> {
+): boolean | PromiseLike<boolean> {
   const result = reducer(store, event)
-  if (isPromise(result)) {
+  if (isPromiseLike(result)) {
     return result
       .then(promiseResult => !!promiseResult)
   }

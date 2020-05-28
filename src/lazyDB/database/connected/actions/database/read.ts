@@ -5,36 +5,32 @@ import { DatabaseEventsPayloads } from '@/lazyDB/database/dispatcher'
 import { compudeStoreParents } from '@/lazyDB/database/aos'
 import {
   schemaToQueryFields,
-  removeGetEventsFromMemory,
-  dispatchReadSuccess,
-  dispatchReadFailure
+  removeGetEventsFromMemory
 } from './utils'
 import { fetchListOrEntity } from './api'
 
 const read: DatabaseEventReducer<IDatabaseModelProducerStore, ModelEventReadPayload<IDatabaseModelProducerStore>> = async (dataBaseStore, { payload }) => {
   const { store } = payload
-  const { schema } = store
+  const { schema, proxy } = store
   if (!schema) {
     console.error('read payload', payload)
     throw new Error('Read payload not have read schema')
   }
-  // possible need stop on some moment
+  // create lazy array
   const [initial, entity] = [...compudeStoreParents(store)]
   const getRequest = `${initial.name as string}/${entity.name as string}/`
   console.log('[ReadActiont] generated get request', getRequest)
 
-  try {
-    console.log('databaseReducers', getRequest, schemaToQueryFields(schema))
+  console.log('[ReadActiont] getRequest', getRequest, schemaToQueryFields(schema))
 
-    const response = await fetchListOrEntity(initial.name as string, entity.name as string, schema)
-    console.log('databaseReducers', 'read response', response)
+  const data = await fetchListOrEntity(initial.name as string, entity.name as string, schema)
+  console.log('[ReadActiont] read response', data)
 
-    removeGetEventsFromMemory(payload)
+  // need remove it outside of handler
+  // probably setup it in lifecycle
+  removeGetEventsFromMemory(payload)
 
-    dispatchReadSuccess(payload, response)
-  } catch (err) {
-    dispatchReadFailure(payload, err)
-  }
+  Object.assign(proxy, data)
 
   return true
 }

@@ -1,7 +1,7 @@
 import { wrapInProducer } from '../core/wrap'
 import { AtomicModelEventDispatcher } from '../core/dispatcher/model/atomic'
 import { getStore, isProducer } from '../core/common'
-import { atomicReceiveWithMemory } from '../core/receiver'
+import { receiveWithMemoryAndReducers } from '../core/receiver'
 import { ModelEventTypes } from '../database/events'
 import { isChanged } from '../database/states'
 import { ProducerStoreSetter, IProducerStore } from '../core/types'
@@ -26,7 +26,7 @@ export function isWasChaged<T extends object>(base: T, changer: (draft: T) => vo
   const store = getStore(producer)!
   store.setter = setter
 
-  atomicReceiveWithMemory(store, {
+  receiveWithMemoryAndReducers(store, {
     [ModelEventTypes.GetProperty]() { return true },
     [ModelEventTypes.SetProperty](_, { payload: { oldValue, newValue } }) {
       return oldValue === newValue

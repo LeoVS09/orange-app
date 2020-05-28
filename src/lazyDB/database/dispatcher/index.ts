@@ -1,49 +1,21 @@
 import { Subject } from 'rxjs'
-import { AsyncModelEventDispatcher } from '@/lazyDB/core/dispatcher/model/async'
 import {
-  Producerable, EventProducer,
-  IEventDispatcher,
+  Producerable,
+  EventProducer,
   IModelEventDispatcher,
   IProducerStore,
   ModelEvent,
-  ModelEventPayload,
   BaseEventsPayloads,
-  ModelPropertyKey,
-  ModelTypesToPayloadsMap
+  ModelPropertyKey
 } from '@/lazyDB/core/types'
-import {
-  ModelEventTypes, ReadFailureEventPayload, ReadSuccessEventPayload, ModelEventReadPayload, DatabaseModelTypesToPayloadsMap
-} from '@/lazyDB/database/events'
+import { ModelEventReadPayload, DatabaseModelTypesToPayloadsMap } from '@/lazyDB/database/events'
 import { IDatabaseModelProducerStore } from '@/lazyDB/database/types'
 import { getStore } from '@/lazyDB/core/common'
-import { AosEntitySchema, AosFieldType, isSimpleType } from '@/abstractObjectSchema'
-import { GetFieldType } from '../base/repository/controls'
+import { AosFieldType } from '@/abstractObjectSchema'
 
-export const readSuccessEventPayload = <Store extends IDatabaseModelProducerStore<any, any> = IDatabaseModelProducerStore>(
-  data: Producerable,
-  readPayload: ModelEventReadPayload<Store>,
-  store: Store
-): ReadSuccessEventPayload<Store> => ({
-    readPayload,
-    data,
-    store
-  })
+export type DatabaseEventsPayloads = BaseEventsPayloads & ModelEventReadPayload
 
-export const readFailureEventPayload = <
-  Store extends IDatabaseModelProducerStore<any, any> = IDatabaseModelProducerStore,
-  T extends Error = any
->(
-    error: T,
-    readPayload: ModelEventReadPayload<Store>,
-    store: Store
-  ): ReadFailureEventPayload<Store, T> => ({
-    readPayload,
-    error,
-    store
-  })
-
-export type DatabaseEventsPayloads = BaseEventsPayloads & ModelEventReadPayload & ReadSuccessEventPayload & ReadFailureEventPayload
-
+// TODO: remove database dispatcher, instead can be used base dispatcher
 export class DatabaseDispatcher<
   Store extends IDatabaseModelProducerStore<any, any> = IDatabaseModelProducerStore,
   Key extends ModelPropertyKey = ModelPropertyKey,
@@ -59,6 +31,10 @@ export class DatabaseDispatcher<
 
    public delete: (prop: Key, store: Store) => void
 
+   public success: (event: ModelEvent<any>, store: Store) => void
+
+   public failure: (event: ModelEvent<any>, store: Store, error?: any) => void
+
    protected dispatcher: IModelEventDispatcher<Store, Key, TP>
 
    constructor(dispatcher: IModelEventDispatcher<Store, Key, TP>) {
@@ -73,20 +49,12 @@ export class DatabaseDispatcher<
      this.get = (...args) => this.dispatcher.get(...args)
      this.set = (...args) => this.dispatcher.set(...args)
      this.delete = (...args) => this.dispatcher.delete(...args)
+     this.success = (...args) => this.dispatcher.success(...args)
+     this.failure = (...args) => this.dispatcher.failure(...args)
    }
 
    public getPropertyType(name: Key, store: Store): AosFieldType {
      return AosFieldType.Any
-   }
-
-   public readSuccess = (data: Store['base'], readPayload: ModelEventReadPayload<Store>, store: Store) => {
-     const payload = readSuccessEventPayload<Store>(data, readPayload, store)
-     this.dispatch(ModelEventTypes.ReadSuccess, payload)
-   }
-
-   public readFailure = (error: Error, readPayload: ModelEventReadPayload<Store>, store: Store) => {
-     const payload = readFailureEventPayload<Store>(error, readPayload, store)
-     this.dispatch(ModelEventTypes.ReadFailure, payload)
    }
 }
 
@@ -100,8 +68,8 @@ export function isDatabaseDispatcher(value: any): value is DatabaseDispatcher {
       || !value.get
       || !value.set
       || !value.delete
-      || !value.readSuccess
-      || !value.readFailure
+      || !value.success
+      || !value.failure
   )
     return false
 

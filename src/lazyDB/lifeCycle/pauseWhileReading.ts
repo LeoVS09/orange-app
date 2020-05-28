@@ -8,9 +8,9 @@ import { pauseWhile } from '../reactive/pauseWhile'
 
 const eventsWhichCanChangeState = [
   ModelEventTypes.GetProperty,
-  // Read events used as triger to flush buffer with get events
-  ModelEventTypes.ReadSuccess,
-  ModelEventTypes.ReadFailure
+  // Read event success or failure used as triger to flush buffer with get events
+  ModelEventTypes.Success,
+  ModelEventTypes.Failure
 ]
 
 export const pauseWhileReading = (isReading: () => boolean) => <T>(source: Observable<ModelEvent<T>>) =>

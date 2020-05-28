@@ -7,7 +7,7 @@ import { ModelEventTypes } from '../events'
 import { IDatabaseModelProducerStore, OnChangeCallback } from '../types'
 
 const DEFAULT_DEBOUNCE_CHANGE_TIME = 10
-const DEFAULT_CHANGE_EVENTS = [ModelEventTypes.Read, ModelEventTypes.ReadSuccess, ModelEventTypes.ReadFailure]
+const DEFAULT_CHANGE_EVENTS = [ModelEventTypes.Read, ModelEventTypes.Success, ModelEventTypes.Failure]
 
 export interface WhenChangedOptions {
   changeEvents?: Array<ModelEventTypes>

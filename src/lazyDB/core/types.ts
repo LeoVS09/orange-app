@@ -42,9 +42,16 @@ export type EventProducer<T> = Proxyfy<T> & {
 }
 
 export enum PropertyEventType {
+   /** Pop when someone get property of model */
    GetProperty = 'GetProperty',
+   /** Pop when someone set property of model */
    SetProperty = 'SetProperty',
+   /** Pop when someone delete property of model */
    DeleteProperty = 'DeleteProperty',
+   /** Pop when some async event fails */
+   Failure = 'Failure',
+   /** Pop when some async event succeeds */
+   Success = 'Success'
 }
 
 export interface ModelEvent<Payload = PropertyEventPayload, Type extends any = any> {
@@ -67,6 +74,8 @@ export type ModelTypesToPayloadsMap<
    [PropertyEventType.GetProperty]: ModelEventGetPropertyPayload<Store, Key>
    [PropertyEventType.SetProperty]: ModelEventSetPropertyPayload<Store, Key>
    [PropertyEventType.DeleteProperty]: ModelEventDeletePropertyPayload<Store, Key>
+   [PropertyEventType.Success]?: ModelEventSuccessPayload<any, PropertyEventType>
+   [PropertyEventType.Failure]?: ModelEventFailurePayload<any, PropertyEventType>
 }
 
 export interface IModelEventDispatcher<
@@ -81,6 +90,8 @@ export interface IModelEventDispatcher<
    get(prop: Key, store: Store): any
    set<V>(prop: Key, oldValue: V, newValue: V, store: Store): any
    delete(prop: Key, store: Store): any
+   success(event: ModelEvent<any>, store: Store): any
+   failure(event: ModelEvent<any>, store: Store, error?: any): any
 }
 
 export interface ProducerStoreGetter<Store extends IProducerStore<any, any> = IProducerStore, Result = any> {
@@ -207,3 +218,28 @@ export function isPropertyEvent(event: ModelEvent<any>): event is ModelEvent<Pro
 }
 
 export type StateResolver<T> = (memory: StateMemory<T>) => boolean
+
+export interface ModelEventSuccessPayload<
+   Store extends IProducerStore<any, any> = IProducerStore,
+   Payload = any,
+   Type extends any = any
+> extends ModelEventPayload<Store> {
+   event: ModelEvent<Payload, Type>
+}
+
+export interface ModelEventFailurePayload<
+   Store extends IProducerStore<any, any> = IProducerStore,
+   Payload = any,
+   Type extends any = any
+> extends ModelEventPayload<Store> {
+   event: ModelEvent<Payload, Type>
+   error?: any
+}
+
+export function isSuccessEvent(event: ModelEvent<any, any>): event is ModelEvent<ModelEventSuccessPayload<any, any, any>, any> {
+  return event.type === PropertyEventType.Success
+}
+
+export function isFailureEvent(event: ModelEvent<any, any>): event is ModelEvent<ModelEventFailurePayload<any, any, any>, any> {
+  return event.type === PropertyEventType.Failure
+}

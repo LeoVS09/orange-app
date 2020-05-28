@@ -12,23 +12,26 @@ import {
   ModelEvent,
   Producerable,
   ModelTypesToPayloadsMap,
-  EventReducer
+  EventReducer,
+  ModelEventPayload
 } from '../types'
 import { StateMemory } from '../memory'
 import { receive, unsubscribeStore } from './receive'
 import { isHaveEventInMemory } from '../events'
 import { getStoreFromEvent } from './getters'
 import { handleByReducer } from './reducers'
-import { async } from './utils'
+import { async, isPromiseLike } from './utils'
 import { pushToParent } from '../bubbling'
 
+// Trying handle event by reducers in storage
+// If event handled (handler return true) and storage have memory
+// event would remove from storage memory
 export function receiveWithMemoryAndReducers<
   T extends Producerable<any> = Producerable,
   TP extends ModelTypesToPayloadsMap<any, any> = ModelTypesToPayloadsMap<any, any>
 >(
   store: IProducerStore<T, TP>,
-  reducers: EventReducersMap<IProducerStore<T, TP>, TP>,
-  subscriber: (event: EventWithReducer<T, TP, ModelEvent<TP[keyof TP], keyof TP>>) => void
+  reducers: EventReducersMap<IProducerStore<T, TP>, TP>
 ) {
   unsubscribeStore(store)
 
@@ -37,9 +40,8 @@ export function receiveWithMemoryAndReducers<
 
   store.memory = memory
 
-  // Trying handle event by reducers in storage
-  // If event handled (handler return true) and storage have memory
-  // event would remove from storage memory
+  // Save event in memory and
+  // and then allow anyone handle it
   store.stream = dispatcher.eventsSubject
     .pipe(
       filter(event => !isHaveEventInMemory(event, memory)),
@@ -48,95 +50,62 @@ export function receiveWithMemoryAndReducers<
       share()
     )
 
-  const withReducers = store.stream.pipe(
-    pickReducer(reducers),
-    // possible need save event after push to parent
-    pushToParentIfNotHaveReducer(store)
-  )
-
-  store.subscription = withReducers.subscribe(subscriber)
-}
-
-export interface EventWithPossibleReducer<
-  T extends Producerable<any> = Producerable,
-  TP extends ModelTypesToPayloadsMap<any, any> = ModelTypesToPayloadsMap<any, any>,
-  Event = ModelEvent<TP[keyof TP], keyof TP>
-> {
-  event: Event
-  reducer?: EventReducer<IProducerStore<T, TP>, TP[keyof TP]>
- }
-
-export interface EventWithReducer<
- T extends Producerable<any> = Producerable,
- TP extends ModelTypesToPayloadsMap<any, any> = ModelTypesToPayloadsMap<any, any>,
- Event = ModelEvent<TP[keyof TP], keyof TP>
-> {
- event: Event
- reducer: EventReducer<IProducerStore<T, TP>, TP[keyof TP]>
-}
-
-const pickReducer = <
-  T extends Producerable<any> = Producerable,
-  TP extends ModelTypesToPayloadsMap<any, any> = ModelTypesToPayloadsMap<any, any>,
-  Event extends ModelEvent<TP[keyof TP], keyof TP> = ModelEvent<TP[keyof TP], keyof TP>
->(reducers: EventReducersMap<IProducerStore<T, TP>, TP>) =>
-    (stream: Observable<Event>): Observable<EventWithPossibleReducer<T, TP, Event>> =>
-  stream.pipe(map(event => ({
-    event,
-    reducer: reducers[event.type]
-  }))) as Observable<EventWithPossibleReducer<T, TP, Event>>
-
-const pushToParentIfNotHaveReducer = <
-  T extends Producerable<any> = Producerable,
-  TP extends ModelTypesToPayloadsMap<any, any> = ModelTypesToPayloadsMap<any, any>,
-  Event extends ModelEvent<TP[keyof TP], keyof TP> = ModelEvent<TP[keyof TP], keyof TP>
->(store: IProducerStore<T, TP>) =>
-    (stream: Observable<EventWithPossibleReducer<T, TP, Event>>): Observable<EventWithReducer<T, TP, Event>> =>
-      stream.pipe(
-        filter(({ event, reducer }) => {
-          if (reducer)
-            return true
-
-          pushToParent(store, event)
-          return false
-        })
-      ) as Observable<EventWithReducer<T, TP, Event>>
-
-// TODO: refactor, async code same like atomic,
-// need write more complex rxjs streams
-export function atomicReceiveWithMemory<
-  T extends Producerable<any> = Producerable,
-  TP extends ModelTypesToPayloadsMap<any, any> = ModelTypesToPayloadsMap<any, any>
->(
-  store: IProducerStore<T, TP>,
-  reducers: EventReducersMap<IProducerStore<T, TP>, TP>
-) {
-  receiveWithMemoryAndReducers(store, reducers, ({ event, reducer }) => {
-    const isResolved = handleByReducer(store, event, reducer as any)
-
-    if (!isResolved || !store.memory)
+  store.subscription = store.stream.subscribe(event => {
+    const reducer = reducers[event.type]
+    if (!reducer) {
+      pushToParent(store, event)
       return
+    }
 
-    store.memory.remove(event)
+    const result = handleByReducer(store, event, reducer as any)
+
+    if (!isPromiseLike(result)) {
+      removeEventIfResolved(event, result)
+      return
+    }
+
+    const eventDispatcher = event.payload.store.dispatcher
+
+    // if it promise, then need push result,
+    // to allow life hooks handle it
+    result.then(isResolved => {
+      console.log('[MEMORY] async event completed', event, store, isResolved)
+      removeEventIfResolved(event, isResolved)
+
+      eventDispatcher.success(event, store)
+    },
+    error => {
+      // Will remove event even it was failed,
+      // it allow not stuck in allways processing phase
+      removeEventIfResolved(event, true)
+
+      eventDispatcher.failure(event, store, error)
+    })
   })
 }
 
-export function asyncReceiveWithMemory<
-  T extends Producerable<any> = Producerable,
-  TP extends ModelTypesToPayloadsMap<any, any> = ModelTypesToPayloadsMap<any, any>
->(
-  store: IProducerStore<T, TP>,
-  reducers: EventReducersMap<IProducerStore<T, TP>, TP>
-) {
-  receiveWithMemoryAndReducers(store, reducers, async ({ event, reducer }) => {
-    const handlerResult = handleByReducer(store, event, reducer as any)
-    const isResolved = await async(handlerResult)
+/** Remove event from store memory of target and all parents */
+const removeEventIfResolved = (event: ModelEvent<ModelEventPayload<IProducerStore<any, any>>, any>, isResolved: boolean) => {
+  // if result was false, then event wasn't hadled,
+  // and he still wait processing
+  // then it need store
 
-    if (!isResolved || !store.memory)
-      return
+  if (!isResolved)
+    return
 
+  // if result was true, then event was handled
+  // and need remove it from all memories, which possible catched it
+  const { payload: { store } } = event
+
+  removeEventFromStoreAndParent(event, store)
+}
+
+function removeEventFromStoreAndParent(event: ModelEvent<ModelEventPayload<IProducerStore<any, any>>, any>, store: IProducerStore<any, any>) {
+  if (store.memory)
     store.memory.remove(event)
-  })
+
+  if (store.parent)
+    removeEventFromStoreAndParent(event, store.parent.store)
 }
 
 const saveInMemory = <
