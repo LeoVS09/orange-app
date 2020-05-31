@@ -28,7 +28,7 @@
             @choose-item="chooseItem"
             :key="reactive"
          >
-            <list-column>name</list-column>
+            <list-column name="name">city</list-column>
             <list-column name="updatedAt">updated</list-column>
          </list>
       </Section>

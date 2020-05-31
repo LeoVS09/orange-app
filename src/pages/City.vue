@@ -25,7 +25,7 @@
             @choose-item="chooseItem"
             :key="reactive"
          >
-            <list-column name="longName">name</list-column>
+            <list-column name="longName">university</list-column>
             <list-column name="shortName">short</list-column>
             <list-column name="updatedAt">updated</list-column>
          </list>
