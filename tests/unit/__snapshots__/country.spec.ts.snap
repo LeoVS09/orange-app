@@ -78,7 +78,7 @@ exports[`Country.vue renders country 1`] = `
         <div
           class="list-column"
         >
-          name
+          city
         </div>
          
         <div
@@ -251,7 +251,7 @@ exports[`Country.vue renders country 2`] = `
         <div
           class="list-column"
         >
-          name
+          city
         </div>
          
         <div
@@ -273,7 +273,7 @@ exports[`Country.vue renders country 2`] = `
             <span
               class="list--header-text"
             >
-              name
+              city
             </span>
              
             <div
