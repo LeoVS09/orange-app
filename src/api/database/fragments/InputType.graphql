@@ -1,0 +1,5 @@
+fragment InputType on ProgramInputType {
+   id
+   name
+   code
+}

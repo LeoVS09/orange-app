@@ -1,23 +1,27 @@
 <template>
-  <div @click="click" class="logo">
+  <div @click="onClick" class="logo">
     <h1 class="logo--text">Orange</h1>
     <sup :class="{'logo--sup': true, auth: isAuth}">alpha</sup>
   </div>
 </template>
 
 <script lang="ts">
-  import Vue from 'vue'
-  import {Component} from 'vue-property-decorator'
+import Vue from 'vue'
+import { Component, Emit, Prop } from 'vue-property-decorator'
 
-  @Component({
-    props: {
-      isAuth: Boolean,
-      click: Function
-    }
-  })
-  export default class Logo extends Vue {
+@Component
+export default class Logo extends Vue {
+   @Prop({
+     type: Boolean,
+     default: false
+   })
+   public isAuth!: boolean;
 
-  }
+   @Emit('click')
+   public onClick(event: any) {
+     return event
+   }
+}
 </script>
 
 <style scoped lang="scss">
@@ -45,7 +49,7 @@
       top: -0.5rem;
       left: -0.2rem;
       font-size: 0.8rem;
-      color: $secondaryTextColor;
+      color: $secondary-text-color;
 
       &.auth {
         top: 0.1rem;

@@ -1,0 +1,28 @@
+#import "../fragments/Test.graphql"
+
+query Tests(
+$first: Int,
+$last: Int,
+$offset: Int,
+$before: Cursor,
+$after: Cursor,
+$orderBy: [TestsOrderBy!],
+$condition: TestCondition
+) {
+   tests(
+      first: $first,
+      last: $last,
+      offset: $offset,
+      before: $before,
+      after: $after,
+      orderBy: $orderBy,
+      condition: $condition
+   ) {
+      totalCount
+      nodes {
+         nodeId
+
+         ...Test
+      }
+   }
+}

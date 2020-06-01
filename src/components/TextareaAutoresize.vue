@@ -7,37 +7,41 @@
 </template>
 
 <script lang="ts">
-  import Vue from 'vue'
-  import {Component} from 'vue-property-decorator'
+import Vue from 'vue'
+import { Component, Prop } from 'vue-property-decorator'
 
-  @Component({
-    props: {
-      value: String,
-      update: Function,
-      placeholder: String
-    }
-  })
-  export default class TextareaAutoresize extends Vue {
-    updateValue(event: any){
-      this.$nextTick(this.resize);
-      // @ts-ignore
-      this.update(event.target.value);
-    }
+  @Component
+export default class TextareaAutoresize extends Vue {
+     @Prop({
+       type: String
+     }) value?: string
 
-    mounted(){
-      this.resize();
-    }
+     @Prop({
+       type: String
+     }) placeholder?: string
 
-    resize(){
-      this.$el.style.setProperty('height', 'auto');
-      let contentHeight = this.$el.scrollHeight + 1;
+     updateValue(event: any) {
+       this.$nextTick(this.resize)
 
-      const heightVal = contentHeight + 'px';
-      this.$el.style.setProperty('height', heightVal);
+       this.$emit('input', event.target.value)
+     }
 
-      return this
-    }
-  }
+     mounted() {
+       this.resize()
+     }
+
+     resize() {
+       // @ts-ignore
+       this.$el.style.setProperty('height', 'auto')
+       const contentHeight = this.$el.scrollHeight + 1
+
+       const heightVal = `${contentHeight}px`
+       // @ts-ignore
+       this.$el.style.setProperty('height', heightVal)
+
+       return this
+     }
+}
 </script>
 
 <style scoped lang="scss">
@@ -46,7 +50,7 @@
   .textarea-autoresize{
     width: 100%;
     border: none;
-    color: $mainTextColor;
+    color: $main-text-color;
     height: auto;
     overflow: hidden;
     min-height: 3rem;

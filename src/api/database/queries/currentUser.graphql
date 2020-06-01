@@ -1,0 +1,9 @@
+#import "../fragments/FullUser.graphql"
+
+query CurrentUser {
+   currentUser {
+      nodeId
+
+      ...FullUser
+   }
+}

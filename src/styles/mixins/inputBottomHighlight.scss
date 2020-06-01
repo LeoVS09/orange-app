@@ -1,0 +1,39 @@
+@import "../config.scss";
+
+@mixin input-bottom-highlight() {
+   position: relative;
+
+   &:before, &:after {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 1px;
+      bottom: -1px;
+      left: 0;
+      z-index: 1;
+   }
+
+   &:before {
+      background-color: $border-line-color;
+   }
+
+   &:after {
+      z-index: 2;
+      transform: scaleX(0);
+      background-color: $input-color;
+      transform-origin: bottom right;
+      transition: transform $input-animation-time cubic-bezier(0.86, 0, 0.07, 1);
+   }
+
+   &.focused:after, &:hover:after {
+      transform: scaleX(1);
+      transform-origin: bottom left;
+   }
+
+   &.error {
+      border-bottom-color: $input-error-color;
+      &:after {
+         background-color: $input-error-color;
+      }
+   }
+}

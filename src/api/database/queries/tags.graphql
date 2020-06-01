@@ -1,0 +1,29 @@
+#import "../fragments/PartialTag.graphql"
+
+query Tags(
+   $first: Int,
+   $last: Int,
+   $offset: Int,
+   $before: Cursor,
+   $after: Cursor,
+   $orderBy: [TagsOrderBy!],
+   $condition: TagCondition
+) {
+   tags(
+      first: $first,
+      last: $last,
+      offset: $offset,
+      before: $before,
+      after: $after,
+      orderBy: $orderBy,
+      condition: $condition
+   ) {
+      totalCount
+
+      nodes {
+         nodeId
+
+         ...PartialTag
+      }
+   }
+}

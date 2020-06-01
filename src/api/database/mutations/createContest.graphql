@@ -1,0 +1,11 @@
+#import "../fragments/FullContest.graphql"
+
+mutation createContest($input: CreateContestInput!) {
+   createContest(input: $input) {
+      contest {
+         nodeId
+
+         ...FullContest
+      }
+   }
+}

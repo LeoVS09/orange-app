@@ -1,0 +1,11 @@
+#import "../fragments/PartialCountry.graphql"
+
+mutation deleteCountry($input: DeleteCountryInput!){
+   deleteCountry(input: $input) {
+      country {
+         nodeId
+
+         ...PartialCountry
+      }
+   }
+}

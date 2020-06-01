@@ -1,0 +1,22 @@
+# TODO: make it translator
+
+fragment Compiler on Translator {
+   id
+   name
+   alias
+   code
+   version
+   comment
+   isInterpreter
+   createdAt
+   updatedAt
+   language {
+      id
+      nodeId
+      name
+      alias
+      version
+      createdAt
+      updatedAt
+   }
+}

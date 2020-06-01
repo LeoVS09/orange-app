@@ -1,0 +1,572 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Countries.vue renders countries list 1`] = `
+<div
+  class="countries"
+>
+  <div
+    class="page-header highlight"
+  >
+    <div
+      class="page-header--hidden-breadcrumbs"
+    />
+     
+    <!---->
+     
+    <div
+      class="page-header--content"
+    >
+      <h1>
+        
+      Countries
+   
+      </h1>
+       
+      <div
+        class="page-header--actions"
+      />
+       
+      <!---->
+    </div>
+     
+    <!---->
+  </div>
+   
+  <section
+    class="section"
+  >
+    <div
+      class="list--container"
+      inlineadd=""
+      validateadd="function () { [native code] }"
+    >
+      <div
+        class="list--hidden-columns"
+      >
+        <div
+          class="list-column"
+        >
+          name
+        </div>
+         
+        <div
+          class="list-column"
+        >
+          code
+        </div>
+         
+        <div
+          class="list-column"
+        >
+          updated
+        </div>
+      </div>
+       
+      <div
+        class="list"
+      >
+        <div
+          class="list--header"
+        />
+         
+        <!---->
+         
+        <div
+          mode="out-in"
+        >
+          <div
+            class="list-item bordered hover-shadow"
+            style="background: transparent;"
+          >
+            <div
+              class="list-item--content"
+            />
+          </div>
+        </div>
+      </div>
+       
+      <!---->
+    </div>
+  </section>
+</div>
+`;
+
+exports[`Countries.vue renders countries list 2`] = `
+<div
+  class="countries"
+>
+  <div
+    class="page-header highlight"
+  >
+    <div
+      class="page-header--hidden-breadcrumbs"
+    />
+     
+    <!---->
+     
+    <div
+      class="page-header--content"
+    >
+      <h1>
+        
+      Countries
+   
+      </h1>
+       
+      <div
+        class="page-header--actions"
+      />
+       
+      <!---->
+    </div>
+     
+    <!---->
+  </div>
+   
+  <section
+    class="section"
+  >
+    <div
+      class="list--container"
+      inlineadd=""
+      validateadd="function () { [native code] }"
+    >
+      <div
+        class="list--hidden-columns"
+      >
+        <div
+          class="list-column"
+        >
+          name
+        </div>
+         
+        <div
+          class="list-column"
+        >
+          code
+        </div>
+         
+        <div
+          class="list-column"
+        >
+          updated
+        </div>
+      </div>
+       
+      <div
+        class="list"
+      >
+        <div
+          class="list--header"
+        >
+          <div
+            class="list--header-item"
+          >
+            <span
+              class="list--header-text"
+            >
+              name
+            </span>
+             
+            <div
+              class="list--header-sort-arrow"
+            >
+              <!---->
+            </div>
+          </div>
+          <div
+            class="list--header-item"
+          >
+            <span
+              class="list--header-text"
+            >
+              code
+            </span>
+             
+            <div
+              class="list--header-sort-arrow"
+            >
+              <!---->
+            </div>
+          </div>
+          <div
+            class="list--header-item"
+          >
+            <span
+              class="list--header-text"
+            >
+              updated
+            </span>
+             
+            <div
+              class="list--header-sort-arrow"
+            >
+              <!---->
+            </div>
+          </div>
+        </div>
+         
+        <!---->
+         
+        <div
+          mode="out-in"
+        >
+          <div
+            class="list-item bordered hover-shadow"
+            style="background: transparent;"
+          >
+            <div
+              class="list-item--content"
+            >
+              <span
+                class="list-item--property"
+              >
+                Congo
+              </span>
+              <span
+                class="list-item--property"
+              >
+                GB
+              </span>
+              <span
+                class="list-item--property"
+              >
+                Thu Mar 12 2020 23:45:58 GMT+0300 (Москва, стандартное время)
+              </span>
+            </div>
+          </div>
+          <div
+            class="list-item bordered hover-shadow"
+            style="background: transparent;"
+          >
+            <div
+              class="list-item--content"
+            >
+              <span
+                class="list-item--property"
+              >
+                Palau
+              </span>
+              <span
+                class="list-item--property"
+              >
+                DE
+              </span>
+              <span
+                class="list-item--property"
+              >
+                Fri Feb 28 2020 23:45:58 GMT+0300 (Москва, стандартное время)
+              </span>
+            </div>
+          </div>
+          <div
+            class="list-item bordered hover-shadow"
+            style="background: transparent;"
+          >
+            <div
+              class="list-item--content"
+            >
+              <span
+                class="list-item--property"
+              >
+                Korea
+              </span>
+              <span
+                class="list-item--property"
+              >
+                IN
+              </span>
+              <span
+                class="list-item--property"
+              >
+                Thu Feb 27 2020 23:45:58 GMT+0300 (Москва, стандартное время)
+              </span>
+            </div>
+          </div>
+          <div
+            class="list-item bordered hover-shadow"
+            style="background: transparent;"
+          >
+            <div
+              class="list-item--content"
+            >
+              <span
+                class="list-item--property"
+              >
+                Cocos (Keeling) Islands
+              </span>
+              <span
+                class="list-item--property"
+              >
+                DE
+              </span>
+              <span
+                class="list-item--property"
+              >
+                Sun Mar 08 2020 23:45:58 GMT+0300 (Москва, стандартное время)
+              </span>
+            </div>
+          </div>
+          <div
+            class="list-item bordered hover-shadow"
+            style="background: transparent;"
+          >
+            <div
+              class="list-item--content"
+            >
+              <span
+                class="list-item--property"
+              >
+                Monaco
+              </span>
+              <span
+                class="list-item--property"
+              >
+                CN
+              </span>
+              <span
+                class="list-item--property"
+              >
+                Thu Mar 05 2020 23:45:58 GMT+0300 (Москва, стандартное время)
+              </span>
+            </div>
+          </div>
+          <div
+            class="list-item bordered hover-shadow"
+            style="background: transparent;"
+          >
+            <div
+              class="list-item--content"
+            >
+              <span
+                class="list-item--property"
+              >
+                Afghanistan
+              </span>
+              <span
+                class="list-item--property"
+              >
+                IN
+              </span>
+              <span
+                class="list-item--property"
+              >
+                Tue Mar 03 2020 23:45:58 GMT+0300 (Москва, стандартное время)
+              </span>
+            </div>
+          </div>
+          <div
+            class="list-item bordered hover-shadow"
+            style="background: transparent;"
+          >
+            <div
+              class="list-item--content"
+            >
+              <span
+                class="list-item--property"
+              >
+                Burkina Faso
+              </span>
+              <span
+                class="list-item--property"
+              >
+                RU
+              </span>
+              <span
+                class="list-item--property"
+              >
+                Tue Mar 03 2020 23:45:58 GMT+0300 (Москва, стандартное время)
+              </span>
+            </div>
+          </div>
+          <div
+            class="list-item bordered hover-shadow"
+            style="background: transparent;"
+          >
+            <div
+              class="list-item--content"
+            >
+              <span
+                class="list-item--property"
+              >
+                American Samoa
+              </span>
+              <span
+                class="list-item--property"
+              >
+                ES
+              </span>
+              <span
+                class="list-item--property"
+              >
+                Sun Feb 23 2020 23:45:58 GMT+0300 (Москва, стандартное время)
+              </span>
+            </div>
+          </div>
+          <div
+            class="list-item bordered hover-shadow"
+            style="background: transparent;"
+          >
+            <div
+              class="list-item--content"
+            >
+              <span
+                class="list-item--property"
+              >
+                New Zealand
+              </span>
+              <span
+                class="list-item--property"
+              >
+                RU
+              </span>
+              <span
+                class="list-item--property"
+              >
+                Sat Mar 07 2020 23:45:58 GMT+0300 (Москва, стандартное время)
+              </span>
+            </div>
+          </div>
+          <div
+            class="list-item bordered hover-shadow"
+            style="background: transparent;"
+          >
+            <div
+              class="list-item--content"
+            >
+              <span
+                class="list-item--property"
+              >
+                Georgia
+              </span>
+              <span
+                class="list-item--property"
+              >
+                IE
+              </span>
+              <span
+                class="list-item--property"
+              >
+                Mon Mar 02 2020 23:45:58 GMT+0300 (Москва, стандартное время)
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+       
+      <div
+        class="pagination"
+      >
+        <div
+          class="button"
+        >
+          <button
+            class="button--submit simple text-not-faded text-on-hover static-size icon-left"
+          >
+            <div
+              class="button--content"
+            >
+              <span>
+                <i
+                  class="material-icons button--icon button--icon-left"
+                >
+                  navigate_before
+                </i>
+              </span>
+               
+              <span
+                class="button--text"
+              >
+                Previous
+              </span>
+               
+              <!---->
+            </div>
+          </button>
+        </div>
+         
+        <div
+          class="pagination--numbers"
+        >
+          <!---->
+           
+          <div
+            class="button"
+          >
+            <button
+              class="button--submit simple active text-not-faded"
+            >
+              <div
+                class="button--content"
+              >
+                <!---->
+                 
+                <span
+                  class="button--text"
+                >
+                  1
+      
+                </span>
+                 
+                <!---->
+              </div>
+            </button>
+          </div>
+          <div
+            class="button"
+          >
+            <button
+              class="button--submit simple text-not-faded"
+            >
+              <div
+                class="button--content"
+              >
+                <!---->
+                 
+                <span
+                  class="button--text"
+                >
+                  2
+      
+                </span>
+                 
+                <!---->
+              </div>
+            </button>
+          </div>
+           
+          <!---->
+        </div>
+         
+        <div
+          class="button"
+        >
+          <button
+            class="button--submit simple text-not-faded text-on-hover static-size icon-right"
+          >
+            <div
+              class="button--content"
+            >
+              <!---->
+               
+              <span
+                class="button--text"
+              >
+                Next
+              </span>
+               
+              <span>
+                <i
+                  class="material-icons button--icon button--icon-right"
+                >
+                  navigate_next
+                </i>
+              </span>
+            </div>
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+`;

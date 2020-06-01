@@ -1,0 +1,10 @@
+fragment Test on Test {
+   id
+   index
+   input
+   output
+   public
+   problemId
+   createdAt
+   updatedAt
+}

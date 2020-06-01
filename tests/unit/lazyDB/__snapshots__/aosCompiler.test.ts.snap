@@ -1,0 +1,1017 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AOS Compiler append OneToOne complex property after another complex OneToOne 1`] = `
+Object {
+  "entity1": RelationsField {
+    "schema": Object {
+      "first": SimpleField {
+        "resolvedAt": null,
+        "type": "Any",
+      },
+    },
+    "type": "OneToOne",
+  },
+}
+`;
+
+exports[`AOS Compiler append OneToOne complex property after another complex OneToOne 2`] = `
+Object {
+  "entity1": RelationsField {
+    "schema": Object {
+      "first": SimpleField {
+        "resolvedAt": null,
+        "type": "Any",
+      },
+      "second": SimpleField {
+        "resolvedAt": null,
+        "type": "Any",
+      },
+    },
+    "type": "OneToOne",
+  },
+}
+`;
+
+exports[`AOS Compiler append OneToOne complex property after another complex OneToOne 3`] = `
+Object {
+  "entity1": RelationsField {
+    "schema": Object {
+      "first": SimpleField {
+        "resolvedAt": null,
+        "type": "Any",
+      },
+      "second": SimpleField {
+        "resolvedAt": null,
+        "type": "Any",
+      },
+    },
+    "type": "OneToOne",
+  },
+  "entity2": RelationsField {
+    "schema": Object {
+      "third": SimpleField {
+        "resolvedAt": null,
+        "type": "Any",
+      },
+    },
+    "type": "OneToOne",
+  },
+}
+`;
+
+exports[`AOS Compiler append complex OneToMany property 1`] = `
+Object {
+  "entities": RelationsField {
+    "schema": Object {
+      "simple": SimpleField {
+        "resolvedAt": null,
+        "type": "Any",
+      },
+    },
+    "type": "OneToMany",
+  },
+}
+`;
+
+exports[`AOS Compiler append complex OneToMany property by steps 1`] = `
+Object {
+  "entities": RelationsField {
+    "schema": Object {},
+    "type": "OneToMany",
+  },
+}
+`;
+
+exports[`AOS Compiler append complex OneToMany property by steps 2`] = `
+Object {
+  "entities": RelationsField {
+    "schema": Object {},
+    "type": "OneToMany",
+  },
+}
+`;
+
+exports[`AOS Compiler append complex OneToMany property by steps 3`] = `
+Object {
+  "entities": RelationsField {
+    "schema": Object {
+      "simple": SimpleField {
+        "resolvedAt": null,
+        "type": "Any",
+      },
+    },
+    "type": "OneToMany",
+  },
+}
+`;
+
+exports[`AOS Compiler append complex OneToMany property with required fields 1`] = `
+Object {
+  "entities": RelationsField {
+    "schema": Object {
+      "anotherId": SimpleField {
+        "resolvedAt": null,
+        "type": "Any",
+      },
+      "id": SimpleField {
+        "resolvedAt": null,
+        "type": "Any",
+      },
+      "nodeId": SimpleField {
+        "resolvedAt": null,
+        "type": "Any",
+      },
+    },
+    "type": "OneToMany",
+  },
+}
+`;
+
+exports[`AOS Compiler append complex OneToMany property with required fields 2`] = `
+Object {
+  "entities": RelationsField {
+    "schema": Object {
+      "anotherId": SimpleField {
+        "resolvedAt": null,
+        "type": "Any",
+      },
+      "id": SimpleField {
+        "resolvedAt": null,
+        "type": "Any",
+      },
+      "nodeId": SimpleField {
+        "resolvedAt": null,
+        "type": "Any",
+      },
+    },
+    "type": "OneToMany",
+  },
+}
+`;
+
+exports[`AOS Compiler append complex OneToMany property with required fields 3`] = `
+Object {
+  "entities": RelationsField {
+    "schema": Object {
+      "anotherId": SimpleField {
+        "resolvedAt": null,
+        "type": "Any",
+      },
+      "id": SimpleField {
+        "resolvedAt": null,
+        "type": "Any",
+      },
+      "nodeId": SimpleField {
+        "resolvedAt": null,
+        "type": "Any",
+      },
+      "simple": SimpleField {
+        "resolvedAt": null,
+        "type": "Any",
+      },
+    },
+    "type": "OneToMany",
+  },
+}
+`;
+
+exports[`AOS Compiler append complex OneToMany to different items 1`] = `
+Object {
+  "first": SimpleField {
+    "resolvedAt": null,
+    "type": "Any",
+  },
+}
+`;
+
+exports[`AOS Compiler append complex OneToMany to different items 2`] = `
+Object {
+  "entities": RelationsField {
+    "schema": Object {
+      "second": SimpleField {
+        "resolvedAt": null,
+        "type": "Any",
+      },
+    },
+    "type": "OneToMany",
+  },
+  "first": SimpleField {
+    "resolvedAt": null,
+    "type": "Any",
+  },
+}
+`;
+
+exports[`AOS Compiler append complex OneToMany to different items 3`] = `
+Object {
+  "entities": RelationsField {
+    "schema": Object {
+      "second": SimpleField {
+        "resolvedAt": null,
+        "type": "Any",
+      },
+      "third": SimpleField {
+        "resolvedAt": null,
+        "type": "Any",
+      },
+    },
+    "type": "OneToMany",
+  },
+  "first": SimpleField {
+    "resolvedAt": null,
+    "type": "Any",
+  },
+}
+`;
+
+exports[`AOS Compiler append complex OneToMany to different items 4`] = `
+Object {
+  "entities": RelationsField {
+    "schema": Object {
+      "second": SimpleField {
+        "resolvedAt": null,
+        "type": "Any",
+      },
+      "third": SimpleField {
+        "resolvedAt": null,
+        "type": "Any",
+      },
+    },
+    "type": "OneToMany",
+  },
+  "first": SimpleField {
+    "resolvedAt": null,
+    "type": "Any",
+  },
+  "fourth": SimpleField {
+    "resolvedAt": null,
+    "type": "Any",
+  },
+}
+`;
+
+exports[`AOS Compiler append complex OneToMany to different properties 1`] = `
+Object {
+  "first": SimpleField {
+    "resolvedAt": null,
+    "type": "Any",
+  },
+}
+`;
+
+exports[`AOS Compiler append complex OneToMany to different properties 2`] = `
+Object {
+  "entities1": RelationsField {
+    "schema": Object {
+      "second": SimpleField {
+        "resolvedAt": null,
+        "type": "Any",
+      },
+    },
+    "type": "OneToMany",
+  },
+  "first": SimpleField {
+    "resolvedAt": null,
+    "type": "Any",
+  },
+}
+`;
+
+exports[`AOS Compiler append complex OneToMany to different properties 3`] = `
+Object {
+  "entities1": RelationsField {
+    "schema": Object {
+      "second": SimpleField {
+        "resolvedAt": null,
+        "type": "Any",
+      },
+    },
+    "type": "OneToMany",
+  },
+  "entities2": RelationsField {
+    "schema": Object {
+      "third": SimpleField {
+        "resolvedAt": null,
+        "type": "Any",
+      },
+    },
+    "type": "OneToMany",
+  },
+  "first": SimpleField {
+    "resolvedAt": null,
+    "type": "Any",
+  },
+}
+`;
+
+exports[`AOS Compiler append complex OneToMany to different properties 4`] = `
+Object {
+  "entities1": RelationsField {
+    "schema": Object {
+      "second": SimpleField {
+        "resolvedAt": null,
+        "type": "Any",
+      },
+    },
+    "type": "OneToMany",
+  },
+  "entities2": RelationsField {
+    "schema": Object {
+      "third": SimpleField {
+        "resolvedAt": null,
+        "type": "Any",
+      },
+    },
+    "type": "OneToMany",
+  },
+  "first": SimpleField {
+    "resolvedAt": null,
+    "type": "Any",
+  },
+  "fourth": SimpleField {
+    "resolvedAt": null,
+    "type": "Any",
+  },
+}
+`;
+
+exports[`AOS Compiler append complex OneToOne string property 1`] = `
+Object {
+  "entity": RelationsField {
+    "schema": Object {
+      "simple": SimpleField {
+        "resolvedAt": null,
+        "type": "Any",
+      },
+    },
+    "type": "OneToOne",
+  },
+}
+`;
+
+exports[`AOS Compiler append id after simple string property 1`] = `
+Object {
+  "simple": SimpleField {
+    "resolvedAt": null,
+    "type": "Any",
+  },
+}
+`;
+
+exports[`AOS Compiler append id after simple string property 2`] = `
+Object {
+  "id": SimpleField {
+    "resolvedAt": null,
+    "type": "Any",
+  },
+  "simple": SimpleField {
+    "resolvedAt": null,
+    "type": "Any",
+  },
+}
+`;
+
+exports[`AOS Compiler append id before simple string property 1`] = `
+Object {
+  "id": SimpleField {
+    "resolvedAt": null,
+    "type": "Any",
+  },
+}
+`;
+
+exports[`AOS Compiler append id before simple string property 2`] = `
+Object {
+  "id": SimpleField {
+    "resolvedAt": null,
+    "type": "Any",
+  },
+  "simple": SimpleField {
+    "resolvedAt": null,
+    "type": "Any",
+  },
+}
+`;
+
+exports[`AOS Compiler append multiple required fields before propery 1`] = `
+Object {
+  "anotherId": SimpleField {
+    "resolvedAt": null,
+    "type": "Any",
+  },
+  "id": SimpleField {
+    "resolvedAt": null,
+    "type": "Any",
+  },
+  "nodeId": SimpleField {
+    "resolvedAt": null,
+    "type": "Any",
+  },
+  "simple": SimpleField {
+    "resolvedAt": null,
+    "type": "Any",
+  },
+}
+`;
+
+exports[`AOS Compiler append multiple simple properties to OneToMany 1`] = `
+Object {
+  "first": SimpleField {
+    "resolvedAt": null,
+    "type": "Any",
+  },
+}
+`;
+
+exports[`AOS Compiler append multiple simple properties to OneToMany 2`] = `
+Object {
+  "entities": RelationsField {
+    "schema": Object {
+      "second": SimpleField {
+        "resolvedAt": null,
+        "type": "Any",
+      },
+    },
+    "type": "OneToMany",
+  },
+  "first": SimpleField {
+    "resolvedAt": null,
+    "type": "Any",
+  },
+}
+`;
+
+exports[`AOS Compiler append multiple simple properties to OneToMany 3`] = `
+Object {
+  "entities": RelationsField {
+    "schema": Object {
+      "second": SimpleField {
+        "resolvedAt": null,
+        "type": "Any",
+      },
+      "third": SimpleField {
+        "resolvedAt": null,
+        "type": "Any",
+      },
+    },
+    "type": "OneToMany",
+  },
+  "first": SimpleField {
+    "resolvedAt": null,
+    "type": "Any",
+  },
+}
+`;
+
+exports[`AOS Compiler append multiple simple properties to OneToMany 4`] = `
+Object {
+  "entities": RelationsField {
+    "schema": Object {
+      "second": SimpleField {
+        "resolvedAt": null,
+        "type": "Any",
+      },
+      "third": SimpleField {
+        "resolvedAt": null,
+        "type": "Any",
+      },
+    },
+    "type": "OneToMany",
+  },
+  "first": SimpleField {
+    "resolvedAt": null,
+    "type": "Any",
+  },
+  "fourth": SimpleField {
+    "resolvedAt": null,
+    "type": "Any",
+  },
+}
+`;
+
+exports[`AOS Compiler append multiple string properties 1`] = `
+Object {
+  "first": SimpleField {
+    "resolvedAt": null,
+    "type": "Any",
+  },
+}
+`;
+
+exports[`AOS Compiler append multiple string properties 2`] = `
+Object {
+  "first": SimpleField {
+    "resolvedAt": null,
+    "type": "Any",
+  },
+  "second": SimpleField {
+    "resolvedAt": null,
+    "type": "Any",
+  },
+}
+`;
+
+exports[`AOS Compiler append multiple string properties 3`] = `
+Object {
+  "first": SimpleField {
+    "resolvedAt": null,
+    "type": "Any",
+  },
+  "second": SimpleField {
+    "resolvedAt": null,
+    "type": "Any",
+  },
+  "third": SimpleField {
+    "resolvedAt": null,
+    "type": "Any",
+  },
+}
+`;
+
+exports[`AOS Compiler append required id field before propery 1`] = `
+Object {
+  "id": SimpleField {
+    "resolvedAt": null,
+    "type": "Any",
+  },
+  "simple": SimpleField {
+    "resolvedAt": null,
+    "type": "Any",
+  },
+}
+`;
+
+exports[`AOS Compiler append resolved simple string property 1`] = `
+Object {
+  "simple": SimpleField {
+    "resolvedAt": 1500000000000,
+    "type": "Any",
+  },
+}
+`;
+
+exports[`AOS Compiler append simple number property 1`] = `Object {}`;
+
+exports[`AOS Compiler append simple number property like string 1`] = `Object {}`;
+
+exports[`AOS Compiler append simple property before and after complex OneToOne 1`] = `
+Object {
+  "first": SimpleField {
+    "resolvedAt": null,
+    "type": "Any",
+  },
+}
+`;
+
+exports[`AOS Compiler append simple property before and after complex OneToOne 2`] = `
+Object {
+  "entity": RelationsField {
+    "schema": Object {},
+    "type": "OneToOne",
+  },
+  "first": SimpleField {
+    "resolvedAt": null,
+    "type": "Any",
+  },
+}
+`;
+
+exports[`AOS Compiler append simple property before and after complex OneToOne 3`] = `
+Object {
+  "entity": RelationsField {
+    "schema": Object {
+      "second": SimpleField {
+        "resolvedAt": null,
+        "type": "Any",
+      },
+    },
+    "type": "OneToOne",
+  },
+  "first": SimpleField {
+    "resolvedAt": null,
+    "type": "Any",
+  },
+}
+`;
+
+exports[`AOS Compiler append simple property before and after complex OneToOne 4`] = `
+Object {
+  "entity": RelationsField {
+    "schema": Object {
+      "second": SimpleField {
+        "resolvedAt": null,
+        "type": "Any",
+      },
+      "third": SimpleField {
+        "resolvedAt": null,
+        "type": "Any",
+      },
+    },
+    "type": "OneToOne",
+  },
+  "first": SimpleField {
+    "resolvedAt": null,
+    "type": "Any",
+  },
+}
+`;
+
+exports[`AOS Compiler append simple property before and after complex OneToOne 5`] = `
+Object {
+  "entity": RelationsField {
+    "schema": Object {
+      "second": SimpleField {
+        "resolvedAt": null,
+        "type": "Any",
+      },
+      "third": SimpleField {
+        "resolvedAt": null,
+        "type": "Any",
+      },
+    },
+    "type": "OneToOne",
+  },
+  "first": SimpleField {
+    "resolvedAt": null,
+    "type": "Any",
+  },
+  "fourth": SimpleField {
+    "resolvedAt": null,
+    "type": "Any",
+  },
+}
+`;
+
+exports[`AOS Compiler append simple property to complex OneToOne 1`] = `
+Object {
+  "entity": RelationsField {
+    "schema": Object {},
+    "type": "OneToOne",
+  },
+}
+`;
+
+exports[`AOS Compiler append simple property to complex OneToOne 2`] = `
+Object {
+  "entity": RelationsField {
+    "schema": Object {
+      "first": SimpleField {
+        "resolvedAt": null,
+        "type": "Any",
+      },
+    },
+    "type": "OneToOne",
+  },
+}
+`;
+
+exports[`AOS Compiler append simple property to complex OneToOne 3`] = `
+Object {
+  "entity": RelationsField {
+    "schema": Object {
+      "first": SimpleField {
+        "resolvedAt": null,
+        "type": "Any",
+      },
+      "second": SimpleField {
+        "resolvedAt": null,
+        "type": "Any",
+      },
+    },
+    "type": "OneToOne",
+  },
+}
+`;
+
+exports[`AOS Compiler append simple property to complex OneToOne with required fields 1`] = `
+Object {
+  "entity": RelationsField {
+    "schema": Object {
+      "anotherId": SimpleField {
+        "resolvedAt": null,
+        "type": "Any",
+      },
+      "id": SimpleField {
+        "resolvedAt": null,
+        "type": "Any",
+      },
+      "nodeId": SimpleField {
+        "resolvedAt": null,
+        "type": "Any",
+      },
+    },
+    "type": "OneToOne",
+  },
+}
+`;
+
+exports[`AOS Compiler append simple property to complex OneToOne with required fields 2`] = `
+Object {
+  "entity": RelationsField {
+    "schema": Object {
+      "anotherId": SimpleField {
+        "resolvedAt": null,
+        "type": "Any",
+      },
+      "first": SimpleField {
+        "resolvedAt": null,
+        "type": "Any",
+      },
+      "id": SimpleField {
+        "resolvedAt": null,
+        "type": "Any",
+      },
+      "nodeId": SimpleField {
+        "resolvedAt": null,
+        "type": "Any",
+      },
+    },
+    "type": "OneToOne",
+  },
+}
+`;
+
+exports[`AOS Compiler append simple property to complex OneToOne with required fields 3`] = `
+Object {
+  "entity": RelationsField {
+    "schema": Object {
+      "anotherId": SimpleField {
+        "resolvedAt": null,
+        "type": "Any",
+      },
+      "first": SimpleField {
+        "resolvedAt": null,
+        "type": "Any",
+      },
+      "id": SimpleField {
+        "resolvedAt": null,
+        "type": "Any",
+      },
+      "nodeId": SimpleField {
+        "resolvedAt": null,
+        "type": "Any",
+      },
+      "second": SimpleField {
+        "resolvedAt": null,
+        "type": "Any",
+      },
+    },
+    "type": "OneToOne",
+  },
+}
+`;
+
+exports[`AOS Compiler append simple string property 1`] = `
+Object {
+  "simple": SimpleField {
+    "resolvedAt": null,
+    "type": "Any",
+  },
+}
+`;
+
+exports[`AOS Compiler don't append required id field second time 1`] = `
+Object {
+  "first": SimpleField {
+    "resolvedAt": null,
+    "type": "Any",
+  },
+  "id": SimpleField {
+    "resolvedAt": null,
+    "type": "Any",
+  },
+}
+`;
+
+exports[`AOS Compiler don't append required id field second time 2`] = `
+Object {
+  "first": SimpleField {
+    "resolvedAt": null,
+    "type": "Any",
+  },
+  "id": SimpleField {
+    "resolvedAt": null,
+    "type": "Any",
+  },
+  "second": SimpleField {
+    "resolvedAt": null,
+    "type": "Any",
+  },
+}
+`;
+
+exports[`AOS Compiler multiple nesting levels of properties 1`] = `
+Object {
+  "entity1": RelationsField {
+    "schema": Object {
+      "entities1": RelationsField {
+        "schema": Object {
+          "entity2": RelationsField {
+            "schema": Object {
+              "entity3": RelationsField {
+                "schema": Object {
+                  "entities2": RelationsField {
+                    "schema": Object {
+                      "simple": SimpleField {
+                        "resolvedAt": null,
+                        "type": "Any",
+                      },
+                    },
+                    "type": "OneToMany",
+                  },
+                },
+                "type": "OneToOne",
+              },
+            },
+            "type": "OneToOne",
+          },
+        },
+        "type": "OneToMany",
+      },
+    },
+    "type": "OneToOne",
+  },
+}
+`;
+
+exports[`AOS Compiler resolve complex OneToOne string property 1`] = `
+Object {
+  "entity": RelationsField {
+    "schema": Object {
+      "simple": SimpleField {
+        "resolvedAt": 1500000000000,
+        "type": "Any",
+      },
+    },
+    "type": "OneToOne",
+  },
+}
+`;
+
+exports[`AOS Compiler resolve existing simple string property 1`] = `
+Object {
+  "simple": SimpleField {
+    "resolvedAt": null,
+    "type": "Any",
+  },
+}
+`;
+
+exports[`AOS Compiler resolve existing simple string property 2`] = `
+Object {
+  "simple": SimpleField {
+    "resolvedAt": 1500000000000,
+    "type": "Any",
+  },
+}
+`;
+
+exports[`AOS Compiler resolve multiple simple properties to OneToMany 1`] = `
+Object {
+  "first": SimpleField {
+    "resolvedAt": null,
+    "type": "Any",
+  },
+}
+`;
+
+exports[`AOS Compiler resolve multiple simple properties to OneToMany 2`] = `
+Object {
+  "entities": RelationsField {
+    "schema": Object {
+      "second": SimpleField {
+        "resolvedAt": null,
+        "type": "Any",
+      },
+    },
+    "type": "OneToMany",
+  },
+  "first": SimpleField {
+    "resolvedAt": null,
+    "type": "Any",
+  },
+}
+`;
+
+exports[`AOS Compiler resolve multiple simple properties to OneToMany 3`] = `
+Object {
+  "entities": RelationsField {
+    "schema": Object {
+      "second": SimpleField {
+        "resolvedAt": 1500000000000,
+        "type": "Any",
+      },
+    },
+    "type": "OneToMany",
+  },
+  "first": SimpleField {
+    "resolvedAt": null,
+    "type": "Any",
+  },
+}
+`;
+
+exports[`AOS Compiler resolve multiple simple properties to OneToMany 4`] = `
+Object {
+  "entities": RelationsField {
+    "schema": Object {
+      "second": SimpleField {
+        "resolvedAt": 1500000000000,
+        "type": "Any",
+      },
+      "third": SimpleField {
+        "resolvedAt": null,
+        "type": "Any",
+      },
+    },
+    "type": "OneToMany",
+  },
+  "first": SimpleField {
+    "resolvedAt": null,
+    "type": "Any",
+  },
+}
+`;
+
+exports[`AOS Compiler resolve multiple simple properties to OneToMany 5`] = `
+Object {
+  "entities": RelationsField {
+    "schema": Object {
+      "second": SimpleField {
+        "resolvedAt": 1500000000000,
+        "type": "Any",
+      },
+      "third": SimpleField {
+        "resolvedAt": null,
+        "type": "Any",
+      },
+    },
+    "type": "OneToMany",
+  },
+  "first": SimpleField {
+    "resolvedAt": null,
+    "type": "Any",
+  },
+  "fourth": SimpleField {
+    "resolvedAt": 1500000000000,
+    "type": "Any",
+  },
+}
+`;
+
+exports[`AOS Compiler resolve simple number property 1`] = `Object {}`;
+
+exports[`AOS Compiler resolve simple property to complex OneToOne 1`] = `
+Object {
+  "entity": RelationsField {
+    "schema": Object {},
+    "type": "OneToOne",
+  },
+}
+`;
+
+exports[`AOS Compiler resolve simple property to complex OneToOne 2`] = `
+Object {
+  "entity": RelationsField {
+    "schema": Object {
+      "simple": SimpleField {
+        "resolvedAt": null,
+        "type": "Any",
+      },
+    },
+    "type": "OneToOne",
+  },
+}
+`;
+
+exports[`AOS Compiler resolve simple property to complex OneToOne 3`] = `
+Object {
+  "entity": RelationsField {
+    "schema": Object {
+      "simple": SimpleField {
+        "resolvedAt": 1500000000000,
+        "type": "Any",
+      },
+    },
+    "type": "OneToOne",
+  },
+}
+`;
+
+exports[`AOS Compiler try resolve resolved simple string property 1`] = `
+Object {
+  "simple": SimpleField {
+    "resolvedAt": 1500000000000,
+    "type": "Any",
+  },
+}
+`;
+
+exports[`AOS Compiler try resolve resolved simple string property 2`] = `
+Object {
+  "simple": SimpleField {
+    "resolvedAt": 1500000000000,
+    "type": "Any",
+  },
+}
+`;

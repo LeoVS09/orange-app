@@ -1,0 +1,11 @@
+#import "../fragments/PartialContest.graphql"
+
+mutation deleteContest($input: DeleteContestInput!){
+   deleteContest(input: $input) {
+      contest {
+         nodeId
+
+         ...PartialContest
+      }
+   }
+}

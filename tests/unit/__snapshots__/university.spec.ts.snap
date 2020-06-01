@@ -1,0 +1,237 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`University.vue renders university 1`] = `
+<div
+  class="university"
+>
+  <div
+    class="page-header highlight"
+  >
+    <div
+      class="page-header--hidden-breadcrumbs"
+    >
+      <div
+        class="breadcrumbs"
+      >
+        Countries
+      </div>
+       
+      <div
+        class="breadcrumbs"
+      >
+        Country
+      </div>
+       
+      <div
+        class="breadcrumbs"
+      >
+        City
+      </div>
+    </div>
+     
+    <!---->
+     
+    <div
+      class="page-header--content"
+    >
+      <h1>
+        
+      </h1>
+       
+      <div
+        class="page-header--actions"
+      />
+       
+      <!---->
+    </div>
+     
+    <!---->
+  </div>
+   
+  <section
+    class="lazy-data section without-margin border-bottom"
+  >
+    <div
+      class="lazy-data--main"
+    >
+      <h4
+        class="lazy-data--header"
+      >
+        Information
+      </h4>
+       
+      <div
+        class="lazy-data--hidden-columns"
+      >
+        <div
+          class="model-property"
+        >
+          longName
+        </div>
+      </div>
+       
+      <div
+        class="lazy-data--content"
+      />
+    </div>
+  </section>
+</div>
+`;
+
+exports[`University.vue renders university 2`] = `
+<div
+  class="university"
+>
+  <div
+    class="page-header highlight breadcrumbs"
+  >
+    <div
+      class="page-header--hidden-breadcrumbs"
+    >
+      <div
+        class="breadcrumbs"
+      >
+        Countries
+      </div>
+       
+      <div
+        class="breadcrumbs"
+      >
+        Cook Islands
+      </div>
+       
+      <div
+        class="breadcrumbs"
+      >
+        West Devanstad
+      </div>
+    </div>
+     
+    <div
+      class="page-header--breadcrumbs"
+    >
+      <router-link
+        class="page-header--breadcrumb-step link"
+        to="[object Object]"
+      >
+        Countries
+      </router-link>
+       
+      <span
+        class="page-header--breadcrumb-separator"
+      >
+        /
+      </span>
+      <router-link
+        class="page-header--breadcrumb-step link"
+        to="[object Object]"
+      >
+        Cook Islands
+      </router-link>
+       
+      <span
+        class="page-header--breadcrumb-separator"
+      >
+        /
+      </span>
+      <router-link
+        class="page-header--breadcrumb-step link"
+        to="[object Object]"
+      >
+        West Devanstad
+      </router-link>
+       
+      <span
+        class="page-header--breadcrumb-separator"
+      >
+        /
+      </span>
+    </div>
+     
+    <div
+      class="page-header--content"
+    >
+      <h1>
+        numquam
+      </h1>
+       
+      <div
+        class="page-header--actions"
+      />
+       
+      <!---->
+    </div>
+     
+    <div
+      class="page-header--data"
+    >
+      <div
+        class="page-header--data-content"
+      >
+        <div
+          class="data-view in-row contrast small"
+        >
+          <div
+            class="data-view--item"
+          >
+            <i
+              class="material-icons data-view--icon"
+            >
+              publish
+            </i>
+             
+            <span
+              class="data-view--value"
+            >
+              25.05.2022
+            </span>
+          </div>
+          <div
+            class="data-view--item"
+          >
+            <i
+              class="material-icons data-view--icon"
+            >
+              edit
+            </i>
+             
+            <span
+              class="data-view--value"
+            >
+              17.04.2020
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+   
+  <section
+    class="lazy-data section without-margin border-bottom"
+  >
+    <div
+      class="lazy-data--main"
+    >
+      <h4
+        class="lazy-data--header"
+      >
+        Information
+      </h4>
+       
+      <div
+        class="lazy-data--hidden-columns"
+      >
+        <div
+          class="model-property"
+        >
+          longName
+        </div>
+      </div>
+       
+      <div
+        class="lazy-data--content"
+      />
+    </div>
+  </section>
+</div>
+`;

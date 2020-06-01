@@ -1,0 +1,11 @@
+#import "../fragments/InputType.graphql"
+
+mutation deleteInputType($input: DeleteProgramInputTypeInput!) {
+   deleteProgramInputType(input: $input){
+      programInputType {
+         nodeId
+
+         ...InputType
+      }
+   }
+}

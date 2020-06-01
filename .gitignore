@@ -32,6 +32,10 @@ bower_components
 # Compiled binary code
 dist/
 
+# Tests results data
+/tests/e2e/videos/
+/tests/e2e/screenshots/
+
 # Dependency directories
 node_modules/
 jspm_packages/
@@ -54,11 +58,30 @@ typings/
 # Yarn Integrity file
 .yarn-integrity
 
-# dotenv environment variables file
+# local env files
+.env.local
+.env.*.local
 .env
+.env-list
 
 # next.js build output
 .next
 
-# IDEA project data
-/.idea/
+# Editor directories and files
+.idea
+.vscode
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Git patches
+*.patch
+
+# Synchronisation
+.stignore
+.stfolder
+.stversions
+
+/live/

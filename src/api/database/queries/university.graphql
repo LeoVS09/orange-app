@@ -1,0 +1,24 @@
+#import "../fragments/PartialUniversity.graphql"
+#import "../fragments/PartialCity.graphql"
+#import "../fragments/PartialCountry.graphql"
+
+query University($id: UUID!) {
+   university(id: $id) {
+      nodeId
+
+      ...PartialUniversity
+
+      city {
+         nodeId
+
+         ...PartialCity
+
+         country {
+            nodeId
+
+            ...PartialCountry
+         }
+      }
+   }
+
+}

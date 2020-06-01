@@ -1,0 +1,8 @@
+fragment ProgrammingLanguage on ProgrammingLanguage {
+   id
+   name
+   alias
+   version
+   createdAt
+   updatedAt
+}

@@ -1,0 +1,11 @@
+#import "../fragments/PartialCity.graphql"
+
+mutation createCity($input: CreateCityInput!) {
+   createCity(input: $input){
+      city {
+         nodeId
+
+         ...PartialCity
+      }
+   }
+}

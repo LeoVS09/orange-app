@@ -1,0 +1,9 @@
+#import "../fragments/FullCountry.graphql"
+
+query Country($id: UUID!) {
+   country(id: $id) {
+      nodeId
+
+      ...FullCountry
+   }
+}

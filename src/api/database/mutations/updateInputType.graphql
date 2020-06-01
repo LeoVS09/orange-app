@@ -1,0 +1,11 @@
+#import "../fragments/InputType.graphql"
+
+mutation updateInputType($input: UpdateProgramInputTypeInput!) {
+   updateProgramInputType(input: $input){
+      programInputType {
+         nodeId
+
+         ...InputType
+      }
+   }
+}

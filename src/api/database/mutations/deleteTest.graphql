@@ -1,0 +1,11 @@
+#import "../fragments/Test.graphql"
+
+mutation deleteTest($input: DeleteTestInput!) {
+   deleteTest(input: $input){
+      test {
+         nodeId
+
+         ...Test
+      }
+   }
+}

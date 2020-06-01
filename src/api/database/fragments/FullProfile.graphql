@@ -1,0 +1,25 @@
+#import "./PartialUniversity.graphql"
+#import "./PartialCity.graphql"
+
+fragment FullProfile on Profile {
+   id
+   firstName
+   middleName
+   lastName
+   phone
+   groupNumber
+   course
+   isTeacher
+   createdAt
+   updatedAt
+   city {
+      nodeId
+
+      ...PartialCity
+   }
+   university {
+      nodeId
+
+      ...PartialUniversity
+   }
+}

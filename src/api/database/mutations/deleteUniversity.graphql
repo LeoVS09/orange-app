@@ -1,0 +1,11 @@
+#import "../fragments/PartialUniversity.graphql"
+
+mutation deleteUniversity($input: DeleteUniversityInput!){
+   deleteUniversity(input: $input) {
+      university {
+         nodeId
+
+         ...PartialUniversity
+      }
+   }
+}

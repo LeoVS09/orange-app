@@ -1,0 +1,11 @@
+#import "../fragments/PartialCity.graphql"
+
+mutation deleteCity($input: DeleteCityInput!){
+   deleteCity(input: $input) {
+      city {
+         nodeId
+
+         ...PartialCity
+      }
+   }
+}

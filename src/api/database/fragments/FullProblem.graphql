@@ -1,0 +1,35 @@
+#import "./PartialProblem.graphql"
+#import "./Test.graphql"
+#import "./InputType.graphql"
+#import "./OutputType.graphql"
+
+fragment FullProblem on Problem {
+   ...PartialProblem
+
+   description
+   inputDescription
+   outputDescription
+   note
+
+   inputType {
+      nodeId
+
+      ...InputType
+   }
+
+   outputType {
+      nodeId
+
+      ...OutputType
+   }
+
+   limitTime
+   limitMemory
+
+   tests {
+      nodes {
+         nodeId
+         ...Test
+      }
+   }
+}

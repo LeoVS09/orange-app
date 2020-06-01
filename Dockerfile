@@ -1,16 +1,27 @@
-FROM node:8.11.4-jessie
+FROM node:11.14-stretch as base
 
-WORKDIR /orange-app
+# Need for developming for developming
+RUN apt update && apt upgrade -y && \
+   apt install -y bash bash-completion make curl
 
-RUN npm i npm@latest -g
+# install yarn
+RUN npm install -g yarn
 
-COPY package*.json ./
-RUN npm install --verbose
+# install vue
+RUN yarn global add @vue/cli
 
-ADD . .
+WORKDIR /ws
 
-RUN npm run build
+COPY package*.json /ws/
 
-EXPOSE 80
+RUN yarn
+
+FROM base
+
+COPY . /ws
+
+# RUN yarn build
+
+EXPOSE 8080
 
 CMD ["node",  "server/index.js"]

@@ -1,0 +1,29 @@
+#import "../fragments/PartialUniversity.graphql"
+
+query Universities(
+$first: Int,
+$last: Int,
+$offset: Int,
+$before: Cursor,
+$after: Cursor,
+$orderBy: [UniversitiesOrderBy!],
+$condition: UniversityCondition
+) {
+   universities(
+      first: $first,
+      last: $last,
+      offset: $offset,
+      before: $before,
+      after: $after,
+      orderBy: $orderBy,
+      condition: $condition
+   ) {
+      totalCount
+      nodes {
+         nodeId
+
+         ...PartialUniversity
+      }
+   }
+
+}

@@ -1,56 +1,99 @@
-
+// TODO: change variables names to kebab-case
+// TODO: change palette to google material style colors
 // ---------------------------------------- Colors -----------------------------------------
-$primaryColor: #ffffff;
-$secondaryColor: #d7d7d7;
-$backgroundColor: $primaryColor;
-$mainTextColor: #282a2f;
-$headerTextColor: #43454f;
-$primaryTextColor: lighten($mainTextColor, 20%);
-$secondaryTextColor: lighten($mainTextColor, 30%);
-$hoverTextColor: lighten($mainTextColor, 70%);
-$borderLineColor: lighten($mainTextColor, 70%);
-$footerColor: #363636;
-$doneColor: green;
-$inputColor: #F57C00;
-$inputErrorColor: #D50000;
+$primary-color: #ffffff;
+$secondary-color: #d7d7d7;
+$background-color: $primary-color;
+$main-text-color: #212121;
+$header-text-color: #43454f;
+$primary-text-color: lighten($main-text-color, 20%);
+$secondary-text-color: #4c4c4c;
+$hover-text-color: lighten($main-text-color, 70%);
+$border-line-color: lighten($main-text-color, 70%);
+$footer-color: #363636;
+$success-color: green;
+$error-color: #D50000;
+$input-color: #F57C00;
+$input-error-color: $error-color;
+$block-error-color: #f93c42;
+$block-error-text-color: #fdfdfd;
+$highlight-header-text-color: white;
+$highlight-text-color: #F57C00;
+$placeholder-color: #999; // rgba(0, 0, 0, 0.65);
+$ghost-button-color: #999;
+$secondary-background-color: #F2F2F2;
+$breadcrumbs-highlight-color: #eeebeb;
 
-$activeGradient: linear-gradient(160deg, #fda130, #fd7400, #ff6977);
+$thumb-color: #d6d1d1;
 
-$buttonColor: #F57C00;
-$buttonShadowColor: #fda130;
-$buttonPrimaryColor: #039BE5;
-$buttonPrimaryShadowColor: #039BE5;
-$buttonHighlightColor: #FFB300;
-$buttonTextColor: #505254;
-$buttonBorderColor: $secondaryColor;
-$buttonActiveColor: linear-gradient(160deg, #fda130, #ff7b78);
-$buttonActiveTextColor: white;
-$buttonPrimaryTextColor: white;
+$gradient-start-color: #fda130;
+$gradient-middle-color: #fd7400;
+$gradient-end-color: #ff6977;
 
-$spinnerColor: $buttonColor;
-$activeColor: #F57C00;
-$menuTextColor: lighten($mainTextColor, 20%);
+$active-gradient: linear-gradient(160deg, $gradient-start-color, $gradient-middle-color, $gradient-end-color);
+$highlight-section-color: #F9F9F9;
+$divider-line-color: #e5e5e5;
 
+$button-color: #F57C00;
+$button-shadow-color: #fda130;
+$button-primary-color: #039BE5;
+$button-primary-shadow-color: #039BE5;
+$button-highlight-color: #FFB300;
+$button-text-color: black;
+$button-fade-text-color: lighten($button-text-color, 30%);
+$button-border-color: $secondary-color;
+$button-active-color: linear-gradient(120deg, #fda130, #ff7b78);
+$button-active-text-color: white;
+$button-active-fade-text-color: darken($button-text-color, 30%);
+$button-primary-text-color: white;
+
+$spinner-color: $button-color;
+$active-color: #F57C00;
+$menu-text-color: lighten($main-text-color, 20%);
+
+$gradient-text-hover-color: linear-gradient(to right, $gradient-start-color 0%, $gradient-middle-color 25%, $gradient-end-color 50%, transparent 50%) 100% 0 / 200% 200%;
+
+$input-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
 
 // ---------------------------------------- Sizes ------------------------------------------
 
-$topBarHeight: 3rem;
-$contentMargin: 3rem;
-$contentPaddingTop: 1rem;
-$contentPaddingSides: 2rem;
-$maxContentWidth: 1280px;
-$maxTextWidth: 900px;
-$footerHeight: 10rem;
-$inputWidth: 30rem;
-$headerPadding: 0.7rem $contentPaddingSides;
-$problemLinePadding: 0.7rem;
+$top-bar-height: 3rem;
+$content-margin: 3rem;
+$content-padding-top: 1rem;
+$content-padding-sides: 2rem;
+$max-content-width: 1280px;
+$max-text-width: 900px;
+$footer-height: 10rem;
+$input-width: 30rem;
+$highlight-header-padding-sides: $content-padding-sides;
+$problem-line-padding: 0.7rem;
 
-$buttonPaddingTop: 0.3rem;
-$buttonPaddingSides: 1.1rem;
+$button-padding-top: 0.3rem;
+$button-padding-sides: 1.1rem;
+
+$button-font-size: 0.85rem;
+$button-bigger-size: 1rem;
+$input-left-padding: 0.3rem;
+
+$select-options-max-height: 10rem;
+
+// Default browser size, used only for compatibility with other pseudo-inputs
+$min-input-height: 19px;
+// ---------------------------------------- Fonts ------------------------------------------
+
+$font-size-text-primary: 1rem;
+$font-size-input-primary: $font-size-text-primary;
+
+$font-line-height-input-primary: 1rem;
+
+// ---------------------------------------- Animation --------------------------------------
+
+$default-animation-time: 0.2s;
+$input-animation-time: $default-animation-time;
 
 // ---------------------------------------- Skelet -----------------------------------------
 
-$skeletonColor: #ECECEC;
-$skeletonAnimationTime: 1.5s;
-$skeletonAnimationLightenColorValue: 20%;
+$skeleton-color: #ECECEC;
+$skeleton-animation-time: 1s;
+$skeleton-animation-lighten-color-value: 20%;
 

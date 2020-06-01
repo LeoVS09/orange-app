@@ -1,0 +1,55 @@
+#import "../fragments/InputType.graphql"
+#import "../fragments/OutputType.graphql"
+
+query InputOutputTypes(
+   $inputFirst: Int,
+   $inputLast: Int,
+   $inputOffset: Int,
+   $inputBefore: Cursor,
+   $inputAfter: Cursor,
+   $inputOrderBy: [ProgramInputTypesOrderBy!],
+   $inputCondition: ProgramInputTypeCondition,
+
+   $outputFirst: Int,
+   $outputLast: Int,
+   $outputOffset: Int,
+   $outputBefore: Cursor,
+   $outputAfter: Cursor,
+   $outputOrderBy: [ProgramOutputTypesOrderBy!],
+   $outputCondition: ProgramOutputTypeCondition,
+) {
+   programInputTypes(
+      first: $inputFirst,
+      last: $inputLast,
+      offset: $inputOffset,
+      before: $inputBefore,
+      after: $inputAfter,
+      orderBy: $inputOrderBy,
+      condition: $inputCondition
+   ) {
+      totalCount
+
+      nodes {
+         nodeId
+
+         ...InputType
+      }
+   }
+   programOutputTypes(
+      first: $outputFirst,
+      last: $outputLast,
+      offset: $outputOffset,
+      before: $outputBefore,
+      after: $outputAfter,
+      orderBy: $outputOrderBy,
+      condition: $outputCondition
+   ) {
+      totalCount
+
+      nodes {
+         nodeId
+
+         ...OutputType
+      }
+   }
+}
