@@ -1,13 +1,8 @@
-import { EventReducer } from '@/lazyDB/core/types'
 import { ModelEventReadPayload } from '@/lazyDB/database/events'
 import { DatabaseEventReducer, IDatabaseModelProducerStore } from '@/lazyDB/database/types'
-import { DatabaseEventsPayloads } from '@/lazyDB/database/dispatcher'
 import { compudeStoreParents } from '@/lazyDB/database/aos'
-import {
-  schemaToQueryFields,
-  removeGetEventsFromMemory
-} from './utils'
-import { fetchListOrEntity } from './api'
+import { fetchListOrEntity } from '@/lazyDB/adapters/postgraphile'
+import { removeGetEventsFromMemory } from './utils'
 
 const read: DatabaseEventReducer<IDatabaseModelProducerStore, ModelEventReadPayload<IDatabaseModelProducerStore>> = async (dataBaseStore, { payload }) => {
   const { store } = payload
@@ -20,8 +15,6 @@ const read: DatabaseEventReducer<IDatabaseModelProducerStore, ModelEventReadPayl
   const [initial, entity] = [...compudeStoreParents(store)]
   const getRequest = `${initial.name as string}/${entity.name as string}/`
   console.log('[ReadActiont] generated get request', getRequest)
-
-  console.log('[ReadActiont] getRequest', getRequest, schemaToQueryFields(schema))
 
   const data = await fetchListOrEntity(initial.name as string, entity.name as string, schema)
   console.log('[ReadActiont] read response', data)
