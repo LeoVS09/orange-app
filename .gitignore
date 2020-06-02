@@ -55,10 +55,23 @@ typings/
 .yarn-integrity
 
 # dotenv environment variables file
-.env
+.env*
 
 # next.js build output
 .next
 
 # IDEA project data
 /.idea/
+
+# VS Code project data
+.vscode
+
+# ST data
+.stversions
+.stignore
+
+# Git patch
+*.patch
+
+# mock data
+live/
