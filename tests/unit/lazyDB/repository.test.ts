@@ -13,7 +13,10 @@ import { timeout } from 'rxjs/operators'
 
 
 describe('Repository', () => {
-  beforeAll(() => {
+  beforeAll(async () => {
+    // prevent stop promises from other test break execution
+    await flushPromises()
+
     nock.disableNetConnect()
     cons.mockConsole()
   });
