@@ -1,34 +1,22 @@
 // UI
-export const SET_PLATFORM = 'SET_PLATFORM';
-export const TOGGLE_SIDEBAR = 'TOGGLE_SIDEBAR';
-export const SET_TEXT_PAGE = 'SET_TEXT_PAGE';
-export const SET_STANDARD_PAGE = 'SET_STANDARD_PAGE';
-export const SET_SIGN_IN_PAGE = 'SET_SIGN_IN_PAGE';
-export const SET_SIGN_UP_PAGE = 'SET_SIGN_UP_PAGE';
+export * from './modules/ui/actionTypes'
 
 // PROFILE
-export const SETUP_USER_PROFILE = 'SETUP_USER_PROFILE';
-export const LOGIN_TO_PROFILE = 'LOGIN_TO_PROFILE';
-export const REGISTER_PROFILE = 'REGISTER_PROFILE';
-export const LOGOUT_FROM_PROFILE = 'LOGOUT_FROM_PROFILE';
-export const INIT_PROFILE = 'INIT_PROFILE';
+export * from './modules/profile/actionTypes'
 
 // PROBLEMS
-export const SETUP_PROBLEMS = 'SETUP_PROBLEMS';
-export const ADD_PROBLEM = 'ADD_PROBLEM';
-export const EDIT_PROBLEM = 'EDIT_PROBLEM';
-export const DELETE_PROBLEM = 'DELETE_PROBLEM';
-export const UPLOAD_CODE = 'UPLOAD_CODE';
-export const SET_CURRENT_PROBLEM = 'SET_CURRENT_PROBLEM';
-export const SYNC_PROBLEMS = 'SYNC_PROBLEMS';
-export const LOAD_TESTS = 'LOAD_TESTS';
-export const ADD_NEW_TEST = 'ADD_NEW_TEST';
-export const EDIT_TEST = 'EDIT_TEST';
-export const DELETE_TEST = 'DELETE_TEST';
-export const SYNC_TEST = 'SYNC_TEST';
-export const SYNC_PROBLEM = 'SYNC_PROBLEM';
-export const START_CREATE_PROBLEM = 'START_CREATE_PROBLEM';
-export const CREATE_PROBLEM = 'CREATE_PROBLEM';
+export * from './modules/problems/actionTypes'
 
-// API
-export const SET_CLIENT = 'SET_CLIENT';
+// COUNTRIES, CITIES, PROBLEMS, TAGS, UNIVERSITIES, CONTESTS, TAGS
+export * from './CrudModule/actionTypes'
+
+export enum MODULES {
+   COUNTRIES = 'countries',
+   CITIES = 'cities',
+   PROBLEMS = 'problems',
+   CONTESTS = 'contests',
+   TAGS = 'tags',
+   UNIVERSITIES = 'universities',
+}
+
+export const actionName = (module: MODULES, action: string) => `${module}/${action}`

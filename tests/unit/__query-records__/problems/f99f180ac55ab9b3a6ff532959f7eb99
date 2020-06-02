@@ -1,0 +1,372 @@
+{
+    "data": {
+        "data": {
+            "problems": {
+                "totalCount": 9,
+                "nodes": [
+                    {
+                        "id": "3-94HIeA",
+                        "nodeId": "94981921-33f7-4b3e-93da-f8cc1b8588f9",
+                        "name": "Optio ratione",
+                        "difficulty": 7,
+                        "updatedAt": "2020-03-03T00:17:06+03:00",
+                        "author": {
+                            "id": "UnybUQr-7",
+                            "nodeId": "0e07d049-5965-4dfa-8eb0-096ecd15cf51",
+                            "user": {
+                                "id": "Z8OJE6H_2",
+                                "nodeId": "123c8192-0d58-4b08-9929-25875a850a6a",
+                                "name": "Miss Lavada Hoeger",
+                                "username": "Kris.Ralph",
+                                "__typename": "User"
+                            },
+                            "__typename": "Profile"
+                        },
+                        "__typename": "Problem"
+                    },
+                    {
+                        "id": "gWYD0tEs-",
+                        "nodeId": "9e17da0c-5ea6-4fbf-9566-e8b06d8ef3bb",
+                        "name": "Molestias architecto aut",
+                        "difficulty": 23,
+                        "updatedAt": "2020-03-07T00:17:06+03:00",
+                        "author": {
+                            "id": "MTl2WdTlo",
+                            "nodeId": "37d98012-6741-468e-9491-b763019fd0d3",
+                            "user": {
+                                "id": "vIL8ocV9T",
+                                "nodeId": "4fad69cb-cddd-4dee-aad9-b1b400775a64",
+                                "name": "Mr. Wilma Corkery",
+                                "username": "Amos_Bahringer",
+                                "__typename": "User"
+                            },
+                            "__typename": "Profile"
+                        },
+                        "__typename": "Problem"
+                    },
+                    {
+                        "id": "s3MZYq61U",
+                        "nodeId": "63ccfd14-2ead-4a87-98f8-153f000ab609",
+                        "name": "Autem et aliquid",
+                        "difficulty": 14,
+                        "updatedAt": "2020-02-28T00:17:06+03:00",
+                        "author": {
+                            "id": "2FFCJeGk0",
+                            "nodeId": "9c8486a8-cb40-4738-8da5-bd418c307b40",
+                            "user": {
+                                "id": "JwPuMA3zL",
+                                "nodeId": "706bfe3e-6ece-4b6c-8ab1-3891ebadfab3",
+                                "name": "Ms. Maynard Abbott",
+                                "username": "Rohan_Queenie",
+                                "__typename": "User"
+                            },
+                            "__typename": "Profile"
+                        },
+                        "__typename": "Problem"
+                    },
+                    {
+                        "id": "59RXC4jNZ",
+                        "nodeId": "f2626fe1-9ffb-4234-938a-67ef9b31e604",
+                        "name": "Unde possimus",
+                        "difficulty": 8,
+                        "updatedAt": "2020-03-03T00:17:06+03:00",
+                        "author": {
+                            "id": "f23Jhe-jb",
+                            "nodeId": "a1ae6432-b184-449e-be88-b2c3e54f8f74",
+                            "user": {
+                                "id": "7DNJM4yfO",
+                                "nodeId": "342f906d-5ccd-47d0-86a9-c4969a988b75",
+                                "name": "Mrs. Hardy Herzog",
+                                "username": "Paris_White",
+                                "__typename": "User"
+                            },
+                            "__typename": "Profile"
+                        },
+                        "__typename": "Problem"
+                    },
+                    {
+                        "id": "Wowp1B5Lg",
+                        "nodeId": "c010af58-d32c-4251-b8ab-e11d3b702b63",
+                        "name": "Enim non",
+                        "difficulty": 11,
+                        "updatedAt": "2020-03-11T00:17:06+03:00",
+                        "author": {
+                            "id": "y0cyRTGlp",
+                            "nodeId": "0d8488d1-4f3c-4982-a8ee-94dff9ccf46a",
+                            "user": {
+                                "id": "H5OKBBSvj",
+                                "nodeId": "45773be8-c342-4f4b-80c0-2fd257c26bda",
+                                "name": "Miss Furman Bernier",
+                                "username": "Jaskolski.Sanford",
+                                "__typename": "User"
+                            },
+                            "__typename": "Profile"
+                        },
+                        "__typename": "Problem"
+                    },
+                    {
+                        "id": "IoVOwsZDY",
+                        "nodeId": "1a7f89a3-cce2-4a9a-914e-483c5a670078",
+                        "name": "Nobis dolor",
+                        "difficulty": 14,
+                        "updatedAt": "2020-03-05T00:17:06+03:00",
+                        "author": {
+                            "id": "-gosqOdAXy",
+                            "nodeId": "3158c04d-27e0-4d44-b7ef-414c08743e01",
+                            "user": {
+                                "id": "-JHYmCIl6A",
+                                "nodeId": "5fae5f8c-f91c-449f-a709-ae58db3f1d83",
+                                "name": "Mr. Stacey Bradtke",
+                                "username": "Mitchell.Timmy",
+                                "__typename": "User"
+                            },
+                            "__typename": "Profile"
+                        },
+                        "__typename": "Problem"
+                    },
+                    {
+                        "id": "OsY9Ng05IE",
+                        "nodeId": "eb719fff-2e71-42c5-8281-65113b62b8b0",
+                        "name": "Necessitatibus temporibus enim",
+                        "difficulty": 11,
+                        "updatedAt": "2020-03-07T00:17:06+03:00",
+                        "author": {
+                            "id": "XANEhLZ57B",
+                            "nodeId": "78383449-d7b1-41ee-a7ca-0d3817734f93",
+                            "user": {
+                                "id": "WjSgpEH9Fq",
+                                "nodeId": "3fddc43f-aac8-45a5-b9f3-c2a61abfa9cd",
+                                "name": "Mrs. Hildegard Jerde",
+                                "username": "Wolff.Tara",
+                                "__typename": "User"
+                            },
+                            "__typename": "Profile"
+                        },
+                        "__typename": "Problem"
+                    },
+                    {
+                        "id": "k1-FSJ0cyg",
+                        "nodeId": "9543681f-6785-42e6-b85b-0069f6c0f0a8",
+                        "name": "Et architecto quia",
+                        "difficulty": 11,
+                        "updatedAt": "2020-03-11T00:17:06+03:00",
+                        "author": {
+                            "id": "yvuNRfUB8C",
+                            "nodeId": "2e13dafe-1c3a-41ca-9ccd-e501c8925d8e",
+                            "user": {
+                                "id": "ls6Ij-2PPb",
+                                "nodeId": "04b8644f-e053-4f89-8084-93b5a87b9e4d",
+                                "name": "Miss Karelle Feeney",
+                                "username": "Maya_Stiedemann",
+                                "__typename": "User"
+                            },
+                            "__typename": "Profile"
+                        },
+                        "__typename": "Problem"
+                    },
+                    {
+                        "id": "Pr0x9D_Zr0",
+                        "nodeId": "00dbac30-d365-41ee-9b22-1a00a6a844b3",
+                        "name": "Totam et",
+                        "difficulty": 21,
+                        "updatedAt": "2020-03-12T00:17:06+03:00",
+                        "author": {
+                            "id": "76ilyaQGBi",
+                            "nodeId": "1b3197ec-ab54-48b0-a065-871ef45c996d",
+                            "user": {
+                                "id": "h4vMurc7C7",
+                                "nodeId": "660a7d74-7032-492d-ad08-971f811f0dca",
+                                "name": "Mrs. Candelario Denesik",
+                                "username": "Mattie_Legros",
+                                "__typename": "User"
+                            },
+                            "__typename": "Profile"
+                        },
+                        "__typename": "Problem"
+                    },
+                    {
+                        "id": "wURbFFJpVF",
+                        "nodeId": "32b230fb-ba1b-41be-a438-325f93c1b40f",
+                        "name": "Suscipit dolor nihil",
+                        "difficulty": 5,
+                        "updatedAt": "2020-03-02T00:17:06+03:00",
+                        "author": {
+                            "id": "XvZF_cfc6L",
+                            "nodeId": "1005904f-d2be-459a-b29a-bc5c780a46cc",
+                            "user": {
+                                "id": "Q4TOz40ZPd",
+                                "nodeId": "5a965a86-a870-4650-8e34-c62ebe4660b1",
+                                "name": "Mrs. Yasmine Skiles",
+                                "username": "Julian_Morar",
+                                "__typename": "User"
+                            },
+                            "__typename": "Profile"
+                        },
+                        "__typename": "Problem"
+                    },
+                    {
+                        "id": "KXKTHnG97g",
+                        "nodeId": "e3669e22-2e24-46ce-9594-d078e4f2ce60",
+                        "name": "Deserunt inventore",
+                        "difficulty": 12,
+                        "updatedAt": "2020-03-09T00:17:06+03:00",
+                        "author": {
+                            "id": "cVi_7c103N",
+                            "nodeId": "174cd862-5c42-4023-bfe4-392670f62200",
+                            "user": {
+                                "id": "6ZAFbpcQuo",
+                                "nodeId": "67f0e46e-10d5-4551-95e2-8a537946f0f2",
+                                "name": "Ms. Danial Cronin",
+                                "username": "Cassin_Melody",
+                                "__typename": "User"
+                            },
+                            "__typename": "Profile"
+                        },
+                        "__typename": "Problem"
+                    },
+                    {
+                        "id": "VQuc6QMJBy",
+                        "nodeId": "bda43b2c-c333-4295-9f28-51651571415d",
+                        "name": "Maxime est",
+                        "difficulty": 6,
+                        "updatedAt": "2020-03-01T00:17:06+03:00",
+                        "author": {
+                            "id": "o6Uu1txQUs",
+                            "nodeId": "7c4bcadd-b50d-4394-b6e9-f1e66317b599",
+                            "user": {
+                                "id": "29JdysnsQA",
+                                "nodeId": "8c6ca675-b3c7-420b-a3ba-f802dc704df9",
+                                "name": "Miss Conor Konopelski",
+                                "username": "Borer_Ramiro",
+                                "__typename": "User"
+                            },
+                            "__typename": "Profile"
+                        },
+                        "__typename": "Problem"
+                    },
+                    {
+                        "id": "2Ni-D7tkKH",
+                        "nodeId": "77ee601e-2311-40af-96cd-0250f2830eaf",
+                        "name": "Et nemo",
+                        "difficulty": 19,
+                        "updatedAt": "2020-03-04T00:17:06+03:00",
+                        "author": {
+                            "id": "0KvNfusSlr",
+                            "nodeId": "165e9568-559d-444c-9d04-919cf74a52ae",
+                            "user": {
+                                "id": "jJjbkqv75e",
+                                "nodeId": "a6f815d2-c644-48b9-abca-199484cc33e2",
+                                "name": "Dr. Layla Weimann",
+                                "username": "Kirstin_Fay",
+                                "__typename": "User"
+                            },
+                            "__typename": "Profile"
+                        },
+                        "__typename": "Problem"
+                    },
+                    {
+                        "id": "SRXAMahPtL",
+                        "nodeId": "80489354-ce66-4941-bc33-3d5f5da23d85",
+                        "name": "Distinctio consectetur",
+                        "difficulty": 24,
+                        "updatedAt": "2020-03-02T00:17:06+03:00",
+                        "author": {
+                            "id": "GCj6p9_jNB",
+                            "nodeId": "12d5e957-58a8-4d61-9d07-2f2ed4026fb7",
+                            "user": {
+                                "id": "stVZOkr-HO",
+                                "nodeId": "1a73ce14-f06b-4cb0-9076-b20794818d6c",
+                                "name": "Mr. Keith Prohaska",
+                                "username": "Sincere.Abshire",
+                                "__typename": "User"
+                            },
+                            "__typename": "Profile"
+                        },
+                        "__typename": "Problem"
+                    },
+                    {
+                        "id": "tr4YkUrSfw",
+                        "nodeId": "cac28743-9e84-4f61-a880-9788675d5aba",
+                        "name": "Odit id",
+                        "difficulty": 9,
+                        "updatedAt": "2020-02-28T00:17:06+03:00",
+                        "author": {
+                            "id": "aYohCUUT5D",
+                            "nodeId": "bf2c051b-e308-48d8-ad8f-d641ee17fa22",
+                            "user": {
+                                "id": "UWDsLDFO-2",
+                                "nodeId": "6c9e5f46-4a48-4668-8dfc-7d302a6adf06",
+                                "name": "Miss Lempi Stiedemann",
+                                "username": "Connelly_Carson",
+                                "__typename": "User"
+                            },
+                            "__typename": "Profile"
+                        },
+                        "__typename": "Problem"
+                    },
+                    {
+                        "id": "S-HM_z0mlv",
+                        "nodeId": "3e3b28b6-3e18-4699-9bad-c614a377d3ab",
+                        "name": "Quo nesciunt quam",
+                        "difficulty": 12,
+                        "updatedAt": "2020-02-23T00:17:06+03:00",
+                        "author": {
+                            "id": "QpKnuqXatV",
+                            "nodeId": "9acd62e2-02d1-418e-852a-9004b889f3ee",
+                            "user": {
+                                "id": "c99UDfvO3D",
+                                "nodeId": "79b05d54-195f-4944-921c-75c53a5bb9e9",
+                                "name": "Miss Cyrus Schiller",
+                                "username": "Adams.Wilbert",
+                                "__typename": "User"
+                            },
+                            "__typename": "Profile"
+                        },
+                        "__typename": "Problem"
+                    },
+                    {
+                        "id": "-EnB-ClQsO",
+                        "nodeId": "89675bad-145a-450c-907f-7089f15fd6d6",
+                        "name": "Cupiditate dolores voluptatem",
+                        "difficulty": 24,
+                        "updatedAt": "2020-03-06T00:17:06+03:00",
+                        "author": {
+                            "id": "PNSA6YlDWD",
+                            "nodeId": "f905b837-9640-48d8-b3ae-6384bca284e8",
+                            "user": {
+                                "id": "Fkxwo1VAfL",
+                                "nodeId": "6a6a155f-6a12-4a99-a5b3-e984fb30f8b2",
+                                "name": "Ms. Florencio Nienow",
+                                "username": "Lincoln_Bradtke",
+                                "__typename": "User"
+                            },
+                            "__typename": "Profile"
+                        },
+                        "__typename": "Problem"
+                    },
+                    {
+                        "id": "WhyFwCsJUy",
+                        "nodeId": "3b09b5db-8412-4962-ba7d-9f1e358653e1",
+                        "name": "Est error quasi",
+                        "difficulty": 13,
+                        "updatedAt": "2020-03-09T00:17:06+03:00",
+                        "author": {
+                            "id": "aRbxyRl0Nt",
+                            "nodeId": "1855cc0f-5c7d-486d-8abc-2d68ac9fa416",
+                            "user": {
+                                "id": "B_Fp4v9oeB",
+                                "nodeId": "52d224d9-5e71-48d6-9cae-86967dd221d9",
+                                "name": "Mrs. Wiley Cremin",
+                                "username": "Hanna_Morissette",
+                                "__typename": "User"
+                            },
+                            "__typename": "Profile"
+                        },
+                        "__typename": "Problem"
+                    }
+                ],
+                "__typename": "ProblemsConnection"
+            }
+        }
+    }
+}

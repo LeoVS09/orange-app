@@ -1,0 +1,7 @@
+fragment PartialCountry on Country {
+   id
+   name
+   code
+   createdAt
+   updatedAt
+}

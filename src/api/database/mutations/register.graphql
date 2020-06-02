@@ -1,0 +1,29 @@
+#import "../fragments/FullUser.graphql"
+
+mutation Register(
+   $username: String!,
+   $email: String!,
+   $password: String!,
+   $name: String,
+   $avatarUrl: String,
+   $firstName: String!,
+   $middleName: String,
+   $lastName: String
+) {
+  register(input: {
+     username: $username,
+     password: $password,
+     email: $email,
+     name: $name,
+     avatarUrl: $avatarUrl,
+     firstName: $firstName,
+     middleName: $middleName,
+     lastName: $lastName
+  }) {
+    user {
+       nodeId
+
+       ...FullUser
+    }
+  }
+}

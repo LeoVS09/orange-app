@@ -1,0 +1,28 @@
+#import "../fragments/PartialProfile.graphql"
+
+query Profiles (
+$first: Int,
+$last: Int,
+$offset: Int,
+$before: Cursor,
+$after: Cursor,
+$orderBy: [ProfilesOrderBy!],
+$condition: ProfileCondition
+) {
+   profiles(
+      first: $first,
+      last: $last,
+      offset: $offset,
+      before: $before,
+      after: $after,
+      orderBy: $orderBy,
+      condition: $condition
+   ) {
+      totalCount
+      nodes {
+         nodeId
+
+         ...PartialProfile
+      }
+   }
+}

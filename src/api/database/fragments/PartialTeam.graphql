@@ -1,0 +1,10 @@
+fragment PartialTeam on Team {
+   id
+   name
+   createdAt
+   updatedAt
+
+   teamsProfiles {
+      totalCount
+   }
+}

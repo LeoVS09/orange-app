@@ -1,0 +1,15 @@
+fragment PartialUser on User {
+   id
+   name
+}
+
+fragment PartialProfile on Profile {
+   id
+   isTeacher
+   firstName
+   lastName
+   user {
+      nodeId
+      ...PartialUser
+   }
+}

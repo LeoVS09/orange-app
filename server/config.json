@@ -1,7 +1,0 @@
-{
-  "port": 80,
-  "folders": {
-    "build": "dist",
-    "static": "static"
-  }
-}

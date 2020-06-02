@@ -1,0 +1,72 @@
+@import "../config.scss";
+
+$button-text-left-animation-time: 0.4s;
+
+
+@mixin gradient-text-inside-hover($content-class, $text-color: $button-text-color) {
+   .#{$content-class} {
+      position: relative;
+      color: transparent;
+      transition: all $default-animation-time ease-in-out;
+      background: $gradient-text-hover-color $text-color;
+      -webkit-background-clip: text;
+      background-clip: text;
+   }
+
+   &:hover {
+      .#{$content-class} {
+         background-position: -1% 0;
+      }
+   }
+}
+
+@mixin gradient-text-hover-background($content-class, $text-color: $button-active-text-color) {
+   &::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 100%;
+      height: 100%;
+      transform: translateX(-120%);
+      background: $button-active-color;
+      transition: transform .25s ease-in;
+   }
+
+   .#{$content-class} {
+      position: relative;
+      z-index: 1;
+      transition: color $button-text-left-animation-time ease-out;
+   }
+
+   &:hover {
+      .#{$content-class} {
+         animation: left-text-aniimation $button-text-left-animation-time;
+         color: $text-color;
+      }
+      &::before {
+         transform: translateX(0);
+      }
+   }
+}
+
+@keyframes left-text-aniimation {
+   0% {
+      transform: translateX(0);
+      opacity: 1;
+   }
+
+   35% {
+      transform: translateX(20px);
+      opacity: 0;
+   }
+
+   50.001% {
+      transform: translateX(-20px);
+   }
+
+   60% {
+      transform: translateX(0px);
+   }
+
+}

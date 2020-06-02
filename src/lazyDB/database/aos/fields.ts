@@ -1,0 +1,21 @@
+import {
+  AosSimeplFieldType,
+  AosRelationsField,
+  AosRelationsFieldType,
+  AosSchema,
+  AosSimpleField
+} from '@/abstractObjectSchema'
+
+export class RelationsField implements AosRelationsField {
+  constructor(
+      public type: AosRelationsFieldType,
+      public schema: AosSchema = {}
+  ) { }
+}
+
+export class SimpleField implements AosSimpleField {
+  constructor(
+      public type: AosSimeplFieldType,
+      public resolvedAt: number | null = null
+  ) {}
+}

@@ -1,0 +1,27 @@
+#import "../fragments/PartialCountry.graphql"
+
+query SearchCountries(
+   $search: String,
+   $first: Int,
+   $last: Int,
+   $offset: Int,
+   $before: Cursor,
+   $after: Cursor
+){
+   searchCountries(
+      search: $search,
+      first: $first,
+      last: $last,
+      offset: $offset,
+      before: $before,
+      after: $after
+   ) {
+      totalCount
+
+      nodes {
+         nodeId
+
+         ...PartialCountry
+      }
+   }
+}

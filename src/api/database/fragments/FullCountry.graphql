@@ -1,0 +1,14 @@
+#import "./PartialCountry.graphql"
+#import "./PartialCity.graphql"
+
+fragment FullCountry on Country {
+   ...PartialCountry
+
+   cities {
+      nodes {
+         nodeId
+
+         ...PartialCity
+      }
+   }
+}

@@ -1,0 +1,14 @@
+#import "./PartialCity.graphql"
+#import "./PartialUniversity.graphql"
+
+fragment FullCity on City {
+   ...PartialCity
+
+   universities {
+      nodes {
+         nodeId
+
+         ...PartialUniversity
+      }
+   }
+}

@@ -1,0 +1,8 @@
+#import "../fragments/FullProblem.graphql"
+
+query Problem ($id: UUID!){
+   problem(id: $id) {
+      nodeId
+      ...FullProblem
+   }
+}

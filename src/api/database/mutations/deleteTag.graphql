@@ -1,0 +1,11 @@
+#import "../fragments/PartialTag.graphql"
+
+mutation deleteTag($input: DeleteTagInput!) {
+   deleteTag(input: $input){
+      tag {
+         nodeId
+
+         ...PartialTag
+      }
+   }
+}

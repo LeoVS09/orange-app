@@ -5,12 +5,12 @@
 </template>
 
 <script lang="ts">
-  import Vue from 'vue'
-  import {Component} from 'vue-property-decorator'
+import Vue from 'vue'
+import { Component } from 'vue-property-decorator'
 
   @Component
-  export default class Spinner extends Vue {
-  }
+export default class Spinner extends Vue {
+}
 </script>
 
 <style scoped lang="scss">
@@ -27,7 +27,7 @@
         position: absolute;
         width: 5px;
         height: 5px;
-        background: $spinnerColor;
+        background: $spinner-color;
         border-radius: 50%;
         animation: lds-default 1.2s linear infinite;
 

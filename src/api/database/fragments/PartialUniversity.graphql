@@ -1,0 +1,8 @@
+fragment PartialUniversity on University {
+   id
+   shortName
+   longName
+   createdAt
+   updatedAt
+   cityId
+}

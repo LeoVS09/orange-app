@@ -1,24 +1,21 @@
-import Vue, {PluginObject} from 'vue'
+import Vue, { PluginObject } from 'vue'
 import * as Vuex from 'vuex'
-
-import createDataGeneratorPlugin from './plugins/mock/generator'
 
 import modules from './modules'
 import getters from './getters'
 
 // @ts-ignore
-const debug = process.env.NODE_ENV !== 'production';
+// const DEBUG = process.env.NODE_ENV !== 'production'
+const DEBUG = false
 
-if(debug) {
-  console.log("Debug mode enabled");
-}
-Vue.use(Vuex as any);
+if (DEBUG)
+  console.log('Debug mode enabled')
 
-const generator = createDataGeneratorPlugin();
+Vue.use(Vuex as any)
 
 export default new Vuex.Store({
   modules,
   getters,
-  plugins: debug ? [generator] : [],
-  strict: debug
-});
+  plugins: [],
+  strict: true
+})

@@ -32,6 +32,10 @@ bower_components
 # Compiled binary code
 dist/
 
+# Tests results data
+/tests/e2e/videos/
+/tests/e2e/screenshots/
+
 # Dependency directories
 node_modules/
 jspm_packages/
@@ -60,18 +64,21 @@ typings/
 # next.js build output
 .next
 
-# IDEA project data
-/.idea/
-
-# VS Code project data
+# Editor directories and files
+.idea
 .vscode
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
 
-# ST data
-.stversions
-.stignore
-
-# Git patch
+# Git patches
 *.patch
 
-# mock data
-live/
+# Synchronisation
+.stignore
+.stfolder
+.stversions
+
+/live/

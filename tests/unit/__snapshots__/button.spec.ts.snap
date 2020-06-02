@@ -1,0 +1,29 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Button.vue renders slot when passed 1`] = `
+<div
+  class="button"
+>
+  <button
+    class="button--submit gradient-highlight text-not-faded"
+  >
+    <div
+      class="button--content"
+    >
+      <!---->
+       
+      <transition-stub
+        name="text-fade"
+      >
+        <span
+          class="button--text"
+        >
+          Click on me
+        </span>
+      </transition-stub>
+       
+      <!---->
+    </div>
+  </button>
+</div>
+`;

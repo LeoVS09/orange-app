@@ -1,0 +1,28 @@
+#import "../fragments/CodeEditor.graphql"
+
+query CodeEditors(
+$first: Int,
+$last: Int,
+$offset: Int,
+$before: Cursor,
+$after: Cursor,
+$orderBy: [CodeEditorsOrderBy!],
+$condition: CodeEditorCondition
+) {
+   codeEditors(
+      first: $first,
+      last: $last,
+      offset: $offset,
+      before: $before,
+      after: $after,
+      orderBy: $orderBy,
+      condition: $condition
+   ) {
+      totalCount
+      nodes {
+         nodeId
+
+         ...CodeEditor
+      }
+   }
+}

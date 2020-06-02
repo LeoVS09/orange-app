@@ -1,0 +1,9 @@
+#import "../fragments/FullTeam.graphql"
+
+query Team($id: UUID!) {
+   team(id: $id) {
+      nodeId
+
+      ...FullTeam
+   }
+}

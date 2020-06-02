@@ -1,0 +1,11 @@
+#import "../fragments/PartialCountry.graphql"
+
+mutation updateCountry($input: UpdateCountryInput!) {
+   updateCountry(input: $input){
+      country {
+         nodeId
+
+         ...PartialCountry
+      }
+   }
+}

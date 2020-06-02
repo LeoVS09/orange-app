@@ -5,15 +5,15 @@
 </template>
 
 <script lang="ts">
-  import Vue from 'vue'
-  import {Component} from 'vue-property-decorator'
+import Vue from 'vue'
+import { Component } from 'vue-property-decorator'
 
-  @Component()
-  export default class LineSpinner extends Vue {
+@Component
+export default class LineSpinner extends Vue {
 
-    //TODO: complete
+  // TODO: complete
 
-  }
+}
 </script>
 
 <style scoped lang="scss">

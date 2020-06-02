@@ -1,0 +1,5 @@
+fragment OutputType on ProgramOutputType {
+   id
+   name
+   code
+}

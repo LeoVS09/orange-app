@@ -1,0 +1,11 @@
+#import "../fragments/PartialUniversity.graphql"
+
+mutation updateUniversity($input: UpdateUniversityInput!) {
+   updateUniversity(input: $input){
+      university {
+         nodeId
+
+         ...PartialUniversity
+      }
+   }
+}

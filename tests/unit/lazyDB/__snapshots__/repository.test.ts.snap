@@ -1,0 +1,247 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Repository should generade query for list by first node and return 1`] = `
+Object {
+  "query": "query Countries {
+  countries {
+    nodes {
+      id
+      nodeId
+      name
+      code
+      updatedAt
+      __typename
+    }
+    __typename
+  }
+}
+",
+  "variables": Object {},
+}
+`;
+
+exports[`Repository should generade query for list by first node and return 2`] = `
+Object {
+  "__typename": "CountriesConnection",
+  "maxPageNumber": null,
+  "nodes": Array [
+    Object {
+      "__typename": "Country",
+      "code": "DE",
+      "id": "gILNkgtqw",
+      "name": "Estonia",
+      "nodeId": "e594829f-9e24-42ca-9743-a981f89f1583",
+      "updatedAt": 2020-02-26T21:25:04.000Z,
+    },
+    Object {
+      "__typename": "Country",
+      "code": "CN",
+      "id": "RvBE9BWZ85",
+      "name": "Comoros",
+      "nodeId": "f4793d49-1da5-4cb1-b5ef-85e8d244d56b",
+      "updatedAt": 2020-03-01T21:25:04.000Z,
+    },
+    Object {
+      "__typename": "Country",
+      "code": "IN",
+      "id": "0Pj8HSsj2e",
+      "name": "Mayotte",
+      "nodeId": "4ef01f57-260d-40ae-a924-a97838b13b58",
+      "updatedAt": 2020-03-06T21:25:04.000Z,
+    },
+    Object {
+      "__typename": "Country",
+      "code": "US",
+      "id": "mIBSPRsCW1",
+      "name": "Kuwait",
+      "nodeId": "7fd05815-6b7d-4cae-9b8c-3ab4ca94e870",
+      "updatedAt": 2020-03-03T21:25:04.000Z,
+    },
+    Object {
+      "__typename": "Country",
+      "code": "US",
+      "id": "hcQnOCkpmJ",
+      "name": "Slovakia (Slovak Republic)",
+      "nodeId": "f978be87-e3d8-4bea-88bd-e2c3eb8c5a5e",
+      "updatedAt": 2020-03-06T21:25:04.000Z,
+    },
+    Object {
+      "__typename": "Country",
+      "code": "FR",
+      "id": "N8RK5pKUpR",
+      "name": "Guinea",
+      "nodeId": "9b25a45e-e7e5-4e06-9929-90e116114919",
+      "updatedAt": 2020-03-11T21:25:04.000Z,
+    },
+    Object {
+      "__typename": "Country",
+      "code": "IE",
+      "id": "vP38-NdB-S",
+      "name": "Guinea-Bissau",
+      "nodeId": "56294d43-4d8b-45f0-9676-f380930f8d66",
+      "updatedAt": 2020-03-14T21:25:04.000Z,
+    },
+    Object {
+      "__typename": "Country",
+      "code": "MX",
+      "id": "HUZ0tFZw41",
+      "name": "Nicaragua",
+      "nodeId": "dda4c4ae-d2a9-4d91-b36a-1232a399b1f4",
+      "updatedAt": 2020-02-28T21:25:04.000Z,
+    },
+    Object {
+      "__typename": "Country",
+      "code": "IE",
+      "id": "o_xKHVYYCb",
+      "name": "Czech Republic",
+      "nodeId": "e7a888bb-420e-4a02-a539-ae29625f77e7",
+      "updatedAt": 2020-03-06T21:25:04.000Z,
+    },
+    Object {
+      "__typename": "Country",
+      "code": "ES",
+      "id": "GjmpsFXCnv",
+      "name": "India",
+      "nodeId": "7ccf5f7b-a2ba-4bec-baaf-74e68a505110",
+      "updatedAt": 2020-02-24T21:25:04.000Z,
+    },
+    Object {
+      "__typename": "Country",
+      "code": "RU",
+      "id": "HCGgb2ALkw",
+      "name": "Japan",
+      "nodeId": "763ddbb4-b6c8-4646-ba2b-7e7e14412782",
+      "updatedAt": 2020-03-05T21:25:04.000Z,
+    },
+    Object {
+      "__typename": "Country",
+      "code": "IN",
+      "id": "G6uw5EaXT8",
+      "name": "Monaco",
+      "nodeId": "c21c8574-0d24-4a25-bfa3-d0da3818bfad",
+      "updatedAt": 2020-03-13T21:25:04.000Z,
+    },
+    Object {
+      "__typename": "Country",
+      "code": "MX",
+      "id": "tuMpRj14b3",
+      "name": "Guadeloupe",
+      "nodeId": "f2e04466-7ae6-48d4-818a-dc76b9187046",
+      "updatedAt": 2020-03-08T21:25:04.000Z,
+    },
+    Object {
+      "__typename": "Country",
+      "code": "MX",
+      "id": "KF5UhVBanC",
+      "name": "Netherlands Antilles",
+      "nodeId": "4556647a-d090-44a8-81cf-5669c5d691e8",
+      "updatedAt": 2020-03-05T21:25:04.000Z,
+    },
+    Object {
+      "__typename": "Country",
+      "code": "FR",
+      "id": "FlSxQ0a3nP",
+      "name": "Myanmar",
+      "nodeId": "5fbe7b62-fa10-4232-b0d7-b5dd6425b2bf",
+      "updatedAt": 2020-03-08T21:25:04.000Z,
+    },
+  ],
+  "onPage": 10,
+  "pageNumber": 1,
+  "totalCount": null,
+}
+`;
+
+exports[`Repository should generate query for one entity and display 1`] = `
+Object {
+  "query": "query Country($id: UUID!) {
+  country(id: $id) {
+    id
+    nodeId
+    name
+    code
+    updatedAt
+    createdAt
+    __typename
+  }
+}
+",
+  "variables": Object {
+    "id": "test-id",
+  },
+}
+`;
+
+exports[`Repository should generate query for one entity and display 2`] = `
+Object {
+  "__typename": "Country",
+  "code": "IN",
+  "createdAt": 2021-04-28T16:29:15.000Z,
+  "id": "0SHIyxJBp",
+  "name": "Switzerland",
+  "nodeId": "b693a762-22e4-4228-b8d4-3eda3c607f7a",
+  "updatedAt": 2020-04-24T16:29:15.000Z,
+}
+`;
+
+exports[`Repository should generate request for entity and next reqires when more fields need 1`] = `
+Object {
+  "query": "query Country($id: UUID!) {
+  country(id: $id) {
+    id
+    nodeId
+    name
+    updatedAt
+    createdAt
+    __typename
+  }
+}
+",
+  "variables": Object {
+    "id": "test-id2",
+  },
+}
+`;
+
+exports[`Repository should generate request for entity and next reqires when more fields need 2`] = `
+Object {
+  "__typename": "Country",
+  "createdAt": 2021-01-16T15:31:16.000Z,
+  "id": "I2o82_J6a",
+  "name": "United Arab Emirates",
+  "nodeId": "4e027142-1582-49b7-8c19-3022d32092e3",
+  "updatedAt": 2020-05-08T15:31:16.000Z,
+}
+`;
+
+exports[`Repository should generate request for entity and next reqires when more fields need 3`] = `
+Object {
+  "query": "query Country($id: UUID!) {
+  country(id: $id) {
+    id
+    nodeId
+    name
+    updatedAt
+    createdAt
+    code
+    __typename
+  }
+}
+",
+  "variables": Object {
+    "id": "test-id2",
+  },
+}
+`;
+
+exports[`Repository should generate request for entity and next reqires when more fields need 4`] = `
+Object {
+  "__typename": "Country",
+  "code": "PT",
+  "createdAt": 2021-01-16T15:31:16.000Z,
+  "id": "I2o82_J6a",
+  "name": "United Arab Emirates",
+  "nodeId": "4e027142-1582-49b7-8c19-3022d32092e3",
+  "updatedAt": 2020-05-08T15:31:16.000Z,
+}
+`;
