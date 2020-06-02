@@ -2,24 +2,31 @@ import gql from 'graphql-tag'
 import { AosFieldType } from '@/abstractObjectSchema'
 
 export interface QueryField {
-  entity: string
-  type: AosFieldType
-  fields: Array<string | QueryField>
+  [entity: string]: QueryFields
 }
+
+const getQueryEntity = (field: QueryField): string => Object.keys(field)[0]
+
+const getQueryFields = (field: QueryField): QueryFields => Object.values(field)[0]
+
+const isQueryField = (field: string | QueryField): field is QueryField =>
+  typeof field === 'object'
+
+export type QueryFields = Array<string | QueryField>
 
 const makeSpaces = (count: number) => new Array(count).fill('\t').join('')
 
 const generateNestedQueryFields = (field: QueryField, countSpaces: number) =>
-  `${field.entity} ${buildFieldsQuery(field.fields, countSpaces + 1)}`
+  `${getQueryEntity(field)} ${buildFieldsQuery(getQueryFields(field), countSpaces + 1)}`
 
 const generateField = (field: string | QueryField, countSpaces: number) => {
-  if (typeof field !== 'object')
+  if (!isQueryField(field))
     return field
 
   return generateNestedQueryFields(field, countSpaces)
 }
 
-function buildFieldsQuery(fields: Array<string | QueryField>, countSpaces = 1): string {
+function buildFieldsQuery(fields: QueryFields, countSpaces = 1): string {
   const uniquely = removeEqual([...fields]).sort(sortFields)
 
   const values = uniquely.reduce(
@@ -92,7 +99,7 @@ export interface QueryEntityByIdGenerated {
   name: string
 }
 
-export function generateQueryEntityById(entity: string, fields: Array<string | QueryField>): QueryEntityByIdGenerated {
+export function generateQueryEntityById(entity: string, fields: QueryFields): QueryEntityByIdGenerated {
   try {
     const queryName = firstToUpperCase(entity)
 
@@ -115,20 +122,20 @@ export interface QueryListGenerated {
   name: string
 }
 
-export function generateQueryList(entity: string, fields: Array<string | QueryField>): QueryListGenerated {
+export function generateQueryList(entity: string, fields: QueryFields): QueryListGenerated {
   const listName = entityToList(entity)
   const queryName = firstToUpperCase(listName)
 
   const field = fields[0]
 
-  if (typeof field !== 'object')
+  if (!isQueryField(field))
     throw new Error(`Cannot generate list for string field: ${entity}`)
 
-  field.entity = listName
+  const realField = { [listName]: getQueryFields(field) }
 
   const query = `
     query ${queryName} {
-      ${generateNestedQueryFields(field, 1)}
+      ${generateNestedQueryFields(realField, 1)}
     }
   `
   console.debug('[QueryMapper] generated query', query)

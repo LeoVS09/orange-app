@@ -1,9 +1,9 @@
 import { AosSchema, isSimpleAosField } from '@/abstractObjectSchema'
-import { QueryField } from '@/lazyDB/connectors/queryMapper'
+import { QueryFields } from '@/lazyDB/connectors/queryMapper'
 import { ModelEventReadPayload } from '@/lazyDB/database/events'
 
 // TODO: multiple types of object schema, need better solution
-export function schemaToQueryFields(schema: AosSchema): Array<string | QueryField> {
+export function schemaToQueryFields(schema: AosSchema): QueryFields {
   const keys = Object.keys(schema)
 
   return keys.map(key => {
@@ -12,9 +12,7 @@ export function schemaToQueryFields(schema: AosSchema): Array<string | QueryFiel
       return key
 
     return {
-      entity: key,
-      type: field.type,
-      fields: schemaToQueryFields(field.schema)
+      [key]: schemaToQueryFields(field.schema)
     }
   })
 }

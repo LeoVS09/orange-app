@@ -1,4 +1,3 @@
-import { AosFieldType } from "@/abstractObjectSchema"
 import cons from "../../utils/console.mock"
 
 jest.mock('graphql-tag');
@@ -19,9 +18,7 @@ describe('Mapper AOS scheme to graphql query', () => {
     it('should generate query for read list of entities', () => {
         const entity = 'country'
         const fields = [{
-            entity: "nodes",
-            type: AosFieldType.OneToOne,
-            fields: ["id", "nodeId", "name","code","updatedAt"]
+            nodes: ["id", "nodeId", "name", "code", "updatedAt"]
         }]
 
         const query = generateQueryList(entity, fields)
@@ -29,13 +26,11 @@ describe('Mapper AOS scheme to graphql query', () => {
         expect(query).toMatchSnapshot()
     })
 
-    
+
     it('should generate query for read list of entities without id', () => {
         const entity = 'country'
         const fields = [{
-            entity: "nodes",
-            type: AosFieldType.OneToOne,
-            fields: ["name","code","updatedAt"]
+            nodes: ["name", "code", "updatedAt"]
         }]
 
         const query = generateQueryList(entity, fields)
@@ -46,9 +41,7 @@ describe('Mapper AOS scheme to graphql query', () => {
     it('should generate query for read list of entities without only nodeId', () => {
         const entity = 'country'
         const fields = [{
-            entity: "nodes",
-            type: AosFieldType.OneToOne,
-            fields: ["id", "name","code","updatedAt"]
+            nodes: ["id", "name", "code", "updatedAt"]
         }]
 
         const query = generateQueryList(entity, fields)
@@ -59,9 +52,7 @@ describe('Mapper AOS scheme to graphql query', () => {
     it('should generate query for read list of entities without only id', () => {
         const entity = 'country'
         const fields = [{
-            entity: "nodes",
-            type: AosFieldType.OneToOne,
-            fields: ["nodeId", "name","code","updatedAt"]
+            nodes: ["nodeId", "name", "code", "updatedAt"]
         }]
 
         const query = generateQueryList(entity, fields)
@@ -70,19 +61,17 @@ describe('Mapper AOS scheme to graphql query', () => {
     })
 
 
-    
+
     it('should generate query for read entity by id with one to many links', () => {
         const entity = 'country'
         const fields = [
-            "id", 
-            "nodeId", 
+            "id",
+            "nodeId",
             "createdAt",
             "updatedAt",
             "name",
             {
-                entity: "cities",
-                type: AosFieldType.OneToMany,
-                fields: ["id", "nodeId", "name","updatedAt"]
+                cities: ["id", "nodeId", "name", "updatedAt"]
             }
         ]
 
@@ -98,9 +87,7 @@ describe('Mapper AOS scheme to graphql query', () => {
             "updatedAt",
             "name",
             {
-                entity: "cities",
-                type: AosFieldType.OneToMany,
-                fields: ["id", "nodeId", "name","updatedAt"]
+                cities: ["id", "nodeId", "name", "updatedAt"]
             }
         ]
 
@@ -112,15 +99,13 @@ describe('Mapper AOS scheme to graphql query', () => {
     it('should generate query for read entity by id with one to many links without child id', () => {
         const entity = 'country'
         const fields = [
-            "id", 
-            "nodeId", 
+            "id",
+            "nodeId",
             "createdAt",
             "updatedAt",
             "name",
             {
-                entity: "cities",
-                type: AosFieldType.OneToMany,
-                fields: ["name","updatedAt"]
+                cities: ["name", "updatedAt"]
             }
         ]
 
@@ -133,15 +118,13 @@ describe('Mapper AOS scheme to graphql query', () => {
     it('should generate query for read entity by id with one to one link', () => {
         const entity = 'city'
         const fields = [
-            "id", 
-            "nodeId", 
+            "id",
+            "nodeId",
             "createdAt",
             "updatedAt",
             "name",
             {
-                entity: "country",
-                type: AosFieldType.OneToOne,
-                fields: ["id", "nodeId", "name","updatedAt"]
+                country: ["id", "nodeId", "name", "updatedAt"]
             }
         ]
 
@@ -157,9 +140,7 @@ describe('Mapper AOS scheme to graphql query', () => {
             "updatedAt",
             "name",
             {
-                entity: "country",
-                type: AosFieldType.OneToOne,
-                fields: ["name","updatedAt"]
+                country: ["name", "updatedAt"]
             }
         ]
 
