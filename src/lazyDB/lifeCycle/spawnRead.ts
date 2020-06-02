@@ -7,7 +7,7 @@ import {
 import { StateMemory } from '../core/memory'
 import { ModelEvent, ModelEventGetPropertyPayload } from '../core/types'
 import { ModelEventTypes, ModelEventReadPayload } from '../database/events'
-import { isReading } from '../database/states'
+import { isReading, isHaveReadingError } from '../database/states'
 import { pauseWhileReading } from './pauseWhileReading'
 import { debug } from '../../reactive/debug'
 import { debugPayload } from './utils'
@@ -20,6 +20,8 @@ export interface SpawnReadOptions {
   waitTimeWhenGetsStopSpawn?: number // ms
   scheduler?: SchedulerLike
 }
+
+// FIXME: still spawn read when have reading errors
 
 /**
  * Spawn read events when gets event stops spawning,

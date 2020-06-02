@@ -44,6 +44,7 @@ export default class SourceView extends Vue {
       overflow: auto;
       padding: 8px 16px;
       border-radius: 3px;
+      min-height: 19px;
 
       &--code {
          white-space: pre;

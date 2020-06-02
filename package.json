@@ -37,6 +37,7 @@
     "deep-map": "^2.0.0",
     "define-lazy-prop": "^2.0.0",
     "es6-weak-map": "^2.0.2",
+    "gql-query-builder": "^3.3.0",
     "graphql": "^14.4.2",
     "graphql-tag": "^2.10.1",
     "graphql-type-json": "^0.2.1",
@@ -98,11 +99,11 @@
     "nock": "^12.0.2",
     "node-fetch": "^2.6.0",
     "node-sass": "^4.9.0",
+    "prettier": "1.19.1",
     "sass-loader": "^7.1.0",
     "ts-jest": "^25.2.1",
     "typescript": "^3.9.2",
-    "vue-template-compiler": "2.6.10",
-    "prettier": "1.19.1"
+    "vue-template-compiler": "2.6.10"
   },
   "bugs": {
     "url": "https://github.com/LeoVS09/orange-app/issues"

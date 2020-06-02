@@ -4,22 +4,22 @@ exports[`Mapper AOS scheme to graphql query should generate query for read entit
 Object {
   "name": "country",
   "query": "
-      query Country($id: UUID!) {
-         country(id: $id) {
-			id
-			nodeId
-			createdAt
-			updatedAt
-			name
-			cities {
-				id
-				nodeId
-				name
-				updatedAt
-			}
-		}
-      }
-   ",
+query Country($id: UUID!) {
+  country(id: $id) {
+    id
+    nodeId
+    createdAt
+    updatedAt
+    name
+    cities {
+      id
+      nodeId
+      name
+      updatedAt
+    }
+  }
+}
+",
 }
 `;
 
@@ -27,20 +27,20 @@ exports[`Mapper AOS scheme to graphql query should generate query for read entit
 Object {
   "name": "country",
   "query": "
-      query Country($id: UUID!) {
-         country(id: $id) {
-			id
-			nodeId
-			createdAt
-			updatedAt
-			name
-			cities {
-				name
-				updatedAt
-			}
-		}
-      }
-   ",
+query Country($id: UUID!) {
+  country(id: $id) {
+    id
+    nodeId
+    createdAt
+    updatedAt
+    name
+    cities {
+      name
+      updatedAt
+    }
+  }
+}
+",
 }
 `;
 
@@ -48,20 +48,20 @@ exports[`Mapper AOS scheme to graphql query should generate query for read entit
 Object {
   "name": "country",
   "query": "
-      query Country($id: UUID!) {
-         country(id: $id) {
-			createdAt
-			updatedAt
-			name
-			cities {
-				id
-				nodeId
-				name
-				updatedAt
-			}
-		}
-      }
-   ",
+query Country($id: UUID!) {
+  country(id: $id) {
+    createdAt
+    updatedAt
+    name
+    cities {
+      id
+      nodeId
+      name
+      updatedAt
+    }
+  }
+}
+",
 }
 `;
 
@@ -69,22 +69,22 @@ exports[`Mapper AOS scheme to graphql query should generate query for read entit
 Object {
   "name": "city",
   "query": "
-      query City($id: UUID!) {
-         city(id: $id) {
-			id
-			nodeId
-			createdAt
-			updatedAt
-			name
-			country {
-				id
-				nodeId
-				name
-				updatedAt
-			}
-		}
-      }
-   ",
+query City($id: UUID!) {
+  city(id: $id) {
+    id
+    nodeId
+    createdAt
+    updatedAt
+    name
+    country {
+      id
+      nodeId
+      name
+      updatedAt
+    }
+  }
+}
+",
 }
 `;
 
@@ -92,18 +92,18 @@ exports[`Mapper AOS scheme to graphql query should generate query for read entit
 Object {
   "name": "city",
   "query": "
-      query City($id: UUID!) {
-         city(id: $id) {
-			createdAt
-			updatedAt
-			name
-			country {
-				name
-				updatedAt
-			}
-		}
-      }
-   ",
+query City($id: UUID!) {
+  city(id: $id) {
+    createdAt
+    updatedAt
+    name
+    country {
+      name
+      updatedAt
+    }
+  }
+}
+",
 }
 `;
 
@@ -111,16 +111,18 @@ exports[`Mapper AOS scheme to graphql query should generate query for read list 
 Object {
   "name": "countries",
   "query": "
-    query Countries {
-      countries {
-		id
-		nodeId
-		name
-		code
-		updatedAt
-	}
+query Countries {
+  countries {
+    nodes {
+      id
+      nodeId
+      name
+      code
+      updatedAt
     }
-  ",
+  }
+}
+",
 }
 `;
 
@@ -128,14 +130,16 @@ exports[`Mapper AOS scheme to graphql query should generate query for read list 
 Object {
   "name": "countries",
   "query": "
-    query Countries {
-      countries {
-		name
-		code
-		updatedAt
-	}
+query Countries {
+  countries {
+    nodes {
+      name
+      code
+      updatedAt
     }
-  ",
+  }
+}
+",
 }
 `;
 
@@ -143,15 +147,17 @@ exports[`Mapper AOS scheme to graphql query should generate query for read list 
 Object {
   "name": "countries",
   "query": "
-    query Countries {
-      countries {
-		nodeId
-		name
-		code
-		updatedAt
-	}
+query Countries {
+  countries {
+    nodes {
+      nodeId
+      name
+      code
+      updatedAt
     }
-  ",
+  }
+}
+",
 }
 `;
 
@@ -159,14 +165,16 @@ exports[`Mapper AOS scheme to graphql query should generate query for read list 
 Object {
   "name": "countries",
   "query": "
-    query Countries {
-      countries {
-		id
-		name
-		code
-		updatedAt
-	}
+query Countries {
+  countries {
+    nodes {
+      id
+      name
+      code
+      updatedAt
     }
-  ",
+  }
+}
+",
 }
 `;

@@ -64,7 +64,8 @@ export function receiveWithMemoryAndReducers<
       return
     }
 
-    const eventDispatcher = event.payload.store.dispatcher
+    const eventStore = event.payload.store
+    const eventDispatcher = eventStore.dispatcher
 
     // if it promise, then need push result,
     // to allow life hooks handle it
@@ -72,14 +73,14 @@ export function receiveWithMemoryAndReducers<
       console.log('[MEMORY] async event completed', event, store, isResolved)
       removeEventIfResolved(event, isResolved)
 
-      eventDispatcher.success(event, store)
+      eventDispatcher.success(event, eventStore)
     },
     error => {
       // Will remove event even it was failed,
       // it allow not stuck in allways processing phase
       removeEventIfResolved(event, true)
 
-      eventDispatcher.failure(event, store, error)
+      eventDispatcher.failure(event, eventStore, error)
     })
   })
 }

@@ -1,4 +1,4 @@
-import { AosSchema, AosFieldType, isRelationsAosField } from '@/abstractObjectSchema'
+import { AosSchema, isRelationsAosField } from '@/abstractObjectSchema'
 import { generateQueryEntityById, generateQueryList } from '@/lazyDB/connectors/queryMapper'
 import { databaseClient } from '@/api/database/utils'
 import { dateToStringFormatter } from '@/lazyDB/utils'
@@ -59,12 +59,12 @@ export const list = async (entity: string, schema: AosSchema) => {
 }
 
 export const fetchListOrEntity = (initialName: string, targetName: string, schema: AosSchema) => {
-  if (initialName === TableListKey)
-    return list(targetName, schema)
-
   const tableField = schema[targetName]
   if (!isRelationsAosField(tableField))
     throw new Error('Was pushed not relative table field')
+
+  if (initialName === TableListKey)
+    return list(targetName, tableField.schema)
 
   const entityField = tableField.schema[initialName]
   if (!isRelationsAosField(entityField))

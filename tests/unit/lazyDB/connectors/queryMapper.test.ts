@@ -18,7 +18,7 @@ describe('Mapper AOS scheme to graphql query', () => {
     it('should generate query for read list of entities', () => {
         const entity = 'country'
         const fields = [{
-            nodes: ["id", "nodeId", "name", "code", "updatedAt"]
+            nodes: ["name", "code", "updatedAt", "id", "nodeId", ]
         }]
 
         const query = generateQueryList(entity, fields)
@@ -41,7 +41,7 @@ describe('Mapper AOS scheme to graphql query', () => {
     it('should generate query for read list of entities without only nodeId', () => {
         const entity = 'country'
         const fields = [{
-            nodes: ["id", "name", "code", "updatedAt"]
+            nodes: ["name", "id",  "code", "updatedAt"]
         }]
 
         const query = generateQueryList(entity, fields)
@@ -52,7 +52,7 @@ describe('Mapper AOS scheme to graphql query', () => {
     it('should generate query for read list of entities without only id', () => {
         const entity = 'country'
         const fields = [{
-            nodes: ["nodeId", "name", "code", "updatedAt"]
+            nodes: ["name", "nodeId", "code", "updatedAt"]
         }]
 
         const query = generateQueryList(entity, fields)
@@ -65,13 +65,13 @@ describe('Mapper AOS scheme to graphql query', () => {
     it('should generate query for read entity by id with one to many links', () => {
         const entity = 'country'
         const fields = [
-            "id",
-            "nodeId",
             "createdAt",
             "updatedAt",
+            "nodeId",
+            "id",
             "name",
             {
-                cities: ["id", "nodeId", "name", "updatedAt"]
+                cities: ["id", "name","nodeId",  "updatedAt"]
             }
         ]
 
