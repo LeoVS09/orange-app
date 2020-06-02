@@ -1,0 +1,153 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Mapper scheme to graphql query should generate query for read entity by id with one to many links 1`] = `
+"
+query Country($id: UUID!) {
+  country(id: $id) {
+    id
+    nodeId
+    createdAt
+    updatedAt
+    name
+    cities {
+      id
+      nodeId
+      name
+      updatedAt
+    }
+  }
+}
+"
+`;
+
+exports[`Mapper scheme to graphql query should generate query for read entity by id with one to many links without child id 1`] = `
+"
+query Country($id: UUID!) {
+  country(id: $id) {
+    id
+    nodeId
+    createdAt
+    updatedAt
+    name
+    cities {
+      name
+      updatedAt
+    }
+  }
+}
+"
+`;
+
+exports[`Mapper scheme to graphql query should generate query for read entity by id with one to many links without parent id 1`] = `
+"
+query Country($id: UUID!) {
+  country(id: $id) {
+    createdAt
+    updatedAt
+    name
+    cities {
+      id
+      nodeId
+      name
+      updatedAt
+    }
+  }
+}
+"
+`;
+
+exports[`Mapper scheme to graphql query should generate query for read entity by id with one to one link 1`] = `
+"
+query City($id: UUID!) {
+  city(id: $id) {
+    id
+    nodeId
+    createdAt
+    updatedAt
+    name
+    country {
+      id
+      nodeId
+      name
+      updatedAt
+    }
+  }
+}
+"
+`;
+
+exports[`Mapper scheme to graphql query should generate query for read entity by id with one to one link wihout id 1`] = `
+"
+query City($id: UUID!) {
+  city(id: $id) {
+    createdAt
+    updatedAt
+    name
+    country {
+      name
+      updatedAt
+    }
+  }
+}
+"
+`;
+
+exports[`Mapper scheme to graphql query should generate query for read list of entities 1`] = `
+"
+query Countries {
+  countries {
+    nodes {
+      id
+      nodeId
+      name
+      code
+      updatedAt
+    }
+  }
+}
+"
+`;
+
+exports[`Mapper scheme to graphql query should generate query for read list of entities without id 1`] = `
+"
+query Countries {
+  countries {
+    nodes {
+      name
+      code
+      updatedAt
+    }
+  }
+}
+"
+`;
+
+exports[`Mapper scheme to graphql query should generate query for read list of entities without only id 1`] = `
+"
+query Countries {
+  countries {
+    nodes {
+      nodeId
+      name
+      code
+      updatedAt
+    }
+  }
+}
+"
+`;
+
+exports[`Mapper scheme to graphql query should generate query for read list of entities without only nodeId 1`] = `
+"
+query Countries {
+  countries {
+    nodes {
+      id
+      name
+      code
+      updatedAt
+    }
+  }
+}
+"
+`;
