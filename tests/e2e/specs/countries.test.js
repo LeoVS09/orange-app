@@ -213,7 +213,7 @@ describe('Countries', () => {
   })
 
 
-  it.only('change country name', () => {
+  it('change country name', () => {
     const addText = 'changedCountry'
 
     cy.server()
