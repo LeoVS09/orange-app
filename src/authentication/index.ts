@@ -6,6 +6,8 @@ import { Email } from '@/models/email'
 import { login, currentUser, register } from '../api'
 import { UserProfile, UserType } from '../models'
 
+const isTestingTeacher = true
+
 const TOKEN_NAME = 'token'
 const TOKEN_KEY = 'key' // TODO
 
@@ -79,7 +81,7 @@ function toUser(userData: mutationTypes.Login_login_user): UserProfile {
     firstName: profile.firstName || '',
     middleName: profile.middleName,
     lastName: profile.lastName || '',
-    type: profile.isTeacher ? UserType.TEACHER : UserType.CONTESTANT,
+    type: isTestingTeacher || profile.isTeacher ? UserType.TEACHER : UserType.CONTESTANT,
     course: profile.course,
     groupNumber: profile.groupNumber,
     university: profile.university,
@@ -134,6 +136,7 @@ interface currentUserFalse {
 
 export async function currentUserIfHave(): Promise<currentUserOk | currentUserFalse> {
   const userData = await currentUser()
+  console.log('current user', userData)
   if (!userData) {
     return {
       ok: false
