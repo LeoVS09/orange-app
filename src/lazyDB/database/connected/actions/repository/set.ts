@@ -5,7 +5,7 @@ import { getOrCreateSchema, appendEventToSchema } from '@/lazyDB/database/aos'
 import { isWasChaged } from '@/lazyDB/receipes/trackChanges'
 
 export const set: DatabaseEventReducer<IDatabaseModelProducerStore, ModelEventSetPropertyPayload> = (store, { payload, date }) => {
-  console.log('repositoryReducers', 'SetProperty', 'event:', payload, 'store:', store)
+  console.log('[RepositoryReducers]', 'SetProperty', 'event:', payload, 'store:', store)
   if (isExcludeProperty(store, payload))
     return true
 

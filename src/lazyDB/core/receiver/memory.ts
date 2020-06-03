@@ -1,27 +1,19 @@
-import {
-  filter,
-  tap,
-  share,
-  map
-} from 'rxjs/operators'
-import { MonoTypeOperatorFunction, Observable } from 'rxjs'
-import { debug } from '@/reactive/debug'
+import { tap, share } from 'rxjs/operators'
+import { MonoTypeOperatorFunction } from 'rxjs'
 import {
   IProducerStore,
   EventReducersMap,
   ModelEvent,
   Producerable,
   ModelTypesToPayloadsMap,
-  EventReducer,
   ModelEventPayload
 } from '../types'
 import { StateMemory } from '../memory'
-import { receive, unsubscribeStore } from './receive'
-import { isHaveEventInMemory } from '../events'
-import { getStoreFromEvent } from './getters'
+import { unsubscribeStore } from './receive'
 import { handleByReducer } from './reducers'
-import { async, isPromiseLike } from './utils'
+import { isPromiseLike } from './utils'
 import { pushToParent } from '../bubbling'
+import { preOptimisation } from '../optimisation/preOptimisation'
 
 // Trying handle event by reducers in storage
 // If event handled (handler return true) and storage have memory
@@ -44,9 +36,13 @@ export function receiveWithMemoryAndReducers<
   // and then allow anyone handle it
   store.stream = dispatcher.eventsSubject
     .pipe(
-      filter(event => !isHaveEventInMemory(event, memory)),
-      debug('not have event in memory'),
+      // Pre-optmisation just filter events which not need store
+      // in main case they already remembored
+      preOptimisation(memory),
+      // if event not exists then remember
       saveInMemory(memory),
+      // after that step on event can be executed other handlers
+      // share allow any count of pipes to be added
       share()
     )
 

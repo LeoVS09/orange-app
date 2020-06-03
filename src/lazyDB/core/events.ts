@@ -1,34 +1,24 @@
 import {
-  PropertyEventType,
-  ModelEvent,
   ModelEventGetPropertyPayload,
   ModelEventSetPropertyPayload,
   ModelEventPayload,
-  IProducerStore,
-  ModelEventPropertyPayload
+  ModelEvent,
+  PropertyEventType
 } from '@/lazyDB/core/types'
-import { StateMemory } from './memory'
 
-export function isHaveEventInMemory<
-  Event extends ModelEvent<ModelEventPropertyPayload<any, any>> = ModelEvent<ModelEventPropertyPayload<any, any>>
->({ payload }: Event, memory: StateMemory<ModelEvent<any, any>>) {
-
-  const index = memory!.findIndex((event: ModelEvent<any, any>) => {
-    switch (event.type) {
-      case PropertyEventType.GetProperty:
-      case PropertyEventType.DeleteProperty: {
-        return isGetEventsEqual(event.payload, payload)
-      }
-      case PropertyEventType.SetProperty: {
-        return isSetEventsEqual(event.payload, payload as ModelEventSetPropertyPayload)
-      }
-      default: {
-        return false
-      }
+export const isEventsEqual = (a: ModelEvent<any, any>, b: ModelEvent<any, any>) => {
+  switch (a.type) {
+    case PropertyEventType.GetProperty:
+    case PropertyEventType.DeleteProperty: {
+      return isGetEventsEqual(a.payload, b.payload)
     }
-  })
-
-  return index !== -1
+    case PropertyEventType.SetProperty: {
+      return isSetEventsEqual(a.payload, b.payload as ModelEventSetPropertyPayload)
+    }
+    default: {
+      return false
+    }
+  }
 }
 
 export function isGetEventsEqual(a: ModelEventGetPropertyPayload, b: ModelEventGetPropertyPayload): boolean {

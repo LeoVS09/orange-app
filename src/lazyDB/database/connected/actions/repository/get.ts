@@ -35,7 +35,7 @@ export const transformTokens = (additionalFields: Array<FieldToken>): TransformT
 }
 
 const get: DatabaseEventReducer<IDatabaseModelProducerStore, ModelEventGetPropertyPayload> = (store, { payload }) => {
-  console.log('repositoryReducers', 'GetProperty', 'event:', payload, 'store:', store)
+  console.log('[RepositoryReducers]', 'GetProperty', 'event:', payload, 'store:', store)
   if (isExcludeProperty(store, payload))
     return true
 
