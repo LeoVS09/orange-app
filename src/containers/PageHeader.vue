@@ -303,6 +303,7 @@ export default class PageHeader extends Vue {
          font-size: 2.5rem;
          font-weight: bold;
          width: 100%;
+         background: transparent;
       }
 
       &--actions {
@@ -343,7 +344,7 @@ export default class PageHeader extends Vue {
          background: $active-gradient;
          margin-top: 0;
 
-         h1 {
+         h1, .page-header--input {
             color: $highlight-header-text-color;
          }
 

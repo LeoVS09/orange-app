@@ -5,6 +5,7 @@
          :modified="model.updatedAt"
          v-model="model.name"
          :is-loading="false"
+         :editable="isTeacher"
       >
          <template #breadcrumbs>
             <breadcrumb :to="{name: ROUTES.COUNTRIES}">{{'Countries' | translate}}</breadcrumb>
