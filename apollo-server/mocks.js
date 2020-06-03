@@ -75,7 +75,7 @@ export default {
   Query: () => ({
     countries: mockConnection(),
     tags: mockConnection(),
-    problems: mockConnection(),
+    problems: mockConnection(10),
     universities: mockConnection(),
     tests: mockConnection()
   })

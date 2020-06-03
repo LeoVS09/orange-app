@@ -3,6 +3,7 @@ import { isExcludeProperty } from '@/lazyDB/database/base/exclideProperty'
 import { IDatabaseModelProducerStore, DatabaseEventReducer } from '@/lazyDB/database/types'
 import { getOrCreateSchema, appendEventToSchema } from '@/lazyDB/database/aos'
 import { isWasChaged } from '@/lazyDB/receipes/trackChanges'
+import { transformTokensForSet } from './transformTokens'
 
 export const set: DatabaseEventReducer<IDatabaseModelProducerStore, ModelEventSetPropertyPayload> = (store, { payload, date }) => {
   console.log('[RepositoryReducers]', 'SetProperty', 'event:', payload, 'store:', store)
@@ -16,6 +17,7 @@ export const set: DatabaseEventReducer<IDatabaseModelProducerStore, ModelEventSe
     trackable => appendEventToSchema({
       schema: trackable,
       event: payload,
+      transformTokens: transformTokensForSet(),
       resolvedAt: date
     })
   )
