@@ -14566,10 +14566,10 @@ vuex-i18n@^1.11.0:
   resolved "https://registry.yarnpkg.com/vuex-i18n/-/vuex-i18n-1.11.0.tgz#e6cdc95080c445ab2c211cc6b64a907d217639d3"
   integrity sha512-+Eme0C7FS3VFLIWpAwisohC3KcRDw+YcXFANssUZZq16P2C4z8V2VGbEtFHFw0DzkvZcdM2CAkUj6rdMl9wYmg==
 
-vuex-module-decorators@^0.3.1:
-  version "0.3.1"
-  resolved "https://registry.yarnpkg.com/vuex-module-decorators/-/vuex-module-decorators-0.3.1.tgz#5038dbcc6b2508be20cd5c0f4794ea9a1bd3dda9"
-  integrity sha512-1oIDaaD2PHnHT+W/6gtCWwrClNJkYmVcHB4jv46Kxv3UifHfsIIoHlP/aWD+xuTpZGbMOwXSQobQJmNltYv9sg==
+vuex-module-decorators@^0.17.0:
+  version "0.17.0"
+  resolved "https://registry.yarnpkg.com/vuex-module-decorators/-/vuex-module-decorators-0.17.0.tgz#b170006f55f579f95415d7181fe5854830473d87"
+  integrity sha512-EFzrR3oyRMTHwpIgYzhW0BVKD71+FBs2U5Mn/ZQwlsaPyROZexDXTZTSYOYeuwg0kqQsK/YBkG4sQ8B4jmVMPg==
 
 vuex-router-sync@^5.0.0:
   version "5.0.0"
