@@ -27,7 +27,7 @@ export function onMouseOutOfWindow(callback: () => void): IListener {
   }
 }
 
-export function isPredictiveHover(event: MouseEvent, el: HTMLElement, limit: number = 0.25): boolean {
+export function isPredictiveHover(event: MouseEvent, el: HTMLElement, limit: number = 0.4): boolean {
   return isHover(event.pageX, event.pageY - el.scrollTop, el.offsetWidth, el.offsetHeight, limit)
 }
 

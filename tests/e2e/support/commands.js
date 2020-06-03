@@ -24,6 +24,20 @@
 // -- This is will overwrite an existing command --
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
 
+Cypress.Commands.add("login", (login, password, visitOptions) => { 
+    Cypress.log({
+        name: 'Login',
+        displayName: 'login to application',
+        message: login
+    });
+
+    cy.visit('/signin', visitOptions)
+    cy.get('input[type="text"]').type(login)
+    cy.get('input[type="password"]').type(password)
+
+    cy.get('.button--submit').click()
+})
+
 
 // Cypress currently not support graphql
 // code based on solution in issue https://github.com/cypress-io/cypress/issues/3083

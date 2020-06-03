@@ -67,4 +67,22 @@ describe('Base User Story', () => {
                 })
         })
     })
+
+
+    it('Login', () => {
+        cy.server()
+        cy.route({
+            url: '/graphql',
+            method: 'POST'
+        }).as('graphql')
+
+        cy.login('admin', 'password', fetchPolfill.visitOptions)
+
+        cy.waitGql('Login')
+            .then(({ data: { login } }) => {
+                const name = login.user.profiles.nodes[0].firstName
+                
+                cy.get('.top-bar--profile-text').should('contain', name)
+            })
+    })
 })
