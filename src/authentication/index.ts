@@ -6,10 +6,15 @@ import { Email } from '@/models/email'
 import { login, currentUser, register } from '../api'
 import { UserProfile, UserType } from '../models'
 
-const isTestingTeacher = true
-
 const TOKEN_NAME = 'token'
 const TOKEN_KEY = 'key' // TODO
+const TESTING_KEY = 'testing'
+
+const isTestingTeacher = () => {
+  const testingValue = window.localStorage.getItem(TESTING_KEY)
+  console.log('testing value', testingValue)
+  return testingValue === 'teacher'
+}
 
 function encryptId(user: UserProfile): string {
   return crypto.AES.encrypt(user.id, TOKEN_KEY).toString() // TODO
@@ -81,7 +86,7 @@ function toUser(userData: mutationTypes.Login_login_user): UserProfile {
     firstName: profile.firstName || '',
     middleName: profile.middleName,
     lastName: profile.lastName || '',
-    type: isTestingTeacher || profile.isTeacher ? UserType.TEACHER : UserType.CONTESTANT,
+    type: isTestingTeacher() || profile.isTeacher ? UserType.TEACHER : UserType.CONTESTANT,
     course: profile.course,
     groupNumber: profile.groupNumber,
     university: profile.university,

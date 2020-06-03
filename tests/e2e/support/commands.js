@@ -38,6 +38,24 @@ Cypress.Commands.add("login", (login, password, visitOptions) => {
     cy.get('.button--submit').click()
 })
 
+Cypress.Commands.add('loginAsTeacher', (login, password, visitOptions) => { 
+    Cypress.log({
+        name: 'Login as teacher',
+        displayName: 'set testing token with teacher value',
+    });
+    localStorage.setItem('testing', 'teacher')
+    cy.login(login, password, visitOptions)
+})
+
+Cypress.Commands.add('setCurrentUserAsTeacher', () => {
+    Cypress.log({
+        name: 'Set current user as teacher',
+        displayName: 'set testing token with teacher value',
+    });
+    localStorage.setItem('testing', 'teacher')
+    localStorage.setItem('token', 'U2FsdGVkX19ZuRAqYrCH7faVLxPKF4vSYr5PSu14bYg=')
+})
+
 
 // Cypress currently not support graphql
 // code based on solution in issue https://github.com/cypress-io/cypress/issues/3083
