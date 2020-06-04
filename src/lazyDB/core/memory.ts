@@ -11,8 +11,8 @@ export class StateMemory<T> {
    // TODO: make field private
    public memory: Array<T> = []
 
-   public push(event: T) {
-     this.memory.push(event)
+   public push(...events: Array<T>) {
+     this.memory.push(...events)
    }
 
    get length(): number {
@@ -56,5 +56,19 @@ export class StateMemory<T> {
 
    public some(predicat: (value: T, index: number, array: T[]) => boolean): boolean {
      return this.memory.some(predicat)
+   }
+
+   /** Will replace existing event with new one, return true if old event was found and replaced */
+   public replace(oldEvent: T, newEvent: T): boolean {
+     const index = this.memory.indexOf(oldEvent)
+     if (index === -1)
+       return false
+
+     this.memory[index] = newEvent
+     return true
+   }
+
+   public get(index: number): T | undefined {
+     return this.memory[index]
    }
 }

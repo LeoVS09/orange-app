@@ -210,6 +210,9 @@ export interface ModelEventSetPropertyPayload<
    newValue: NewValue
 }
 
+export const isSetEvent = (event: ModelEvent<any, any>): event is ModelEvent<ModelEventSetPropertyPayload<any, any>, any> =>
+  event.type === PropertyEventType.SetProperty
+
 export type BaseEventsPayloads<Store extends IProducerStore<any, any> = IProducerStore> =
    ModelEventGetPropertyPayload<Store> & ModelEventSetPropertyPayload<Store> & ModelEventDeletePropertyPayload<Store>
 

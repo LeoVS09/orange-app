@@ -4,14 +4,14 @@ import {
   map,
   debounceTime
 } from 'rxjs/operators'
-import { StateMemory } from '../core/memory'
-import { ModelEvent, ModelEventGetPropertyPayload } from '../core/types'
-import { ModelEventTypes, ModelEventReadPayload } from '../database/events'
-import { isReading, isHaveReadingError } from '../database/states'
+import { StateMemory } from '@/lazyDB/core/memory'
+import { ModelEvent, ModelEventGetPropertyPayload } from '@/lazyDB/core/types'
+import { ModelEventTypes, ModelEventReadPayload } from '@/lazyDB/database/events'
+import { isReading } from '@/lazyDB/database/states'
+import { debug } from '@/reactive/debug'
+import { IDatabaseModelProducerStore } from '@/lazyDB/database/types'
 import { pauseWhileReading } from './pauseWhileReading'
-import { debug } from '../../reactive/debug'
 import { debugPayload } from './utils'
-import { IDatabaseModelProducerStore } from '../database/types'
 
 const WAIT_TIME_WHEN_GETS_STOP_SPAWN = 50
 

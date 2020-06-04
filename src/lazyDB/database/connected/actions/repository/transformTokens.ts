@@ -10,9 +10,7 @@ const last = <T>(list: Array<T>): T => list[list.length - 1]
 export const removeServiceTokens: TransformTokensList = list =>
   list.filter(({ name }) => name !== TableListKey)
 
-/**
- * add additional fields on entity and remove service tokens
- */
+/** add additional fields on entity and remove service tokens */
 export const transformTokensForGet = (additionalFields: Array<FieldToken>): TransformTokensList => list => {
   const withoutServiceTokens = removeServiceTokens(list)
 
@@ -24,9 +22,7 @@ export const transformTokensForGet = (additionalFields: Array<FieldToken>): Tran
   return [...withoutServiceTokens, ...additionalFields]
 }
 
-/**
- * remove service tokens
- */
+/** remove service tokens */
 export const transformTokensForSet = (): TransformTokensList => list =>
   removeServiceTokens(list)
 

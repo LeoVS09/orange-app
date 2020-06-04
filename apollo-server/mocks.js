@@ -73,10 +73,10 @@ export default {
   }),
 
   Query: () => ({
-    countries: mockConnection(),
-    tags: mockConnection(),
+    countries: mockConnection(10),
+    tags: mockConnection(10),
     problems: mockConnection(10),
-    universities: mockConnection(),
-    tests: mockConnection()
+    universities: mockConnection(10),
+    tests: mockConnection(10)
   })
 }

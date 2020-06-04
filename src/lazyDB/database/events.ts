@@ -59,3 +59,4 @@ export interface ModelEventReadPayload<Store extends IDatabaseModelProducerStore
    gets: Array<ModelEvent<ModelEventGetPropertyPayload>>
    sets: Array<ModelEvent<ModelEventSetPropertyPayload>>
 }
+

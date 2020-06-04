@@ -51,3 +51,16 @@ export function pushToParent<ChildStore extends IProducerStore<any, any> = IProd
 
   dispatcher.eventsSubject.next(event)
 }
+
+/**
+ * Apply funcion to current store and all of his parents
+ */
+export function visitParents<Store extends IProducerStore<any, any>>(start: Store, visitor: (store: Store) => void) {
+  visitor(start)
+
+  const { parent } = start
+  if (!parent)
+    return
+
+  visitParents(parent.store, visitor)
+}

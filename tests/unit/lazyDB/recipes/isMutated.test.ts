@@ -1,11 +1,11 @@
-import { isWasChaged } from "@/lazyDB/receipes/trackChanges"
-import cons from '../utils/console.mock'
+import { isMutated } from "@/lazyDB/recipes/trackChanges/isMutated"
+import cons from '../../utils/console.mock'
 
 export interface Model {
     [key: string]: any
 }
 
-describe('Track changes', () => {
+describe('isMutated', () => {
 
     beforeAll(() => {
         cons.mockConsole()
@@ -18,7 +18,7 @@ describe('Track changes', () => {
     it('return true when one property added', () => {
         const base: Model = {}
 
-        const isChanged = isWasChaged(base, model => {
+        const isChanged = isMutated(base, model => {
             model.property = 1
         })
 
@@ -31,7 +31,7 @@ describe('Track changes', () => {
 
         base.property = 1
 
-        const isChanged = isWasChaged(base, model => {
+        const isChanged = isMutated(base, model => {
             model.property = 2
         })
 
@@ -44,7 +44,7 @@ describe('Track changes', () => {
 
         base.property = 1
 
-        const isChanged = isWasChaged(base, model => {
+        const isChanged = isMutated(base, model => {
             model.property = 1
         })
 
@@ -57,7 +57,7 @@ describe('Track changes', () => {
 
         base.property = 1
 
-        const isChanged = isWasChaged(base, model => {
+        const isChanged = isMutated(base, model => {
             const _ = model.property
         })
 
@@ -68,7 +68,7 @@ describe('Track changes', () => {
     it('return false when new one property get', () => {
         const base: Model = {}
 
-        const isChanged = isWasChaged(base, model => {
+        const isChanged = isMutated(base, model => {
             const _ = model.property
         })
 
@@ -83,7 +83,7 @@ describe('Track changes', () => {
             a: 1
         }
 
-        const isChanged = isWasChaged(base, model => {
+        const isChanged = isMutated(base, model => {
             model.property.b = 2
         })
 
@@ -98,7 +98,7 @@ describe('Track changes', () => {
             a: 1
         }
 
-        const isChanged = isWasChaged(base, model => {
+        const isChanged = isMutated(base, model => {
             model.property.a = 2
         })
 
@@ -113,7 +113,7 @@ describe('Track changes', () => {
             a: 1
         }
 
-        const isChanged = isWasChaged(base, model => {
+        const isChanged = isMutated(base, model => {
             model.property.b = {
                 c: 2
             }
@@ -130,7 +130,7 @@ describe('Track changes', () => {
             a: 1
         }
 
-        const isChanged = isWasChaged(base, model => {
+        const isChanged = isMutated(base, model => {
             model.property.a = 1
         })
 

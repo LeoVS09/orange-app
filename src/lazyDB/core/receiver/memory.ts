@@ -12,8 +12,9 @@ import { StateMemory } from '../memory'
 import { unsubscribeStore } from './receive'
 import { handleByReducer } from './reducers'
 import { isPromiseLike } from './utils'
-import { pushToParent } from '../bubbling'
+import { pushToParent, visitParents } from '../bubbling'
 import { preOptimisation } from '../optimisation/preOptimisation'
+import { postOptimisation } from '../optimisation/postOptimisation'
 
 // Trying handle event by reducers in storage
 // If event handled (handler return true) and storage have memory
@@ -46,39 +47,42 @@ export function receiveWithMemoryAndReducers<
       share()
     )
 
-  store.subscription = store.stream.subscribe(event => {
-    const reducer = reducers[event.type]
-    if (!reducer) {
-      pushToParent(store, event)
-      return
-    }
+  store.subscription = store.stream
+  // Post optimisation in main case will just zip all events which can
+    .pipe(postOptimisation())
+    .subscribe(event => {
+      const reducer = reducers[event.type]
+      if (!reducer) {
+        pushToParent(store, event)
+        return
+      }
 
-    const result = handleByReducer(store, event, reducer as any)
+      const result = handleByReducer(store, event, reducer as any)
 
-    if (!isPromiseLike(result)) {
-      removeEventIfResolved(event, result)
-      return
-    }
+      if (!isPromiseLike(result)) {
+        removeEventIfResolved(event, result)
+        return
+      }
 
-    const eventStore = event.payload.store
-    const eventDispatcher = eventStore.dispatcher
+      const eventStore = event.payload.store
+      const eventDispatcher = eventStore.dispatcher
 
-    // if it promise, then need push result,
-    // to allow life hooks handle it
-    result.then(isResolved => {
-      console.log('[MEMORY] async event completed', event, store, isResolved)
-      removeEventIfResolved(event, isResolved)
+      // if it promise, then need push result,
+      // to allow life hooks handle it
+      result.then(isResolved => {
+        console.log('[MEMORY] async event completed', event, store, isResolved)
+        removeEventIfResolved(event, isResolved)
 
-      eventDispatcher.success(event, eventStore)
-    },
-    error => {
+        eventDispatcher.success(event, eventStore)
+      },
+      error => {
       // Will remove event even it was failed,
       // it allow not stuck in allways processing phase
-      removeEventIfResolved(event, true)
+        removeEventIfResolved(event, true)
 
-      eventDispatcher.failure(event, eventStore, error)
+        eventDispatcher.failure(event, eventStore, error)
+      })
     })
-  })
 }
 
 /** Remove event from store memory of target and all parents */
@@ -94,15 +98,12 @@ const removeEventIfResolved = (event: ModelEvent<ModelEventPayload<IProducerStor
   // and need remove it from all memories, which possible catched it
   const { payload: { store } } = event
 
-  removeEventFromStoreAndParent(event, store)
-}
+  // remove event from store and parents
+  visitParents(store, ({ memory }) => {
+    if (memory)
+      memory.remove(event)
+  })
 
-function removeEventFromStoreAndParent(event: ModelEvent<ModelEventPayload<IProducerStore<any, any>>, any>, store: IProducerStore<any, any>) {
-  if (store.memory)
-    store.memory.remove(event)
-
-  if (store.parent)
-    removeEventFromStoreAndParent(event, store.parent.store)
 }
 
 const saveInMemory = <

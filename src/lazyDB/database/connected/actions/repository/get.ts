@@ -6,7 +6,7 @@ import {
   FieldToken
 } from '@/lazyDB/database/aos'
 import { isExcludeProperty } from '@/lazyDB/database/base/exclideProperty'
-import { isWasChaged } from '@/lazyDB/receipes/trackChanges'
+import { isMutated } from '@/lazyDB/recipes/trackChanges/isMutated'
 import { requiredFields } from '@/lazyDB/constants'
 import { AosFieldType } from '@/abstractObjectSchema'
 import { TableListKey } from '@/lazyDB/database/storage/table'
@@ -26,14 +26,13 @@ const get: DatabaseEventReducer<IDatabaseModelProducerStore, ModelEventGetProper
 
   const schema = getOrCreateSchema(store)
 
-  const isChanged = isWasChaged(
-    schema,
-    trackable => appendEventToSchema({
-      schema: trackable,
-      event: payload,
-      transformTokens: transformTokensForGet(defaultAdditionalFields)
-    })
-  )
+  // Track if schema was changed
+  // when try append new event
+  const isChanged = isMutated(schema, trackable => appendEventToSchema({
+    schema: trackable,
+    event: payload,
+    transformTokens: transformTokensForGet(defaultAdditionalFields)
+  }))
 
   // if action was not change anything
   // then it possible was already done, or not have any impact value
