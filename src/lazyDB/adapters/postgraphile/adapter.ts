@@ -1,21 +1,15 @@
-import { APIClient } from '@/api/database/client'
-import { AosSchema, isRelationsAosField } from '@/abstractObjectSchema'
-import { OperationVariables } from 'apollo-client'
-import { dateToStringFormatter } from '../../utils'
-import { generateQueryFromAosSchema, QueryVariable, QueryVariables } from '../graphql'
-import { TableListKey } from '../../database/storage/table'
+import { AosSchema, AosFieldType } from '@/abstractObjectSchema'
+import {
+  sendQuery,
+  sendMutation,
+  QueryVariables,
+  APIClient
+} from '../graphql'
+import { capitalise } from '../graphql/prettyAdapters'
 
-/** Generate list quiery name based on enitty name */
-function entityToList(entity: string): string {
-  if (entity.slice(-1) === 'y')
-    return `${entity.slice(0, -1)}ies`
-
-  return `${entity}s`
+export interface ChangedFields {
+  [prop: string]: any
 }
-
-// variables whicch require for generate correct query
-//  for single entity by id
-export const queryByIdVariables = (value: string): QueryVariables => ({ id: { type: 'UUID', value, required: true } })
 
 export class PostgraphileAdapter {
   constructor(
@@ -26,7 +20,11 @@ export class PostgraphileAdapter {
     return sendQuery(this.client)
   }
 
-  async entityById<T>(entity: string, id: string, schema: AosSchema): Promise<T> {
+  get sendMutation() {
+    return sendMutation(this.client)
+  }
+
+  async getEntityById<T>(entity: string, id: string, schema: AosSchema): Promise<T> {
     return this.sendQuery(
       entity,
       schema,
@@ -34,54 +32,63 @@ export class PostgraphileAdapter {
     )
   }
 
-  async entityList<T>(entity: string, schema: AosSchema): Promise<T> {
+  async getEntityList<T>(entity: string, schema: AosSchema): Promise<T> {
     return this.sendQuery(
       entityToList(entity),
       schema
     )
   }
 
-}
+  async updateEntity<T>(entity: string, id: string, schema: AosSchema, changedFields: ChangedFields): Promise<T> {
+    const response = await this.sendMutation(
+      entityToUpdateOperation(entity),
+      schemaToUpdateResponse(entity, schema),
+      updateByIdVariables(entity, id, changedFields)
+    )
 
-const mapQueryVariablesToClient = (variables?: QueryVariables): OperationVariables | undefined => {
-  if (!variables)
-    return
-
-  const result: OperationVariables = {}
-  for (const key of Object.keys(variables)) {
-    const value = variables[key]
-    if (typeof value !== 'object') {
-      result[key] = value
-      continue
-    }
-
-    result[key] = value.value
+    return extractUpdateResponseValue(entity, response as any)
   }
-
-  return result
 }
 
-export const sendQuery = (client: APIClient) => async <T>(operation: string, schema: AosSchema, variables?: QueryVariables): Promise<T> => {
-  const query = generateQueryFromAosSchema({
-    operation,
-    schema,
-    variables
-  })
-  console.log('[PostgraphileAdapter] read schema query', { schema, query })
+/** Generate list query name based on enitty name */
+function entityToList(entity: string): string {
+  if (entity.slice(-1) === 'y')
+    return `${entity.slice(0, -1)}ies`
 
-  const { data, errors } = await client.query<any>({
-    query,
-    variables: mapQueryVariablesToClient(variables)
-  })
+  return `${entity}s`
+}
 
-  if (errors) {
-    console.error('Errors on read request to entity', operation, 'with returned data:', data, 'and errors', errors)
-    throw new Error(`Error on request${errors.toString()}`)
+/** Generate update mutation name basaed on entity */
+function entityToUpdateOperation(entity: string): string {
+  return `update${capitalise(entity)}`
+}
+
+/** Generate variables for query single entity by id */
+export const queryByIdVariables = (value: string): QueryVariables => ({
+  id: { type: 'UUID', value, required: true }
+})
+
+export const updateByIdVariables = (entity: string, id: string, changedFields: ChangedFields): QueryVariables => ({
+  input: {
+    type: `Update${capitalise(entity)}Input`,
+    value: {
+      id: { type: 'UUID', value: id, required: true },
+      patch: {
+        type: `${capitalise(entity)}Patch`,
+        required: true,
+        value: changedFields
+      }
+    },
+    required: true
   }
+})
 
-  console.log('[PostgraphileAdapter] data result fetched', data)
+export const schemaToUpdateResponse = (entity: string, schema: AosSchema): AosSchema => ({
+  [entity]: {
+    type: AosFieldType.OneToOne,
+    schema
+  }
+})
 
-  const formated = dateToStringFormatter(data)
-
-  return formated[operation]
-}
+export const extractUpdateResponseValue = <T extends {[key: string]: any}>(entity: string, data: T): T =>
+  data[entity]

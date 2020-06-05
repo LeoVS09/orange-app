@@ -19,6 +19,8 @@ export const TableStoreReference = SymFor('table storage')
 // Used string, because event producer get symbols and strings starts from `_` from base as it is
 export const TableListKey = '$__list__'
 
+export const isListKey = (key: string): boolean => key === TableListKey
+
 export const makeTableSource = (table: DatabaseTableMap) => ({
   [TableStoreReference]: table
 })

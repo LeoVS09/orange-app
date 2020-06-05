@@ -66,7 +66,7 @@ import { City } from '@/models'
 import { CountryRepository } from '@/db'
 import { RouterPush } from '@/components/decorators'
 import ReactiveUpdate, { reactiveUpdate } from '@/components/mixins/ReactiveUpdate'
-
+import { emitUpdate } from '@/lazyDB'
 import {
   List,
   ListColumn,
@@ -126,8 +126,7 @@ export default class CountryView extends Mixins(ReactiveUpdate) {
    }
 
    public onSave() {
-     // TODO
-     console.log('save')
+     emitUpdate(this.model)
    }
 }
 </script>

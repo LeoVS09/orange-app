@@ -10,11 +10,8 @@ const TOKEN_NAME = 'token'
 const TOKEN_KEY = 'key' // TODO
 const TESTING_KEY = 'testing'
 
-const isTestingTeacher = () => {
-  const testingValue = window.localStorage.getItem(TESTING_KEY)
-  console.log('testing value', testingValue)
-  return testingValue === 'teacher'
-}
+const isTestingTeacher = () => true
+// window.localStorage.getItem(TESTING_KEY) === 'teacher'
 
 function encryptId(user: UserProfile): string {
   return crypto.AES.encrypt(user.id, TOKEN_KEY).toString() // TODO

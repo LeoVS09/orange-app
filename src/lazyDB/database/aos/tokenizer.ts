@@ -1,9 +1,9 @@
 import { AosFieldType } from '@/abstractObjectSchema'
 import { IProducerStore, Producerable, ParentLink } from '@/lazyDB/core/types'
 
-export interface FieldToken {
+export interface FieldToken<Name = PropertyKey>{
     type: AosFieldType
-    name: PropertyKey
+    name: Name
   }
 
 /** Build path from store to root node */

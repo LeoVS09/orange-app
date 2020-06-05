@@ -1,3 +1,12 @@
+import { OperationVariables, MutationOptions, QueryOptions } from 'apollo-client'
+import { ExecutionResult } from 'graphql'
+
+export interface APIClient {
+  mutate<T, TVariables = OperationVariables>(options: MutationOptions<T, TVariables>): Promise<ExecutionResult<T>>
+
+  query<T, TVariables = OperationVariables>(options: QueryOptions<TVariables>): Promise<ExecutionResult<T>>
+}
+
 export interface QueryField {
     [entity: string]: QueryFields
 }

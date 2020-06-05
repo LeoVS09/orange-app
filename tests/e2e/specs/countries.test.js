@@ -236,4 +236,35 @@ describe('Countries', () => {
       cy.get('input.page-header--input').should('have.value', oldText + addText)
     })
   })
+
+  it.only('update country name', () => {
+    const addText = 'changedCountry'
+
+    cy.server()
+    cy.route({
+        url: '/graphql',
+        method: 'POST'
+    }).as('graphql')
+
+    cy.setCurrentUserAsTeacher()
+
+    cy.visit('/countries/xB2Ox5aDV', fetchPolfill.visitOptions)
+    cy.waitGql('Country')
+
+    cy.wait(1000)
+    cy.get('input.page-header--input').then($elem => {
+      const oldText = $elem.val()
+      const expectedText = oldText + addText
+      cy.log('oldText', oldText)
+      cy.get('input.page-header--input').type(addText)
+
+      
+      cy.get('input.page-header--input').should('have.value', expectedText)
+
+      cy.get('.floating-button .button--submit').click()
+
+      cy.pause()
+
+    })
+  })
 })

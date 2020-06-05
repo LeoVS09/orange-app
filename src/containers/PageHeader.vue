@@ -322,6 +322,7 @@ export default class PageHeader extends Vue {
          max-width: $max-content-width;
          margin: 0 auto;
          padding: 0 2rem;
+         box-sizing: border-box;
       }
 
       &.text-width {

@@ -68,6 +68,5 @@ const allGetEventsFromMemory = (memory: StateMemory<ModelEvent<any>>) =>
 const wrapGetEventsToReadPayload = <Store extends IDatabaseModelProducerStore<any, any> = IDatabaseModelProducerStore>(store: Store) =>
   (gets: Array<ModelEvent<any>>): ModelEventReadPayload => ({
     gets,
-    sets: [],
     store
   })

@@ -16,6 +16,9 @@ export function getStore<
   T extends Producerable<any> = Producerable,
   Store extends IProducerStore<T, any> = IProducerStore<T>
 >(producer: EventProducer<T> | T): Store | undefined {
+  if (typeof producer !== 'object')
+    return
+
   return producer[ProducerStoreReference]
 }
 export function isProducer<T extends Producerable<any> = Producerable>(value: T | EventProducer<T>): value is EventProducer<T> {

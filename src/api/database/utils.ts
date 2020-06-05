@@ -1,5 +1,6 @@
 import deepMap from 'deep-map'
-import { APIClient, makeClient } from './client'
+import { APIClient } from '@/lazyDB/adapters/graphql'
+import { makeClient } from './client'
 import urls from '../urls'
 
 // const DEBUG = process.env.NODE_ENV !== 'production'

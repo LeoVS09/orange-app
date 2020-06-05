@@ -1,16 +1,5 @@
-import {
-  MutationOptions,
-  OperationVariables,
-  QueryOptions
-} from 'apollo-client'
-import { ExecutionResult } from 'graphql'
 import { createApolloClient } from 'vue-cli-plugin-apollo/graphql-client'
-
-export interface APIClient {
-   mutate<T, TVariables = OperationVariables>(options: MutationOptions<T, TVariables>): Promise<ExecutionResult<T>>
-
-   query<T, TVariables = OperationVariables>(options: QueryOptions<TVariables>): Promise<ExecutionResult<T>>
-}
+import { APIClient } from '@/lazyDB/adapters/graphql'
 
 function extractRealError(e: any) {
   if (e.graphQLErrors && e.graphQLErrors[0].message)

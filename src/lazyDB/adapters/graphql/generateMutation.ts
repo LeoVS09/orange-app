@@ -1,10 +1,11 @@
 import gql from 'graphql-tag'
 import * as builder from 'gql-query-builder'
 import { DocumentNode } from 'graphql'
+import IMutationAdapter from 'gql-query-builder/build/adapters/IMutationAdapter'
 import { QueryFields, QueryVariables } from './types'
-import { PrettyQueryAdapter } from './prettyAdapters'
+import { PrettyMutationAdapter } from './prettyAdapters'
 
-export interface GenerateQueryOptions {
+export interface GenerateMutationOptions {
   /**
    * operation name
    * aka: "country" produce -> query Country { country { some, fields, ...}}
@@ -22,17 +23,17 @@ export interface GenerateQueryOptions {
 }
 
 /**
- * Generate GraphQL query by given options
+ * Generate GraphQL mutation by given options
  */
-export function generateQuery(options: GenerateQueryOptions): DocumentNode {
+export function generateMutation(options: GenerateMutationOptions): DocumentNode {
   try {
-    const { query } = builder.query(options, PrettyQueryAdapter)
+    const { query } = builder.mutation(options, PrettyMutationAdapter as unknown as IMutationAdapter)
 
-    console.debug('[GraphqlAdapter] generated query', options, query)
+    console.debug('[GraphqlAdapter] generated mutation', options, query)
     return gql(query)
 
   } catch (e) {
-    console.error('Cannot generate query', e)
+    console.error('Cannot generate mutation', e)
     throw new Error(`Error on query generation\n${e.toString()}`)
   }
 }

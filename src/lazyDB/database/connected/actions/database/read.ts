@@ -1,27 +1,28 @@
 import { ModelEventReadPayload } from '@/lazyDB/database/events'
 import { DatabaseEventReducer, IDatabaseModelProducerStore } from '@/lazyDB/database/types'
-import { compudeStoreParents } from '@/lazyDB/database/aos'
+import { compudeStoreParents, FieldToken } from '@/lazyDB/database/aos'
 import { fetchListOrEntity } from '@/lazyDB/adapters/postgraphile'
-import { removeGetEventsFromMemory } from './utils'
+import { removeEventsFromMemory } from './utils'
 
-const read: DatabaseEventReducer<IDatabaseModelProducerStore, ModelEventReadPayload<IDatabaseModelProducerStore>> = async (dataBaseStore, { payload }) => {
-  const { store } = payload
+type ReadReducer = DatabaseEventReducer<IDatabaseModelProducerStore, ModelEventReadPayload<IDatabaseModelProducerStore>>
+
+const read: ReadReducer = async (dataBaseStore, { payload: { store, gets } }) => {
   const { schema, proxy } = store
   if (!schema) {
-    console.error('read payload', payload)
-    throw new Error('Read payload not have read schema')
+    console.error('read producer not have read schema', { store, gets })
+    throw new Error('Read producer not have read schema')
   }
-  // create lazy array
-  const [initial, entity] = [...compudeStoreParents(store)]
-  const getRequest = `${initial.name as string}/${entity.name as string}/`
-  console.log('[ReadActiont] generated get request', getRequest)
+  // TODO: create lazy array
+  const [{ name: key }, { name: entity }] = [...compudeStoreParents(store)] as Array<FieldToken<string>>
 
-  const data = await fetchListOrEntity(initial.name as string, entity.name as string, schema)
-  console.log('[ReadActiont] read response', data)
+  console.log('[ReadActiont] generate request for', `${key}/${entity}/`)
+
+  const data = await fetchListOrEntity(key, entity, schema)
+  console.log('[ReadActiont] response', data)
 
   // need remove it outside of handler
   // probably setup it in lifecycle
-  removeGetEventsFromMemory(payload)
+  removeEventsFromMemory(store, gets)
 
   Object.assign(proxy, data)
 

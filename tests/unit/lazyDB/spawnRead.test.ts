@@ -26,7 +26,6 @@ const readEvent = (payload: ModelEventReadPayload): ModelEvent<ModelEventReadPay
 const readEventWithGets = (get: ModelEvent<any>, count: number, memory: StateMemory<any>): ModelEvent<any> => 
     readEvent({
         gets: new Array(count).fill(get),
-        sets: [],
         store: { memory } as IDatabaseModelProducerStore
     })
 

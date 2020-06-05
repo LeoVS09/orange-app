@@ -1,16 +1,9 @@
-import {
-  EventReducersMap, BaseEventsPayloads, ModelEvent, ModelEventGetPropertyPayload
-} from '@/lazyDB/core/types'
-import {
-  ModelEventTypes,
-  DatabaseModelTypesToPayloadsMap
-} from '../../../events'
+import { EventReducersMap, ModelEvent, ModelEventGetPropertyPayload } from '@/lazyDB/core/types'
+import { ModelEventTypes, DatabaseModelTypesToPayloadsMap } from '../../../events'
 import { IDatabaseModelProducerStore } from '../../../types'
-import {
-  isExcludeProperty
-} from '../../../base/exclideProperty'
-
+import { isExcludeProperty } from '../../../base/exclideProperty'
 import read from './read'
+import update from './update'
 
 export const databaseReducers: EventReducersMap<IDatabaseModelProducerStore, DatabaseModelTypesToPayloadsMap> = {
   [ModelEventTypes.GetProperty]: (store, { payload }: ModelEvent<ModelEventGetPropertyPayload>) => {
@@ -26,6 +19,12 @@ export const databaseReducers: EventReducersMap<IDatabaseModelProducerStore, Dat
 
   // Add ts support for inner read payload
   [ModelEventTypes.Read]: read,
+
+  [ModelEventTypes.Update]: update,
+
+  [ModelEventTypes.Create]: () => false,
+
+  [ModelEventTypes.Delete]: () => false,
 
   [ModelEventTypes.Success]: (store, payload) => {
     console.log('Success', store, payload)

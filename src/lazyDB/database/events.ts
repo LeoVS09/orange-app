@@ -39,6 +39,9 @@ export type DatabaseModelTypesToPayloadsMap<
 > = ModelTypesToPayloadsMap<Store, Key> & {
    [type: string]: any
    [ModelEventTypes.Read]: ModelEventReadPayload<Store>
+   [ModelEventTypes.Update]: ModelEventUpdatePayload<Store>
+   [ModelEventTypes.Create]: ModelEventCreatePayload<Store>
+   [ModelEventTypes.Delete]: ModelEventDeletePayload<Store>
    [ModelEventTypes.Success]: ModelEventSuccessPayload<Store, any>
    [ModelEventTypes.Failure]: ModelEventFailurePayload<Store, any>
 }
@@ -57,6 +60,17 @@ export interface DatabaseModelPayload<Store extends IDatabaseModelProducerStore<
 export interface ModelEventReadPayload<Store extends IDatabaseModelProducerStore<any, any> = IDatabaseModelProducerStore>
    extends DatabaseModelPayload<Store> {
    gets: Array<ModelEvent<ModelEventGetPropertyPayload>>
+}
+
+export interface ModelEventUpdatePayload<Store extends IDatabaseModelProducerStore<any, any> = IDatabaseModelProducerStore>
+   extends DatabaseModelPayload<Store> {
    sets: Array<ModelEvent<ModelEventSetPropertyPayload>>
 }
 
+export interface ModelEventCreatePayload<Store extends IDatabaseModelProducerStore<any, any> = IDatabaseModelProducerStore>
+   extends DatabaseModelPayload<Store> {
+}
+
+export interface ModelEventDeletePayload<Store extends IDatabaseModelProducerStore<any, any> = IDatabaseModelProducerStore>
+   extends DatabaseModelPayload<Store> {
+}

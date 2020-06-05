@@ -1,10 +1,10 @@
-import { ModelEventReadPayload } from '@/lazyDB/database/events'
+import { IProducerStore, ModelEvent } from '@/lazyDB/core/types'
 
-export const removeGetEventsFromMemory = ({ store, gets }: ModelEventReadPayload) => {
+export const removeEventsFromMemory = (store: IProducerStore, events: Array<ModelEvent>) => {
   const { memory } = store
 
   if (memory)
-    memory.forget(...gets)
+    memory.forget(...events)
 }
 
 export const isObject = (value: any): value is Object => typeof value === 'object'
