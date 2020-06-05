@@ -70,7 +70,6 @@ exports[`Country.vue renders country 1`] = `
     <div
       class="list--container"
       inlineadd=""
-      validateadd="function () { [native code] }"
     >
       <div
         class="list--hidden-columns"
@@ -114,6 +113,43 @@ exports[`Country.vue renders country 1`] = `
       <!---->
     </div>
   </section>
+   
+  <div
+    class="floating-button--container"
+  >
+    <div
+      class="floating-button"
+    >
+      <div
+        class="floating-button--action button"
+        visible="visible"
+      >
+        <button
+          class="button--submit shadow disabled primary circle text-not-faded icon-left"
+        >
+          <div
+            class="button--content"
+          >
+            <span>
+              <i
+                class="material-icons button--icon button--icon-left"
+              >
+                autorenew
+              </i>
+            </span>
+             
+            <span
+              class="button--text"
+            >
+              save
+            </span>
+             
+            <!---->
+          </div>
+        </button>
+      </div>
+    </div>
+  </div>
 </div>
 `;
 
@@ -243,7 +279,6 @@ exports[`Country.vue renders country 2`] = `
     <div
       class="list--container"
       inlineadd=""
-      validateadd="function () { [native code] }"
     >
       <div
         class="list--hidden-columns"
@@ -348,5 +383,42 @@ exports[`Country.vue renders country 2`] = `
       <!---->
     </div>
   </section>
+   
+  <div
+    class="floating-button--container"
+  >
+    <div
+      class="floating-button"
+    >
+      <div
+        class="floating-button--action button"
+        visible="visible"
+      >
+        <button
+          class="button--submit shadow disabled primary circle text-not-faded icon-left"
+        >
+          <div
+            class="button--content"
+          >
+            <span>
+              <i
+                class="material-icons button--icon button--icon-left"
+              >
+                autorenew
+              </i>
+            </span>
+             
+            <span
+              class="button--text"
+            >
+              save
+            </span>
+             
+            <!---->
+          </div>
+        </button>
+      </div>
+    </div>
+  </div>
 </div>
 `;
