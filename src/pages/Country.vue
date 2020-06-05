@@ -24,7 +24,6 @@
             :items="cities"
             :isCanAdd="isTeacher"
             inlineAdd
-            :validateAdd="validate"
             @add="add"
             @choose-item="chooseItem"
             :key="reactive"
@@ -33,6 +32,18 @@
             <list-column name="updatedAt">updated</list-column>
          </list>
       </Section>
+
+      <FloatingButton
+         :visible="model | isChanged"
+         @click="onSave"
+         :disabled="model | isPending"
+         :primary="true"
+         :circle="true"
+         :shadow="true"
+         :gradientHighlight="false"
+         icon="autorenew"
+      >{{'save' | translate | capitalise}}</FloatingButton>
+
    </div>
 </template>
 
@@ -47,7 +58,8 @@ import {
   TextSection,
   PageHeaderAction,
   Filters,
-  DataView
+  DataView,
+  FloatingButton
 } from '@/components'
 import { ROUTES } from '@/router/routes'
 import { City } from '@/models'
@@ -78,7 +90,8 @@ import {
     DataView,
     LazyData,
     LazyProperty,
-    ListColumn
+    ListColumn,
+    FloatingButton
   }
 })
 export default class CountryView extends Mixins(ReactiveUpdate) {
@@ -112,8 +125,9 @@ export default class CountryView extends Mixins(ReactiveUpdate) {
      // TODO
    }
 
-   public validate() {
+   public onSave() {
      // TODO
+     console.log('save')
    }
 }
 </script>

@@ -1,32 +1,53 @@
 import { PluginFunction } from 'vue'
-import { Producerable } from './core/types'
+import { Producerable, StateResolver, ModelEvent } from './core/types'
+import { getStore } from './core/common'
+import * as state from './database/states'
 
 export interface ILazyDBFilters {
   [key: string]: (model: Producerable) => boolean
 }
 
+export type ModelStateResolverFactory = (resolver: StateResolver<ModelEvent<any>>, fallback?: boolean) => (model: Producerable) => boolean
+
+/** Wrap state resolver, to resolve state of Producerable */
+export const resolveModelState: ModelStateResolverFactory = (resolver, fallback = false) =>
+  model => {
+    if (!model)
+      return fallback
+
+    const store = getStore(model)
+    if (!store)
+      return fallback
+
+    const { memory } = store
+    if (!memory)
+      return fallback
+
+    return resolver(memory)
+  }
+
 const filters: ILazyDBFilters = {
-  isReading: (model: Producerable) => false,
-  isHaveReadingError: (model: Producerable) => false,
+  isReading: resolveModelState(state.isReading),
+  isHaveReadingError: resolveModelState(state.isHaveReadingError),
 
-  isNew: (model: Producerable) => false,
-  isCreating: (model: Producerable) => false,
-  isHaveCreatingError: (model: Producerable) => false,
+  isNew: resolveModelState(state.isNew),
+  isCreating: resolveModelState(state.isCreating),
+  isHaveCreatingError: resolveModelState(state.isHaveCreatingError),
 
-  isChanged: (model: Producerable) => false,
-  isUpdating: (model: Producerable) => false,
-  isHaveUpdatingError: (model: Producerable) => false,
+  isChanged: resolveModelState(state.isChanged),
+  isUpdating: resolveModelState(state.isUpdating),
+  isHaveUpdatingError: resolveModelState(state.isHaveUpdatingError),
 
-  isDeleting: (model: Producerable) => false,
-  isHaveDeletingError: (model: Producerable) => false,
+  isDeleting: resolveModelState(state.isDeleting),
+  isHaveDeletingError: resolveModelState(state.isHaveDeletingError),
 
   // mix of isReading, isUpdating, isCreating, isDeleting
-  isPending: (model: Producerable) => false,
+  isPending: resolveModelState(state.isPending),
   // mix errors on reading, updating, creating, deleting
-  isHaveError: (model: Producerable) => false,
+  isHaveError: resolveModelState(state.isHaveError),
 
   // model not changed, and not in process
-  isSynced: (model: Producerable) => true
+  isSynced: resolveModelState(state.isSynced, true)
 }
 
 export const LazyDBFilters: PluginFunction<any> = Vue => {

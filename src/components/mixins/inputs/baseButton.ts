@@ -5,6 +5,10 @@ import { Component, Prop } from 'vue-property-decorator'
 export default class BaseButton extends Vue {
    @Prop(Number) public tabindex!: number
 
+   /**
+    * Disabled show processing,
+    * TODO: rename and create disabled property as expected
+    * */
    @Prop({
      type: Boolean,
      default: false

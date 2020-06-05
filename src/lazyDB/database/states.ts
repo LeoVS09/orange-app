@@ -1,17 +1,22 @@
 import {
-  ModelEvent, StateResolver, ModelEventFailurePayload, ModelEventSuccessPayload, isFailureEvent, isSuccessEvent
+  ModelEvent,
+  StateResolver,
+  isFailureEvent,
+  isSuccessEvent
 } from '../core/types'
 import { ModelEventTypes } from './events'
+
+export type HaveEventInMemoryFactory = (...types: Array<ModelEventTypes>) => StateResolver<ModelEvent<any>>
 
 /**
  * is model have at least one event given type,
  * returns state resolver, which receive memory
  * @param type - expected event type in memory
  */
-export const isHaveEventInMemory: (...types: Array<ModelEventTypes>) => StateResolver<ModelEvent<any>> = (...types) =>
+export const isHaveEventInMemory: HaveEventInMemoryFactory = (...types) =>
   memory => memory.some(event => types.includes(event.type as ModelEventTypes))
 
-export const isHaveFailureOfEventInMemory: (...types: Array<ModelEventTypes>) => StateResolver<ModelEvent<any>> = (...types) =>
+export const isHaveFailureOfEventInMemory: HaveEventInMemoryFactory = (...types) =>
   memory => memory.some(event => {
     if (!isFailureEvent(event))
       return false
@@ -20,7 +25,7 @@ export const isHaveFailureOfEventInMemory: (...types: Array<ModelEventTypes>) =>
     return types.includes(event.payload.event.type)
   })
 
-export const isHaveSuccessOfEventInMemory: (...types: Array<ModelEventTypes>) => StateResolver<ModelEvent<any>> = (...types) =>
+export const isHaveSuccessOfEventInMemory: HaveEventInMemoryFactory = (...types) =>
   memory => memory.some(event => {
     if (!isSuccessEvent(event))
       return false
@@ -59,17 +64,15 @@ export const isPending: StateResolver<ModelEvent<any>> = memory =>
   || isDeleting(memory)
 
 /**
- * is have any type of error (read, create, update, delete) or validation error
+ * Is have any type of error (read, create, update, delete) or validation error
  */
-export const isHaveError: StateResolver<ModelEvent<any>> = memory =>
-  isHaveReadingError(memory)
-  || isHaveCreatingError(memory)
-  || isHaveUpdatingError(memory)
-  || isHaveDeletingError(memory)
-  || isHaveValidationError(memory)
+export const isHaveError = isHaveEventInMemory(ModelEventTypes.Failure)
 
 /**
  *  model not changed, and not in process
  */
 export const isSynced: StateResolver<ModelEvent<any>> = memory =>
-  !isChanged(memory) && !isPending(memory)
+  !isChanged(memory)
+  && !isPending(memory)
+  && !isNew(memory)
+  && !isHaveError(memory)
