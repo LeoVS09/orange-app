@@ -64,7 +64,7 @@ export const isPending: StateResolver<ModelEvent<any>> = memory =>
   || isDeleting(memory)
 
 /**
- * Is have any type of error (read, create, update, delete) or validation error
+ * Is have any type of error (read, create, update, delete)
  */
 export const isHaveError = isHaveEventInMemory(ModelEventTypes.Failure)
 

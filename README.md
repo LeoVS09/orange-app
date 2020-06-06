@@ -53,8 +53,83 @@ This components can be simply copied to another project without problems.
 - index.ts - enter point of application
 - translations.ts - file which define translation for text used in interface
 
-## LazyDB
+---
 
-This project use LazyDB for data management
+## Under the hood
+
+This project use **LazyDB** for data management
+
+LazyDB credo:
+> Will do it when time come...
+
+LazyDB transforms this
+
+```jsx
+
+render() {
+   const model = CityRepository.findOne(this.props.id)
+
+   return (
+      <div>
+         <h1>{model.name}</h1>
+         <p>{model.description}</p>
+         <div>created {model.createdAt}</div>
+      </div>
+   )
+}
+```
+
+into this
+
+```gql
+
+query Country($id: UUID) {
+   country(id: $id) {
+      name
+      description
+      createdAt
+   }
+}
+
+```
+
+LazyDB allow track model state
+
+```jsx
+
+render() {
+   const model = CityRepository.findOne(this.props.id)
+
+   if(isReading(model))
+      return <Loader />
+
+   return (
+      ...
+   )
+}
+
+```
+
+Model states calulates reactivly based on the events which was emitted from model
+
+Supported states out of the box:
+
+* `isReading` - The model is currently loading (read request sended to the server)
+* `isHaveReadingError` - The model is have read error
+* `isChanged` - The model is was changed
+* `isHaveValidationError` - The model is have validation error
+* `isUpdating` - The model is currently updating (update requiest sended to the server)
+* `isHaveUpdatingError` - The model is have update error
+* `isNew` - The model is newly created, but was not sended to the server
+* `isCreating` - The model is currently creating (create request was send to server)
+* `isHaveCreatingError` - The model is have create error
+* `isDeleting` - The model is currently deleting (delete request was sent to server)
+* `isHaveDeletingError` - The model is have delete error
+* `isDeleted` - The model is was deleted
+* `isPending` - Model is in process of reading, or creating, or updating, or deleting
+* `isHaveError` - The model is have any type of error (read, create, update, delete), except validation
+* `isSynced` - The model is not changed and not in process
 
 Warn: LazyDB don't allow use `_` and `$` as start symbols for id
+
+
