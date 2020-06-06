@@ -114,22 +114,20 @@ Model states calulates reactivly based on the events which was emitted from mode
 
 Supported states out of the box:
 
-* `isReading` - The model is currently loading (read request sended to the server)
-* `isHaveReadingError` - The model is have read error
-* `isChanged` - The model is was changed
-* `isHaveValidationError` - The model is have validation error
-* `isUpdating` - The model is currently updating (update requiest sended to the server)
-* `isHaveUpdatingError` - The model is have update error
-* `isNew` - The model is newly created, but was not sended to the server
-* `isCreating` - The model is currently creating (create request was send to server)
-* `isHaveCreatingError` - The model is have create error
-* `isDeleting` - The model is currently deleting (delete request was sent to server)
-* `isHaveDeletingError` - The model is have delete error
-* `isDeleted` - The model is was deleted
-* `isPending` - Model is in process of reading, or creating, or updating, or deleting
-* `isHaveError` - The model is have any type of error (read, create, update, delete), except validation
-* `isSynced` - The model is not changed and not in process
+- `isReading` - The model is currently loading (read request sended to the server)
+- `isHaveReadingError` - The model is have read error
+- `isChanged` - The model is was changed
+- `isHaveValidationError` - The model is have validation error
+- `isUpdating` - The model is currently updating (update requiest sended to the server)
+- `isHaveUpdatingError` - The model is have update error
+- `isNew` - The model is newly created, but was not sended to the server
+- `isCreating` - The model is currently creating (create request was send to server)
+- `isHaveCreatingError` - The model is have create error
+- `isDeleting` - The model is currently deleting (delete request was sent to server)
+- `isHaveDeletingError` - The model is have delete error
+- `isDeleted` - The model is was deleted
+- `isPending` - Model is in process of reading, or creating, or updating, or deleting
+- `isHaveError` - The model is have any type of error (read, create, update, delete), except validation
+- `isSynced` - The model is not changed and not in process
 
 Warn: LazyDB don't allow use `_` and `$` as start symbols for id
-
-
