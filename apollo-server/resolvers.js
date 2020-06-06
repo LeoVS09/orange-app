@@ -18,7 +18,17 @@ export default {
 
 //   },
 
-//   Mutation: {
+  Mutation: {
+    updateCountry: (root, { input: { id, patch }}, { db }) => {
+        const country = { id, ...patch }
+
+        db
+            .set(`countries.${id}`, country)
+            .write()
+
+        return { country }
+    }
+
 //     myMutation: (root, args, context) => {
 //       const message = 'My mutation completed!'
 //       context.pubsub.publish('hey', { mySub: message })
@@ -44,7 +54,7 @@ export default {
 //     singleUpload: (root, { file }, { processUpload }) => processUpload(file),
 //     multipleUpload: (root, { files }, { processUpload }) => Promise.all(files.map(processUpload)),
 
-//   },
+  },
 
 //   Subscription: {
 //     mySub: {
