@@ -94,6 +94,7 @@ Cypress.Commands.add('waitGql', (operationName, checkStatus = true) => {
 
             return {
                 ...response,
+                request: request.body,
                 data: body.data,
             };
         });

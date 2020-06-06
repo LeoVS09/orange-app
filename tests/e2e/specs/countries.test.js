@@ -237,7 +237,7 @@ describe('Countries', () => {
     })
   })
 
-  it.only('update country name', () => {
+  it('update country name', () => {
     const addText = 'changedCountry'
 
     cy.server()
@@ -263,7 +263,11 @@ describe('Countries', () => {
 
       cy.get('.floating-button .button--submit').click()
 
-      cy.pause()
+      cy.waitGql('UpdateCountry').then(({ request: { variables: { input: { patch }}} }) => {
+        expect(patch.name).to.equal(expectedText)
+
+        cy.get('input.page-header--input').should('have.value', expectedText)
+      })
 
     })
   })
