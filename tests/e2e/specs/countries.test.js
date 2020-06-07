@@ -271,4 +271,107 @@ describe('Countries', () => {
 
     })
   })
+
+  it('changed country name saves between pages', () => {
+    const addText = 'changedCountry'
+
+    cy.server()
+    cy.route({
+        url: '/graphql',
+        method: 'POST'
+    }).as('graphql')
+
+    cy.setCurrentUserAsTeacher()
+
+    cy.visit('/countries', fetchPolfill.visitOptions)
+    cy.waitGql('Countries')
+      .then(({ data: { countries }}) => {
+        cy.contains('h1', 'Countries')
+        cy.get('.list').should('be.visible')
+
+        // wait for animation
+        cy.wait(2000)
+        cy.get('.list .list-item').last().then($country => {
+          const countryName = $country.find('.list-item--property:first-child').text()
+          const countryCode = $country.find('.list-item--property:nth-child(2)').text()
+          cy.wrap($country).click()
+          cy.url().should('contain', 'countries')
+
+          cy.waitGql('Country')
+
+          cy.wait(1000)
+          cy.get('input.page-header--input').then($elem => {
+            const oldText = $elem.val()
+            expect(oldText).to.equal(countryName)
+            const expectedText = oldText + addText
+            cy.log('oldText', oldText)
+            cy.get('input.page-header--input').type(addText)
+      
+            cy.get('input.page-header--input').should('have.value', expectedText)
+      
+            cy.go('back')
+      
+            cy.wait(1000)
+      
+            cy.contains('.list-item span', expectedText)
+          })
+        })
+      })
+  })
+
+  it('updated country name saves between pages', () => {
+    const addText = 'changedCountry'
+
+    cy.server()
+    cy.route({
+        url: '/graphql',
+        method: 'POST'
+    }).as('graphql')
+
+    cy.setCurrentUserAsTeacher()
+
+    cy.visit('/countries', fetchPolfill.visitOptions)
+    cy.waitGql('Countries')
+      .then(({ data: { countries }}) => {
+        cy.contains('h1', 'Countries')
+        cy.get('.list').should('be.visible')
+
+        // wait for animation
+        cy.wait(2000)
+        cy.get('.list .list-item').last().then($country => {
+          const countryName = $country.find('.list-item--property:first-child').text()
+          const countryCode = $country.find('.list-item--property:nth-child(2)').text()
+          cy.wrap($country).click()
+          cy.url().should('contain', 'countries')
+
+          cy.waitGql('Country')
+
+          cy.wait(1000)
+          cy.get('input.page-header--input').then($elem => {
+            const oldText = $elem.val()
+            expect(oldText).to.equal(countryName)
+            const expectedText = oldText + addText
+            cy.log('oldText', oldText)
+            cy.get('input.page-header--input').type(addText)
+      
+            cy.get('input.page-header--input').should('have.value', expectedText)
+      
+            cy.get('.floating-button .button--submit').click()
+
+            cy.waitGql('UpdateCountry').then(({ request: { variables: { input: { patch }}} }) => {
+              expect(patch.name).to.equal(expectedText)
+      
+              cy.get('input.page-header--input').should('have.value', expectedText)
+
+              cy.go('back')
+      
+              cy.wait(1000)
+        
+              cy.contains('.list-item span', expectedText)
+            })
+          })
+        })
+      })
+  })
+
 })
