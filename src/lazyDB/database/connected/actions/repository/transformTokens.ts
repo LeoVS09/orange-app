@@ -1,4 +1,4 @@
-import { FieldToken, TransformTokensList } from '@/lazyDB/database/aos'
+import { FieldToken, TransformTokensList } from '@/lazyDB/core/aos'
 import { TableListKey } from '@/lazyDB/database/storage/table'
 import { AosFieldType } from '@/abstractObjectSchema'
 

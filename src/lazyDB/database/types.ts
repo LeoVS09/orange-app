@@ -105,7 +105,8 @@ export interface IDatabaseModelProducerStore<
 export interface DatabaseEventReducer<
    Store extends IDatabaseModelProducerStore<any, any> = IDatabaseModelProducerStore,
    Payload = any,
+   T = Producerable,
    Result = boolean | Promise<boolean | void> | void,
 >
-   extends EventReducer<Store, Payload, Result> {
+   extends EventReducer<Store, Payload, T, Result> {
 }

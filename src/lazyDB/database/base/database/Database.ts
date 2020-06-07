@@ -77,6 +77,11 @@ export default class LazyReactiveDatabase implements ILazyReactiveDatabase {
     return model
   }
 
+  /**
+   * Hook which wil be called,
+   * when someone try set entity to event producer,
+   * allow store real object in storage
+   * */
   public setEntity: ISetEntity = ({ base }, entity, type, data) => {
     console.log('[Database] Try set entity', base, entity, type, data)
     const entitySchema = this.getSchemaByKey(entity, type)
@@ -142,7 +147,7 @@ export default class LazyReactiveDatabase implements ILazyReactiveDatabase {
     }
 
     if (type !== AosFieldType.OneToOne)
-      console.log('Unexpected data type for', entity, 'type', type, 'data', data, 'will work as OneToOne')
+      console.warn('Unexpected data type for', entity, 'type', type, 'data', data, 'will work as OneToOne')
 
     const id = getEntityPrimaryKey(entitySchema, data)
 

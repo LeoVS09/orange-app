@@ -10,6 +10,7 @@ import {
 } from '../types'
 import { receive } from './receive'
 import { isPromiseLike } from './utils'
+import { generateControl } from './control'
 
 export function atomicReceiveByReducers<
   T extends Producerable<any> = Producerable,
@@ -45,17 +46,26 @@ export function asyncReceiveByReducers<
 
 export function handleByReducer<
   Store extends IProducerStore<any, any> = IProducerStore,
-  Payload = ModelEventPayload<Store>,
+  Payload extends ModelEventPayload<Store> = ModelEventPayload<Store>,
 >(
   store: Store,
   event: ModelEvent<Payload, any>,
   reducer: EventReducer<Store, Payload>
 ): boolean | PromiseLike<boolean> {
-  const result = reducer(store, event)
-  if (isPromiseLike(result)) {
-    return result
-      .then(promiseResult => !!promiseResult)
-  }
+  try {
+    const control = generateControl(event.payload.store)
 
-  return !!result
+    const result = reducer(store, event, control)
+
+    if (isPromiseLike(result)) {
+      return result
+        .then(promiseResult => !!promiseResult)
+    }
+
+    return !!result
+
+  } catch (error) {
+    console.error('Was catched error from reducer', reducer, 'on event', event, '\n', error)
+    return false
+  }
 }

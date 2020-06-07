@@ -15,7 +15,6 @@ export class RelationsField implements AosRelationsField {
 
 export class SimpleField implements AosSimpleField {
   constructor(
-      public type: AosSimeplFieldType,
-      public resolvedAt: number | null = null
+      public type: AosSimeplFieldType
   ) {}
 }

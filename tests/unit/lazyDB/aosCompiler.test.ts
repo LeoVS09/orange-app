@@ -1,21 +1,19 @@
-import * as DateNowMock from '../utils/date-now.mock'
 import cons from '../utils/console.mock'
 import { AosSchema, AosFieldType } from '@/abstractObjectSchema'
 import {
     ProducerStoreGetter,
     ModelEventPropertyPayload,
-    PropertyEventType,
     IProducerStore,
     ProducerStoreSetter,
     IModelEventDispatcher,
     ModelPropertyKey
 } from '@/lazyDB/core/types'
-import { appendEventToSchema } from '@/lazyDB/database/aos/compiler'
+import { appendEventToSchema } from '@/lazyDB/core/aos/compiler'
 import { wrapInProducer } from '@/lazyDB/core/wrap'
 import { AtomicModelEventDispatcher } from '@/lazyDB/core/dispatcher/model/atomic'
 import { getStore, isProducer } from '@/lazyDB/core/common'
 import { receive } from '@/lazyDB/core/receiver'
-import { toNumberIfCan } from '@/lazyDB/database/aos/utils'
+import { toNumberIfCan } from '@/lazyDB/core/aos/utils'
 
 
 const ENTITY_FIELD_PREFIX = 'entity'
@@ -77,7 +75,6 @@ const makeProvider = (schema: AosSchema, additionalFields: Array<string> = []): 
         appendEventToSchema({
             schema,
             event: event.payload! as ModelEventPropertyPayload,
-            resolvedAt: event.type === PropertyEventType.SetProperty ? event.date : null,
             transformTokens: list => [
                 ...list, 
                 ...additionalFields.map(field => ({ name: field, type: AosFieldType.Any }))
@@ -97,12 +94,10 @@ describe('AOS Compiler', () => {
     })
 
     beforeEach(() => {
-        DateNowMock.mock()
         schema = {}
     })
 
     afterAll(() => {
-        DateNowMock.restore()
         cons.restoreConsole()
     })
 
@@ -142,8 +137,6 @@ describe('AOS Compiler', () => {
         model.simple = 1
         expect(schema).toHaveProperty('simple')
         expect(schema).toMatchSnapshot()
-
-        DateNowMock.tick()
 
         model.simple = 1
         expect(schema).toHaveProperty('simple')
@@ -284,8 +277,6 @@ describe('AOS Compiler', () => {
 
         expect(schema).toHaveProperty('entity.schema.simple')
         expect(schema.entity.type).toBe(AosFieldType.OneToOne)
-        // @ts-ignore
-        expect(schema.entity.schema.simple.resolvedAt).toBe(Date.now())
         expect(schema).toMatchSnapshot()
     })
 
@@ -316,14 +307,10 @@ describe('AOS Compiler', () => {
 
         entity.simple
         expect(schema).toHaveProperty('entity.schema.simple')
-        // @ts-ignore
-        expect(schema.entity.schema.simple.resolvedAt).toBe(null)
         expect(schema).toMatchSnapshot()
 
         entity.simple = 1
         expect(schema).toHaveProperty('entity.schema.simple')
-        // @ts-ignore
-        expect(schema.entity.schema.simple.resolvedAt).toBe(Date.now())
         expect(schema).toMatchSnapshot()
     })
 
@@ -508,15 +495,11 @@ describe('AOS Compiler', () => {
         entity.second
         expect(schema).toHaveProperty('entities.schema.second')
         expect(schema.entities.type).toBe(AosFieldType.OneToMany)
-        // @ts-ignore
-        expect(schema.entities.schema.second.resolvedAt).toBe(null)
         expect(schema).toMatchSnapshot()
 
         entity.second = 1
         expect(schema).toHaveProperty('entities.schema.second')
         expect(schema.entities.type).toBe(AosFieldType.OneToMany)
-        // @ts-ignore
-        expect(schema.entities.schema.second.resolvedAt).toBe(Date.now())
         expect(schema).toMatchSnapshot()
 
         entity.third
@@ -526,8 +509,6 @@ describe('AOS Compiler', () => {
 
         model.fourth = 1
         expect(schema).toHaveProperty('fourth')
-        // @ts-ignore
-        expect(schema.fourth.resolvedAt).toBe(Date.now())
         expect(schema).toMatchSnapshot()
     })
 

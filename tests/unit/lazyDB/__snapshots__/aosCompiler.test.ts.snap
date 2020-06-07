@@ -5,7 +5,6 @@ Object {
   "entity1": RelationsField {
     "schema": Object {
       "first": SimpleField {
-        "resolvedAt": null,
         "type": "Any",
       },
     },
@@ -19,11 +18,9 @@ Object {
   "entity1": RelationsField {
     "schema": Object {
       "first": SimpleField {
-        "resolvedAt": null,
         "type": "Any",
       },
       "second": SimpleField {
-        "resolvedAt": null,
         "type": "Any",
       },
     },
@@ -37,11 +34,9 @@ Object {
   "entity1": RelationsField {
     "schema": Object {
       "first": SimpleField {
-        "resolvedAt": null,
         "type": "Any",
       },
       "second": SimpleField {
-        "resolvedAt": null,
         "type": "Any",
       },
     },
@@ -50,7 +45,6 @@ Object {
   "entity2": RelationsField {
     "schema": Object {
       "third": SimpleField {
-        "resolvedAt": null,
         "type": "Any",
       },
     },
@@ -64,7 +58,6 @@ Object {
   "entities": RelationsField {
     "schema": Object {
       "simple": SimpleField {
-        "resolvedAt": null,
         "type": "Any",
       },
     },
@@ -96,7 +89,6 @@ Object {
   "entities": RelationsField {
     "schema": Object {
       "simple": SimpleField {
-        "resolvedAt": null,
         "type": "Any",
       },
     },
@@ -110,15 +102,12 @@ Object {
   "entities": RelationsField {
     "schema": Object {
       "anotherId": SimpleField {
-        "resolvedAt": null,
         "type": "Any",
       },
       "id": SimpleField {
-        "resolvedAt": null,
         "type": "Any",
       },
       "nodeId": SimpleField {
-        "resolvedAt": null,
         "type": "Any",
       },
     },
@@ -132,15 +121,12 @@ Object {
   "entities": RelationsField {
     "schema": Object {
       "anotherId": SimpleField {
-        "resolvedAt": null,
         "type": "Any",
       },
       "id": SimpleField {
-        "resolvedAt": null,
         "type": "Any",
       },
       "nodeId": SimpleField {
-        "resolvedAt": null,
         "type": "Any",
       },
     },
@@ -154,19 +140,15 @@ Object {
   "entities": RelationsField {
     "schema": Object {
       "anotherId": SimpleField {
-        "resolvedAt": null,
         "type": "Any",
       },
       "id": SimpleField {
-        "resolvedAt": null,
         "type": "Any",
       },
       "nodeId": SimpleField {
-        "resolvedAt": null,
         "type": "Any",
       },
       "simple": SimpleField {
-        "resolvedAt": null,
         "type": "Any",
       },
     },
@@ -178,7 +160,6 @@ Object {
 exports[`AOS Compiler append complex OneToMany to different items 1`] = `
 Object {
   "first": SimpleField {
-    "resolvedAt": null,
     "type": "Any",
   },
 }
@@ -189,14 +170,12 @@ Object {
   "entities": RelationsField {
     "schema": Object {
       "second": SimpleField {
-        "resolvedAt": null,
         "type": "Any",
       },
     },
     "type": "OneToMany",
   },
   "first": SimpleField {
-    "resolvedAt": null,
     "type": "Any",
   },
 }
@@ -207,18 +186,15 @@ Object {
   "entities": RelationsField {
     "schema": Object {
       "second": SimpleField {
-        "resolvedAt": null,
         "type": "Any",
       },
       "third": SimpleField {
-        "resolvedAt": null,
         "type": "Any",
       },
     },
     "type": "OneToMany",
   },
   "first": SimpleField {
-    "resolvedAt": null,
     "type": "Any",
   },
 }
@@ -229,22 +205,18 @@ Object {
   "entities": RelationsField {
     "schema": Object {
       "second": SimpleField {
-        "resolvedAt": null,
         "type": "Any",
       },
       "third": SimpleField {
-        "resolvedAt": null,
         "type": "Any",
       },
     },
     "type": "OneToMany",
   },
   "first": SimpleField {
-    "resolvedAt": null,
     "type": "Any",
   },
   "fourth": SimpleField {
-    "resolvedAt": null,
     "type": "Any",
   },
 }
@@ -253,7 +225,6 @@ Object {
 exports[`AOS Compiler append complex OneToMany to different properties 1`] = `
 Object {
   "first": SimpleField {
-    "resolvedAt": null,
     "type": "Any",
   },
 }
@@ -264,14 +235,12 @@ Object {
   "entities1": RelationsField {
     "schema": Object {
       "second": SimpleField {
-        "resolvedAt": null,
         "type": "Any",
       },
     },
     "type": "OneToMany",
   },
   "first": SimpleField {
-    "resolvedAt": null,
     "type": "Any",
   },
 }
@@ -282,7 +251,6 @@ Object {
   "entities1": RelationsField {
     "schema": Object {
       "second": SimpleField {
-        "resolvedAt": null,
         "type": "Any",
       },
     },
@@ -291,14 +259,12 @@ Object {
   "entities2": RelationsField {
     "schema": Object {
       "third": SimpleField {
-        "resolvedAt": null,
         "type": "Any",
       },
     },
     "type": "OneToMany",
   },
   "first": SimpleField {
-    "resolvedAt": null,
     "type": "Any",
   },
 }
@@ -309,7 +275,6 @@ Object {
   "entities1": RelationsField {
     "schema": Object {
       "second": SimpleField {
-        "resolvedAt": null,
         "type": "Any",
       },
     },
@@ -318,18 +283,15 @@ Object {
   "entities2": RelationsField {
     "schema": Object {
       "third": SimpleField {
-        "resolvedAt": null,
         "type": "Any",
       },
     },
     "type": "OneToMany",
   },
   "first": SimpleField {
-    "resolvedAt": null,
     "type": "Any",
   },
   "fourth": SimpleField {
-    "resolvedAt": null,
     "type": "Any",
   },
 }
@@ -340,7 +302,6 @@ Object {
   "entity": RelationsField {
     "schema": Object {
       "simple": SimpleField {
-        "resolvedAt": null,
         "type": "Any",
       },
     },
@@ -352,7 +313,6 @@ Object {
 exports[`AOS Compiler append id after simple string property 1`] = `
 Object {
   "simple": SimpleField {
-    "resolvedAt": null,
     "type": "Any",
   },
 }
@@ -361,11 +321,9 @@ Object {
 exports[`AOS Compiler append id after simple string property 2`] = `
 Object {
   "id": SimpleField {
-    "resolvedAt": null,
     "type": "Any",
   },
   "simple": SimpleField {
-    "resolvedAt": null,
     "type": "Any",
   },
 }
@@ -374,7 +332,6 @@ Object {
 exports[`AOS Compiler append id before simple string property 1`] = `
 Object {
   "id": SimpleField {
-    "resolvedAt": null,
     "type": "Any",
   },
 }
@@ -383,11 +340,9 @@ Object {
 exports[`AOS Compiler append id before simple string property 2`] = `
 Object {
   "id": SimpleField {
-    "resolvedAt": null,
     "type": "Any",
   },
   "simple": SimpleField {
-    "resolvedAt": null,
     "type": "Any",
   },
 }
@@ -396,19 +351,15 @@ Object {
 exports[`AOS Compiler append multiple required fields before propery 1`] = `
 Object {
   "anotherId": SimpleField {
-    "resolvedAt": null,
     "type": "Any",
   },
   "id": SimpleField {
-    "resolvedAt": null,
     "type": "Any",
   },
   "nodeId": SimpleField {
-    "resolvedAt": null,
     "type": "Any",
   },
   "simple": SimpleField {
-    "resolvedAt": null,
     "type": "Any",
   },
 }
@@ -417,7 +368,6 @@ Object {
 exports[`AOS Compiler append multiple simple properties to OneToMany 1`] = `
 Object {
   "first": SimpleField {
-    "resolvedAt": null,
     "type": "Any",
   },
 }
@@ -428,14 +378,12 @@ Object {
   "entities": RelationsField {
     "schema": Object {
       "second": SimpleField {
-        "resolvedAt": null,
         "type": "Any",
       },
     },
     "type": "OneToMany",
   },
   "first": SimpleField {
-    "resolvedAt": null,
     "type": "Any",
   },
 }
@@ -446,18 +394,15 @@ Object {
   "entities": RelationsField {
     "schema": Object {
       "second": SimpleField {
-        "resolvedAt": null,
         "type": "Any",
       },
       "third": SimpleField {
-        "resolvedAt": null,
         "type": "Any",
       },
     },
     "type": "OneToMany",
   },
   "first": SimpleField {
-    "resolvedAt": null,
     "type": "Any",
   },
 }
@@ -468,22 +413,18 @@ Object {
   "entities": RelationsField {
     "schema": Object {
       "second": SimpleField {
-        "resolvedAt": null,
         "type": "Any",
       },
       "third": SimpleField {
-        "resolvedAt": null,
         "type": "Any",
       },
     },
     "type": "OneToMany",
   },
   "first": SimpleField {
-    "resolvedAt": null,
     "type": "Any",
   },
   "fourth": SimpleField {
-    "resolvedAt": null,
     "type": "Any",
   },
 }
@@ -492,7 +433,6 @@ Object {
 exports[`AOS Compiler append multiple string properties 1`] = `
 Object {
   "first": SimpleField {
-    "resolvedAt": null,
     "type": "Any",
   },
 }
@@ -501,11 +441,9 @@ Object {
 exports[`AOS Compiler append multiple string properties 2`] = `
 Object {
   "first": SimpleField {
-    "resolvedAt": null,
     "type": "Any",
   },
   "second": SimpleField {
-    "resolvedAt": null,
     "type": "Any",
   },
 }
@@ -514,15 +452,12 @@ Object {
 exports[`AOS Compiler append multiple string properties 3`] = `
 Object {
   "first": SimpleField {
-    "resolvedAt": null,
     "type": "Any",
   },
   "second": SimpleField {
-    "resolvedAt": null,
     "type": "Any",
   },
   "third": SimpleField {
-    "resolvedAt": null,
     "type": "Any",
   },
 }
@@ -531,11 +466,9 @@ Object {
 exports[`AOS Compiler append required id field before propery 1`] = `
 Object {
   "id": SimpleField {
-    "resolvedAt": null,
     "type": "Any",
   },
   "simple": SimpleField {
-    "resolvedAt": null,
     "type": "Any",
   },
 }
@@ -544,7 +477,6 @@ Object {
 exports[`AOS Compiler append resolved simple string property 1`] = `
 Object {
   "simple": SimpleField {
-    "resolvedAt": 1500000000000,
     "type": "Any",
   },
 }
@@ -557,7 +489,6 @@ exports[`AOS Compiler append simple number property like string 1`] = `Object {}
 exports[`AOS Compiler append simple property before and after complex OneToOne 1`] = `
 Object {
   "first": SimpleField {
-    "resolvedAt": null,
     "type": "Any",
   },
 }
@@ -570,7 +501,6 @@ Object {
     "type": "OneToOne",
   },
   "first": SimpleField {
-    "resolvedAt": null,
     "type": "Any",
   },
 }
@@ -581,14 +511,12 @@ Object {
   "entity": RelationsField {
     "schema": Object {
       "second": SimpleField {
-        "resolvedAt": null,
         "type": "Any",
       },
     },
     "type": "OneToOne",
   },
   "first": SimpleField {
-    "resolvedAt": null,
     "type": "Any",
   },
 }
@@ -599,18 +527,15 @@ Object {
   "entity": RelationsField {
     "schema": Object {
       "second": SimpleField {
-        "resolvedAt": null,
         "type": "Any",
       },
       "third": SimpleField {
-        "resolvedAt": null,
         "type": "Any",
       },
     },
     "type": "OneToOne",
   },
   "first": SimpleField {
-    "resolvedAt": null,
     "type": "Any",
   },
 }
@@ -621,22 +546,18 @@ Object {
   "entity": RelationsField {
     "schema": Object {
       "second": SimpleField {
-        "resolvedAt": null,
         "type": "Any",
       },
       "third": SimpleField {
-        "resolvedAt": null,
         "type": "Any",
       },
     },
     "type": "OneToOne",
   },
   "first": SimpleField {
-    "resolvedAt": null,
     "type": "Any",
   },
   "fourth": SimpleField {
-    "resolvedAt": null,
     "type": "Any",
   },
 }
@@ -656,7 +577,6 @@ Object {
   "entity": RelationsField {
     "schema": Object {
       "first": SimpleField {
-        "resolvedAt": null,
         "type": "Any",
       },
     },
@@ -670,11 +590,9 @@ Object {
   "entity": RelationsField {
     "schema": Object {
       "first": SimpleField {
-        "resolvedAt": null,
         "type": "Any",
       },
       "second": SimpleField {
-        "resolvedAt": null,
         "type": "Any",
       },
     },
@@ -688,15 +606,12 @@ Object {
   "entity": RelationsField {
     "schema": Object {
       "anotherId": SimpleField {
-        "resolvedAt": null,
         "type": "Any",
       },
       "id": SimpleField {
-        "resolvedAt": null,
         "type": "Any",
       },
       "nodeId": SimpleField {
-        "resolvedAt": null,
         "type": "Any",
       },
     },
@@ -710,19 +625,15 @@ Object {
   "entity": RelationsField {
     "schema": Object {
       "anotherId": SimpleField {
-        "resolvedAt": null,
         "type": "Any",
       },
       "first": SimpleField {
-        "resolvedAt": null,
         "type": "Any",
       },
       "id": SimpleField {
-        "resolvedAt": null,
         "type": "Any",
       },
       "nodeId": SimpleField {
-        "resolvedAt": null,
         "type": "Any",
       },
     },
@@ -736,23 +647,18 @@ Object {
   "entity": RelationsField {
     "schema": Object {
       "anotherId": SimpleField {
-        "resolvedAt": null,
         "type": "Any",
       },
       "first": SimpleField {
-        "resolvedAt": null,
         "type": "Any",
       },
       "id": SimpleField {
-        "resolvedAt": null,
         "type": "Any",
       },
       "nodeId": SimpleField {
-        "resolvedAt": null,
         "type": "Any",
       },
       "second": SimpleField {
-        "resolvedAt": null,
         "type": "Any",
       },
     },
@@ -764,7 +670,6 @@ Object {
 exports[`AOS Compiler append simple string property 1`] = `
 Object {
   "simple": SimpleField {
-    "resolvedAt": null,
     "type": "Any",
   },
 }
@@ -773,11 +678,9 @@ Object {
 exports[`AOS Compiler don't append required id field second time 1`] = `
 Object {
   "first": SimpleField {
-    "resolvedAt": null,
     "type": "Any",
   },
   "id": SimpleField {
-    "resolvedAt": null,
     "type": "Any",
   },
 }
@@ -786,15 +689,12 @@ Object {
 exports[`AOS Compiler don't append required id field second time 2`] = `
 Object {
   "first": SimpleField {
-    "resolvedAt": null,
     "type": "Any",
   },
   "id": SimpleField {
-    "resolvedAt": null,
     "type": "Any",
   },
   "second": SimpleField {
-    "resolvedAt": null,
     "type": "Any",
   },
 }
@@ -813,7 +713,6 @@ Object {
                   "entities2": RelationsField {
                     "schema": Object {
                       "simple": SimpleField {
-                        "resolvedAt": null,
                         "type": "Any",
                       },
                     },
@@ -839,7 +738,6 @@ Object {
   "entity": RelationsField {
     "schema": Object {
       "simple": SimpleField {
-        "resolvedAt": 1500000000000,
         "type": "Any",
       },
     },
@@ -851,7 +749,6 @@ Object {
 exports[`AOS Compiler resolve existing simple string property 1`] = `
 Object {
   "simple": SimpleField {
-    "resolvedAt": null,
     "type": "Any",
   },
 }
@@ -860,7 +757,6 @@ Object {
 exports[`AOS Compiler resolve existing simple string property 2`] = `
 Object {
   "simple": SimpleField {
-    "resolvedAt": 1500000000000,
     "type": "Any",
   },
 }
@@ -869,7 +765,6 @@ Object {
 exports[`AOS Compiler resolve multiple simple properties to OneToMany 1`] = `
 Object {
   "first": SimpleField {
-    "resolvedAt": null,
     "type": "Any",
   },
 }
@@ -880,14 +775,12 @@ Object {
   "entities": RelationsField {
     "schema": Object {
       "second": SimpleField {
-        "resolvedAt": null,
         "type": "Any",
       },
     },
     "type": "OneToMany",
   },
   "first": SimpleField {
-    "resolvedAt": null,
     "type": "Any",
   },
 }
@@ -898,14 +791,12 @@ Object {
   "entities": RelationsField {
     "schema": Object {
       "second": SimpleField {
-        "resolvedAt": 1500000000000,
         "type": "Any",
       },
     },
     "type": "OneToMany",
   },
   "first": SimpleField {
-    "resolvedAt": null,
     "type": "Any",
   },
 }
@@ -916,18 +807,15 @@ Object {
   "entities": RelationsField {
     "schema": Object {
       "second": SimpleField {
-        "resolvedAt": 1500000000000,
         "type": "Any",
       },
       "third": SimpleField {
-        "resolvedAt": null,
         "type": "Any",
       },
     },
     "type": "OneToMany",
   },
   "first": SimpleField {
-    "resolvedAt": null,
     "type": "Any",
   },
 }
@@ -938,22 +826,18 @@ Object {
   "entities": RelationsField {
     "schema": Object {
       "second": SimpleField {
-        "resolvedAt": 1500000000000,
         "type": "Any",
       },
       "third": SimpleField {
-        "resolvedAt": null,
         "type": "Any",
       },
     },
     "type": "OneToMany",
   },
   "first": SimpleField {
-    "resolvedAt": null,
     "type": "Any",
   },
   "fourth": SimpleField {
-    "resolvedAt": 1500000000000,
     "type": "Any",
   },
 }
@@ -975,7 +859,6 @@ Object {
   "entity": RelationsField {
     "schema": Object {
       "simple": SimpleField {
-        "resolvedAt": null,
         "type": "Any",
       },
     },
@@ -989,7 +872,6 @@ Object {
   "entity": RelationsField {
     "schema": Object {
       "simple": SimpleField {
-        "resolvedAt": 1500000000000,
         "type": "Any",
       },
     },
@@ -1001,7 +883,6 @@ Object {
 exports[`AOS Compiler try resolve resolved simple string property 1`] = `
 Object {
   "simple": SimpleField {
-    "resolvedAt": 1500000000000,
     "type": "Any",
   },
 }
@@ -1010,7 +891,6 @@ Object {
 exports[`AOS Compiler try resolve resolved simple string property 2`] = `
 Object {
   "simple": SimpleField {
-    "resolvedAt": 1500000000000,
     "type": "Any",
   },
 }

@@ -1,5 +1,5 @@
 import { AosSchema } from '@/abstractObjectSchema'
-import { IDatabaseModelProducerStore } from '../types'
+import { IDatabaseModelProducerStore } from '../../database/types'
 
 // TODO: make store class, and use this getter inside
 /** Create schema for store */

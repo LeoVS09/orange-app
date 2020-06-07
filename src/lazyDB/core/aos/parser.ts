@@ -1,24 +1,23 @@
 import { AosSchema, isRelationsAosField, isRelationsType } from '@/abstractObjectSchema'
 import { FieldToken } from './tokenizer'
 import { RelationsField, SimpleField } from './fields'
-import { toNumberIfCan } from './utils'
 
 /**
  * Travel by schema tree and append each token,
  * if it not exists
  * and mark his resolved field
  */
-export function append(schema: AosSchema, tokens: Array<FieldToken>, resolvedAt: number | null) {
+export function append(schema: AosSchema, tokens: Array<FieldToken>) {
   // start travel from schema root
   let current = schema
 
   for (const token of tokens)
-    current = appendToken(current, token, resolvedAt)
+    current = appendToken(current, token)
 
 }
 
 /** Append token to schema and get next schema step, for recursive update */
-function appendToken(schema: AosSchema, token: FieldToken, resolvedAt: number | null): AosSchema {
+function appendToken(schema: AosSchema, token: FieldToken): AosSchema {
   const name = token.name as string
   const { type } = token
 
@@ -64,14 +63,11 @@ function appendToken(schema: AosSchema, token: FieldToken, resolvedAt: number | 
   // Not need add, field already exists
   // in case when we have multiple simple fields,
   // which stored continiusly into tokens array
-  if (property) {
-    // just mark it as resolved if need
-    property.resolvedAt = property.resolvedAt || resolvedAt
+  if (property)
     return schema
-  }
 
   // Field not exists and toke is simple
   // just append simple field to tree
-  schema[name] = new SimpleField(type, resolvedAt)
+  schema[name] = new SimpleField(type)
   return schema
 }

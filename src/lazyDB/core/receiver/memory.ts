@@ -87,13 +87,17 @@ export function receiveWithMemoryAndReducers<
 
 /** Remove event from store memory of target and all parents */
 const removeEventIfResolved = (event: ModelEvent<ModelEventPayload<IProducerStore<any, any>>, any>, isResolved: boolean) => {
-  // if result was false, then event wasn't hadled,
-  // and he still wait processing
-  // then it need store
-
   if (!isResolved)
+    // if result was false, then event wasn't hadled,
+    // and still wait processing
+    // then it need store in memory
     return
 
+  removeEventFromMemory(event)
+}
+
+/** Will remove event from producer memeory, and all of his parents */
+export const removeEventFromMemory = (event: ModelEvent<ModelEventPayload<IProducerStore<any, any>>, any>) => {
   // if result was true, then event was handled
   // and need remove it from all memories, which possible catched it
   const { payload: { store } } = event

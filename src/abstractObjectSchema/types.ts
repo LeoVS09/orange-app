@@ -26,7 +26,6 @@ export type AosRelationsFieldType = AosFieldType.OneToOne | AosFieldType.OneToMa
 
 export interface AosSimpleField {
     type: AosSimeplFieldType
-    resolvedAt: number | null
 }
 
 export interface AosRelationsField {

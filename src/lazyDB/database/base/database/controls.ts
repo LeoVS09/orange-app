@@ -29,6 +29,13 @@ export interface ISetEntity<T extends Producerable = Producerable> {
   (store: IProducerStore<T>, entity: string, type: AosFieldType, data: T): EventProducer<T>
 }
 
+/**
+ * Generate setter hook,
+ * which will called when someone try set data to linked entity field
+ * @param schema - schema of model for which applied hook
+ * @param getSchema - getter for linked entity schema
+ * @param setEntity - hook for set entity into database
+ */
 export const genSetLinkedEntity = (
   schema: AosEntitySchema,
   getSchema: IGetSchema,

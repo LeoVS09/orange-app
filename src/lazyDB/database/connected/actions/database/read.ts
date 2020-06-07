@@ -1,13 +1,12 @@
 import { ModelEventReadPayload } from '@/lazyDB/database/events'
 import { DatabaseEventReducer, IDatabaseModelProducerStore } from '@/lazyDB/database/types'
-import { compudeStoreParents, FieldToken } from '@/lazyDB/database/aos'
+import { compudeStoreParents, FieldToken } from '@/lazyDB/core/aos'
 import { fetchListOrEntity } from '@/lazyDB/adapters/postgraphile'
-import { removeEventsFromMemory } from './utils'
 
 type ReadReducer = DatabaseEventReducer<IDatabaseModelProducerStore, ModelEventReadPayload<IDatabaseModelProducerStore>>
 
-const read: ReadReducer = async (dataBaseStore, { payload: { store, gets } }) => {
-  const { schema, proxy } = store
+const read: ReadReducer = async (root, { payload: { store, gets } }, control) => {
+  const { schema } = store
   if (!schema) {
     console.error('read producer not have read schema', { store, gets })
     throw new Error('Read producer not have read schema')
@@ -20,11 +19,8 @@ const read: ReadReducer = async (dataBaseStore, { payload: { store, gets } }) =>
   const data = await fetchListOrEntity(key, entity, schema)
   console.log('[ReadActiont] response', data)
 
-  // need remove it outside of handler
-  // probably setup it in lifecycle
-  removeEventsFromMemory(store, gets)
-
-  Object.assign(proxy, data)
+  // Will set data end remove all get events for which data was received
+  Object.assign(control, data)
 
   return true
 }

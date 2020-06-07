@@ -26,7 +26,15 @@ export const subscribeStore = <
   const { dispatcher } = store
 
   store.subscription = dispatcher.eventsSubject
-    .subscribe(subscriber)
+    .subscribe(event => {
+      try {
+
+        return subscriber(event)
+
+      } catch (error) {
+        console.error('Was catched error from subscriber', subscriber, 'on event', event, '\n', error)
+      }
+    })
 }
 
 // TODO: create store class and

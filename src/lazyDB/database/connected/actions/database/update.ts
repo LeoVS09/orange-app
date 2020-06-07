@@ -1,5 +1,5 @@
 import { DatabaseEventReducer, IDatabaseModelProducerStore } from '@/lazyDB/database/types'; import { ModelEventUpdatePayload } from '@/lazyDB/database/events'
-import { compudeStoreParents, FieldToken } from '@/lazyDB/database/aos'
+import { compudeStoreParents, FieldToken } from '@/lazyDB/core/aos'
 import { updateEntity } from '@/lazyDB/adapters/postgraphile'
 import { ModelEventSetPropertyPayload, ModelEvent } from '@/lazyDB/core/types'
 import { ChangedFields } from '@/lazyDB/adapters/postgraphile/adapter'
@@ -8,7 +8,6 @@ import {
   byTime,
   SetEventsByProperty
 } from '@/lazyDB/core/optimisation/zipper'
-import { removeEventsFromMemory } from './utils'
 
 type UpdateReducer = DatabaseEventReducer<IDatabaseModelProducerStore, ModelEventUpdatePayload<IDatabaseModelProducerStore>>
 
@@ -26,8 +25,8 @@ export function setEventsToUpdatedFields(sets: Array<ModelEvent<ModelEventSetPro
   return result
 }
 
-export const update: UpdateReducer = async (dataBaseStore, { payload: { store, sets } }) => {
-  const { schema, proxy, base } = store
+export const update: UpdateReducer = async (root, { payload: { store, sets } }, control) => {
+  const { schema } = store
   if (!schema) {
     console.error('update producer not have read schema', { store, sets })
     throw new Error('Update payload not have read schema')
@@ -47,9 +46,8 @@ export const update: UpdateReducer = async (dataBaseStore, { payload: { store, s
   })
   console.log('[UpdateActiont] response', data)
 
-  removeEventsFromMemory(store, sets)
-
-  Object.assign(proxy, data)
+  // Will set data and remove all set and get events for which data was received
+  Object.assign(control, data)
 
   return true
 }

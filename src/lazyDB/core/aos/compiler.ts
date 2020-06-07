@@ -1,8 +1,5 @@
 import { ModelEventPropertyPayload } from '@/lazyDB/core/types'
-import {
-  AosSchema,
-  AosFieldType
-} from '@/abstractObjectSchema'
+import { AosSchema } from '@/abstractObjectSchema'
 import { append } from './parser'
 import { compudeStoreParents, FieldToken } from './tokenizer'
 import { toNumberIfCan } from './utils'
@@ -23,14 +20,12 @@ export interface TransformTokensList {
 export interface AppendEventToSchemaOptions {
   schema: AosSchema
   event: ModelEventPropertyPayload
-  resolvedAt?: number | null
   transformTokens?: TransformTokensList
 }
 
 export function appendEventToSchema({
   schema,
   event: { name, type, store },
-  resolvedAt = null,
   transformTokens = list => list
 }: AppendEventToSchemaOptions) {
   // Travel from target node to root
@@ -55,7 +50,7 @@ export function appendEventToSchema({
 
   // Append each token to schema
   // step by step, from root node (as first token) to last field
-  append(schema, tokens, resolvedAt)
+  append(schema, tokens)
   console.debug('[AppendPropertyToSchema] builded schema', { schema })
 }
 // Check is token is number literal, it mean parent was array
