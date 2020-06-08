@@ -5,8 +5,9 @@ import { extractEntityNameFromManyKey } from '@/lazyDB/utils'
 import { ISetLinkedEntity, applyRepositoryControls, GetFieldType } from '../repository/controls'
 import { getTableNameByField } from './utils'
 import { switchStoreToDatabaseStore } from '../../dispatcher'
-import { applyListControls } from '../repository/list'
+import { applyListControls, isListSourceData } from '../repository/list'
 import { genGetFieldType } from '../getFieldType'
+import { ListSource } from '../../types'
 
 export const applyDatabaseControls = (
   store: IProducerStore,
@@ -42,44 +43,41 @@ export const genSetLinkedEntity = (
   setEntity: ISetEntity
 ): ISetLinkedEntity => {
   const setLinkedEntity: ISetLinkedEntity = (store, name, type, value) => {
-    console.log('set linked entity', store, name, type, value)
+    console.log('[SetLinkedEntity] set linked entity', store, name, type, value)
     const { base } = store
     const tableName = getTableNameByField(schema.fields, name as string)
 
     if (!isProducer(value)) {
-      // There mean, added new entity, possible on read success
+      // There mean, added new entity, possible on read success,
+      // will set it and wrap as producer
       value = setEntity(store, tableName, type as AosFieldType, value)
     }
 
     base[name] = value
 
     if (type === AosFieldType.OneToOne) {
-      console.log('Setter One to One, name:', name, 'table:', tableName, 'getSchema:', getSchema)
+      console.log('[SetLinkedEntity] Setter One to One, table:', tableName, 'getSchema:', getSchema)
 
       const entitySchema = getSchema(tableName, type)
-      if (!entitySchema)
+      if (!entitySchema) {
+        console.warn('Try set entity which not have schema', name, 'for', store)
         return true
+      }
 
-      const getFieldType = genGetFieldType(entitySchema.fields)
-
-      const entityStore = switchStoreToDatabaseStore(value)
-      applyRepositoryControls(entityStore, { getFieldType, setLinkedEntity })
-
+      setupNewEntity({ entitySchema, value, setLinkedEntity })
       return true
     }
 
-    if (type === AosFieldType.OneToMany) {
+    if (type === AosFieldType.Service) {
 
-      const listStore = getStore(value)
-      if (!listStore)
-        throw new Error('List store for given entity does not exist')
+      const serviceStore = getStore(value)!
 
-      const getFieldType = genGetFieldType(schema.fields)
+      if (isListSourceData(serviceStore.base)) {
+        setupListSource(serviceStore, schema, setLinkedEntity)
+        return true
+      }
 
-      listStore.extendTemporalTrap = trapStore =>
-        applyRepositoryControls(trapStore, { getFieldType, setLinkedEntity })
-
-      applyListControls(listStore)
+      console.warn('[SetLinkedEntity] Unexpected service value, store:', store, 'inputs:', { name, type, value })
 
       return true
     }
@@ -89,6 +87,28 @@ export const genSetLinkedEntity = (
   }
 
   return setLinkedEntity
+}
+
+export interface SetupNewEntityProps {
+  entitySchema: AosEntitySchema
+  value: EventProducer<any>,
+  setLinkedEntity: ISetLinkedEntity
+}
+
+function setupNewEntity({ entitySchema, value, setLinkedEntity }: SetupNewEntityProps) {
+  const getFieldType = genGetFieldType(entitySchema.fields)
+
+  const entityStore = switchStoreToDatabaseStore(value)
+  applyRepositoryControls(entityStore, { getFieldType, setLinkedEntity })
+}
+
+function setupListSource(store: IProducerStore<ListSource>, schema: AosEntitySchema, setLinkedEntity: ISetLinkedEntity) {
+  const getFieldType = genGetFieldType(schema.fields)
+
+  store.extendTemporalTrap = trapStore =>
+    applyRepositoryControls(trapStore, { getFieldType, setLinkedEntity })
+
+  applyListControls(store)
 }
 
 export const getSchemaByKey = (schemas: AosEntitySchemaStorage, key: string, type: AosFieldType): AosEntitySchema => {

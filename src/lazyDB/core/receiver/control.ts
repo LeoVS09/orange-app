@@ -21,8 +21,14 @@ import { getAbsolutePath } from '../aos'
 export function generateControl<
   T extends Producerable<any> = Producerable,
   Store extends IProducerStore<T, any> = IProducerStore
->(store: Store): EventProducer<T> {
-  const { base } = store
+>(store: Store): EventProducer<T> | T {
+  const { base, memory } = store
+  if (!memory) {
+    // Memory was not found in control handler,
+    // possible when control generates on sime event producer
+    // will not spend calculations on proxy wrapping
+    return base
+  }
 
   const result = wrapInProducer<T>(base, new AtomicModelEventDispatcher() as any)
 
@@ -31,12 +37,6 @@ export function generateControl<
   // add hooks for not break real object bubling tree and hook aplly
   controlStore.getter = store.getter
   controlStore.setter = genSetter(store.setter)
-
-  const { memory } = store
-  if (!memory) {
-    console.warn('Memory was not found in control handler', store)
-    return result
-  }
 
   const rootPath = getAbsolutePath(store)
 

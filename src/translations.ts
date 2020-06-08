@@ -27,7 +27,8 @@ const translationsRu = {
   Add: 'Добавить',
   Previous: 'Предыдущая',
   Next: 'Следующая',
-  Difficulty: 'Сложность'
+  Difficulty: 'Сложность',
+  'Sorry, problem not found': 'Извините, задача не найдена'
 }
 
 export default function () {

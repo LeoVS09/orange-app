@@ -59,7 +59,6 @@ export default class SourceView extends Vue {
          color: white;
          width: 100%;
          resize: none;
-         min-height: 3rem;
          overflow-x: hidden;
          box-sizing: border-box;
 

@@ -1,8 +1,12 @@
 
 export enum AosFieldType {
     Any = 'Any',
+    /** One to One entity connection field type, in base case just mean field contain object */
     OneToOne = 'OneToOne',
+    /** One to Many entity connection field type, in base case just mean field contain array */
     OneToMany = 'OneToMany',
+    /** Service field, in base case mean field contain object which not exists as data entity, and not have id */
+    Service = 'Service',
     String = 'String',
     Number = 'Number',
     Boolean = 'Boolean',
@@ -22,7 +26,7 @@ export type AosSimeplFieldType =
     AosFieldType.Boolean |
     AosFieldType.Date
 
-export type AosRelationsFieldType = AosFieldType.OneToOne | AosFieldType.OneToMany
+export type AosRelationsFieldType = AosFieldType.OneToOne | AosFieldType.OneToMany | AosFieldType.Service
 
 export interface AosSimpleField {
     type: AosSimeplFieldType

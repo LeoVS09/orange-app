@@ -17,4 +17,4 @@ export const isSimpleType = (type: AosFieldType): type is AosSimeplFieldType =>
   !isRelationsType(type)
 
 export const isRelationsType = (type: AosFieldType): type is AosRelationsFieldType =>
-  type === AosFieldType.OneToOne || type === AosFieldType.OneToMany
+  type === AosFieldType.OneToOne || type === AosFieldType.OneToMany || type === AosFieldType.Service

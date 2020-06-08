@@ -10,7 +10,7 @@
          <LdrRobot width="5rem" height="5rem"/>
       </div>
 
-      <h1 class="not-found--text">Sorry, problem not found</h1>
+      <h1 class="not-found--text">{{'Sorry, problem not found' | translate}}</h1>
    </div>
 
    <div
@@ -84,7 +84,7 @@
       >
          <h2>Tests</h2>
 
-         <template v-for="test in model.tests">
+         <template v-for="test in model.tests.nodes">
             <div
                v-if="!test.id"
                class="problem--new-test"
@@ -98,7 +98,7 @@
               :testData="test"
               :editable="true"
               :problemId="model.id"
-              :key="test"
+              :key="test.id"
             />
          </template>
 
@@ -171,7 +171,7 @@
          :shadow="true"
          :gradientHighlight="false"
          :icon="$isNew(model) ? 'add' : 'autorenew'"
-      >{{$isNew(model) ? 'ForCreate' : 'Synchronize'}}
+      >{{'save' | translate | capitalise}}
       </FloatingButton>
 
    </div>

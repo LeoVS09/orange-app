@@ -28,7 +28,9 @@ const defaultGetLinkedEntity: IGetLinkedEntity = (store, name, type) => {
     return {}
   }
 
-  if (type === AosFieldType.OneToMany)
+  // will think was asked list source,
+  // but probalby need create hook to understand what exactly was asked
+  if (type === AosFieldType.Service)
     return makeListSource()
 
   console.error('Unexpected model attribute type:', name, type)

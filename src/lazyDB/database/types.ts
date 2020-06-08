@@ -60,6 +60,9 @@ export const ListItemSetterReference = SymFor('list item setter') as 'list item 
 export const nodesKey = 'nodes'
 export const NodesProducerReference = SymFor(`${nodesKey} producer`) as 'nodes producer'
 
+// Need for correctly generate types on list source
+export const isNodesKey = (value: any) => value === nodesKey
+
 export type ListItemGetter = (source: ListSource, index: number) => any
 export type ListItemSetter = (source: ListSource, index: number, value: any) => string | null // value id
 

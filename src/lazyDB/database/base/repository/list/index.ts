@@ -1,13 +1,14 @@
 import {
   IProducerStore,
   ProducerStoreGetter,
-  ProducerStoreSetter
+  ProducerStoreSetter,
+  ModelPropertyKey
 } from '@/lazyDB/core/types'
 import { getStore, isProducer } from '@/lazyDB/core/common'
 import {
-  ListSource,
   nodesKey,
-  NodesProducerReference
+  NodesProducerReference,
+  isNodesKey
 } from '@/lazyDB/database/types'
 import { AosFieldType } from '@/abstractObjectSchema'
 import { nodesGetter, nodesSetter } from './nodes'
@@ -18,9 +19,18 @@ export * from './source'
 export function applyListControls(store: IProducerStore) {
   store.getter = getter
   store.setter = setter
-  // TODO: add Connection AosFieldType, which explain pagination list source
-  // and use there instead of OneToMany
-  store.dispatcher.getPropertyType = () => AosFieldType.OneToMany
+
+  store.dispatcher.getPropertyType = getListPropertyType
+}
+
+// list source is service object which contain pagination data and array of real nodes
+export const getListPropertyType = (name: ModelPropertyKey): AosFieldType => {
+  // only nodes field s actuall One to Many link
+  if (isNodesKey(name))
+    return AosFieldType.OneToMany
+
+  // when other pagination data is plain values
+  return AosFieldType.Any
 }
 
 export const getter: ProducerStoreGetter = ({ base }, name) => {
@@ -68,6 +78,7 @@ export const setter: ProducerStoreSetter = ({ base, extendTemporalTrap }, name, 
 
   const nodesStore = getStore(value) as unknown as IProducerStore<Array<any>>
   nodesStore.extendTemporalTrap = extendTemporalTrap
+  nodesStore.dispatcher.getPropertyType = getListNodesPropertyType
 
   if (!isListSource(base)) {
     console.error('Base for list controls not is ListSource type')
@@ -78,4 +89,16 @@ export const setter: ProducerStoreSetter = ({ base, extendTemporalTrap }, name, 
   nodesStore.setter = nodesSetter(base, nodesStore)
 
   return true
+}
+
+const allDigits = /\d+/
+
+export const getListNodesPropertyType = (name: ModelPropertyKey): AosFieldType => {
+  // property names for array allways string, aka: "0", "1", ...
+  // but possible some causes, to be sure all corect need cast to string and then check
+  if (`${name}`.match(allDigits))
+    return AosFieldType.OneToOne
+
+  // all other array fields must be any, aka: `slice`, `find`, ...
+  return AosFieldType.Any
 }

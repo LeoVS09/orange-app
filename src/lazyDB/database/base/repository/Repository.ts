@@ -17,6 +17,7 @@ import {
 import { makeDatabaseTable, TableListKey } from '../../storage/table'
 import { ModelEventTypes } from '../../events'
 import { genGetFieldType } from '../getFieldType'
+import { getListPropertyType } from './list'
 
 export interface LazyReactiveRepositoryOptions {
    table?: DatabaseTable
@@ -99,7 +100,7 @@ export default class LazyReactiveRepository<T extends Producerable<any> = Produc
 
     const store = switchStoreToDatabaseStore(list)
 
-    store.dispatcher.getPropertyType = () => AosFieldType.OneToMany
+    store.dispatcher.getPropertyType = getListPropertyType
     // Order of calls is important
     setupEventBubbling(store, this.store, TableListKey)
     appendRepositoryLifeHooks(store, this.excludeProperties)

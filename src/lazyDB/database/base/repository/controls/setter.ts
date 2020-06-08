@@ -2,7 +2,7 @@ import { AosEntitySchema, isSimpleType, AosFieldType } from '@/abstractObjectSch
 import { ProducerStoreSetter } from '@/lazyDB/core/types'
 import { isProducer, getStore } from '@/lazyDB/core/common'
 import { ISetLinkedEntity, GetFieldType } from './types'
-import { applyListControls } from '../list'
+import { applyListControls, isListSource } from '../list'
 
 export const setter = (
   getFieldType: GetFieldType,
@@ -32,13 +32,19 @@ const defaultSetLinkedEntity: ISetLinkedEntity = ({ base, extendTemporalTrap }, 
   if (!isProducer(value))
     return true
 
-  if (type === AosFieldType.OneToMany) {
+  if (type === AosFieldType.Service) {
 
     const store = getStore(value)!
-    if (extendTemporalTrap)
-      store.extendTemporalTrap = extendTemporalTrap
+    if (isListSource(store.base)) {
 
-    applyListControls(store)
+      if (extendTemporalTrap)
+        store.extendTemporalTrap = extendTemporalTrap
+
+      applyListControls(store)
+      return true
+    }
+
+    console.error('Was try set not list source in service field', name, type, value)
 
     return true
   }

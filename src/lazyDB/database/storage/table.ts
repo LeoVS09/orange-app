@@ -1,4 +1,9 @@
-import { IProducerStore, ProducerStoreGetter, ProducerStoreSetter } from '@/lazyDB/core/types'
+import {
+  IProducerStore,
+  ProducerStoreGetter,
+  ProducerStoreSetter,
+  ModelPropertyKey
+} from '@/lazyDB/core/types'
 import { wrapInProducer } from '@/lazyDB/core/wrap'
 import { getStore } from '@/lazyDB/core/common'
 import { SymFor } from '@/lazyDB/core/utils'
@@ -38,7 +43,14 @@ export function makeDatabaseTable(table: DatabaseTableMap = new Map()): Database
 export function applyTableControls(store: IProducerStore) {
   store.getter = getter
   store.setter = setter
-  store.dispatcher.getPropertyType = () => AosFieldType.OneToOne
+  store.dispatcher.getPropertyType = getTablePropertyType
+}
+
+export const getTablePropertyType = (name: ModelPropertyKey): AosFieldType => {
+  if (isListKey(name as string))
+    return AosFieldType.Service
+
+  return AosFieldType.OneToOne
 }
 
 export const getter: ProducerStoreGetter = ({ base }, name) => {
