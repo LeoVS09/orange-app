@@ -4,7 +4,6 @@ jest.unmock('graphql-tag');
 import nock from 'nock'
 import { nockAllGraphqlRequests, NockAllGraphqlRequestsControls } from '../utils/graphql.mock'
 import cons from '../utils/console.mock'
-import flushPromises from 'flush-promises'
 import { when } from '../utils/when'
 import { timeout } from 'rxjs/operators'
 
@@ -14,9 +13,6 @@ import { timeout } from 'rxjs/operators'
 
 describe('Repository', () => {
   beforeAll(async () => {
-    // prevent stop promises from other test break execution
-    await flushPromises()
-
     nock.disableNetConnect()
     cons.mockConsole()
   });
@@ -83,9 +79,6 @@ describe('Repository', () => {
     expect(node.createdAt).toEqual(new Date("2021-04-28T19:29:15+03:00"))
 
     expect(node).toMatchSnapshot()
-
-    // flush events
-    await flushPromises()
   })
 
   it('should generade query for list by first node and return', async () => {
@@ -144,9 +137,6 @@ describe('Repository', () => {
     ])
 
     expect(list).toMatchSnapshot()
-
-    // flush events
-    await flushPromises()
   })
 
   it('should generate request for entity and next reqires when more fields need', async () => {
