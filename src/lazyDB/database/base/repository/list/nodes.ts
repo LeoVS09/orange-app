@@ -8,7 +8,7 @@ import {
 } from '@/lazyDB/core/types'
 import { isArrayProperty } from '@/lazyDB/database/utils'
 import { getStore } from '@/lazyDB/core/common'
-import { makeTemporalTrapObject, isTemporalTrap } from '../temporal'
+import { makeTemporalTrapObject, isTemporalTrapProducer, isTemporalTrap } from '../temporal'
 import { arrayMethodWrapper } from './arrayMethodWrapper'
 
 // Getter for array
@@ -45,7 +45,7 @@ export const nodesGetter = <Store extends IProducerStore<any, any> = IProducerSt
       const getItem = source[ListItemGetterReference]
       if (!getItem) {
         console.error('List not have get item hook')
-        return
+        return base[index]
       }
 
       return getItem(source, index as number)
@@ -59,7 +59,7 @@ export const nodesSetter = <Store extends IProducerStore<any, any> = IProducerSt
 
       console.log('[ListNodes] set value for nodes:', base, name, value)
 
-      if (isTemporalTrap(value)) {
+      if (isTemporalTrapProducer(value)) {
 
         base[name as unknown as number] = value
         const { extendTemporalTrap } = store
@@ -70,17 +70,19 @@ export const nodesSetter = <Store extends IProducerStore<any, any> = IProducerSt
           extendTemporalTrap(valueStore)
         }
 
-      } else {
-
-        const setItem = source[ListItemSetterReference]
-        if (setItem)
-        // in base case will return id
-          value = setItem(source, name as unknown as number, value)
-        else
-          console.error('List not have set item hook')
-
-        base[name as unknown as number] = value
+        console.log('[ListNodes] was set trap for nodes:', base, name, value)
+        return true
       }
+
+      const setItem = source[ListItemSetterReference]
+      if (setItem)
+      // in base case will return id
+        value = setItem(source, name as unknown as number, value)
+      else
+        console.error('List not have set item hook')
+
+      base[name as unknown as number] = value
+
       console.log('[ListNodes] was set value for nodes:', base, name, value)
       return true
     }

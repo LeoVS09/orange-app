@@ -3,9 +3,7 @@ import { receiveWithMemoryAndReducers } from '@/lazyDB/core/receiver'
 import { databaseReducers } from '@/lazyDB/database/connected/actions'
 import { defaultExcludeProperties } from '@/lazyDB/constants'
 import LazyReactiveRepository from '@/lazyDB/database/base/repository/Repository'
-import { AosEntitySchema, AosFieldType } from '@/abstractObjectSchema'
-import { Producerable } from '@/lazyDB/core/types'
-import { genSetLinkedEntity, getSchemaByKey } from '@/lazyDB/database/base/database/controls'
+import { AosEntitySchema } from '@/abstractObjectSchema'
 import LazyReactiveDatabase from '../base/database/Database'
 
 // Simple version of database
@@ -49,11 +47,6 @@ const createConnectedRepository = (db: Database) =>
 
       this.excludeProperties = db.excludeProperties
 
-      this.applyRepositoryControlsOptions.setLinkedEntity = genSetLinkedEntity(
-        this.schema,
-        db.getSchemaByKey,
-        db.setEntity
-      )
-
+      this.applyRepositoryControlsOptions.setLinkedEntity = db.genSetLinkedEntity(this.schema)
     }
   }

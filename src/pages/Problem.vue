@@ -20,7 +20,6 @@
    ></div>
 
    <div
-      :key="reactive"
       v-else
       class="problem"
    >
@@ -67,20 +66,25 @@
          </div>
       </text-section>
 
-      <h4 v-if="!isTeacher" class="problem--example-header">Examples</h4>
+      <template v-if="!isTeacher">
+         <h4
+            class="problem--example-header"
+            :key="reactive"
+         >{{'Examples' | translate | capitalise}}</h4>
 
-      <TestView
-         v-if="!isTeacher"
-         class="problem--example"
-         v-for="(example, i) in model.tests.nodes.filter(t => t.public)"
-         :key="'test-' + i + '-' + example.id"
-         :problemId="model.id"
-         :testData="example"
-      />
+         <TestView
+            class="problem--example"
+            v-for="(example, i) in model.tests.nodes.filter(t => t.public)"
+            :key="'test-' + i + '-' + example.id + '-reactive'"
+            :problemId="model.id"
+            :testData="example"
+         />
+      </template>
 
       <div
-         v-if="isTeacher && model.tests"
+         v-if="isTeacher"
          class="problem--tests"
+         :key="reactive"
       >
          <h2>Tests</h2>
 

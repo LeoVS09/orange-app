@@ -6,6 +6,7 @@ import {
   ListItemSetterReference
 } from '@/lazyDB/database/types'
 import { Producerable } from '@/lazyDB/core/types'
+import { makeTemporalTrapObject } from '../temporal'
 
 const HIDEN_PROPERTIES = [
   NodesProducerReference,
@@ -22,7 +23,8 @@ export const makeListSource = (): ListSource => {
 
     totalCount: null,
     // nodes list storing only id
-    [nodesKey]: [],
+    // initialy we storing only temporal trap to catch first render data
+    [nodesKey]: [makeTemporalTrapObject() as any],
 
     // Nodes producer stored
     [NodesProducerReference]: null,

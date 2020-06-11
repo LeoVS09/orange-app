@@ -20,11 +20,6 @@ const get: DatabaseEventReducer<IDatabaseModelProducerStore, ModelEventGetProper
   if (isExcludeProperty(root, payload))
     return true
 
-  if (isDefinedSimpleProperty(payload))
-    return true
-
-  console.log(`GET ${getAbsolutePath(payload.store)}.${payload.name}`)
-
   const schema = getOrCreateSchema(root)
 
   // Track if schema was changed
@@ -34,6 +29,9 @@ const get: DatabaseEventReducer<IDatabaseModelProducerStore, ModelEventGetProper
     event: payload,
     transformTokens: transformTokensForGet(defaultAdditionalFields)
   }))
+
+  if (isChanged)
+    console.log(`[GET] ${getAbsolutePath(payload.store)}.${payload.name}`)
 
   // if action was not change anything
   // then it possible was already done, or not have any impact value

@@ -2,17 +2,21 @@ import {
   IProducerStore,
   ProducerStoreGetter,
   ProducerStoreSetter,
-  ModelPropertyKey
+  ModelPropertyKey,
+  Producerable,
+  ExtendTemporalTrap
 } from '@/lazyDB/core/types'
 import { getStore, isProducer } from '@/lazyDB/core/common'
 import {
   nodesKey,
   NodesProducerReference,
-  isNodesKey
+  isNodesKey,
+  ListItemSetterReference
 } from '@/lazyDB/database/types'
 import { AosFieldType } from '@/abstractObjectSchema'
 import { nodesGetter, nodesSetter } from './nodes'
 import { isListSource } from './source'
+import { isTemporalTrap } from '../temporal'
 
 export * from './source'
 
@@ -57,36 +61,62 @@ export const setter: ProducerStoreSetter = ({ base, extendTemporalTrap }, name, 
 
   if (!isProducer(value)) {
     const realNodes = base[NodesProducerReference]
-    if (!realNodes) {
-      console.error('Nodes store must firstly define base data store')
-      return false
-    }
-
     console.log('[ListControls] setter realNodes before', realNodes)
 
-    if (!Array.isArray(value)) {
-      console.error('value for set nodes must be array')
-      return false
-    }
+    // will assugn each item individualy
+    // to proxyed array, which will trigger set hooks
+    const result = assignArrayValues(realNodes, value)
 
-    value.forEach((node: any, i) => realNodes[i] = node)
-    console.log('[ListControls] setter realNodes after', realNodes, base)
-    return true
+    console.log('[ListControls] setter realNodes after', realNodes)
+    return result
   }
 
   base[NodesProducerReference] = value
 
-  const nodesStore = getStore(value) as unknown as IProducerStore<Array<any>>
+  const nodesStore = getStore<Array<any>>(value as any)!
+  return setupNodes(base, nodesStore, extendTemporalTrap)
+}
+
+/** Will assign all values from source to target array */
+function assignArrayValues(
+  target?: Array<any>,
+  source?: Array<any>
+) {
+  // TODO: put this validation outside
+  // and move assign to direct function
+  if (!target) {
+    console.error('Target array not defined')
+    return false
+  }
+
+  if (!Array.isArray(source)) {
+    console.error('Source array not defined')
+    return false
+  }
+
+  source.forEach((node: any, i) => target[i] = node)
+  return true
+}
+
+function setupNodes(listSource: Producerable<any>, nodesStore: IProducerStore<Array<any>>, extendTemporalTrap?: ExtendTemporalTrap) {
   nodesStore.extendTemporalTrap = extendTemporalTrap
   nodesStore.dispatcher.getPropertyType = getListNodesPropertyType
 
-  if (!isListSource(base)) {
+  if (!isListSource(listSource)) {
     console.error('Base for list controls not is ListSource type')
     return false
   }
 
-  nodesStore.getter = nodesGetter(base, nodesStore)
-  nodesStore.setter = nodesSetter(base, nodesStore)
+  nodesStore.getter = nodesGetter(listSource, nodesStore)
+  nodesStore.setter = nodesSetter(listSource, nodesStore)
+
+  // need extract temporal trap if it not was wrapped as producer
+  const { base: nodes, proxy: producer } = nodesStore
+  if (nodes.length === 1 && isTemporalTrap(nodes[0])) {
+    // getter from nodes producer will get value and set as producer
+    const trap = producer![0]
+    console.log('[ListControls] setter was set temporal trap for nodes', producer, trap)
+  }
 
   return true
 }

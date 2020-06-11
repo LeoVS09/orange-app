@@ -50,8 +50,6 @@ export interface ILazyReactiveDatabase {
    set: <T extends Producerable = Producerable>(entity: string, id: string, data: T | EventProducer<T>) => void
    update: <T extends Producerable = Producerable>(entity: string, id: string, data: T | EventProducer<T>) => boolean
    add: <T extends Producerable = Producerable>(entity: string, id: string, data: T | EventProducer<T>) => void
-   getSchemaByKey: (key: string, type: AosFieldType) => AosEntitySchema | undefined
-   setSchema: (entity: string, schema: AosEntitySchema) => void
    excludeProperties: Array<string | RegExp>
 }
 

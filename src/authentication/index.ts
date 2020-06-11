@@ -10,8 +10,11 @@ const TOKEN_NAME = 'token'
 const TOKEN_KEY = 'key' // TODO
 const TESTING_KEY = 'testing'
 
-const isTestingTeacher = () => true
-// window.localStorage.getItem(TESTING_KEY) === 'teacher'
+// TODO: remove testing before production
+// @ts-ignore
+window.setMeAsTeacher = () => window.localStorage.setItem(TESTING_KEY, 'teacher')
+
+const isTestingTeacher = () => window.localStorage.getItem(TESTING_KEY) === 'teacher'
 
 function encryptId(user: UserProfile): string {
   return crypto.AES.encrypt(user.id, TOKEN_KEY).toString() // TODO

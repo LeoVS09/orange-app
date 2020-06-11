@@ -3,14 +3,14 @@ import {
   ProducerStoreReference,
   ModelPropertyKey
 } from '../types'
-import { isProducerable, getStore } from '../common'
-import { wrapInProducerIfNot } from '../wrap'
+import { isProducerable, getStore, isProducer } from '../common'
+import { wrapInProducerIfNot, wrapInProducer } from '../wrap'
 import { setupEventBubbling } from '../bubbling'
 import { isExplictlyAccessPropty } from './explictly'
 
 export function get<Store extends IProducerStore<any, any> = IProducerStore>(store: Store, prop: PropertyKey) {
   // Directly check with reference
-  // need for ProducerStoreReference is string
+  // need when ProducerStoreReference is string
   if (prop === ProducerStoreReference)
     return store
 
@@ -20,9 +20,10 @@ export function get<Store extends IProducerStore<any, any> = IProducerStore>(sto
   return getterHook(store, prop as ModelPropertyKey)
 }
 
-// hook will spawn event
-// get value from getter
-// and then wrap value to producer if need
+/**
+ * hook will spawn event, receive value from getter,
+ * and then wrap value to producer if need
+ */
 export const getterHook = <Store extends IProducerStore<any, any> = IProducerStore>(
   store: Store,
   prop: ModelPropertyKey
@@ -35,24 +36,24 @@ export const getterHook = <Store extends IProducerStore<any, any> = IProducerSto
 
   dispatcher.get(prop, store)
 
-  const value = getter(store, prop) // default is `(_, prop) => store.base[prop]`
+  let value = getter(store, prop) // default is `(_, prop) => store.base[prop]`
 
   if (!isProducerable(value))
+    // if value primitive and cannot be reactive
     return value
 
-  // value is object or array
-  // need wrap it to producer
-  const producer = wrapInProducerIfNot(value)
+  if (!isProducer(value)) {
+    // if value is object or array, but not producer
+    // need wrap it to producer
+    value = wrapInProducer(value)
+    // and rewrite field value as producer
+    setter(store, prop, value) // default is `(_, prop, value) => store.base[prop] = value`
+  }
 
-  // if value wasn't producer
-  // need rewrite value of property as producer
-  if (producer !== value)
-    setter(store, prop, producer) // default is `(_, prop, value) => store.base[prop] = value`
+  // set value store as parent
+  // for send events hierarily
+  const childStore = getStore(value)!
+  setupEventBubbling(childStore, store, prop)
 
-  // set current store as parent for producer
-  // for send events to parent
-  const childStore = getStore(producer)
-  setupEventBubbling(childStore!, store, prop)
-
-  return producer
+  return value
 }

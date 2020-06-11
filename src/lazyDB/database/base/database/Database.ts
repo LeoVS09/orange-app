@@ -4,23 +4,18 @@ import {
 } from '@/lazyDB/core/types'
 import { getStore } from '@/lazyDB/core/common'
 import { ModelEventDispatcher } from '@/lazyDB/core/dispatcher/model/base'
-import { AosFieldType, AosEntitySchemaStorage, AosEntitySchema } from '@/abstractObjectSchema'
-import { getEntityPrimaryKey } from '@/lazyDB/database/base/repository/Repository'
-import { isListSourceData } from '@/lazyDB/database/base/repository/list'
+import { AosEntitySchemaStorage, AosEntitySchema } from '@/abstractObjectSchema'
 import {
   applyDatabaseControls,
-  getSchemaByKey,
-  ISetEntity
+  IGetTable,
+  genSetLinkedEntity
 } from './controls'
 import { makeDatabaseStorage } from '../../storage'
 import {
   ILazyReactiveDatabase,
   IDatabaseModelProducerStore,
-  DatabaseStorage,
-  DatabaseTable
+  DatabaseStorage
 } from '../../types'
-import { assignListSource } from './assignListSource'
-import { saveEntity } from './saveEntity'
 
 export interface LazyReactiveDatabaseOptions {
   storage?: DatabaseStorage
@@ -68,38 +63,9 @@ export default class LazyReactiveDatabase implements ILazyReactiveDatabase {
     const store = getStore(model)
     const schema = this.schemas[entity]
 
-    applyDatabaseControls(store!, schema, this.getSchemaByKey, this.setEntity)
+    applyDatabaseControls(store!, schema, this.genSetLinkedEntity(schema))
 
     return model
-  }
-
-  /**
-   * Hook which wil be called,
-   * when someone try set entity to event producer,
-   * allow store real object in storage
-   * */
-  public setEntity: ISetEntity = ({ base }, entity, type, value) => {
-    console.log('[Database] Try set entity', base, entity, type, value)
-
-    if (type === AosFieldType.Service) {
-      if (isListSourceData(value)) {
-        // in case when we receive list source, then linking in schema was declarated as OneToMany
-        const entitySchema = this.getSchemaByKey(entity, AosFieldType.OneToMany)
-
-        const existedList = base[entity] // TODO: possible need generate list source if assign was before get
-
-        assignListSource(existedList, value, { entity, entitySchema, storage: this.storage })
-        return existedList
-      }
-
-      throw new Error('Try set not list source to Service field')
-    }
-
-    if (type !== AosFieldType.OneToOne)
-      console.warn('Unexpected data type for', entity, 'type', type, 'value', value, 'will work as OneToOne')
-
-    const entitySchema = this.getSchemaByKey(entity, type)
-    return saveEntity(value, entitySchema, this.storage[entity])
   }
 
   public set<T extends Producerable = Producerable>(entity: string, id: string, data: T | EventProducer<T>) {
@@ -128,6 +94,19 @@ export default class LazyReactiveDatabase implements ILazyReactiveDatabase {
     return true
   }
 
-  public getSchemaByKey = (entity: string, type: AosFieldType) => getSchemaByKey(this.schemas, entity, type)
+  // TODO: need receive field name and generate table name from it by getTableNameByField
+  //  for getSchemaByKey and getTable
+
+  private getSchema = (tableName: string) => this.schemas[tableName]
+
+  private getTable: IGetTable = tableName => this.storage[tableName]
+
+  public genSetLinkedEntity(schema: AosEntitySchema) {
+    return genSetLinkedEntity(
+      schema,
+      this.getSchema,
+      this.getTable
+    )
+  }
 }
 

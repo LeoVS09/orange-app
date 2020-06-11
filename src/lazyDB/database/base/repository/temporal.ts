@@ -10,4 +10,9 @@ export const makeTemporalTrapObject = () => {
   }
 }
 
-export const isTemporalTrap = (value: any) => isProducer(value) && value[TemporalTrap]
+export const isTemporalTrapProducer = (value: any) => isProducer(value) && value[TemporalTrap]
+
+export const isTemporalTrap = (value: any) =>
+  value
+  && typeof value === 'object'
+  && value[TemporalTrap]

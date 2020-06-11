@@ -7,27 +7,33 @@ import { getTableNameByField } from './utils'
 import { switchStoreToDatabaseStore } from '../../dispatcher'
 import { applyListControls, isListSourceData } from '../repository/list'
 import { genGetFieldType } from '../getFieldType'
-import { ListSource } from '../../types'
+import {
+  ListSource,
+  DatabaseTableMap,
+  ListItemGetterReference,
+  ListItemSetterReference,
+  DatabaseTable
+} from '../../types'
+import { listItemGetter, listItemSetter, TableStoreReference } from '../../storage/table'
+import { saveEntity } from './saveEntity'
+import { getEntityPrimaryKey } from '../repository/Repository'
 
 export const applyDatabaseControls = (
   store: IProducerStore,
   schema: AosEntitySchema,
-  getSchema: IGetSchema,
-  setEntity: ISetEntity
+  setLinkedEntity: ISetLinkedEntity
 ) => {
-
-  const setLinkedEntity = genSetLinkedEntity(schema, getSchema, setEntity)
   const getFieldType = genGetFieldType(schema.fields)
 
   applyRepositoryControls(store, { getFieldType, setLinkedEntity })
 }
 
 export interface IGetSchema {
-  (entity: string, type: AosFieldType): AosEntitySchema
+  (tableName: string): AosEntitySchema
 }
 
-export interface ISetEntity<T extends Producerable = Producerable> {
-  (store: IProducerStore<T>, entity: string, type: AosFieldType, data: T): EventProducer<T>
+export interface IGetTable {
+  (name: string): DatabaseTable
 }
 
 /**
@@ -40,17 +46,36 @@ export interface ISetEntity<T extends Producerable = Producerable> {
 export const genSetLinkedEntity = (
   schema: AosEntitySchema,
   getSchema: IGetSchema,
-  setEntity: ISetEntity
+  getTable: IGetTable
 ): ISetLinkedEntity => {
   const setLinkedEntity: ISetLinkedEntity = (store, name, type, value) => {
     console.log('[SetLinkedEntity] set linked entity', store, name, type, value)
-    const { base } = store
+    const { base, proxy } = store
     const tableName = getTableNameByField(schema.fields, name as string)
+    const table = getTable(tableName)
 
     if (!isProducer(value)) {
       // There mean, added new entity, possible on read success,
-      // will set it and wrap as producer
-      value = setEntity(store, tableName, type as AosFieldType, value)
+      // will save it to database and wrap as producer
+      if (type === AosFieldType.OneToOne) {
+        const entitySchema = getSchema(tableName)
+        base[name] = saveEntity(value, entitySchema, table)
+        return true
+      }
+
+      if (type === AosFieldType.Service) {
+        if (!isListSourceData(value))
+          throw new Error('Try set not list source to Service field')
+
+        // will assign list source by using existed getters
+        const existedListSource = proxy![name]
+        Object.assign(existedListSource, value)
+
+        return true
+      }
+
+      console.warn('Unexpected data type for', name, 'type', type, 'value', value, 'not will assign')
+      return true
     }
 
     base[name] = value
@@ -58,7 +83,7 @@ export const genSetLinkedEntity = (
     if (type === AosFieldType.OneToOne) {
       console.log('[SetLinkedEntity] Setter One to One, table:', tableName, 'getSchema:', getSchema)
 
-      const entitySchema = getSchema(tableName, type)
+      const entitySchema = getSchema(tableName)
       if (!entitySchema) {
         console.warn('Try set entity which not have schema', name, 'for', store)
         return true
@@ -73,7 +98,7 @@ export const genSetLinkedEntity = (
       const serviceStore = getStore(value)!
 
       if (isListSourceData(serviceStore.base)) {
-        setupListSource(serviceStore, schema, setLinkedEntity)
+        setupListSource(serviceStore, schema, setLinkedEntity, table)
         return true
       }
 
@@ -102,19 +127,24 @@ function setupNewEntity({ entitySchema, value, setLinkedEntity }: SetupNewEntity
   applyRepositoryControls(entityStore, { getFieldType, setLinkedEntity })
 }
 
-function setupListSource(store: IProducerStore<ListSource>, schema: AosEntitySchema, setLinkedEntity: ISetLinkedEntity) {
+function setupListSource(
+  store: IProducerStore<ListSource>,
+  schema: AosEntitySchema,
+  setLinkedEntity: ISetLinkedEntity,
+  table?: DatabaseTable
+) {
   const getFieldType = genGetFieldType(schema.fields)
 
   store.extendTemporalTrap = trapStore =>
     applyRepositoryControls(trapStore, { getFieldType, setLinkedEntity })
 
   applyListControls(store)
-}
 
-export const getSchemaByKey = (schemas: AosEntitySchemaStorage, key: string, type: AosFieldType): AosEntitySchema => {
-  let fieldEntity = key
-  if (type === AosFieldType.OneToMany)
-    fieldEntity = extractEntityNameFromManyKey(key)
+  if (!table)
+    return
 
-  return schemas[fieldEntity]
+  const map = table[TableStoreReference]
+  const { base } = store
+  base[ListItemGetterReference] = listItemGetter(map)
+  base[ListItemSetterReference] = listItemSetter(map, value => getEntityPrimaryKey(schema, value))
 }

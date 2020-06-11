@@ -132,10 +132,10 @@ export default class Button extends Mixins(ButtonBase) {
       &--icon {
          font-size: 1rem;
          color: $button-text-color;
+      }
 
-         &-left {
-            left: -0.3rem;
-         }
+      &--text {
+         padding-left: 0.3rem;
       }
 
       &--submit {
