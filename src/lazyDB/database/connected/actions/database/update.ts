@@ -1,6 +1,6 @@
 import { DatabaseEventReducer, IDatabaseModelProducerStore } from '@/lazyDB/database/types'; import { ModelEventUpdatePayload } from '@/lazyDB/database/events'
 import { compudeStoreParents, FieldToken } from '@/lazyDB/core/aos'
-import { updateEntity } from '@/lazyDB/adapters/postgraphile'
+import postgraphile from '@/lazyDB/adapters/postgraphile'
 import { ModelEventSetPropertyPayload, ModelEvent } from '@/lazyDB/core/types'
 import { ChangedFields } from '@/lazyDB/adapters/postgraphile/adapter'
 import {
@@ -8,6 +8,9 @@ import {
   byTime,
   SetEventsByProperty
 } from '@/lazyDB/core/optimisation/zipper'
+import { AosSchema, isRelationsAosField } from '@/abstractObjectSchema'
+import { BackendAdapter } from '@/lazyDB/adapters/backend'
+import { isListKey } from '@/lazyDB/database/storage/table'
 
 type UpdateReducer = DatabaseEventReducer<IDatabaseModelProducerStore, ModelEventUpdatePayload<IDatabaseModelProducerStore>>
 
@@ -38,7 +41,7 @@ export const update: UpdateReducer = async (root, { payload: { store, sets } }, 
 
   console.log('[UpdateActiont] generate request for', `${key}/${entity}/`, 'changedFields', changedFields)
 
-  const data = await updateEntity({
+  const data = await updateEntity(postgraphile, {
     key,
     entityName: entity,
     schema,
@@ -53,3 +56,33 @@ export const update: UpdateReducer = async (root, { payload: { store, sets } }, 
 }
 
 export default update
+
+export interface UpdateEntityProps {
+  key: string,
+  entityName: string,
+  schema: AosSchema,
+  changedFields: ChangedFields
+}
+
+export function updateEntity(
+  adapter: BackendAdapter,
+  {
+    key,
+    schema,
+    entityName,
+    changedFields
+  }: UpdateEntityProps
+) {
+  if (isListKey(key))
+    throw new Error('Cannot update list')
+
+  const tableField = schema[entityName]
+  if (!isRelationsAosField(tableField))
+    throw new Error('Was pushed not relative table field')
+
+  const entityField = tableField.schema[key]
+  if (!isRelationsAosField(entityField))
+    throw new Error('Was pushed not relation object field')
+
+  return adapter.updateEntity(entityName, key, entityField.schema, changedFields)
+}

@@ -86,7 +86,7 @@ function toUser(userData: mutationTypes.Login_login_user): UserProfile {
     firstName: profile.firstName || '',
     middleName: profile.middleName,
     lastName: profile.lastName || '',
-    type: isTestingTeacher() || profile.isTeacher ? UserType.TEACHER : UserType.CONTESTANT,
+    type: isTestingTeacher() ? UserType.TEACHER : UserType.CONTESTANT, // TODO: || profile.isTeacher
     course: profile.course,
     groupNumber: profile.groupNumber,
     university: profile.university,

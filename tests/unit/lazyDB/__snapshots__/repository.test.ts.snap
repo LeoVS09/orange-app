@@ -220,7 +220,6 @@ Object {
   country(id: $id) {
     id
     nodeId
-    name
     updatedAt
     createdAt
     code

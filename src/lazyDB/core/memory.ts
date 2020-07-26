@@ -3,10 +3,19 @@ import { splitArray } from './utils'
 export interface ExcludePredicate<T> {
   (event: T): boolean
 }
+
 export interface ForgetMethod<T> {
   (...targets: Array<T>): void
   (predicate: ExcludePredicate<T>): Array<T>
 }
+
+/**
+ * State Machine + Reactive Programming = State Memory
+ * State memory allow create reactive state machine,
+ * which allways compude his state based on events, which it "remember".
+ * Each time when on render by React/Vue/Angular state of model, which state machine control, calulates base on his events,
+ * when events removed or added it can be used to trigger rerender, with new state computations
+ */
 export class StateMemory<T> {
    // TODO: make field private
    public memory: Array<T> = []
@@ -56,6 +65,10 @@ export class StateMemory<T> {
 
    public some(predicat: (value: T, index: number, array: T[]) => boolean): boolean {
      return this.memory.some(predicat)
+   }
+
+   public includes(value: T): boolean {
+     return this.memory.includes(value)
    }
 
    /** Will replace existing event with new one, return true if old event was found and replaced */

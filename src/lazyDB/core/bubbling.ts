@@ -1,9 +1,6 @@
 import {
   IProducerStore,
   ModelEvent,
-  ModelEventPayload,
-  Producerable,
-  BaseEventsPayloads,
   ModelPropertyKey
 } from './types'
 import { receive } from './receiver'
@@ -49,13 +46,38 @@ export function pushToParent<ChildStore extends IProducerStore<any, any> = IProd
   dispatcher.eventsSubject.next(event)
 }
 
-/** Apply funcion to current store and all of his parents */
-export function visitParents<Store extends IProducerStore<any, any>>(start: Store, visitor: (store: Store) => void) {
-  visitor(start)
+/** Return iterator over givent store and all of his parents */
+export function* parents<Store extends IProducerStore<any, any>>(store: Store): Generator<Store> {
+  yield store
 
-  const { parent } = start
-  if (!parent)
+  if (!store.parent)
     return
 
-  visitParents(parent.store, visitor)
+  yield* parents(store.parent.store)
+}
+
+/** Apply funcion to current store and all of his parents */
+export const visitParents = <Store extends IProducerStore<any, any>>(
+  start: Store,
+  visitor: (store: Store) => void
+) => {
+  for (const store of parents(start))
+    visitor(store)
+}
+
+/**
+ * Apply funcion to current store and all of his parents,
+ * and return true if visitor return true at least once.
+ * Will stop execution on first true
+ *  */
+export function isSomeParent<Store extends IProducerStore<any, any>>(
+  start: Store,
+  predicate: (store: Store) => boolean
+): boolean {
+  for (const store of parents(start)) {
+    if (predicate(store))
+      return true
+  }
+
+  return false
 }

@@ -6,12 +6,13 @@ import {
   APIClient
 } from '../graphql'
 import { capitalise } from '../graphql/prettyAdapters'
+import { BackendAdapter } from '../backend'
 
 export interface ChangedFields {
   [prop: string]: any
 }
 
-export class PostgraphileAdapter {
+export class PostgraphileAdapter implements BackendAdapter {
   constructor(
     private client: APIClient
   ) {}

@@ -10,8 +10,7 @@ import { getStore, isProducer } from '@/lazyDB/core/common'
 import {
   nodesKey,
   NodesProducerReference,
-  isNodesKey,
-  ListItemSetterReference
+  isNodesKey
 } from '@/lazyDB/database/types'
 import { AosFieldType } from '@/abstractObjectSchema'
 import { nodesGetter, nodesSetter } from './nodes'

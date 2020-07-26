@@ -1,4 +1,4 @@
-import { ListSource, ListItemGetterReference } from '@/lazyDB/database/types'
+import { ListSource, NodesProducerReference } from '@/lazyDB/database/types'
 import { ArrayStringProperty } from '@/lazyDB/database/utils'
 
 export const arrayMethodWrapper = (source: ListSource, base: Array<any>, index: ArrayStringProperty) =>
@@ -8,11 +8,11 @@ export const arrayMethodWrapper = (source: ListSource, base: Array<any>, index: 
     // in case they setted as links
     let realDataArray = base
 
-    const getItem = source[ListItemGetterReference]
-    if (getItem)
-      realDataArray = base.map((_, i) => getItem(source, i))
+    const nodes = source[NodesProducerReference]
+    if (nodes)
+      realDataArray = base.map((_, i) => nodes[i])
     else
-      console.warn('[ArrayMethodWrapper] List not have getItem hook', source, base, index)
+      console.warn('[ArrayMethodWrapper] List not have nodes producer', source, base, index)
 
     // @ts-ignore
     const result = realDataArray[index](...args)

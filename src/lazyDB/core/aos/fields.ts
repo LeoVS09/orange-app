@@ -1,5 +1,5 @@
 import {
-  AosSimeplFieldType,
+  AosSimpleFieldType,
   AosRelationsField,
   AosRelationsFieldType,
   AosSchema,
@@ -15,6 +15,6 @@ export class RelationsField implements AosRelationsField {
 
 export class SimpleField implements AosSimpleField {
   constructor(
-      public type: AosSimeplFieldType
+      public type: AosSimpleFieldType
   ) {}
 }

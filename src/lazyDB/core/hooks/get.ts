@@ -5,7 +5,7 @@ import {
 } from '../types'
 import { isProducerable, getStore, isProducer } from '../common'
 import { wrapInProducerIfNot, wrapInProducer } from '../wrap'
-import { setupEventBubbling } from '../bubbling'
+import { setupEventBubbling, setAsParent } from '../bubbling'
 import { isExplictlyAccessPropty } from './explictly'
 
 export function get<Store extends IProducerStore<any, any> = IProducerStore>(store: Store, prop: PropertyKey) {
@@ -46,6 +46,10 @@ export const getterHook = <Store extends IProducerStore<any, any> = IProducerSto
     // if value is object or array, but not producer
     // need wrap it to producer
     value = wrapInProducer(value)
+    // setup parent before cal set hook
+    const childStore = getStore(value)!
+    setAsParent(childStore, store, prop)
+
     // and rewrite field value as producer
     setter(store, prop, value) // default is `(_, prop, value) => store.base[prop] = value`
   }
@@ -53,6 +57,8 @@ export const getterHook = <Store extends IProducerStore<any, any> = IProducerSto
   // set value store as parent
   // for send events hierarily
   const childStore = getStore(value)!
+  // TODO: not need each time setup event bubbling
+  //  it each time unsubscribe store and subscribe it again
   setupEventBubbling(childStore, store, prop)
 
   return value

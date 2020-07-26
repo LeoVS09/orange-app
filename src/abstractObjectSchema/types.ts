@@ -19,7 +19,7 @@ export enum AosFieldType {
  * if not one set it as Relation type
  */
 
-export type AosSimeplFieldType =
+export type AosSimpleFieldType =
     AosFieldType.Any |
     AosFieldType.String |
     AosFieldType.Number |
@@ -29,7 +29,7 @@ export type AosSimeplFieldType =
 export type AosRelationsFieldType = AosFieldType.OneToOne | AosFieldType.OneToMany | AosFieldType.Service
 
 export interface AosSimpleField {
-    type: AosSimeplFieldType
+    type: AosSimpleFieldType
 }
 
 export interface AosRelationsField {

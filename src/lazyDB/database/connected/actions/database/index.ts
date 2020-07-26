@@ -6,8 +6,8 @@ import read from './read'
 import update from './update'
 
 export const databaseReducers: EventReducersMap<IDatabaseModelProducerStore, DatabaseModelTypesToPayloadsMap> = {
-  [ModelEventTypes.GetProperty]: (store, { payload }: ModelEvent<ModelEventGetPropertyPayload>) => {
-    if (isExcludeProperty(store as IDatabaseModelProducerStore, payload))
+  [ModelEventTypes.GetProperty]: (root, { payload }: ModelEvent<ModelEventGetPropertyPayload>) => {
+    if (isExcludeProperty(payload.name, root.excludeProperties))
       return true
 
     return false

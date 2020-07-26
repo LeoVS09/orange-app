@@ -1,5 +1,6 @@
 import { IProducerStore } from '@/lazyDB/core/types'
 import { AosEntitySchema, AosFieldType } from '@/abstractObjectSchema'
+import { IDatabaseModelProducerStore, setupSchema } from '@/lazyDB/database/types'
 import { ApplyRepositoryControlsOptions, GetFieldType } from './types'
 import getter from './getter'
 import setter from './setter'
@@ -28,6 +29,8 @@ export const applyRepositoryControls = (
 
   // make temporal trap in list work as repository object
   // This must be setted for repository and table, they all create list in differrent situations
-  store.extendTemporalTrap = trapStore =>
+  store.extendTemporalTrap = trapStore => {
+    setupSchema(trapStore)
     applyRepositoryControls(trapStore, { getFieldType })
+  }
 }

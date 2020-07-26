@@ -1,22 +1,31 @@
-import { Producerable, EventProducer, IProducerStore } from '@/lazyDB/core/types'
-import { AosEntitySchemaStorage, AosEntitySchema, AosFieldType } from '@/abstractObjectSchema'
+import { EventProducer, IProducerStore } from '@/lazyDB/core/types'
+import { AosEntitySchema, AosFieldType } from '@/abstractObjectSchema'
 import { isProducer, getStore } from '@/lazyDB/core/common'
-import { extractEntityNameFromManyKey } from '@/lazyDB/utils'
-import { ISetLinkedEntity, applyRepositoryControls, GetFieldType } from '../repository/controls'
+import { AosParser } from '@/lazyDB/core/aos'
+import { ISetLinkedEntity, applyRepositoryControls } from '../repository/controls'
 import { getTableNameByField } from './utils'
 import { switchStoreToDatabaseStore } from '../../dispatcher'
 import { applyListControls, isListSourceData } from '../repository/list'
 import { genGetFieldType } from '../getFieldType'
 import {
   ListSource,
-  DatabaseTableMap,
   ListItemGetterReference,
   ListItemSetterReference,
-  DatabaseTable
+  DatabaseTable,
+  setupSchema,
+  ListItemSetter,
+  ListItemGetter,
+  IDatabaseModelProducerStore,
+  DatabaseTableMap
 } from '../../types'
-import { listItemGetter, listItemSetter, TableStoreReference } from '../../storage/table'
+import {
+  listItemGetter,
+  listItemSetter,
+  TableStoreReference
+} from '../../storage/table'
 import { saveEntity } from './saveEntity'
 import { getEntityPrimaryKey } from '../repository/Repository'
+import { setupNewEntity } from '../setupNewEntity'
 
 export const applyDatabaseControls = (
   store: IProducerStore,
@@ -58,8 +67,11 @@ export const genSetLinkedEntity = (
       // There mean, added new entity, possible on read success,
       // will save it to database and wrap as producer
       if (type === AosFieldType.OneToOne) {
-        const entitySchema = getSchema(tableName)
-        base[name] = saveEntity(value, entitySchema, table)
+
+        // Will ask about field from proxy to generate correct field value
+        // which already wrapped
+        const existingFieldValue = proxy![name]
+        Object.assign(existingFieldValue, value)
         return true
       }
 
@@ -98,7 +110,29 @@ export const genSetLinkedEntity = (
       const serviceStore = getStore(value)!
 
       if (isListSourceData(serviceStore.base)) {
-        setupListSource(serviceStore, schema, setLinkedEntity, table)
+        // TODO: reafactor item entity save logic
+        const entitySchema = getSchema(tableName)
+        const map = table[TableStoreReference] as DatabaseTableMap
+        const defaultGetter = listItemGetter(map)
+        const defaultSetter = listItemSetter(map, v => getEntityPrimaryKey(entitySchema, v))
+
+        setupListSource(serviceStore, schema, setLinkedEntity,
+          defaultGetter,
+          (_, __, item) => {
+            if (isProducer(item))
+              return defaultSetter(_, __, item)
+
+            // it mean set new entity, need save it directly
+            // and return wrapped value
+
+            const wrappedValue = saveEntity(item, entitySchema, table)
+            setupNewEntity({
+              entitySchema,
+              value: wrappedValue,
+              setLinkedEntity
+            })
+            return getEntityPrimaryKey(entitySchema, item) || null
+          })
         return true
       }
 
@@ -120,31 +154,28 @@ export interface SetupNewEntityProps {
   setLinkedEntity: ISetLinkedEntity
 }
 
-function setupNewEntity({ entitySchema, value, setLinkedEntity }: SetupNewEntityProps) {
-  const getFieldType = genGetFieldType(entitySchema.fields)
-
-  const entityStore = switchStoreToDatabaseStore(value)
-  applyRepositoryControls(entityStore, { getFieldType, setLinkedEntity })
+export interface ISaveItem {
+  (source: ListSource, index: number, value: any): any
 }
 
 function setupListSource(
   store: IProducerStore<ListSource>,
   schema: AosEntitySchema,
   setLinkedEntity: ISetLinkedEntity,
-  table?: DatabaseTable
+  itemGetter: ListItemGetter,
+  itemSetter: ListItemSetter
 ) {
   const getFieldType = genGetFieldType(schema.fields)
 
-  store.extendTemporalTrap = trapStore =>
+  store.extendTemporalTrap = trapStore => {
+    setupSchema(trapStore)
     applyRepositoryControls(trapStore, { getFieldType, setLinkedEntity })
+  }
 
   applyListControls(store)
 
-  if (!table)
-    return
-
-  const map = table[TableStoreReference]
   const { base } = store
-  base[ListItemGetterReference] = listItemGetter(map)
-  base[ListItemSetterReference] = listItemSetter(map, value => getEntityPrimaryKey(schema, value))
+  base[ListItemGetterReference] = itemGetter
+  base[ListItemSetterReference] = itemSetter
 }
+

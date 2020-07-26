@@ -19,6 +19,7 @@ import {
   AosSchema,
   AosFieldType
 } from '@/abstractObjectSchema'
+import { RelationsField, AosParser } from '../core/aos'
 
 export type AsyncConnectorReducer<T, R> = (store: IProducerStore, event: T) => Promise<R>
 
@@ -73,7 +74,7 @@ export interface ListSource {
    readonly maxPageNumber: number | null
 
    // NodesProducerReference
-   'nodes producer': IProducerStore<Array<any>> | null
+   'nodes producer': EventProducer<Array<any>> | null
 
    // ListItemGetterReference
    'list item getter': ListItemGetter | null
@@ -98,9 +99,39 @@ export interface IDatabaseModelProducerStore<
    TP extends DatabaseModelTypesToPayloadsMap<any, any> = any
 > extends IProducerStore<T, TP>{
    excludeProperties?: Array<string | RegExp>
+   // TODO: possible every database store must have schema
    schema?: AosSchema
    dispatcher: DatabaseDispatcher<IDatabaseModelProducerStore<T, TP>, ModelPropertyKey, TP>
    onChange?: OnChangeCallback
+}
+
+/**
+ * Will assign schema to store, if it not exists.
+ * Use schema from parent schema field, if it exists
+ * */
+export const setupSchema = (store: IProducerStore<any, any>) => {
+  const databaseStore = store as IDatabaseModelProducerStore<any, any>
+  if (databaseStore.schema)
+    return
+
+  // need link parent schema field
+  // to new object field
+  databaseStore.schema = getSchemaFromParentField(databaseStore) || {}
+}
+
+const getSchemaFromParentField = ({ parent }: IDatabaseModelProducerStore<any, any>): AosSchema | void => {
+  if (!parent)
+    return
+
+  const { name, store: { schema: parentSchema } } = parent
+  if (!parentSchema)
+    return
+
+  const relationsField = parentSchema[name]
+  if (!relationsField || !(relationsField instanceof RelationsField))
+    return
+
+  return relationsField.schema
 }
 
 export interface DatabaseEventReducer<

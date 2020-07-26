@@ -1,4 +1,4 @@
-import { ModelEventGetPropertyPayload } from '@/lazyDB/core/types'
+import { ModelEventGetPropertyPayload, ModelPropertyKey } from '@/lazyDB/core/types'
 import { IDatabaseModelProducerStore } from '../types'
 
 // Is exclude used for remove from event cycle, memory and handlers any service properties
@@ -6,13 +6,11 @@ import { IDatabaseModelProducerStore } from '../types'
 //  then remove any property which possible not need to use
 //  So on any update of this code take in mind,
 //  this is not best solution, and not need upgrade current behaivor
-export function isExcludeProperty({ excludeProperties }: IDatabaseModelProducerStore, payload: ModelEventGetPropertyPayload) {
+export function isExcludeProperty(name: ModelPropertyKey, excludeProperties?: Array<string | RegExp>) {
   if (!excludeProperties) {
     console.warn('[Actions] producer store does not containt exclude properties list, possible error')
     return false
   }
-
-  const { name } = payload
 
   // There used filter multiple times for readobility
   //  this operations is run on every "get" event

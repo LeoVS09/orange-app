@@ -8,12 +8,13 @@ import {
     IModelEventDispatcher,
     ModelPropertyKey
 } from '@/lazyDB/core/types'
-import { appendEventToSchema } from '@/lazyDB/core/aos/compiler'
+import { AosParser } from '@/lazyDB/core/aos/parser'
 import { wrapInProducer } from '@/lazyDB/core/wrap'
 import { AtomicModelEventDispatcher } from '@/lazyDB/core/dispatcher/model/atomic'
 import { getStore, isProducer } from '@/lazyDB/core/common'
 import { receive } from '@/lazyDB/core/receiver'
 import { toNumberIfCan } from '@/lazyDB/core/aos/utils'
+import { FieldToken, ParserToken } from '@/lazyDB/core/aos'
 
 
 const ENTITY_FIELD_PREFIX = 'entity'
@@ -64,7 +65,26 @@ class MockDispatcher extends AtomicModelEventDispatcher<IProducerStore<any, any>
     }
 }
 
+class AosParserForTest extends AosParser {
+
+    additionalFields: Array<string>
+
+    constructor(schema: AosSchema, additionalFields: Array<string>){
+        super(schema)
+
+        this.additionalFields = additionalFields
+    }
+
+    transform(tokens: Array<FieldToken>): Array<ParserToken> {
+        return super.transform([
+            ...tokens, 
+            ...this.additionalFields.map(field => ({ name: field, type: AosFieldType.Any }))
+        ])
+    }
+}
+
 const makeProvider = (schema: AosSchema, additionalFields: Array<string> = []): any => {
+    const parser = new AosParserForTest(schema, additionalFields)
     const producer = wrapInProducer({}, new MockDispatcher())
 
     const store = getStore(producer)!
@@ -72,14 +92,7 @@ const makeProvider = (schema: AosSchema, additionalFields: Array<string> = []): 
     store.setter = mockSetter
 
     receive(store, event =>
-        appendEventToSchema({
-            schema,
-            event: event.payload! as ModelEventPropertyPayload,
-            transformTokens: list => [
-                ...list, 
-                ...additionalFields.map(field => ({ name: field, type: AosFieldType.Any }))
-            ]
-        })
+        parser.append(event.payload! as ModelEventPropertyPayload)
     )
 
     return producer
@@ -314,6 +327,55 @@ describe('AOS Compiler', () => {
         expect(schema).toMatchSnapshot()
     })
 
+    it('append simple property on inner entity without stop', () => {
+        const model = makeProvider(schema)
+
+        const entity = model.entity
+        expect(schema).toHaveProperty('entity.schema')
+        expect(schema.entity.type).toBe(AosFieldType.OneToOne)
+        expect(schema).toMatchSnapshot()
+
+        const store = getStore(entity)!
+        const entitySchema = {}
+        const parser = new AosParser(entitySchema)
+
+        receive(store, event =>
+            parser.append(event.payload)
+        )
+
+        entity.first
+        expect(entitySchema).toHaveProperty('entity.schema.first')
+        expect(entitySchema).toMatchSnapshot()
+
+        entity.second
+        expect(entitySchema).toHaveProperty('entity.schema.second')
+        expect(entitySchema).toMatchSnapshot()
+    })
+
+    it('append simple property on inner entity with stop', () => {
+        const model = makeProvider(schema)
+
+        const entity = model.entity
+        expect(schema).toHaveProperty('entity.schema')
+        expect(schema.entity.type).toBe(AosFieldType.OneToOne)
+        expect(schema).toMatchSnapshot()
+
+        const store = getStore(entity)!
+        const entitySchema = {}
+        const parser = new AosParser(entitySchema)
+
+        receive(store, event =>
+            parser.append(event.payload, store)
+        )
+
+        entity.first
+        expect(entitySchema).toHaveProperty('first')
+        expect(entitySchema).toMatchSnapshot()
+
+        entity.second
+        expect(entitySchema).toHaveProperty('second')
+        expect(entitySchema).toMatchSnapshot()
+    })
 
     it('append simple property to complex OneToOne with required fields', () => {
         const model = makeProvider(schema, ['id', 'nodeId', 'anotherId'])
@@ -563,5 +625,26 @@ describe('AOS Compiler', () => {
         expect(schema).toHaveProperty('entity1.schema.entities1.schema.entity2.schema.entity3.schema.entities2.schema.simple')
         expect(schema).toMatchSnapshot()
     })
+    
+    it('multiple nesting levels of properties with stop', () => {
+        const model = makeProvider(schema)
 
+        const entity2 = model.entity1.entities1[0].entity2
+        expect(schema).toHaveProperty('entity1.schema.entities1.schema.entity2')
+        expect(schema.entity1.type).toBe(AosFieldType.OneToOne)
+        expect(schema).toMatchSnapshot()
+
+        const store = getStore(entity2)!
+        const entitySchema = {}
+        const parser = new AosParser(entitySchema)
+
+        receive(store, event =>
+            parser.append(event.payload, store)
+        )
+
+
+        entity2.entity3.entities2[0].simple
+        expect(entitySchema).toHaveProperty('entity3.schema.entities2.schema.simple')
+        expect(entitySchema).toMatchSnapshot()
+    })
 })

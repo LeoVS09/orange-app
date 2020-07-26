@@ -12,9 +12,9 @@ import { StateMemory } from '../memory'
 import { unsubscribeStore } from './receive'
 import { handleByReducer } from './reducers'
 import { isPromiseLike } from './utils'
-import { pushToParent, visitParents } from '../bubbling'
-import { preOptimisation } from '../optimisation/preOptimisation'
-import { postOptimisation } from '../optimisation/postOptimisation'
+import { pushToParent, visitParents, isSomeParent } from '../bubbling'
+import { preOptimisation } from '../optimisation/pre'
+import { postOptimisation } from '../optimisation/post'
 
 // Trying handle event by reducers in storage
 // If event handled (handler return true) and storage have memory
@@ -93,22 +93,27 @@ const removeEventIfResolved = (event: ModelEvent<ModelEventPayload<IProducerStor
     // then it need store in memory
     return
 
+  // if result was true, then event was handled
+  // and need remove it from all memories, which possible catched it
   removeEventFromMemory(event)
 }
 
-/** Will remove event from producer memeory, and all of his parents */
-export const removeEventFromMemory = (event: ModelEvent<ModelEventPayload<IProducerStore<any, any>>, any>) => {
-  // if result was true, then event was handled
-  // and need remove it from all memories, which possible catched it
-  const { payload: { store } } = event
+/** Will return true, if event exists in at least one event in memory */
+export const existsInMemory = (event: ModelEvent<ModelEventPayload<IProducerStore<any, any>>, any>): boolean =>
+  isSomeParent(event.payload.store, ({ memory }) => {
+    if (!memory)
+      return false
 
-  // remove event from store and parents
-  visitParents(store, ({ memory }) => {
+    return memory.includes(event)
+  })
+
+/** Will remove event from producer memeory, and all of his parents */
+export const removeEventFromMemory = (event: ModelEvent<ModelEventPayload<IProducerStore<any, any>>, any>) =>
+  // remove event from store and his parents
+  visitParents(event.payload.store, ({ memory }) => {
     if (memory)
       memory.remove(event)
   })
-
-}
 
 const saveInMemory = <
   TP extends ModelTypesToPayloadsMap<any, any> = ModelTypesToPayloadsMap<any, any>

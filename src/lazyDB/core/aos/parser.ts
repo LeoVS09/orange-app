@@ -1,73 +1,112 @@
-import { AosSchema, isRelationsAosField, isRelationsType } from '@/abstractObjectSchema'
-import { FieldToken } from './tokenizer'
-import { RelationsField, SimpleField } from './fields'
+import { ModelEventPropertyPayload, IProducerStore } from '@/lazyDB/core/types'
+import { AosSchema } from '@/abstractObjectSchema'
+import { append, ParserToken } from './builder'
+import { compudeStoreParents, FieldToken } from './tokenizer'
+import { toNumberIfCan } from './utils'
+import { fieldTokenToParser } from './transform'
 
 /**
- * Travel by schema tree and append each token,
- * if it not exists
- * and mark his resolved field
+ * Simple compiler function, append new event to existing AOS Schema
+ * working by simple phases
+ * 1. Travel by event path to root node, and build fields array
+ * 2. Go step by step through fields array, and append each field into AOS Schema
+ * @param schema - AOS Schema which will be mutated
+ * @param event - inital proprety event, wich will be used
  */
-export function append(schema: AosSchema, tokens: Array<FieldToken>) {
-  // start travel from schema root
-  let current = schema
 
-  for (const token of tokens)
-    current = appendToken(current, token)
+export interface TransformTokensList {
+  (tokens: Array<FieldToken>): Array<FieldToken>
+}
+
+/**
+ * AosParser takes first phase of base compiler,
+ * he can append given event to AosSchema
+ * and also have three base phases which can be overridden
+ */
+export class AosParser {
+
+  constructor(
+    protected schema: AosSchema
+  ) {}
+
+  getSchema(): AosSchema {
+    return this.schema
+  }
+
+  /**
+   * First phase of parsing,
+   * will take given event and build tokens path
+   */
+  protected buildTokens({ name, type, store }: ModelEventPropertyPayload, stop?: IProducerStore<any>): Array<FieldToken> {
+    // Travel from target node to root
+    // and build event path
+    const path = [...compudeStoreParents(store, stop)]
+
+    // Make AOS tokens array,
+    // in representation like we travel from root of AOS schema to this this field
+    return [
+      // reverse path for start from root
+      ...path.reverse(),
+      // and append event as inital field
+      // not add store, because in event exists store of producer,
+      //  but not store of produced value
+      { name, type }
+    ]
+  }
+
+  /**
+   * Second phase of parsing,
+   * transform tokens from one representation to another,
+   * in most cases need only to give additional filtration or mapping,
+   * receive raw tokens, and return parser commands.
+   * Splited into two methods to give more flexibility
+   */
+  protected transform(tokens: Array<FieldToken>): Array<ParserToken> {
+    return tokens
+      // in schema number tokens not exists,
+      // beacause we think array can have only one entity type
+      // TODO: need another solution, because fails if "token" digit enity id
+      .filter(token => !isNumberToken(token))
+      // base transformation to parser tokens,
+      // will add any schema from stores which contain entity
+      .map(this.transformToParserToken)
+  }
+
+  /** Used as final step in base transform phase, allow override this behaivor */
+  protected transformToParserToken = fieldTokenToParser
+
+  /**
+   * Third phase of parsing,
+   * Append each token to schema,
+   * step by step, from root node (as first token) to last field
+   */
+  protected buildTree(tokens: Array<ParserToken>) {
+    append(this.schema, tokens)
+  }
+
+  /**
+   * Append given event to schema
+   * @param event - property event which will be added to schema
+   * @param root - declare on which store need stop calculate tokens hierarchy
+   * */
+  public append(
+    event: ModelEventPropertyPayload,
+    root?: IProducerStore<any>
+  ) {
+    const raw = this.buildTokens(event, root)
+    console.debug('[AppendPropertyToSchema] aos tokens, based on event path', { raw, event, root }, this.schema)
+
+    const prepared = this.transform(raw)
+
+    this.buildTree(prepared)
+    console.debug('[AppendPropertyToSchema] builded schema', { event }, this.schema)
+  }
 
 }
 
-/** Append token to schema and get next schema step, for recursive update */
-function appendToken(schema: AosSchema, token: FieldToken): AosSchema {
-  const name = token.name as string
-  const { type } = token
-
-  // check is property already exists in schema
-  const property = schema[name]
-
-  // Field already exists and relational, go deeply into tree
-  if (property && isRelationsAosField(property)) {
-    // If token type wasn't realtions, just ignore it'
-    if (!isRelationsType(type)) {
-      console.warn(
-        '[AppendPropertyToSchema] proporty was marked as realtional,\n'
-          + 'but received simple token\n', { token, property, schema },
-        '\nwill ignore it'
-      )
-    }
-
-    // go deeply in tree
-    return property.schema
-  }
-
-  // Token type is relational, will append it and go deeply into tree
-  if (isRelationsType(type)) {
-    // If property exists, but wasn't set as a relation
-    if (property) {
-      // will just rewrite correctly
-      console.warn(
-        '[AppendPropertyToSchema] property was marked as simple,\n'
-          + 'but received realtions token', { token, property, schema },
-        '\nwill rewirite it as relations'
-      )
-    }
-
-    // Append relations field to tree
-    const field = new RelationsField(type)
-    schema[name] = field
-
-    // go deeply into tree,
-    // into newly created field
-    return field.schema
-  }
-
-  // Not need add, field already exists
-  // in case when we have multiple simple fields,
-  // which stored continiusly into tokens array
-  if (property)
-    return schema
-
-  // Field not exists and toke is simple
-  // just append simple field to tree
-  schema[name] = new SimpleField(type)
-  return schema
+// Check is token is number literal, it mean parent was array
+export function isNumberToken({ name }: FieldToken | ParserToken) {
+  const parsedNumber = toNumberIfCan(name)
+  return typeof parsedNumber === 'number'
 }
+

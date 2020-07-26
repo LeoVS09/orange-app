@@ -9,7 +9,7 @@ import {
   ModelPropertyKey
 } from '@/lazyDB/core/types'
 import { ModelEventReadPayload, DatabaseModelTypesToPayloadsMap } from '@/lazyDB/database/events'
-import { IDatabaseModelProducerStore } from '@/lazyDB/database/types'
+import { IDatabaseModelProducerStore, setupSchema } from '@/lazyDB/database/types'
 import { getStore } from '@/lazyDB/core/common'
 import { AosFieldType } from '@/abstractObjectSchema'
 
@@ -94,6 +94,7 @@ export function switchStoreToDatabaseStore<T extends Producerable<any> = any>(
   }
 
   wrapToDatabaseDispatcher(store)
+  setupSchema(store)
 
   return store as IDatabaseModelProducerStore<T, any>
 }

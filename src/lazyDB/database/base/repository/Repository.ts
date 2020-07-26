@@ -1,9 +1,9 @@
-import { getStore } from '@/lazyDB/core/common'
-import { Producerable, EventProducer, IProducerStore } from '@/lazyDB/core/types'
+import { getStore, isProducer } from '@/lazyDB/core/common'
+import { Producerable, EventProducer } from '@/lazyDB/core/types'
 import { receiveWithMemoryAndReducers } from '@/lazyDB/core/receiver'
 import { repositoryReducers } from '@/lazyDB/database/connected/actions'
 import { DatabaseDispatcher, switchStoreToDatabaseStore } from '@/lazyDB/database/dispatcher'
-import { AosEntitySchema, AosFieldType } from '@/abstractObjectSchema'
+import { AosEntitySchema } from '@/abstractObjectSchema'
 import { spawnRead } from '@/lazyDB/lifeCycle/spawnRead'
 import { setupEventBubbling } from '@/lazyDB/core/bubbling'
 import { whenChanged, updateOnChangeHandler, WhenChangedOptions } from '../../cycle/change'
@@ -12,12 +12,24 @@ import {
   DatabaseTable,
   IDatabaseModelProducerStore,
   ListProducer,
-  OnChangeCallback
+  OnChangeCallback,
+  setupSchema,
+  DatabaseTableMap,
+  ListItemSetterReference,
+  ListItemSetter,
+  ListSource
 } from '../../types'
-import { makeDatabaseTable, TableListKey } from '../../storage/table'
+import {
+  makeDatabaseTable,
+  TableListKey,
+  TableStoreReference,
+  listItemSetter
+} from '../../storage/table'
 import { ModelEventTypes } from '../../events'
 import { genGetFieldType } from '../getFieldType'
 import { getListPropertyType } from './list'
+import { saveEntity } from '../database/saveEntity'
+import { setupNewEntity, setAlreadyExistsFieldsToSchema } from '../setupNewEntity'
 
 export interface LazyReactiveRepositoryOptions {
    table?: DatabaseTable
@@ -62,8 +74,10 @@ export default class LazyReactiveRepository<T extends Producerable<any> = Produc
     const tableStore = getStore(this.table)
 
     // this hack allow change schema after constructor execution
-    tableStore!.extendTemporalTrap = trapStore =>
+    tableStore!.extendTemporalTrap = trapStore => {
+      setupSchema(trapStore)
       applyRepositoryControls(trapStore, this.applyRepositoryControlsOptions)
+    }
   }
 
   public get store(): IDatabaseModelProducerStore<any, any> {
@@ -84,6 +98,10 @@ export default class LazyReactiveRepository<T extends Producerable<any> = Produc
     const store = switchStoreToDatabaseStore(model)
 
     applyRepositoryControls(store, this.applyRepositoryControlsOptions)
+
+    // Will set already exists properties to schema
+    // possible node need do if, this method called on rerender
+    setAlreadyExistsFieldsToSchema(store)
 
     // Order of calls is important
     setupEventBubbling(store, this.store, id)
@@ -107,6 +125,31 @@ export default class LazyReactiveRepository<T extends Producerable<any> = Produc
 
     if (onChange)
       callOnChange(list, onChange)
+
+    const { setLinkedEntity } = this.applyRepositoryControlsOptions
+
+    if (!setLinkedEntity)
+      return list
+
+    // define setter which will link entities and setup them
+    const map = this.table[TableStoreReference] as unknown as DatabaseTableMap
+    const defaultSetter = listItemSetter(map, v => getEntityPrimaryKey(this.schema, v))
+    const realSetter: ListItemSetter = (_, __, item) => {
+      if (isProducer(item))
+        return defaultSetter(_, __, item)
+
+      // it mean set new entity, need save it directly
+      // and return wrapped value
+      const wrappedValue = saveEntity(item, this.schema, this.table)
+      setupNewEntity({
+        entitySchema: this.schema,
+        value: wrappedValue,
+        setLinkedEntity
+      })
+      return getEntityPrimaryKey(this.schema, item) || null
+    }
+    const base = store.base as unknown as ListSource
+    base[ListItemSetterReference] = realSetter
 
     return list
   }

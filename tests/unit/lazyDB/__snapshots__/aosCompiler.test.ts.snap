@@ -563,6 +563,72 @@ Object {
 }
 `;
 
+exports[`AOS Compiler append simple property on inner entity with stop 1`] = `
+Object {
+  "entity": RelationsField {
+    "schema": Object {},
+    "type": "OneToOne",
+  },
+}
+`;
+
+exports[`AOS Compiler append simple property on inner entity with stop 2`] = `
+Object {
+  "first": SimpleField {
+    "type": "Any",
+  },
+}
+`;
+
+exports[`AOS Compiler append simple property on inner entity with stop 3`] = `
+Object {
+  "first": SimpleField {
+    "type": "Any",
+  },
+  "second": SimpleField {
+    "type": "Any",
+  },
+}
+`;
+
+exports[`AOS Compiler append simple property on inner entity without stop 1`] = `
+Object {
+  "entity": RelationsField {
+    "schema": Object {},
+    "type": "OneToOne",
+  },
+}
+`;
+
+exports[`AOS Compiler append simple property on inner entity without stop 2`] = `
+Object {
+  "entity": RelationsField {
+    "schema": Object {
+      "first": SimpleField {
+        "type": "Any",
+      },
+    },
+    "type": "OneToOne",
+  },
+}
+`;
+
+exports[`AOS Compiler append simple property on inner entity without stop 3`] = `
+Object {
+  "entity": RelationsField {
+    "schema": Object {
+      "first": SimpleField {
+        "type": "Any",
+      },
+      "second": SimpleField {
+        "type": "Any",
+      },
+    },
+    "type": "OneToOne",
+  },
+}
+`;
+
 exports[`AOS Compiler append simple property to complex OneToOne 1`] = `
 Object {
   "entity": RelationsField {
@@ -723,6 +789,43 @@ Object {
               },
             },
             "type": "OneToOne",
+          },
+        },
+        "type": "OneToMany",
+      },
+    },
+    "type": "OneToOne",
+  },
+}
+`;
+
+exports[`AOS Compiler multiple nesting levels of properties with stop 1`] = `
+Object {
+  "entity1": RelationsField {
+    "schema": Object {
+      "entities1": RelationsField {
+        "schema": Object {
+          "entity2": RelationsField {
+            "schema": Object {},
+            "type": "OneToOne",
+          },
+        },
+        "type": "OneToMany",
+      },
+    },
+    "type": "OneToOne",
+  },
+}
+`;
+
+exports[`AOS Compiler multiple nesting levels of properties with stop 2`] = `
+Object {
+  "entity3": RelationsField {
+    "schema": Object {
+      "entities2": RelationsField {
+        "schema": Object {
+          "simple": SimpleField {
+            "type": "Any",
           },
         },
         "type": "OneToMany",

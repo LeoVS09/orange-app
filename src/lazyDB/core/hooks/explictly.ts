@@ -5,6 +5,8 @@ export const isExplictlyAccessPropty = (prop: PropertyKey): prop is symbol =>
   prop === 'prototype' || prop === '__proto__'
   // contructor object
   || prop === 'constructor'
+  // string casting
+  || prop === 'valueOf' || prop === 'toString()'
   // allow symbols access base directly
   // must be be after ProducerStoreReference (it is predifyned symbol)
   || typeof prop === 'symbol'

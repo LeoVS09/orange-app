@@ -1,6 +1,10 @@
+import { nodesKey, NodesProducerReference } from '@/lazyDB/database/types'
 import { wrapInProducer } from '../wrap'
 import { AtomicModelEventDispatcher } from '../dispatcher/model/atomic'
-import { getStore, isProducer } from '../common'
+import {
+  isProducer,
+  getStore
+} from '../common'
 import {
   Producerable,
   IProducerStore,
@@ -10,7 +14,8 @@ import {
   ModelEvent,
   ModelEventSetPropertyPayload,
   ModelEventGetPropertyPayload,
-  isDate
+  isDate,
+  ProducerStoreGetter
 } from '../types'
 import { receive, Subscriber } from './receive'
 import { removeEventFromMemory } from './memory'
@@ -35,8 +40,7 @@ export function generateControl<
   const controlStore = getStore(result)!
 
   // add hooks for not break real object bubling tree and hook aplly
-  controlStore.getter = store.getter
-  controlStore.setter = genSetter(store.setter)
+  applyControlControls(result, store)
 
   const rootPath = getAbsolutePath(store)
 
@@ -46,7 +50,29 @@ export function generateControl<
   return result
 }
 
+// TODO: fix, this constructors, actualy must be classes
+function applyControlControls(value: EventProducer<any>, store: IProducerStore<any, any>) {
+  const controlStore = getStore(value)!
+
+  // add hooks for not break real object bubling tree and hook aplly
+  controlStore.getter = genGetter(store.getter)
+  controlStore.setter = genSetter(store.setter)
+}
+
+export type Getter = ProducerStoreGetter<IProducerStore<any, any>>
 export type Setter = ProducerStoreSetter<IProducerStore<any, any>>
+
+const genGetter = (baseGetter: Getter): Getter => (store, prop) => {
+  const value = baseGetter(store, prop)
+  if (!isProducer(value))
+    return value
+
+  const valueStore = getStore(value)!
+  const result = wrapInProducer(valueStore.base, new AtomicModelEventDispatcher() as any)
+  applyControlControls(result, valueStore)
+
+  return result
+}
 
 /**
  * Generate setter for control,
@@ -57,6 +83,19 @@ const genSetter = (baseSetter: Setter): Setter => (store, prop, value) => {
   if (isProducer(value)) {
     console.error('Try assign producer to control, it can produce incorrect behavior', store, prop, value)
     throw new Error('Try assong proucer to control')
+  }
+
+  if (prop === nodesKey) {
+    const targetProducer = store.base[NodesProducerReference]
+    if (!targetProducer || !Array.isArray(value))
+      throw new Error('Cannot assign nodes in control')
+
+    const targetStore = getStore(targetProducer)!
+    const result = wrapInProducer(targetStore.base, new AtomicModelEventDispatcher() as any)
+    applyControlControls(result, targetStore)
+
+    Object.assign(result, value)
+    return true
   }
 
   return baseSetter(store, prop, value)
@@ -91,20 +130,28 @@ const eventTypesWhichCanBeResovled = [PropertyEventType.GetProperty, PropertyEve
 export function handelSetEvent(
   rootPath: string,
   memory: StateMemory<ModelEvent<any>>,
-  { payload: { name, newValue } }: ModelEvent<ModelEventSetPropertyPayload>
+  { payload: { name, newValue, store: controlEventStore } }: ModelEvent<ModelEventSetPropertyPayload>
 ) {
   // pathes of all properties which resolved
   const resolvedProperties: Array<string> = [`${name}`]
+  const parentPath = getAbsolutePath(controlEventStore)
 
   if (isDataObject(newValue)) {
     // will be setted as linked entity,
     // need understand which proerties it actually resolve
-    resolvedProperties.push(...(getPropertyPathes(newValue).map(prop => `${name}.${prop}`)))
+    const valuePathes = getPropertyPathes(newValue).map(prop => `${name}.${prop}`)
+    resolvedProperties.push(...valuePathes)
   }
 
+  const root = rootPath.length ? `${rootPath}.` : '' // root path can not exists, and then not need add dot
+  const parent = parentPath.length ? `${parentPath}.` : '' // parent path can not exists, and then not need add dot
   // abosult pathes to root object
-  const absoluteResolvedProperties = resolvedProperties.map(prop => `${rootPath}.${prop}`)
-
+  const absoluteResolvedProperties = resolvedProperties.map(prop => `${root}${parent}${prop}`)
+  console.log('[Control] pathes', {
+    absoluteResolvedProperties,
+    resolvedProperties,
+    parentPath
+  })
   const eventsToRemove = memory.memory
     .filter(event => eventTypesWhichCanBeResovled.includes(event.type))
     .filter(({ payload: event }: ModelEvent<ModelEventSetPropertyPayload | ModelEventGetPropertyPayload>) => {
@@ -139,19 +186,21 @@ const isDataObject = (value: any): boolean =>
 const getObjectKeys = (obj: {[key: string]: any}): Array<string> => {
   const keys = Object.keys(obj)
 
-  if (Array.isArray(obj) && keys.length > 1)
-    // if object array, with multiple items
-    // not need iterate over all properties
-    // in most of cases initial get event was generated from trap under index '0'
-    // and only one first item properties will be enough
-    // but WARN: possible will not resolve `get` events if they produced not first item
-    return ['0']
+  // Will return all keys to be sure all events is removed
+  // TODO: find better way to handle events, possible remove number keys
+  // if (Array.isArray(obj) && keys.length > 1)
+  //   // if object array, with multiple items
+  //   // not need iterate over all properties
+  //   // in most of cases initial get event was generated from trap under index '0'
+  //   // and only one first item properties will be enough
+  //   // but WARN: possible will not resolve `get` events if they produced not first item
+  //   return ['0']
 
   return keys
 }
 
 /**
- * Recursivly generate pathes to all properties in object
+ * Recursivly generate pathes to all properties in object and array
  */
 function getPropertyPathes(obj: {[key: string]: any}): Array<string> {
   const keys = getObjectKeys(obj)

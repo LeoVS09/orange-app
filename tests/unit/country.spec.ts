@@ -10,6 +10,7 @@ import cons from './utils/console.mock'
 import { WaitStore } from './utils/wait'
 import { when } from './utils/when'
 import vuexI18n from 'vuex-i18n'
+import { LazyDBFilters } from '../../src/lazyDB/vue';
 
 describe('Country.vue', () => {
 
@@ -29,6 +30,7 @@ describe('Country.vue', () => {
     })
 
     localVue.use(vuexI18n.plugin, store)
+    localVue.use(LazyDBFilters)
 
     const { waits } = await nockAllGraphqlRequests(nock, 'country')
     requests = waits
