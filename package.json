@@ -49,7 +49,7 @@
     "object-hash": "^2.0.3",
     "p-debounce": "^2.1.0",
     "p-lazy": "^3.0.0",
-    "prismjs": "^1.16.0",
+    "prismjs": "^1.21.0",
     "rxjs": "^6.5.2",
     "shortid": "^2.2.8",
     "subscriptions-transport-ws": "^0.9.16",
