@@ -98,7 +98,7 @@
     "memoize-fs": "^1.4.1",
     "nock": "^12.0.2",
     "node-fetch": "^2.6.0",
-    "node-sass": "^4.9.0",
+    "node-sass": "^4.13.1",
     "prettier": "1.19.1",
     "sass-loader": "^7.1.0",
     "ts-jest": "^25.2.1",
