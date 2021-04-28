@@ -1,0 +1,19 @@
+version: 2
+updates:
+- package-ecosystem: npm
+  directory: "/"
+  schedule:
+    interval: monthly
+    time: "02:00"
+  open-pull-requests-limit: 10
+  ignore:
+  - dependency-name: sass-loader
+    versions:
+    - 10.1.0
+    - 10.1.1
+  - dependency-name: typescript
+    versions:
+    - 4.1.3
+  - dependency-name: prismjs
+    versions:
+    - 1.21.0
